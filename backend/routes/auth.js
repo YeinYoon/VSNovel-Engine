@@ -4,11 +4,6 @@ var router = express.Router();
 const passport = require('passport');
 const {isNotLogin, isLogin} = require('./middlewares/loginCheck');
 
-var oracle = require('oracledb');
-oracle.autoCommit = true; // 자동커밋
-oracle.outFormat = oracle.OBJECT; //데이터 주고받는 형식 : 객체
-
-
 // 로그인
 router.post('/login', isNotLogin, (req,res,next)=>{
   passport.authenticate('local', (err, user, info)=>{
