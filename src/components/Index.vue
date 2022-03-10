@@ -12,7 +12,7 @@ export default {
   created() {
     axios.get('/engine/auth/loginCheck')
     .then((result)=>{
-      console.log(result);
+      console.log(result.data);
       this.$store.commit('userLogin', result.data.USER_NICKNAME);
     })
     .catch((err)=>{
