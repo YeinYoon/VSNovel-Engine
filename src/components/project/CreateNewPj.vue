@@ -1,6 +1,6 @@
 <template>
 소설형식 선택
-  <select v-model="novelType">
+  <select v-model="type">
       <option value="W" selected>웹소설</option>
       <option value="V">비주얼노벨</option>
   </select> <br>
@@ -20,14 +20,20 @@ export default {
     name:"CreateNewPj",
     data() {
         return {
-            novelType : "W",
+            type : "W",
             title : "",
             synopsis : ""
         }
     },
     methods : {
         createPj() {
-            axios.post('/engine/pj/createNewPj')
+            var newProject = {
+                type : this.type,
+                title : this.title,
+                synopsis : this.synopsis
+            }
+
+            axios.post('/engine/pj/createNewPj', newProject)
             .then((result)=>{
                 if(result.data=="ok") {
                     alert("새로운 프로젝트가 생성되었습니다.");
