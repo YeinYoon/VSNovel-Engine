@@ -1,0 +1,49 @@
+<template>
+소설형식 선택
+  <select v-model="novelType">
+      <option value="W" selected>웹소설</option>
+      <option value="V">비주얼노벨</option>
+  </select> <br>
+  <input type="text" placeholder="제목" v-model="title"> <br>
+  <textarea
+  cols="40"
+  rows="10"
+  placeholder="시놉시스를 작성해주세요(추후 수정가능)"
+  v-model="synopsis"></textarea> <br>
+
+  <button @click="createPj()">프로젝트 생성</button>
+</template>
+
+<script>
+import axios from 'axios'
+export default {
+    name:"CreateNewPj",
+    data() {
+        return {
+            novelType : "W",
+            title : "",
+            synopsis : ""
+        }
+    },
+    methods : {
+        createPj() {
+            axios.post('/engine/pj/createNewPj')
+            .then((result)=>{
+                if(result.data=="ok") {
+                    alert("새로운 프로젝트가 생성되었습니다.");
+                } else {
+                    console.log(result);
+                    alert(result.data);
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>

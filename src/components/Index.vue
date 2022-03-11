@@ -1,7 +1,12 @@
 <template>
     <div id="page">
-        VSNovel 엔진 테스트 페이지 <br>
-        <router-link to="/signin">로그인</router-link> <br>
+      VSNovel 엔진 테스트 페이지 <br>
+      <div v-if="$store.state.userNickname == null">
+        <router-link to="/signin">로그인</router-link>
+      </div>
+      <div v-else>
+        <router-link to="/CreateNewPj">새 프로젝트 생성하기</router-link>
+      </div>
     </div>
 </template>
 

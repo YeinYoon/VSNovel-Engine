@@ -3,7 +3,7 @@ module.exports = {
     pluginOptions: {
       electronBuilder: {
         builderOptions: {
-          productName: "VSNovel",
+          productName: "VSNovel-Engine",
           appId: 'VSNovel.com',
           win: {
             "target": [
