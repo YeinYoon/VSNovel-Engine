@@ -42,6 +42,23 @@ router.post('/createNewPj', async (req, res)=>{
     }
 })
 
+router.get('/getList', async (req, res)=>{
+    var pjCode = await db.execute(`SELECT proj_code FROM tbl_cooperation WHERE user_id = '${req.user.USER_ID}'`);
+    pjCode = pjCode.rows;
+
+    if(pjCode.length == 0) {
+        res.send("empty");
+    } else {
+        var pjList = [];
+        for(var i=0; i<pjCode.length; i++) {
+            var findPj = await db.execute(`SELECT * FROM tbl_project WHERE proj_code = ${pjCode[i].PROJ_CODE}`);
+            pjList.push(findPj.rows[0]);
+        }
+        console.log(pjList);
+        res.send(pjList);
+    }
+})
+
 
 
 
