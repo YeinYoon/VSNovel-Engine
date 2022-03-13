@@ -4,6 +4,7 @@ var router = express.Router();
 var db = require('../database/db');
 var timestamp = require('../database/timestamp');
 
+// 새로운 프로젝트 생성
 router.post('/createNewPj', async (req, res)=>{
     var exPj = await db.execute(`SELECT * FROM tbl_project WHERE proj_title = '${req.body.title}'`);
     if(exPj == "err") {
@@ -42,6 +43,7 @@ router.post('/createNewPj', async (req, res)=>{
     }
 })
 
+//생성한 프로젝트 리스트
 router.get('/getList', async (req, res)=>{
     var pjCode = await db.execute(`SELECT proj_code FROM tbl_cooperation WHERE user_id = '${req.user.USER_ID}'`);
     pjCode = pjCode.rows;
@@ -54,12 +56,71 @@ router.get('/getList', async (req, res)=>{
             var findPj = await db.execute(`SELECT * FROM tbl_project WHERE proj_code = ${pjCode[i].PROJ_CODE}`);
             pjList.push(findPj.rows[0]);
         }
+
+        pjList.sort(function(a,b) { // 마지막 수정날짜 순으로 정렬
+            return new Date(b.PROJ_RETOUCHDATE) - new Date(a.PROJ_RETOUCHDATE)
+        })
         console.log(pjList);
         res.send(pjList);
     }
 })
 
+// 프로젝트 정보 조회
+router.post('/getPjInfo', async (req,res)=>{
+    console.log("다음 프로젝트 정보를 불러옴 : " + req.body.pjCode);
+    var result = await db.execute(`SELECT * FROM tbl_project WHERE proj_code = ${req.body.pjCode}`);
+    console.log(result);
+    if(result == "err") {
+        console.log("DB쿼리 실패");
+        res.send("err");
+    } else {
+        res.send(result.rows[0]);
+    }
+})
 
+// 프로젝트 개발내역 저장(마지막 수정시간 업데이트)
+router.patch('/devSave', async (req,res)=>{
+    console.log("다음 프로젝트 개발상태를 저장함 : " + req.body.pjCode);
+    var newDate = await timestamp.getTimestamp();
+
+    var result = await db.execute(`UPDATE tbl_project SET
+    proj_retouchdate = '${newDate}'
+    WHERE proj_code = ${req.body.pjCode}`);
+    if(result == "err") {
+        console.log("DB쿼리 실패");
+        res.send({msg : "err"});
+    } else {
+        res.send({msg : "ok", date : newDate});
+    }
+})
+
+//프로젝트 정보수정 (현재 시놉시스가 CLOB 데이터인 관계로 제외하고 수정)
+router.patch('/editPjInfo', async (req,res)=>{
+    console.log("다음 프로젝트 정보를 수정함 : " + req.body.pjCode);
+    var newDate = await timestamp.getTimestamp();
+
+    var result = await db.execute(`UPDATE tbl_project SET
+    proj_status = '${req.body.status}', proj_title = '${req.body.title}', proj_retouchdate = '${newDate}'
+    WHERE proj_code = ${req.body.pjCode}`);
+    if(result == "err") {
+        console.log("DB쿼리 실패");
+        res.send("err");
+    } else {
+        res.send("ok");
+    }
+})
+
+//프로젝트 삭제
+router.post('/deletePj', async (req,res)=>{
+    console.log("다음 프로젝트를 삭제함 : " + req.body.pjCode);
+    var result = await db.execute(`DELETE tbl_project WHERE proj_code = ${req.body.pjCode}`);
+    if(result == "err") {
+        console.log("DB쿼리 실패");
+        res.send("err");
+    } else {
+        res.send("ok");
+    }
+})
 
 
 module.exports = router;

@@ -13,6 +13,7 @@
           <table border="2px">
             <thead>
               <th>프로젝트 코드</th>
+              <th>유형</th>
               <th>제목</th>
               <th>상태</th>
               <th>마지막 수정일자</th>
@@ -20,13 +21,15 @@
             <tbody>
               <tr v-for="pj in pjList" :key="pj.PROJ_CODE">
                 <td>{{pj.PROJ_CODE}}</td>
-                <td>{{pj.PROJ_TITLE}}</td>
+                <td>{{pj.PROJ_TYPE}}</td>
+                <td @click="goToDevPage(pj.PROJ_CODE)">{{pj.PROJ_TITLE}}</td>
                 <td>{{pj.PROJ_STATUS}}</td>
                 <td>{{pj.PROJ_RETOUCHDATE}}</td>
               </tr>
             </tbody>
           </table>
         </div>
+        <router-link to="/CreateNewPj">새 프로젝트 생성하기</router-link>
       </div>
 
       <div v-else>
@@ -41,19 +44,30 @@
 import axios from 'axios';
 export default {
   name : "Index",
+  created() {
+    axios.get('/engine/auth/loginCheck')
+    .then((result)=>{
+      if(result.data!="") {
+        this.$store.commit('userLogin', result.data.USER_NICKNAME);
+        this.getPjList();
+      }
+    })
+    .catch((err)=>{
+      console.error(err);
+    })
+  },
   data() {
     return {
       pjList : []
     }
   },
-  created() {
-    axios.get('/engine/auth/loginCheck')
-    .then((result)=>{
-      if(result.data!="") {
-        console.log(result.data);
-        this.$store.commit('userLogin', result.data.USER_NICKNAME);
-
-        axios.get('/engine/pj/getList')
+  methods : {
+    goToDevPage(pjCode) {
+      this.$router.push(`/devPage/${pjCode}`);
+    },
+    
+    getPjList() {
+      axios.get('/engine/pj/getList')
         .then((result)=>{
           if(result.data != "empty") {
             this.pjList = result.data;
@@ -61,12 +75,8 @@ export default {
         })
         .catch((err)=>{
           console.error(err);
-        })
-      }
-    })
-    .catch((err)=>{
-      console.error(err);
-    })
+      })
+    }
   }
 }
 </script>
@@ -76,5 +86,9 @@ export default {
   font-family: "나눔스퀘어";
   text-align: center;
   margin-top: 60px;
+}
+
+#pjTb {
+  text-align: center;
 }
 </style>
