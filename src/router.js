@@ -9,6 +9,9 @@ import createNewPj from './components/project/CreateNewPj.vue';
 import DevPage from './components/project/DevPage.vue';
 import EditPjInfo from './components/project/EditPjInfo.vue';
 
+//테스트
+import FileTest from './components/FileTest.vue';
+
 const routes = [
   {
     path:"/",
@@ -32,6 +35,10 @@ const routes = [
       }
     ]
   },
+  {
+    path : "/fileTest",
+    component : FileTest
+  }
 ];
 
 const router = createRouter({

@@ -11,6 +11,8 @@
     <div v-else class="userName">로그인이 필요합니다</div>
     </div>
 
+    <router-link to="/fileTest">파일테스트</router-link>
+
     <router-view></router-view>
     
   </div>
