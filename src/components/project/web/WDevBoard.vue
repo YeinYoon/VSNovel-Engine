@@ -1,7 +1,6 @@
 <template>
   <div>
       {{pjType}}
-      {{msg}}
   </div>
 </template>
 
@@ -9,22 +8,20 @@
 export default {
     name : "WDebBoard",
     created() {
-        if(this.pjType == 0) {
-            this.msg = "웹개발페이지임"
-        } else {
-            this.msg = "웹소설형식이 아님"
+        if(this.pjType == "W") {
+            alert("웹노벨 개발페이지 진입");
         }
     },
     data() {
         return {
-            msg : ""
+            
         }
     },
     methods : {
 
     },
     props : {
-        pjType : Number,
+        pjType : String,
         WpjCode : String
     }
 }

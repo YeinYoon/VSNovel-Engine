@@ -16,14 +16,14 @@
 
     <div v-if="pjType == 'W'">
         <WDevBoard  
-        :pjType=0
+        :pjType="pjType"
         :WpjCode="pjCode"
         ></WDevBoard>
     </div>
 
-    <div v-else>
+    <div v-if="pjType == 'V'">
         <VDevBoard
-        :pjType=1
+        :pjType="pjType"
         :VpjCode="pjCode"
         ></VDevBoard>
     </div>

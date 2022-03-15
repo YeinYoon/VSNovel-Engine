@@ -1,7 +1,6 @@
 <template>
   <div>
       {{pjType}}
-      {{msg}}
   </div>
 </template>
 
@@ -9,22 +8,22 @@
 export default {
     name : "VDevBoard",
     created() {
-        if(this.pjType == 1) {
-            this.msg = "비주얼개발페이지임"
-        } else {
-            this.msg = "비주얼형식이 아님"
+        if(this.pjType == "V") {
+            alert("비주얼노벨 개발페이지 진입");
         }
     },
     data() {
         return {
-            msg : ""
+            
         }
     },
     methods : {
-
+        hi() {
+            alert("ㅎㅇ");
+        }
     },
     props : {
-        pjType : Number,
+        pjType : String,
         VpjCode : String
     }
 }
