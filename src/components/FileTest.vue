@@ -75,11 +75,6 @@ export default {
 </script>
 
 <style>
-#tmp {
-  width: 100%;
-  padding: 2rem;
-}
-
 .file-input {
     display: none;
 }
@@ -92,9 +87,5 @@ export default {
 img {
     width: 100%;
     height: 100%;
-}
-.form-control {
-    width: 500px;
-    height: 300px;
 }
 </style>
