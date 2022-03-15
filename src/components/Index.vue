@@ -1,11 +1,15 @@
 <template>
+<Spinner :loading="$store.state.LoadingStatus"></Spinner>
     <div id="page">
-
       VSNovel 엔진 테스트 페이지
       <hr>
 
       <div v-if="$store.state.userNickname == null">
         <router-link to="/signin">로그인</router-link>
+      </div>
+
+      <div v-else-if="$store.state.LoadingStatus">
+        프로젝트 목록을 불러오는 중입니다.
       </div>
 
       <div v-else-if="pjList.length != 0">
@@ -30,26 +34,28 @@
           </table>
         </div>
         <router-link to="/CreateNewPj">새 프로젝트 생성하기</router-link>
+        
       </div>
 
       <div v-else>
         프로젝트 목록이 없습니다. 새로운 프로젝트를 생성해주세요.<br>
         <router-link to="/CreateNewPj">새 프로젝트 생성하기</router-link>
       </div>
-      
+
     </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '../axios';
+import Spinner from './Spinner.vue';
 export default {
   name : "Index",
   created() {
     axios.get('/engine/auth/loginCheck')
-    .then((result)=>{
+    .then(async (result)=>{
       if(result.data!="") {
         this.$store.commit('userLogin', result.data.USER_NICKNAME);
-        this.getPjList();
+        await this.getPjList();
       }
     })
     .catch((err)=>{
@@ -58,7 +64,8 @@ export default {
   },
   data() {
     return {
-      pjList : []
+      pjList : [],
+      loading : false
     }
   },
   methods : {
@@ -77,6 +84,9 @@ export default {
           console.error(err);
       })
     }
+  },
+  components : {
+    Spinner
   }
 }
 </script>

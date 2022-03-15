@@ -1,17 +1,25 @@
 <template>
-    소설형식 선택
-  <select v-model="type">
-      <option value="W" selected>웹소설</option>
-      <option value="V">비주얼노벨</option>
-  </select> <br>
-  <input type="text" placeholder="제목" v-model="title"> <br>
-  <textarea
-  cols="40"
-  rows="10"
-  placeholder="시놉시스를 작성해주세요(추후 수정가능)"
-  v-model="synopsis"></textarea> <br>
+    <div v-if="type == null">
+        소설형식 선택
+        <div @click="selectType('W')">웹소설</div>
+        <div @click="selectType('V')">비주얼노벨</div>
+    </div>
+  
+    <div v-else>
+        -선택형식-
+        <p v-if="type=='W'">웹소설</p>
+        <p v-else>비주얼노벨</p>
 
-  <button @click="createPj()">프로젝트 생성</button>
+        <input type="text" placeholder="제목" v-model="title"> <br>
+        <textarea
+        cols="40"
+        rows="10"
+        placeholder="시놉시스를 작성해주세요(추후 수정가능)"
+        v-model="synopsis"></textarea> <br>
+
+        <button @click="createPj()">프로젝트 생성</button>
+    </div>
+
 </template>
 
 <script>
@@ -20,12 +28,16 @@ export default {
     name:"CreateNewPj",
     data() {
         return {
-            type : "W",
+            type : null,
             title : "",
             synopsis : ""
         }
     },
     methods : {
+        selectType(val) {
+            this.type = val;
+        },
+
         createPj() {
             var newProject = {
                 type : this.type,

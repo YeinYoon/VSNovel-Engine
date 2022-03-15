@@ -1,20 +1,41 @@
 <template>
-  <div>
-    Project [ {{title}} ]
-    마지막 저장 : {{retouchDate}}
-    상태 : {{status}}
+    <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 
-    <button @click="goToEditPjInfo(pjCode)">프로젝트 정보수정</button>
-    <button @click="save()">저장</button>
-  </div>
+    <div>
+        Project [ {{title}} ]
+        마지막 저장 : {{retouchDate}}
+        상태 : {{status}}
 
-  <div>
-      <router-view></router-view>
-  </div>
+        <button @click="goToEditPjInfo(pjCode)">프로젝트 정보수정</button>
+        <button @click="save()">저장</button>
+    </div>
+
+    <div> <!--프로젝트 정보 수정-->
+        <router-view></router-view>
+    </div>
+
+    <div v-if="pjType == 'W'">
+        <WDevBoard  
+        :pjType=0
+        :WpjCode="pjCode"
+        ></WDevBoard>
+    </div>
+
+    <div v-else>
+        <VDevBoard
+        :pjType=1
+        :VpjCode="pjCode"
+        ></VDevBoard>
+    </div>
+
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '../../axios';
+import Spinner from '../Spinner.vue';
+
+import WDevBoard from './web/WDevBoard.vue';
+import VDevBoard from './visual/VDevBoard.vue';
 export default {
     name : "devPage",
     created() {
@@ -28,6 +49,7 @@ export default {
     },
     data(){
         return {
+            pjType : "",
             pjCode : "",
             title : "",
             retouchDate : "",
@@ -44,6 +66,7 @@ export default {
                     this.title = result.data.PROJ_TITLE;
                     this.retouchDate = result.data.PROJ_RETOUCHDATE;
                     this.status = result.data.PROJ_STATUS;
+                    this.pjType = result.data.PROJ_TYPE;
                 }
             })
             .catch((err)=>{
@@ -67,6 +90,12 @@ export default {
                 }
             })
         }
+    },
+    components : {
+        Spinner,
+
+        WDevBoard,
+        VDevBoard
     }
 }
 </script>
