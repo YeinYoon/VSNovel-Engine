@@ -14,8 +14,6 @@
     </div>
 
     <router-view></router-view>
-
-    <spinner :loading="$store.state.LoadingStatus"/>
     
   </div>
 </template>
