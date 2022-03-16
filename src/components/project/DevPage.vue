@@ -1,6 +1,4 @@
 <template>
-    <Spinner :loading="$store.state.LoadingStatus"></Spinner>
-
     <div>
         Project [ {{title}} ]
         마지막 저장 : {{retouchDate}}
@@ -32,7 +30,6 @@
 
 <script>
 import axios from '../../axios';
-import Spinner from '../Spinner.vue';
 
 import WDevBoard from './web/WDevBoard.vue';
 import VDevBoard from './visual/VDevBoard.vue';
@@ -92,8 +89,6 @@ export default {
         }
     },
     components : {
-        Spinner,
-
         WDevBoard,
         VDevBoard
     }

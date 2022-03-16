@@ -1,5 +1,4 @@
 <template>
-<Spinner :loading="$store.state.LoadingStatus"></Spinner>
     <div id="page">
       VSNovel 엔진 테스트 페이지
       <hr>
@@ -47,7 +46,6 @@
 
 <script>
 import axios from '../axios';
-import Spinner from './Spinner.vue';
 export default {
   name : "Index",
   created() {
@@ -65,7 +63,6 @@ export default {
   data() {
     return {
       pjList : [],
-      loading : false
     }
   },
   methods : {
@@ -86,7 +83,6 @@ export default {
     }
   },
   components : {
-    Spinner
   }
 }
 </script>
