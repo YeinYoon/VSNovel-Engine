@@ -1,5 +1,5 @@
 module.exports = {
-    user: 'c##vsnovel',
-    password: 'password',
-    connectString : 'localhost/orcl'
+    user: 'c##2001444',
+    password: 'p2001444',
+    connectString : '10.30.3.95/orcl'
 }

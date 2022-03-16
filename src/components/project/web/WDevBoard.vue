@@ -9,7 +9,8 @@ export default {
     name : "WDebBoard",
     created() {
         if(this.pjType == "W") {
-            alert("웹노벨 개발페이지 진입");
+            // 데이터 불러오기의 시작점.
+            // 기존 프로젝트 데이터 가져오는 코드 작성할 것.
         }
     },
     data() {
