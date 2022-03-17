@@ -31,7 +31,7 @@
           <div class="logins_deco_platform"><span class="platform_label">platform</span></div>
         </div> <!--로그인 버튼 아래에 꾸며주는 블럭 끝 -->
         <div class="signupNpasswd"> <!-- 최하단 회원가입 및 패스워드 찾기 -->
-          <span class="signup_button">회원가입</span>
+          <!-- <span class="signup_button">회원가입</span> -->
           <span class="where_my_account">로그인에 문제가 있나요?</span>
         </div> <!-- 최하단 회원가입 및 패스워드 찾기 끝 -->
         <div class="partion_block"> <!-- 로그인 및 광고영역간 공간분리 -->
@@ -240,7 +240,7 @@
 .where_my_account
 {
   position: absolute;
-  left: 230px;
+  left: 140px;
   top: 410px;
   transform: translate(-50%, -50%);
   color: white;
