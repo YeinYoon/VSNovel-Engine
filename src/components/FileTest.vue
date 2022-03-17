@@ -48,7 +48,7 @@ export default {
             if (files.length) {
                 let file = files[0]
                 if (!/^image\//.test(file.type)) {
-                    alert('이미지 파일만 등록이 가능합니다')
+                    alert('이미지 파일만 등록이 가능')
                     return false
                 }
                 this.filename = file.name;
