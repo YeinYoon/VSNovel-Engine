@@ -37,7 +37,7 @@
         <div class="partion_block"> <!-- 로그인 및 광고영역간 공간분리 -->
         </div>
         <div class="adver_section"> <!--광고영역-->
-            <img class="adver_img" src="../../assets/adver.png" alt=""> <!--광고영역의 이미지-->
+            <img class="adver_img" src="../../assets/adver.jpg" alt=""> <!--광고영역의 이미지-->
             <div class="adver_info"><span>123</span></div> <!--광고대상의 정보박스-->
         </div> 
       </div>
