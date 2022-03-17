@@ -1,6 +1,12 @@
 <template>
-  <div>
-      {{pjType}}
+  <div id="devBoard">
+      ㅇㅎㅇㅇㅎ
+    <div id="background">
+        ㅇㅎㅇㅇㅎㅎㅇ
+        <div id="talkTable">
+ㅎㅇㅎㅎㅇㅎㅇ
+        </div>
+    </div>    
   </div>
 </template>
 
@@ -30,4 +36,16 @@ export default {
 
 <style>
 
+#devBoard {
+    background-color: rgb(218, 205, 205);
+}
+
+#background {
+    background-color: white;
+}
+
+#talkTable {
+    background-color: grey;
+    opacity: 3;
+}
 </style>

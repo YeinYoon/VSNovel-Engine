@@ -1,21 +1,18 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 
-  <div>
-
-    <div id="bar">
-      <router-link to="/" id="main">메인으로</router-link>
-      <h5 class="text-center">테스트 엔진 메인바</h5>
-      <div v-if="$store.state.userNickname != null" class="userName">
-        {{$store.state.userNickname}}
-        <button @click="logout()">로그아웃</button>
-      </div>
-      <div v-else class="userName">로그인이 필요합니다</div>
+  <div id="bar">
+    <router-link to="/" id="main">메인으로</router-link>
+    <h5 class="text-center">테스트 엔진 메인바</h5>
+    <div v-if="$store.state.userNickname != null" class="userName">
+    {{$store.state.userNickname}}
+    <button @click="logout()">로그아웃</button>
     </div>
-
-    <router-view></router-view>
-    
+    <div v-else class="userName">로그인이 필요합니다</div>
   </div>
+
+  <router-view></router-view>
+
 </template>
 
 <script>
