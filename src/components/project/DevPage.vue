@@ -58,7 +58,7 @@ export default {
             axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
             .then((result)=>{
                 if(result.data == "err") {
-                    alert("프로젝트 정보를 불러오는데 실패했습니다.");
+                    this.$store.commit('gModalOn', "프로젝트 정보를 불러오는데 실패했습니다.", "normal");
                 } else {
                     this.title = result.data.PROJ_TITLE;
                     this.retouchDate = result.data.PROJ_RETOUCHDATE;
@@ -80,10 +80,10 @@ export default {
             axios.patch('/engine/pj/devSave', {pjCode : this.pjCode})
             .then((result)=>{
                 if(result.data.msg == "ok") {
-                    alert("저장되었습니다.");
+                    this.$store.commit('gModalOn', {msg : "저장되었습니다.", size : "small"});
                     this.retouchDate = result.data.date;
                 } else {
-                    alert("ERR : 저장실패");
+                    this.$store.commit('gModalOn', {msg : "ERR : 프로젝트 저장 실패", size : "normal"});
                 }
             })
         }

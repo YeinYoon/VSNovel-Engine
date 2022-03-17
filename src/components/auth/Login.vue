@@ -29,11 +29,10 @@ export default {
             axios.post('/engine/auth/login', loginData)
             .then((result)=>{
                 if(result.data=='ok') {
-                    alert("로그인되었습니다.");
+                    this.$store.commit('gModalOn', {msg : "로그인되었습니다.", size : "small"});
                     this.$router.push('/');
                 } else {
-                    console.log(result);
-                    alert(result.data);
+                    this.$store.commit('gModalOn', {msg : result.data, size : "normal"});
                 }
             })
             .catch((err)=>{

@@ -3,12 +3,20 @@ import { createStore } from 'vuex';
 const store = createStore({
     state() {
         return {
+            //유저 로그인
             userNickname : null,
-            LoadingStatus: false
+
+            //로딩
+            LoadingStatus: false,
+
+            //전역(Global) 모달
+            gModalState : false,
+            gModalMsg : "",
+            gModalSize : ""
         }
     },
     mutations : {
-        //유저 로그인
+        //유저 로그인(닉네임)
         userLogin(state, name) {
             state.userNickname = name;
         },
@@ -19,6 +27,16 @@ const store = createStore({
         },
         endSpinner(state){
             state.LoadingStatus = false;
+        },
+
+        //전역 모달
+        gModalOn(state, info){
+            state.gModalSize = info.size;
+            state.gModalMsg = info.msg;
+            state.gModalState = true;
+        },
+        gModalOff(state){
+            state.gModalState = false;
         }
     }
 })

@@ -1,5 +1,6 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
+<GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
 
   <div id="bar">
     <router-link to="/" id="main">메인으로</router-link>
@@ -18,10 +19,12 @@
 <script>
 import axios from './axios'
 import Spinner from './components/Spinner.vue'
+import GlobalModal from './components/modal/GlobalModal.vue'
 export default {
   name: 'App',
   components: {
-    Spinner
+    Spinner,
+    GlobalModal
   },
   methods : {
     logout(){
