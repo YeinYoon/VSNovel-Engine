@@ -48,7 +48,7 @@ export default {
             axios.post('/engine/pj/createNewPj', newProject)
             .then((result)=>{
                 if(result.data=="ok") {
-                    alert("새로운 프로젝트가 생성되었습니다.");
+                    this.$store.commit('gModalOn', {msg : "새로운 프로젝트가 생성됐습니다.", size : "normal"});
                     this.$router.push('/');
                 } else {
                     console.log(result);

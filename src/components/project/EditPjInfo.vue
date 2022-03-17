@@ -36,7 +36,7 @@ export default {
             axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
             .then((result)=>{
                 if(result.data == "err") {
-                    alert("프로젝트 정보를 불러오는데 실패했습니다.");
+                    this.$store.commit('gModalOn', {msg : "프로젝트 정보 불러오기를 실패했습니다.", size : "normal"});
                 } else {
                     this.status = result.data.PROJ_STATUS;
                     this.title = result.data.PROJ_TITLE;
@@ -59,10 +59,10 @@ export default {
             axios.patch('/engine/pj/editPjInfo', editData)
             .then((result)=>{
                 if(result.data=="ok") {
-                    alert("수정되었습니다.")
+                    this.$store.commit('gModalOn', {msg : "수정되었습니다.", size : "small"});
                     this.$router.push(`/devPage/${this.pjCode}`);
                 } else {
-                    alert("ERR : 프로젝트 수정 실패");
+                    this.$store.commit('gModalOn', {msg : "ERR : 프로젝트 수정 실패.", size : "small"});
                 }
             })
             .catch((err)=>{
@@ -75,10 +75,10 @@ export default {
                 axios.post('/engine/pj/deletePj', {pjCode : this.pjCode})
                 .then((result)=>{
                     if(result.data == "ok") {
-                        alert("프로젝트가 삭제되었습니다.");
+                        this.$store.commit('gModalOn', {msg : "프로젝트가 삭제되었습니다.", size : "normal"});
                         this.$router.push('/');
                     } else {
-                        alert("ERR : 프로젝트 삭제를 실패했습니다.");
+                        this.$store.commit('gModalOn', {msg : "ERR : 삭제를 실패했습니다.", size : "normal"});
                     }
                 })
                 .catch((err)=>{

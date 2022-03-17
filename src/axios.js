@@ -10,7 +10,7 @@ axiosInstance.interceptors.request.use(
         return config;
     },
     error => {
-        alert('데이터 요청 실패');
+        this.$store.commit('gModalOn', {msg : "ERR : 데이터 요청 실패.", size : "small"});
         return Promise.reject(error);
     }
 );
@@ -21,7 +21,7 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     error => {
-        alert('데이터 응답 실패');
+        this.$store.commit('gModalOn', {msg : "ERR : 데이터 응답 실패.", size : "small"});
         return Promise.reject(error);
     }
 )

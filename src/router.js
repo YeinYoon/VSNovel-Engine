@@ -4,6 +4,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Index from './components/Index.vue';
 // 유저(auth)
 import Login from './components/auth/Login.vue';
+
 // 프로젝트
 import createNewPj from './components/project/CreateNewPj.vue';
 import DevPage from './components/project/DevPage.vue';
