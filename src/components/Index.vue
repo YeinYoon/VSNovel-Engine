@@ -33,12 +33,13 @@
           </table>
         </div>
         <router-link to="/CreateNewPj">새 프로젝트 생성하기</router-link>
-        
+        <br><router-link to="/fileTest">파일테스트</router-link>
       </div>
 
       <div v-else>
         프로젝트 목록이 없습니다. 새로운 프로젝트를 생성해주세요.<br>
         <router-link to="/CreateNewPj">새 프로젝트 생성하기</router-link>
+        <br><router-link to="/fileTest">파일테스트</router-link>
       </div>
 
     </div>

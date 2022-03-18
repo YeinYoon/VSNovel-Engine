@@ -10,9 +10,6 @@ import createNewPj from './components/project/CreateNewPj.vue';
 import DevPage from './components/project/DevPage.vue';
 import EditPjInfo from './components/project/EditPjInfo.vue';
 
-// 드래그앤드롭 테스트
-//import FileTest from './components/FileTest.vue';
-
 const routes = [
   {
     path:"/",
