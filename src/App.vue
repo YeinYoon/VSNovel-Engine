@@ -2,7 +2,7 @@
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
 
-  <div id="bar">
+  <!-- <div id="bar">
     <router-link to="/" id="main">메인으로</router-link>
     <h5 class="text-center">테스트 엔진 메인바</h5>
     <div v-if="$store.state.userNickname != null" class="userName">
@@ -10,8 +10,8 @@
     <button @click="logout()">로그아웃</button>
     </div>
     <div v-else class="userName">로그인이 필요합니다</div>
-  </div>
-
+  </div> -->
+  <MainBar v-bind:class="{'MainBar':true}"></MainBar>
   <router-view></router-view>
 
 </template>
@@ -20,11 +20,13 @@
 import axios from './axios'
 import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
+import MainBar from './components/Menu/MainBar.vue'
 export default {
   name: 'App',
   components: {
     Spinner,
-    GlobalModal
+    GlobalModal,
+    MainBar,
   },
   methods : {
     logout(){
@@ -54,6 +56,9 @@ body{
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
   font-weight: 500;
 }
+::-webkit-scrollbar {
+    display: none;
+}
 #bar {
   background-color: blanchedalmond;
 }
@@ -64,5 +69,18 @@ body{
 
 .userName {
   text-align: right;
+}
+
+.MainBar {
+  width: 120px;
+  position:fixed;
+  height: 100vh;
+  left: 0px;
+  overflow: auto;
+}
+
+.RouterView {
+  position: fixed;
+  left: 120px;
 }
 </style>

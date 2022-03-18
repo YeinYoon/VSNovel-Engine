@@ -1,101 +1,185 @@
 <template>
-    <div id="page">
-      VSNovel 엔진 테스트 페이지
-      <hr>
-
-      <div v-if="$store.state.userNickname == null">
-        <router-link to="/signin">로그인</router-link>
-      </div>
-
-      <div v-else-if="$store.state.LoadingStatus">
-        프로젝트 목록을 불러오는 중입니다.
-      </div>
-
-      <div v-else-if="pjList.length != 0">
-        <div id="pjTb">
-          <table border="2px">
-            <thead>
-              <th>프로젝트 코드</th>
-              <th>유형</th>
-              <th>제목</th>
-              <th>상태</th>
-              <th>마지막 수정일자</th>
-            </thead>
-            <tbody>
-              <tr v-for="pj in pjList" :key="pj.PROJ_CODE">
-                <td>{{pj.PROJ_CODE}}</td>
-                <td>{{pj.PROJ_TYPE}}</td>
-                <td @click="goToDevPage(pj.PROJ_CODE)">{{pj.PROJ_TITLE}}</td>
-                <td>{{pj.PROJ_STATUS}}</td>
-                <td>{{pj.PROJ_RETOUCHDATE}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <router-link to="/CreateNewPj">새 프로젝트 생성하기</router-link>
-        <br><router-link to="/fileTest">파일테스트</router-link>
-      </div>
-
-      <div v-else>
-        프로젝트 목록이 없습니다. 새로운 프로젝트를 생성해주세요.<br>
-        <router-link to="/CreateNewPj">새 프로젝트 생성하기</router-link>
-        <br><router-link to="/fileTest">파일테스트</router-link>
-      </div>
-
+<div class="RouterView">
+  <div v-bind:class="{'enginebackground':true}">
+    <div class="header"> <!--타이틀과 로고-->
+      <img class="header_icon" src="..\assets\icons/vsn_engine.png"><span class="header_title">VSN Engine</span>
     </div>
+    <div class="section"> <!--뉴프로젝트와 로드프로젝트-->
+      <div class="newpj_part">
+        <div class="newpj_icon">
+          <img class="newpj_icon_plus" src="..\assets\icons/white/plus.png">
+        </div>
+        <div>
+          <span class="newpj_label">New Project</span>
+        </div>
+        <div class="newpj_create_frame">
+          <div><span>새로운 프로젝트 생성하기</span></div>
+          <!-- <div class="newpj_create_form"></div> -->
+          <!-- <div class="newpj_input_tag"><input type="textarea"></div>
+          <div class="newpj_input_savebutton"><span>생성</span></div> -->
+        </div>
+      </div>
+      <div class="loadpj_part">
+                <div class="loadpj_icon">
+          <img class="loadpj_icon_plus" src="..\assets\icons/white/magnifier.png">
+        </div>
+        <div>
+          <span class="loadpj_label">Load Project</span>
+        </div>
+        <div class="loadpj_list_box">
+          <div class="loadpj_list_th"></div>
+          <div class="loadpj_list_tr"></div>
+          <div class="loadpj_list_tr"></div>
+          <div class="loadpj_list_tr"></div>
+          <div class="loadpj_list_tr"></div>
+          <div class="loadpj_list_tr"></div>
+          <div class="loadpj_list_tr"></div>
+          <div class="loadpj_list_tr"></div>
+          <div class="loadpj_list_tr"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </template>
-
-<script>
-import axios from '../axios';
-export default {
-  name : "Index",
-  created() {
-    axios.get('/engine/auth/loginCheck')
-    .then(async (result)=>{
-      if(result.data!="") {
-        this.$store.commit('userLogin', result.data.USER_NICKNAME);
-        await this.getPjList();
-      }
-    })
-    .catch((err)=>{
-      console.error(err);
-    })
-  },
-  data() {
-    return {
-      pjList : [],
-    }
-  },
-  methods : {
-    goToDevPage(pjCode) {
-      this.$router.push(`/devPage/${pjCode}`);
-    },
-    
-    getPjList() {
-      axios.get('/engine/pj/getList')
-        .then((result)=>{
-          if(result.data != "empty") {
-            this.pjList = result.data;
-          }
-        })
-        .catch((err)=>{
-          console.error(err);
-      })
-    }
-  },
-  components : {
-  }
-}
-</script>
-
 <style>
-#page {
-  font-family: "나눔스퀘어";
+.enginebackground {
+  position: absolute;
+  background:#353535;
+  width: calc(100vw - 120px);
+  height: 100vh;
+  overflow:auto;
+  color: white;
+}
+.header{
+  position: fixed;
+  left: 20%;
+  top: 50px;
+  display: table;
+}
+.header_icon{
+  width: 60px;
+  height: 60px;
+  margin-right: 15px;
+  display: table-cell;
+  vertical-align: middle;
+}
+.header_title{
+  font-size: 2.2em;
+  display: table-cell;
+  vertical-align: middle;
+}
+.section{
+  position: fixed;
+  top: 160px;
+  left: 20%;
+  width: calc(100vw - 20%);
+  height: calc(100vh - 110px);
+  /* background: white; */
+}
+/*새 프로젝트*/
+.newpj_part{
+  position: relative;
+  height: 150px;
+}
+.newpj_icon{
+  width: 35px;
+  height: 35px;
+  background: #2872f9;
+  border-radius: 11px;
+  position: fixed;
+}
+.newpj_icon_plus{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 8px;
+  top: 7.5px; 
+}
+.newpj_label{
+  position: absolute;
+  height: 25px;
+  top:-3px;
+  left: 50px;
+  font-size: 1.8em;
+}
+.newpj_create_frame{
+  position: relative;
+  top: 55px;
+  left: 45px;
+  width: calc(100% - 20%);
+  min-height: 60px;
+  height: auto;
+  border-radius: 20px;
+  background: #2a2a2a;
   text-align: center;
-  margin-top: 60px;
+  padding-top: 18px;
+}
+.newpj_create_form{
+  margin-top: 30px;
 }
 
-#pjTb {
-  text-align: center;
+
+/*로드 프로젝트*/
+.loadpj_part{
+  position: relative;
+  height: 100%;
+}
+.loadpj_icon{
+  width: 35px;
+  height: 35px;
+  background: #2872f9;
+  border-radius: 11px;
+  position: absolute;
+  top: 10px;
+}
+.loadpj_icon_plus{
+  position: relative;
+  width: 24px;
+  height: 24px;
+  left: 6px;
+  top: 4.5px; 
+}
+.loadpj_label{
+  position: relative;
+  height: 25px;
+  top:  7px;
+  left: 50px;
+  font-size: 1.8em;
+}
+.loadpj_list_box{
+  position: relative;
+  top: 20px;
+  left: 45px;
+  width: calc(100% - 20%);
+  height: calc(100% - 280px);
+  border-radius: 20px;
+  background: #2a2a2a;
+  overflow: auto;
+}
+.loadpj_list_th{
+  background: #727272;
+  margin: 20px 15px 15px 15px;
+  width: calc(100% - 30px);
+  height: 40px;
+  border-radius: 20px;
+}
+.loadpj_list_tr{
+  background: #818181;
+  margin: 15px 15px 15px 15px;
+  width: calc(100% - 30px);
+  height: 60px;
+  border-radius: 20px;
 }
 </style>
+<script>
+export default {
+  name: 'enginemain',
+
+  components: {
+  },
+}
+  
+</script>
+
