@@ -1,6 +1,10 @@
 <template>
 <div class="RouterView">
   <div v-bind:class="{'enginebackground':true}">
+
+    <router-link to="/signin" v-if="$store.state.userNickname == null">임시 로그인</router-link>
+    <button v-else @click="logout()">로그아웃</button>
+
     <div class="header"> <!--타이틀과 로고-->
       <img class="header_icon" src="..\assets\icons/vsn_engine.png"><span class="header_title">VSN Engine</span>
     </div>
@@ -13,7 +17,7 @@
           <span class="newpj_label">New Project</span>
         </div>
         <div class="newpj_create_frame">
-          <div><span>새로운 프로젝트 생성하기</span></div>
+          <div @click="this.$router.push('/createNewPj')"><span>새로운 프로젝트 생성하기</span></div>
           <!-- <div class="newpj_create_form"></div> -->
           <!-- <div class="newpj_input_tag"><input type="textarea"></div>
           <div class="newpj_input_savebutton"><span>생성</span></div> -->
@@ -27,15 +31,18 @@
           <span class="loadpj_label">Load Project</span>
         </div>
         <div class="loadpj_list_box">
-          <div class="loadpj_list_th"></div>
-          <div class="loadpj_list_tr"></div>
-          <div class="loadpj_list_tr"></div>
-          <div class="loadpj_list_tr"></div>
-          <div class="loadpj_list_tr"></div>
-          <div class="loadpj_list_tr"></div>
-          <div class="loadpj_list_tr"></div>
-          <div class="loadpj_list_tr"></div>
-          <div class="loadpj_list_tr"></div>
+          <div class="loadpj_list_th">최근 프로젝트</div>
+
+          <div class="loadpj_list_tr"
+          v-for="pj in pjList" :key="pj.PROJ_CODE"
+          @click="goToDevPage(pj.PROJ_CODE)">
+            <span>{{pj.PROJ_CODE}}</span><br>
+            <span>{{pj.PROJ_TYPE}}</span>&nbsp
+            <span>{{pj.PROJ_TITLE}}</span>&nbsp
+            <span>{{pj.PROJ_STATUS}}</span>&nbsp
+            <span>{{pj.PROJ_RETOUCHDATE}}</span>
+          </div>
+
         </div>
       </div>
     </div>
@@ -174,11 +181,62 @@
 }
 </style>
 <script>
+import axios from '../axios'
 export default {
-  name: 'enginemain',
-
-  components: {
+  name: 'Index',
+  created() {
+    axios.get('/engine/auth/loginCheck')
+    .then(async (result)=>{
+      if(result.data!="") {
+        console.log(result.data)
+        this.$store.commit('userLogin', result.data.USER_NICKNAME);
+        await this.getPjList();
+      }
+    })
+    .catch((err)=>{
+      console.error(err);
+    })
   },
+  data() {
+    return {
+      pjList : []
+    }
+  },
+  methods : {
+
+    logout(){
+      axios.get('/engine/auth/logout')
+      .then((result)=>{
+        if(result.data=='ok') {
+          this.$store.commit('userLogin', null);
+          this.$router.push('/');
+        } else {
+          console.log(result);
+          alert(result.data);
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      })
+    },
+
+    goToDevPage(pjCode) {
+      this.$router.push(`/devPage/${pjCode}`);
+    },
+    
+    getPjList() {
+      axios.get('/engine/pj/getList')
+        .then((result)=>{
+          if(result.data != "empty") {
+            this.pjList = result.data;
+          }
+        })
+        .catch((err)=>{
+          console.error(err);
+      })
+    }
+
+  }
 }
   
 </script>

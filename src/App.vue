@@ -11,6 +11,7 @@
     </div>
     <div v-else class="userName">로그인이 필요합니다</div>
   </div> -->
+  
   <MainBar v-bind:class="{'MainBar':true}"></MainBar>
   <router-view></router-view>
 
@@ -20,7 +21,7 @@
 import axios from './axios'
 import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
-import MainBar from './components/Menu/MainBar.vue'
+import MainBar from './components/bar/MainBar.vue'
 export default {
   name: 'App',
   components: {

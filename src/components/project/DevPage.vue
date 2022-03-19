@@ -1,4 +1,6 @@
 <template>
+<div class="RouterView">
+
     <div>
         Project [ {{title}} ]
         마지막 저장 : {{retouchDate}}
@@ -8,7 +10,7 @@
         <button @click="save()">저장</button>
     </div>
 
-    <div> <!--프로젝트 정보 수정-->
+    <div class="editRouter"> <!--프로젝트 정보 수정-->
         <router-view></router-view>
     </div>
 
@@ -25,7 +27,8 @@
         :VpjCode="pjCode"
         ></VDevBoard>
     </div>
-
+    
+</div>
 </template>
 
 <script>
@@ -96,5 +99,10 @@ export default {
 </script>
 
 <style>
-
+.editRouter {
+    position: fixed;
+    width: 300px;
+    height: 600px;
+    z-index: 1;
+}
 </style>

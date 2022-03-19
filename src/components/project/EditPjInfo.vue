@@ -1,4 +1,6 @@
 <template>
+<div class="RouterView">
+
     프로젝트 상태변경
     <select v-model="status">
         <option value="D">개발중</option>
@@ -13,6 +15,8 @@
 
     <button @click="saveEdit()">수정하기</button> <br>
     <button @click="deletePj()">프로젝트 삭제</button>
+
+</div>
 </template>
 
 <script>

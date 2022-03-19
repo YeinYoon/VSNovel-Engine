@@ -25,7 +25,7 @@
         <img class="menubox_icon_notice" src="../../assets/icons/white/megaphone.png">
       </div>
       <br>
-      <div v-bind:class="{'menubox':true}">
+      <div v-bind:class="{'menubox_active':true}" @click="this.$router.push('/')">
         <img class="menubox_icon_mainscreen" src="../../assets/icons/white_logo.png">
       </div>
     </div>
@@ -34,7 +34,7 @@
 
 <script>
   export default {
-    name: 'vsnmenu',
+    name: 'MainBar',
     data() {
       return{
       }
@@ -67,11 +67,17 @@
   border-radius: 20px;
 }
 .menubox:hover{
-  background: #8b8b8b;
+  background: #5a5a5a;
 }
-.menubox:active{
+.menubox_active{
+  display:inline-table;
+  margin-top: 10px;
+  width: 75px;
+  height: 75px;
+  border-radius: 20px;
   background: #2872f9;
 }
+
 .menubox_icon_mypage {
   position: relative;
   top: 2px;

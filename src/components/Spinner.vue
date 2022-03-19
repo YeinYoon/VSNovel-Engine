@@ -20,6 +20,7 @@ export default {
 </script>
 <style>
 .lds-facebook {
+    z-index: 1;
     display: inline-block;
     position: absolute;
     width: 64px;

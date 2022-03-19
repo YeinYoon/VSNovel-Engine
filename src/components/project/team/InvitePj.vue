@@ -1,4 +1,6 @@
 <template>
+<div class="RouterView">
+
   <div>
       <select v-model="searchType">
           <option value="I" selected>아이디</option>
@@ -19,6 +21,8 @@
           </tbody>
       </table>
   </div>
+  
+</div>
 </template>
 
 <script>

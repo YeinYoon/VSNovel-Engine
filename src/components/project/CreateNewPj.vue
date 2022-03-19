@@ -1,4 +1,6 @@
 <template>
+<div class="RouterView">
+
     <div v-if="type == null">
         소설형식 선택
         <div @click="selectType('W')">웹소설</div>
@@ -19,7 +21,8 @@
 
         <button @click="createPj()">프로젝트 생성</button>
     </div>
-
+    
+</div>
 </template>
 
 <script>

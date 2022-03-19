@@ -1,7 +1,11 @@
 <template>
+<div class="RouterView">
+
   <div>
-      {{pjType}}
+    {{pjType}}
   </div>
+
+</div>
 </template>
 
 <script>

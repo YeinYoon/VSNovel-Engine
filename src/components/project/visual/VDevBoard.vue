@@ -1,4 +1,6 @@
 <template>
+<div class="RouterView">
+
     <div id="devBoard">
         <div class="input-img">
             
@@ -21,6 +23,8 @@
         placeholder="텍스트를 입력해보세요.">
         </div>
   </div>
+  
+</div>
 </template>
 
 <script>

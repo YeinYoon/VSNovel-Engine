@@ -9,6 +9,10 @@ const store = createStore({
             //로딩
             LoadingStatus: false,
 
+            // 메뉴 선택
+            selectMenu : 7,
+            menuStyle : "_active",
+
             //전역(Global) 모달
             gModalState : false,
             gModalMsg : "",
@@ -27,6 +31,11 @@ const store = createStore({
         },
         endSpinner(state){
             state.LoadingStatus = false;
+        },
+
+        //메뉴 선택
+        cngMenu(state, val){
+            state.selectMenu = val;
         },
 
         //전역 모달
