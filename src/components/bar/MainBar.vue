@@ -2,31 +2,31 @@
   <div v-bind:class="{'mainmenu':true}">
     <div v-bind:class="{'menus':true}">
       <div v-bind:class="{'menubox':true}">
-        <img class="menubox_icon_mypage" src="../../assets/icons/white_logo.png">
+        <img class="menubox_icon_resource" src="../../assets/icons/white/folder.png">
       </div>
       <br>
       <div v-bind:class="{'menubox':true}">
-        <img class="menubox_icon_library" src="../../assets/icons/white/library.png">
+        <img class="menubox_icon_text" src="../../assets/icons/white/comment_two.png">
       </div>
       <br>
       <div v-bind:class="{'menubox':true}">
-        <img class="menubox_icon_store" src="../../assets/icons/white/shopping-cart.png">
+        <img class="menubox_icon_event" src="../../assets/icons/white/clapperboard.png">
       </div>
       <br>
       <div v-bind:class="{'menubox':true }">
-        <img class="menubox_icon_engine" src="../../assets/icons/white/engineering.png">
+        <img class="menubox_icon_scene" src="../../assets/icons/white/background_two.png">
       </div>
       <br>
       <div v-bind:class="{'menubox':true}">
-        <img class="menubox_icon_community" src="../../assets/icons/white/bubble_chat.png">
+        <img class="menubox_icon_cooperation" src="../../assets/icons/white/handshake.png">
       </div>
       <br>
       <div v-bind:class="{'menubox':true}">
-        <img class="menubox_icon_notice" src="../../assets/icons/white/megaphone.png">
+        <img class="menubox_icon_setting" src="../../assets/icons/white/gear.png">
       </div>
       <br>
       <div v-bind:class="{'menubox_active':true}" @click="this.$router.push('/')">
-        <img class="menubox_icon_mainscreen" src="../../assets/icons/white_logo.png">
+        <img class="menubox_icon_mainscreen" src="../../assets/icons/white/home.png">
       </div>
     </div>
   </div>
@@ -78,53 +78,53 @@
   background: #2872f9;
 }
 
-.menubox_icon_mypage {
+.menubox_icon_resource {
   position: relative;
-  top: 2px;
-  left: 1px;
-  width: 75px;
-  height: 75px;
+  top: 12px;
+  left: 4px;
+  width: 50px;
+  height: 50px;
 }
-.menubox_icon_library {
+.menubox_icon_text {
+  position: relative;
+  top: 13px;
+  left: 1px;
+  width: 50px;
+  height: 50px;
+}
+.menubox_icon_event {
   position: relative;
   top: 12px;
   left: 1px;
   width: 50px;
   height: 50px;
 }
-.menubox_icon_store {
-  position: relative;
-  top: 16px;
-  left: -1px;
-  width: 45px;
-  height: 45px;
-}
-.menubox_icon_engine {
-  position: relative;
-  top: 12px;
-  left: 1.45px;
-  width: 50px;
-  height: 50px;
-}
-.menubox_icon_community {
+.menubox_icon_scene {
   position: relative;
   top: 15px;
   left: 1px;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
 }
-.menubox_icon_notice {
+.menubox_icon_cooperation {
   position: relative;
-  top: 11px;
-  left: 1.5px;
+  top: 10px;
+  left: 0.5px;
+  width: 55px;
+  height: 55px;
+}
+.menubox_icon_setting {
+  position: relative;
+  top: 13px;
+  left: 1px;
   width: 50px;
   height: 50px;
 }
 .menubox_icon_mainscreen {
   position: relative;
-  top: 3px;
+  top: 12px;
   left: 1px;
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
 }
 </style>
