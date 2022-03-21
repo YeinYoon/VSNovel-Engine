@@ -7,10 +7,11 @@
         상태 : {{status}}
 
         <button @click="goToEditPjInfo(pjCode)">프로젝트 정보수정</button>
+        <button @click="goToInvitePj(pjCode)">유저 초대</button>
         <button @click="save()">저장</button>
     </div>
 
-    <div class="editRouter"> <!--프로젝트 정보 수정-->
+    <div class="editRouter"> <!--프로젝트 정보 수정, 팀 초대-->
         <router-view></router-view>
     </div>
 
@@ -75,8 +76,11 @@ export default {
         },
 
         goToEditPjInfo(pjCode) {
-            this.openPjEdit = true;
             this.$router.push(`/devPage/${pjCode}/editInfo`);
+        },
+
+        goToInvitePj(pjCode) {
+            this.$router.push(`/devPage/${pjCode}/invitePj`);
         },
 
         save() {
