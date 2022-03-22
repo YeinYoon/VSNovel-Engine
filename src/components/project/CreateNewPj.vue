@@ -18,7 +18,7 @@
         rows="10"
         placeholder="시놉시스를 작성해주세요(추후 수정가능)"
         v-model="synopsis"></textarea> <br>
-
+ 
         <button @click="createPj()">프로젝트 생성</button>
     </div>
     
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../../axios'
 export default {
     name:"CreateNewPj",
     data() {
