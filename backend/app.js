@@ -39,12 +39,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+//index.html 라우터
+var indexRouter = require('./routes/index');
 
 //API 라우터
 var authRouter = require('./routes/auth');
 var projectRouter = require('./routes/project');
 var userRouter = require('./routes/user');
 
+
+app.use('/', indexRouter);
 app.use('/engine/auth', authRouter);
 app.use('/engine/pj', projectRouter);
 app.use('/engine/user', userRouter);
