@@ -25,7 +25,7 @@ module.exports = {
     devServer: { 
       proxy: { 
         '/engine': { 
-          target: 'http://localhost:3001/engine',
+          target: 'http://13.125.237.135:3001/engine',
           changeOrigin: true, 
           pathRewrite: { 
             '^/engine': ''
