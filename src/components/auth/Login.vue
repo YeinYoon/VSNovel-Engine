@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="RouterView">
   <div v-bind:class="{'contentbackground':true}"><!--컴포넌트 전체영역-->
     <img class="background_img" src="../../assets/background.png" alt=""><!--백그라운드 이미지-->
     <div class="sign_box"><!--전체 로그인 화면-->

@@ -94,13 +94,13 @@ router.patch('/devSave', async (req,res)=>{
     }
 })
 
-//프로젝트 정보수정 (현재 시놉시스가 CLOB 데이터인 관계로 제외하고 수정)
+//프로젝트 정보수정
 router.patch('/editPjInfo', async (req,res)=>{
     console.log("다음 프로젝트 정보를 수정함 : " + req.body.pjCode);
     var newDate = await timestamp.getTimestamp();
 
     var result = await db.execute(`UPDATE tbl_project SET
-    proj_status = '${req.body.status}', proj_title = '${req.body.title}', proj_retouchdate = '${newDate}'
+    proj_status = '${req.body.status}', proj_title = '${req.body.title}', proj_synopsis = '${req.body.synopsis}', proj_retouchdate = '${newDate}'
     WHERE proj_code = ${req.body.pjCode}`);
     if(result == "err") {
         console.log("DB쿼리 실패");

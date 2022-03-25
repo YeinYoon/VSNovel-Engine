@@ -32,7 +32,7 @@ export default {
             pjCode : "",
             status : "",
             title : "",
-            //synopsis : ""
+            synopsis : ""
         }
     },
     methods : {
@@ -44,7 +44,7 @@ export default {
                 } else {
                     this.status = result.data.PROJ_STATUS;
                     this.title = result.data.PROJ_TITLE;
-                    //this.synopsis = result.data.PROJ_SYNOPSIS;
+                    this.synopsis = result.data.PROJ_SYNOPSIS;
                 }
             })
             .catch((err)=>{
@@ -57,7 +57,7 @@ export default {
                 pjCode : this.pjCode,
                 status : this.status,
                 title : this.title,
-                //synopsis : this.synopsis
+                synopsis : this.synopsis
             }
 
             axios.patch('/engine/pj/editPjInfo', editData)
