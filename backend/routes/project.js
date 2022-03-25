@@ -18,8 +18,8 @@ router.post('/createNewPj', async (req, res)=>{
             var newDate = await timestamp.getTimestamp();
             console.log(newDate);
 
-            var insertNewPj = await db.execute(`INSERT INTO tbl_project(proj_type, proj_title, proj_synopsis, proj_entirestake, proj_retouchdate)
-            VALUES('${req.body.type}', '${req.body.title}', '${req.body.synopsis}', 0, '${newDate}')`);
+            var insertNewPj = await db.execute(`INSERT INTO tbl_project(proj_code, proj_type, proj_title, proj_synopsis, proj_entirestake, proj_retouchdate)
+            VALUES(tbl_project_seq.NEXTVAL,'${req.body.type}', '${req.body.title}', '${req.body.synopsis}', 0, '${newDate}')`);
             if(insertNewPj == "err") {
                 console.log("DB쿼리 실패");
             } else {

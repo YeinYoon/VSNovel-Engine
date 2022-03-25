@@ -3,16 +3,16 @@
         <div class="select_type_frame">
             <span class="title_type">제작 유형을 선택하세요.</span>
             <div class="type_box">
-                <div class="web_novel_button">
+                <div class="web_novel_button" @click="this.$emit('selectType', 'W')">
                     <div class="novel_tag">
-                        <img class="button_img_book" src="../assets/icons/white/book.png">
+                        <img class="button_img_book" src="../../../assets/icons/white/book.png">
                         <span class="korean_tag">웹 소설</span><br><span class="en_tag">Web Novel</span>
                     </div>
                 </div>
-                <div class="visual_novel_button">
+                <div class="visual_novel_button" @click="this.$emit('selectType', 'V')">
                     <div class="novel_tag">
-                        <img class="button_img_visual" src="../assets/icons/white/storytelling.png">
-                        <img class="button_img_play" src="../assets/icons/white/youtube.png">
+                        <img class="button_img_visual" src="../../../assets/icons/white/storytelling.png">
+                        <img class="button_img_play" src="../../../assets/icons/white/youtube.png">
                         <span class="korean_tag">비주얼 노벨</span><br><span class="en_tag">Visual Novel</span>
                     </div>
                 </div>
@@ -20,6 +20,13 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    name:"SelectType"
+}
+</script>
+
 <style>
 .contentbackground {
   position: absolute;

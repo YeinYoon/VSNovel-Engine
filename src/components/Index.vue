@@ -1,7 +1,7 @@
 <template>
 <div class="RouterView">
   <div v-bind:class="{'enginebackground':true}">
-
+  
     <router-link to="/signin" v-if="$store.state.userNickname == null">임시 로그인</router-link>
     <button v-else @click="logout()">로그아웃</button>
 

@@ -5,19 +5,58 @@
         <div class="create_pj_frame"> 
           <div class="title_input_frame">
             <span class="label_center">제목</span>
-            <input class="title_input" type="text">
+            <input class="title_input" type="text" v-model="title">
           </div>
           <div class="synopsis_input_frame">
             <span class="label_center">시놉시스</span>
-            <textarea class="synopsis_input"></textarea>
+            <textarea class="synopsis_input" v-model="synopsis"></textarea>
           </div>
           <div class="create_button_frame">
-            <div class="create_button"><span>생성</span></div>
+            <div class="create_button" @click="createPj()"><span>생성</span></div>
           </div> <!-- 논 애니메이션 여기까지 -->
         </div> <!--여기까지-->
       </div>
     </div>
 </template>
+
+<script>
+import axios from '../../../axios'
+export default {
+  name : "InputPj",
+  data() {
+    return {
+      title : "",
+      synopsis : ""
+    }
+  },
+  methods : {
+    createPj() {
+      var newProject = {
+        type : this.type,
+        title : this.title,
+        synopsis : this.synopsis
+      }
+
+      axios.post('/engine/pj/createNewPj', newProject)
+      .then((result)=>{
+        if(result.data=="ok") {
+          this.$store.commit('gModalOn', {msg : "새로운 프로젝트가 생성됐습니다.", size : "normal"});
+          this.$router.push('/');
+        } else {
+          console.log(result);
+          alert(result.data);
+        }
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+    }    
+  },
+  props : {
+    type : String
+  }
+}
+</script>
 
 <style>
 .contentbackground {
