@@ -11,10 +11,6 @@
         <button @click="save()">저장</button>
     </div>
 
-    <div class="editRouter"> <!--프로젝트 정보 수정, 팀 초대-->
-        <router-view></router-view>
-    </div>
-
     <div v-if="pjType == 'W'">
         <WDevBoard  
         :pjType="pjType"
@@ -22,18 +18,22 @@
         ></WDevBoard>
     </div>
 
-    <div v-if="pjType == 'V'">
+    <div v-else-if="pjType == 'V'">
         <VDevBoard
         :pjType="pjType"
         :VpjCode="pjCode"
         ></VDevBoard>
+    </div>
+
+    <div class="editRouter"> <!--프로젝트 정보 수정, 팀 초대-->
+        <router-view></router-view>
     </div>
     
 </div>
 </template>
 
 <script>
-import axios from '../../axios';
+import axios from '../../../axios';
 
 import WDevBoard from './web/WDevBoard.vue';
 import VDevBoard from './visual/VDevBoard.vue';

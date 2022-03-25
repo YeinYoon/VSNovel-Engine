@@ -3,6 +3,7 @@ var router = express.Router();
 
 var db = require('../database/db');
 
+//유저 검색
 router.post('/search', async (req, res)=>{
     var type;
     if(req.body.searchType == "I") {
