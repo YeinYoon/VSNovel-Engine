@@ -7,11 +7,8 @@
         상태 : {{status}}
 
         <button @click="goToEditPjInfo(pjCode)">프로젝트 정보수정</button>
+        <button @click="goToInvitePj(pjCode)">유저 초대</button>
         <button @click="save()">저장</button>
-    </div>
-
-    <div class="editRouter"> <!--프로젝트 정보 수정-->
-        <router-view></router-view>
     </div>
 
     <div v-if="pjType == 'W'">
@@ -21,18 +18,22 @@
         ></WDevBoard>
     </div>
 
-    <div v-if="pjType == 'V'">
+    <div v-else-if="pjType == 'V'">
         <VDevBoard
         :pjType="pjType"
         :VpjCode="pjCode"
         ></VDevBoard>
+    </div>
+
+    <div class="editRouter"> <!--프로젝트 정보 수정, 팀 초대-->
+        <router-view></router-view>
     </div>
     
 </div>
 </template>
 
 <script>
-import axios from '../../axios';
+import axios from '../../../axios';
 
 import WDevBoard from './web/WDevBoard.vue';
 import VDevBoard from './visual/VDevBoard.vue';
@@ -75,8 +76,11 @@ export default {
         },
 
         goToEditPjInfo(pjCode) {
-            this.openPjEdit = true;
             this.$router.push(`/devPage/${pjCode}/editInfo`);
+        },
+
+        goToInvitePj(pjCode) {
+            this.$router.push(`/devPage/${pjCode}/invitePj`);
         },
 
         save() {

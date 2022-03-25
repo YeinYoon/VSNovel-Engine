@@ -1,7 +1,7 @@
 <template>
 <div class="RouterView">
   <div v-bind:class="{'enginebackground':true}">
-
+  
     <router-link to="/signin" v-if="$store.state.userNickname == null">임시 로그인</router-link>
     <button v-else @click="logout()">로그아웃</button>
 
@@ -122,6 +122,10 @@
   background: #2a2a2a;
   text-align: center;
   padding-top: 18px;
+  cursor: pointer;
+}
+.newpj_create_frame:hover{
+  opacity: 0.8;
 }
 .newpj_create_form{
   margin-top: 30px;
@@ -178,6 +182,9 @@
   width: calc(100% - 30px);
   height: 60px;
   border-radius: 20px;
+}
+.loadpj_list_tr:hover{
+  opacity: 0.8;
 }
 </style>
 <script>

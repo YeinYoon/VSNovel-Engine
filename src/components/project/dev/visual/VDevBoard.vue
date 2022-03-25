@@ -1,7 +1,31 @@
 <template>
-<div class="RouterView">
+    <div v-if="selectPlot == null">
 
-    <div id="devBoard">
+        <div v-if="exPlot == false" class="createPlot">
+            새로운 플롯을 생성해주세요.
+            <input type="text" placeholder="플롯 제목" v-model="title">
+            <button @click="createPlot()">생성</button>
+        </div>
+
+        <div v-else>
+            플롯 선택
+            <table>
+                <thead>
+                    <th>코드</th>
+                    <th>제목</th>
+                </thead>
+                <tbody>
+                    <tr v-for="p in plotList" :key="p.PLOT_CODE">
+                        <td>{{p.PLOT_CODE}}</td>
+                        <td>{{p.PLOT_TITLE}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    <div id="devBoard" v-else>
         <div class="input-img">
             
             <img v-show="imageSrc" :src="imageSrc">
@@ -23,27 +47,60 @@
         placeholder="텍스트를 입력해보세요.">
         </div>
   </div>
-  
-</div>
 </template>
 
 <script>
+import axios from '../../../../axios'
 export default {
     name : "VDevBoard",
     created() {
         if(this.pjType == "V") {
-            // 데이터 불러오기의 시작점.
-            // 기존 프로젝트 데이터 가져오는 코드 작성할 것.
+            this.getPlotList();
         }
     },
     data() {
         return {
+            selectPlot : null,
+            exPlot : false,
+            title : "",
+            plotList : [],
+
             filename: "",
             imageSrc: "",
             pageText : ""
         }
     },
     methods : {
+
+        getPlotList() {
+            axios.post('/engine/pj/getPlotList', {pjCode : this.VpjCode})
+            .then((result)=>{
+                console.log(result);
+                if(result.data != "empty") {
+                    this.exPlot = true;
+                    this.plotList = result.data;
+                }
+            })
+            .catch((err)=>{
+                console.error(err);
+            })
+        },
+
+        createPlot() {
+            axios.post('/engine/pj/createPlot', {pjCode : this.VpjCode, title : this.title})
+            .then((result)=>{
+                if(result.data == "ok") {
+                    this.$store.commit('gModalOn', {msg : "새로운 플롯 생성.", size : "small"});
+                    this.exPlot = true;
+                    this.getPlotList();
+                }
+            })
+            .catch((err)=>{
+                console.error(err);
+            })
+        },
+
+
         onDrop (event) {
             this.inputImageFile(event.dataTransfer.files);
         },

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="RouterView">
   <div v-bind:class="{'contentbackground':true}"><!--컴포넌트 전체영역-->
     <img class="background_img" src="../../assets/background.png" alt=""><!--백그라운드 이미지-->
     <div class="sign_box"><!--전체 로그인 화면-->
@@ -105,7 +105,7 @@
 }
 .id_label{
   position:absolute;
-  top: 1px;
+  top: -5px;
   color: white;
   letter-spacing: 25px
 }
@@ -142,7 +142,7 @@
 }
 .pw_label{
   position: absolute;
-  top: 10px;
+  top: 5px;
   color: white;
   letter-spacing: 5px
 }
@@ -160,6 +160,7 @@
   border-radius: 20px;
   text-align: center;
   display: table;
+  cursor: pointer;
 }
 .kakao_label{
   display: table-cell;
@@ -177,6 +178,7 @@
   border-radius: 20px;
   text-align: center;
   display: table;
+  cursor: pointer;
 }
 .google_label{
   display: table-cell;
@@ -196,6 +198,7 @@
   text-align: center;
   display: table;
   font-size: 1.2em;
+  cursor: pointer;
 }
 .logins_deco_social{
   position: absolute;

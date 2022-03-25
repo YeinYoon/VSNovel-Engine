@@ -25,7 +25,8 @@ module.exports = {
     devServer: { 
       proxy: { 
         '/engine': { 
-          target: 'http://13.125.237.135:3001/engine',
+          // 로컬 개발용 서버 3001, 따로 backend 폴더에서 서버를 키는 식으로 개발 테스트 할것
+          target: 'http://localhost:3001/engine',
           changeOrigin: true, 
           pathRewrite: { 
             '^/engine': ''

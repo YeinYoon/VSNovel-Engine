@@ -65,6 +65,7 @@
   width: 75px;
   height: 75px;
   border-radius: 20px;
+  cursor: pointer;
 }
 .menubox:hover{
   background: #5a5a5a;

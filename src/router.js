@@ -6,9 +6,10 @@ import Index from './components/Index.vue';
 import Login from './components/auth/Login.vue';
 
 // 프로젝트
-import createNewPj from './components/project/CreateNewPj.vue';
-import DevPage from './components/project/DevPage.vue';
-import EditPjInfo from './components/project/EditPjInfo.vue';
+import createNewPj from './components/project/createPj/CreateNewPj.vue';
+import DevPage from './components/project/dev/DevPage.vue';
+import EditPjInfo from './components/project/dev/EditPjInfo.vue';
+import invitePj from './components/project/team/InvitePj.vue';
 
 const routes = [
   {
@@ -21,7 +22,13 @@ const routes = [
   },
   {
     path : "/createNewPj",
-    component : createNewPj
+    component : createNewPj,
+    children : [
+      {
+        path : "invitePj",
+        component : invitePj
+      }
+    ]
   },
   {
     path : "/devPage/:pjCode",
@@ -30,6 +37,10 @@ const routes = [
       {
         path : "editInfo",
         component : EditPjInfo
+      },
+      {
+        path : "invitePj",
+        component : invitePj
       }
     ]
   }

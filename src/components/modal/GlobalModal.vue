@@ -91,12 +91,14 @@
   top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 .modal_close_ok{
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   color: white;
+  cursor: pointer;
 }
 /* 애니메이션들,*/
   /*열리는 애니메이션 opening*/
