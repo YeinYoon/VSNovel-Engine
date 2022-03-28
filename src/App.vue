@@ -11,7 +11,8 @@
     </div>
     <div v-else class="userName">로그인이 필요합니다</div>
   </div> -->
-  
+
+  <TaskBar v-bind:class="{'TaskBar':true}"></TaskBar>
   <MainBar v-bind:class="{'MainBar':true}"></MainBar>
   <router-view></router-view>
 
@@ -22,12 +23,15 @@ import axios from './axios'
 import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
 import MainBar from './components/bar/MainBar.vue'
+import TaskBar from './components/bar/TaskBar.vue'
+
 export default {
   name: 'App',
   components: {
     Spinner,
     GlobalModal,
     MainBar,
+    TaskBar,
   },
   methods : {
     logout(){
@@ -78,10 +82,19 @@ body{
   height: 100vh;
   left: 0px;
   overflow: auto;
+  top: 0px;
 }
 
 .RouterView {
   position: fixed;
   left: 120px;
+  top: 30px;
+}
+
+.TaskBar {
+  position: relative;
+  width: 100vw;
+  height: 30px;
+
 }
 </style>

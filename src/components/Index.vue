@@ -8,6 +8,31 @@
     <div class="header"> <!--타이틀과 로고-->
       <img class="header_icon" src="..\assets\icons/vsn_engine.png"><span class="header_title">VSN Engine</span>
     </div>
+    <div class="invite_center">
+      <div class="invite_box">
+        <img class="invite_icon" src="../assets/icons/white/notification.png">
+      </div>
+      <div v-bind:class="{'invite_counter_on':true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
+        <span>9</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
+      </div>
+      <div v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
+        <!-- invite messeage를 포문 돌릴것 -->
+        <div class="invite_message">
+          <div>소설제목 프로젝트 초대</div>
+          <button class="invite_button">승인</button><button class="invite_button">거절</button>
+        </div>
+        <hr>
+        <div class="invite_message">
+          <div>소설제목 프로젝트 초대소설제목 프로젝트 초대소설제목 프로젝트 초대소설제목 프로젝트 초대</div>
+          <button class="invite_button">승인</button><button class="invite_button">거절</button>
+        </div>
+        <hr>
+        <div class="invite_message">
+          <div>소설제목 프로젝트 초대</div>
+          <button class="invite_button">승인</button><button class="invite_button">거절</button>
+        </div>
+      </div>
+    </div>
     <div class="section"> <!--뉴프로젝트와 로드프로젝트-->
       <div class="newpj_part">
         <div class="newpj_icon">
@@ -58,6 +83,92 @@
   height: 100vh;
   overflow:auto;
   color: white;
+}
+.invite_center{
+  position: fixed;
+  left: 80%;
+  top: 50px;
+  z-index: 1;
+}
+.invite_box{
+  position: relative;
+  width: 50px;
+  height: 50px;
+  background: #2872f9;
+  border-radius: 15px;
+  z-index: 12;
+}
+.invite_icon{
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+}
+.invite_counter_on{
+  position: absolute;
+  top: -10%;
+  left: 80%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ff4c4c;
+  z-index: 12 ;
+}
+.invite_counter_on span{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.95em;
+}
+.invite_counter_off{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ff4c4c;
+  visibility: hidden;
+}
+.invite_counter_off span{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+}
+.invite_modal_on{
+  position: absolute;
+  left: -320%;
+  top: 40px;
+  padding: 10px;
+  border-radius: 15px;
+  width: 220px;
+  height: 300px;
+  overflow-y: auto;
+  background: #424242;
+    z-index: 11;
+}
+.invite_modal_off{
+  position: absolute;
+  left: -260%;
+  top: 40px;
+  padding: 10px;
+  border-radius: 15px;
+  width: 170px;
+  height: 120px;
+  overflow: auto;
+  background: #424242;
+  z-index: 11;
+  visibility: hidden;
+}
+.invite_button {
+  border:none;
+  background: #2872f9;
+  color: white;
+  border-radius: 5px;
+  margin: 2px;
 }
 .header{
   position: fixed;
