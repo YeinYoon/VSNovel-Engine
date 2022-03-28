@@ -120,6 +120,7 @@
   border-radius: 25px;
   padding-left: 10px;
   color: white;
+  border: none;
 }
 .insert_pw{
   position:absolute;
@@ -139,6 +140,7 @@
   background: #5e5e5e;
   border-radius: 25px;
   color:white;
+  border: none;
 }
 .pw_label{
   position: absolute;
