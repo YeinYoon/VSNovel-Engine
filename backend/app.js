@@ -46,12 +46,14 @@ var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var projectRouter = require('./routes/project');
 var userRouter = require('./routes/user');
+var teamRouter = require('./routes/team');
 
 
 app.use('/', indexRouter);
 app.use('/engine/auth', authRouter);
 app.use('/engine/pj', projectRouter);
 app.use('/engine/user', userRouter);
+app.use('/engine/team', teamRouter);
 
 
 

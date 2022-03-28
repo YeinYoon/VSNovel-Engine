@@ -1,13 +1,6 @@
 <template>
     <div v-if="selectPlot == null">
-
-        <div v-if="exPlot == false" class="createPlot">
-            새로운 플롯을 생성해주세요.
-            <input type="text" placeholder="플롯 제목" v-model="title">
-            <button @click="createPlot()">생성</button>
-        </div>
-
-        <div v-else>
+        <div>
             플롯 선택
             <table>
                 <thead>
