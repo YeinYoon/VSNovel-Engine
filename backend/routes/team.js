@@ -4,7 +4,7 @@ var router = express.Router();
 var db = require('../database/db');
 var timestamp = require('../database/timestamp');
 
-
+// 유저 프로젝트 초대
 router.post('/inviteUser', async (req, res)=>{
     var alreadyInvite = await db.execute(`SELECT * FROM tbl_schedule
     WHERE user_id = '${req.body.userId}' AND proj_code = ${req.body.pjCode} AND sche_status = 'inviteReq'`);
@@ -34,5 +34,14 @@ router.post('/inviteUser', async (req, res)=>{
     }
 })
 
+// 알림 리스트
+router.get('/getNoticeList', async (req, res)=>{
+    var getList = await db.execute(`SELECT * FROM tbl_schedule WHERE user_id = '${req.user.USER_ID}'`);
+    if(getList == "err") {
+        res.send('err');
+    } else {
+        res.send(getList.rows);
+    }
+})
 
 module.exports = router;

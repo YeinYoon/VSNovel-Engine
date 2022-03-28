@@ -17,19 +17,12 @@
       </div>
       <div v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
         <!-- invite messeage를 포문 돌릴것 -->
-        <div class="invite_message">
-          <div>소설제목 프로젝트 초대</div>
-          <button class="invite_button">승인</button><button class="invite_button">거절</button>
-        </div>
-        <hr>
-        <div class="invite_message">
-          <div>소설제목 프로젝트 초대소설제목 프로젝트 초대소설제목 프로젝트 초대소설제목 프로젝트 초대</div>
-          <button class="invite_button">승인</button><button class="invite_button">거절</button>
-        </div>
-        <hr>
-        <div class="invite_message">
-          <div>소설제목 프로젝트 초대</div>
-          <button class="invite_button">승인</button><button class="invite_button">거절</button>
+        <div v-for="n in noticeList" :key="n.SCHE_CODE">
+          <div class="invite_message">
+            <div>{{n.SCHE_CONTENT}}</div>
+            <button class="invite_button">승인</button><button class="invite_button">거절</button>
+          </div>
+          <hr>
         </div>
       </div>
     </div>
@@ -145,7 +138,7 @@
   padding: 10px;
   border-radius: 15px;
   width: 220px;
-  height: 300px;
+  max-height: 300px;
   overflow-y: auto;
   background: #424242;
     z-index: 11;
@@ -309,15 +302,17 @@ export default {
         console.log(result.data)
         this.$store.commit('userLogin', result.data.USER_NICKNAME);
         await this.getPjList();
+        await this.getNoticeList();
       }
     })
     .catch((err)=>{
       console.error(err);
-    })
+    });
   },
   data() {
     return {
-      pjList : []
+      pjList : [],
+      noticeList : []
     }
   },
   methods : {
@@ -352,6 +347,20 @@ export default {
         .catch((err)=>{
           console.error(err);
       })
+    },
+
+    getNoticeList() {
+      axios.get('/engine/team/getNoticeList')
+      .then((result)=>{
+        if(result.data == "err") {
+          console.log("ERR : 알림 불러오기 실패")
+        } else {
+          this.noticeList = result.data;
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      });
     }
 
   }
