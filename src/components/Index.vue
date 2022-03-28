@@ -23,7 +23,7 @@
         </div>
         <hr>
         <div class="invite_message">
-          <div>소설제목 프로젝트 초대</div>
+          <div>소설제목 프로젝트 초대소설제목 프로젝트 초대소설제목 프로젝트 초대소설제목 프로젝트 초대</div>
           <button class="invite_button">승인</button><button class="invite_button">거절</button>
         </div>
         <hr>
@@ -88,6 +88,7 @@
   position: fixed;
   left: 80%;
   top: 50px;
+  z-index: 1;
 }
 .invite_box{
   position: relative;
@@ -139,13 +140,13 @@
 }
 .invite_modal_on{
   position: absolute;
-  left: -260%;
+  left: -320%;
   top: 40px;
   padding: 10px;
   border-radius: 15px;
-  width: 170px;
-  height: 110px;
-  overflow: auto;
+  width: 220px;
+  height: 300px;
+  overflow-y: auto;
   background: #424242;
     z-index: 11;
 }
