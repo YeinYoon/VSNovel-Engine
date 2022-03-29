@@ -11,7 +11,7 @@
     </div>
     <div v-else class="userName">로그인이 필요합니다</div>
   </div> -->
-
+  <SideBar v-bind:class="{'SideBar':true}"></SideBar>
   <TaskBar v-bind:class="{'TaskBar':true}"></TaskBar>
   <MainBar v-bind:class="{'MainBar':true}"></MainBar>
   <router-view></router-view>
@@ -24,6 +24,7 @@ import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
 import MainBar from './components/bar/MainBar.vue'
 import TaskBar from './components/bar/TaskBar.vue'
+import SideBar from './components/bar/SideBar.vue'
 
 export default {
   name: 'App',
@@ -32,6 +33,7 @@ export default {
     GlobalModal,
     MainBar,
     TaskBar,
+    SideBar,
   },
   methods : {
     logout(){
@@ -83,18 +85,53 @@ body{
   left: 0px;
   overflow: auto;
   top: 0px;
+  z-index: 3;
 }
 
 .RouterView {
   position: fixed;
-  left: 120px;
+  left: 140px;
   top: 30px;
+  width: calc(100vw - 140px);
+  height: 100vh;
+  /* 사이드바가 열림상태일때 routerRight 로 변경 닫혀있을때에는 routerLeft */
+  animation-name: routerLeft; 
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
 }
 
 .TaskBar {
   position: relative;
-  width: 100vw;
-  height: 30px;
+  z-index: -10;
+}
 
+.SideBar {
+  position:fixed;
+  z-index: 2;
+}
+
+
+@keyframes routerRight {
+  from {
+    left: 140px;
+    width: calc(100vw - 140px);
+  }
+
+  to {
+    left: 280px;
+    width: calc(100vw - 280px);
+  }
+}
+
+@keyframes routerLeft {
+  from {
+    left: 280px;
+    width: calc(100vw - 280px);
+  }
+
+  to {
+    left: 140px;
+    width: calc(100vw - 140px);
+  }
 }
 </style>
