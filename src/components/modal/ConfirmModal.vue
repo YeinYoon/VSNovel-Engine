@@ -1,27 +1,52 @@
 <template>
-<div>
+<div v-if="cModalState">
   <!-- 모달창이 나올떄 뒷 배경을 흐리게 만드는 녀석
   이걸 안쓰고 싶을땐 단순히 modal_opacity만을 주석처리하면 된다.-->
   <div class="modal_opacity">
   </div>
   <!-- 모달창의 크기를 결정하는 modal_frame,
   모달창의 크기 또한 파라미터로 받아서 나오게 할수도 있겠다. 쓰는사람 마음대로-->
-  <div v-bind:class="{'modal_frame_small':true}">
+  <div v-bind:class="{[`modal_frame_${this.$store.state.cModalSize}`]:true}">
     <!--모달 내 메세지 및 컨텐츠인 modal_inner, 여기에 단순히 메세지만을 표시할수도 
     작은 컴포넌트를 삽입할수도 있따.-->
     <div class="modal_inner">
-      <span>필수요소를 입력하지 않았습니다.</span> <!--메세지를 출력하는 예제-->
+      <span>{{this.$store.state.cModalMsg}}</span> <!--메세지를 출력하는 예제-->
     </div>
       <!--모달을 닫는 버튼과 버튼내 메세지(확인, 취소 등등)-->
-    <div class="modal_save_button">
-      <span class="modal_save_ok">버튼1</span>
+    <div class="modal_save_button" @click="modalCloseY()">
+      <span class="modal_save_ok">{{this.$store.state.cModalBtn1}}</span>
     </div>
-    <div class="modal_cancel_button">
-      <span class="modal_cancel_ok">버튼2</span>
+    <div class="modal_cancel_button" @click="modalCloseN()">
+      <span class="modal_cancel_ok">{{this.$store.state.cModalBtn2}}</span>
     </div>
   </div>  
 </div>
 </template>
+
+<script>
+export default {
+  name : "ConfirmModal",
+  methods : {
+    modalCloseY() {
+      this.$store.commit('setAnswer', true);
+      this.$store.commit('cModalOff');
+      console.log(this.$store.state.cModalAnswer);
+    },
+    modalCloseN() {
+      this.$store.commit('setAnswer', false);
+      this.$store.commit('cModalOff');
+      console.log(this.$store.state.cModalAnswer);
+    }
+  },
+  props: {
+    cModalState: {
+      type: Boolean,
+      required: true
+    }
+  }
+}
+</script>
+
 <style>
 .modal_opacity{
   background: black;
@@ -144,13 +169,4 @@
 }
 
 </style>
-<script>
-export default {
-  name: 'vsn_modal_universal',
-
-  components: {
-  },
-}
-  
-</script>
 

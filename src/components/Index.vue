@@ -141,7 +141,7 @@
   max-height: 300px;
   overflow-y: auto;
   background: #424242;
-    z-index: 11;
+  z-index: 11;
 }
 .invite_modal_off{
   position: absolute;

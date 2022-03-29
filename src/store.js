@@ -16,7 +16,15 @@ const store = createStore({
             //전역(Global) 모달
             gModalState : false,
             gModalMsg : "",
-            gModalSize : ""
+            gModalSize : "",
+
+            // 컨펌 모달
+            cModalState : false,
+            cModalMsg : "",
+            cModalSize : "",
+            cModalBtn1 : "",
+            cModalBtn2 : "",
+            cModalAnswer : null // 유저의 답변
         }
     },
     mutations : {
@@ -46,6 +54,26 @@ const store = createStore({
         },
         gModalOff(state){
             state.gModalState = false;
+        },
+
+        // 컨펌 모달 (예, 아니오)
+        cModalOn(state, info) {
+            state.cModalState = true;
+            state.cModalSize = info.size;
+            state.cModalMsg = info.msg;
+            state.cModalBtn1 = info.btn1;
+            state.cModalBtn2 = info.btn2;       
+        },
+        cModalOff(state){
+            state.cModalState = false;
+        },
+        setAnswer(state, val) {
+            state.cModalAnswer = val;
+        }
+    },
+    getters : {
+        getAnswer(state) { // cModal의 유저 답변
+            return state.cModalAnswer;
         }
     }
 })

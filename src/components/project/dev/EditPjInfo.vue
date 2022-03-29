@@ -75,7 +75,16 @@ export default {
         },
 
         deletePj() {
-            if(confirm(`프로젝트 [${this.title}]를 삭제하시겠습니까?`)) {
+
+            this.$store.commit('cModalOn', {
+                msg : `프로젝트 [${this.title}]를 삭제하시겠습니까?`,
+                size : "normal",
+                btn1 : "확인",
+                btn2 : "취소"
+            })
+
+            if(this.$store.state.cModalAnswer == true) {
+                console.log(this.$store.state.cModalAnswer);
                 axios.post('/engine/pj/deletePj', {pjCode : this.pjCode})
                 .then((result)=>{
                     if(result.data == "ok") {
