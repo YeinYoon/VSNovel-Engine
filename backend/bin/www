@@ -12,10 +12,8 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-// 배포용 서버 / 플랫폼 : 80, 엔진 : 2022
-//var port = normalizePort(process.env.PORT || '8081');
-// 로컬 개발용 서버 3001, 따로 backend 폴더에서 서버를 키는 식으로 개발 테스트 할것
-var port = normalizePort(process.env.PORT || '3001');
+// 배포용 서버 / 플랫폼 : 2020, 엔진 : 2022
+var port = normalizePort(process.env.PORT || '2022');
 app.set('port', port);
 
 /**

@@ -17,6 +17,8 @@ var connectHistory = require('connect-history-api-fallback');
 var app = express();
 passportConfig();
 
+app.use(connectHistory()); // Vue 라우터와 express 라우터 연동 (직접 주소 입력 접근 가능하도록)
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -58,7 +60,7 @@ app.use('/engine/user', userRouter);
 app.use('/engine/team', teamRouter);
 
 
-app.use(connectHistory());
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
