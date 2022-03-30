@@ -1,5 +1,5 @@
 module.exports = {
     user: 'vsnovel',
     password: 'vsnovel2022',
-    connectString : '13.125.237.135/XE'
+    connectString : '52.79.121.208/XE'
 }
