@@ -1,15 +1,13 @@
 <template>
-<div>
-  <quill-editor v-html="loadData"
+<button @click="save()">저장</button>
+<div class="Editor">
+  <quill-editor
+    v-html="loadData"
     v-model:value="state.content"
     :options="state.editorOption"
     :disabled="state.disabled"
     @change="onEditorChange($event)"
   />
-    <!-- @blur="onEditorBlur($event)"
-    @focus="onEditorFocus($event)"
-    @ready="onEditorReady($event)" -->
-    <button @click="save()">저장</button>
 </div>
 </template>
 
@@ -37,11 +35,13 @@ export default {
         placeholder: "",
         modules: {
           toolbar: [
+            [],[],[],[],[],[],[],[],[],[],[],[], // 메뉴 정렬용
             ["bold", "italic", "underline"],
             [{ indent: "-1" }, { indent: "+1" }],
-            [{ size: ["small", false, "large", "huge"] }],
+            [{ size: [false, "large", "huge"] }],
             // [{ font: [] }], // 추후 폰트 지원
             [{ align: [] }],
+            ["image"],
             ["clean"],
           ],
         },
@@ -66,10 +66,15 @@ export default {
 };
 </script>
 <style>
+.Editor {
+  width: 800px;
+  height: 500px;
+}
+
 .ql-editor > * {
   cursor: text;
   color: black;
-  font-size: 18px;
+  font-size: 0.6em;
   font-family: "RIDIBatang";
 }
 

@@ -1,11 +1,10 @@
 <template>
 
+<button class="btn btn-primary" @click="exportToPDF()">PDF 변환</button>
 <WebNovelEditor
 @commitContent="getContent"></WebNovelEditor>
 
 <div id="preview" v-html="contentHTML" ref="content"></div>
-
-<button class="btn btn-primary" @click="exportToPDF()">PDF 변환</button>
 
 </template>
 
@@ -15,16 +14,10 @@ import WebNovelEditor from '../../editor/WebNovelEditor.vue'
 import html2pdf from 'html2pdf.js'
 export default {
     name : "WDebBoard",
-    watch : {
-        //실시간 미리보기 업데이트 기능 개발중
-        // contentHTML(val) {
-        //     this.contentHTML = val;
-        // }
-    },
     created() {
-        if(this.pjType == "W") {
-            console.log("웹소설 개발 페이지 진입");
-        }
+      if(this.pjType == "W") {
+        console.log("웹소설 개발 페이지 진입");
+      }
     },
     data() {
         return {
@@ -39,30 +32,33 @@ export default {
             console.log(this.contentHTML);
         },
         exportToPDF () {
-			html2pdf(this.$refs.content, {
-				margin: 1,
-				filename: 'document.pdf',
-				image: { type: 'jpeg', quality: 0.98 },
-				html2canvas: { dpi: 192, letterRendering: true },
-				jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+        html2pdf(this.$refs.content, {
+          margin: 0.42,
+          filename: 'document.pdf',
+          image: { type: 'jpeg', quality: 1.98 },
+          html2canvas: { dpi: 192, letterRendering: true },
+          jsPDF: {orientation: 'portrait', unit: 'in', format: 'a4'} 
 			})
 		}
     },
     props : {
-        pjType : String,
-        WpjCode : String
+      pjType : String,
+      WpjCode : String
     },
     components : {
-       WebNovelEditor
+      WebNovelEditor
     }
 }
 </script>
 
 <style>
 #preview {
-    width: 500px;
-    height: 300px;
-    font-family: 'RIDIBatang';
+  font-family: 'RIDIBatang';
+  font-size: 1.5em;
+}
+
+.btn {
+  float: left;
 }
 
 @font-face {
@@ -74,69 +70,66 @@ export default {
 
 /*들여쓰기, 내어쓰기*/
 #preview .ql-indent-1:not(.ql-direction-rtl) {
-  padding-left: 3em;
+  padding-left: 2em;
 }
 #preview .ql-indent-1.ql-direction-rtl.ql-align-right {
-  padding-right: 3em;
+  padding-right: 2em;
 }
 #preview .ql-indent-2:not(.ql-direction-rtl) {
-  padding-left: 6em;
+  padding-left: 4em;
 }
 #preview .ql-indent-2.ql-direction-rtl.ql-align-right {
-  padding-right: 6em;
+  padding-right: 4em;
 }
 #preview .ql-indent-3:not(.ql-direction-rtl) {
-  padding-left: 9em;
+  padding-left: 6em;
 }
 #preview .ql-indent-3.ql-direction-rtl.ql-align-right {
-  padding-right: 9em;
+  padding-right: 6em;
 }
 #preview .ql-indent-4:not(.ql-direction-rtl) {
-  padding-left: 12em;
+  padding-left: 8em;
 }
 #preview .ql-indent-4.ql-direction-rtl.ql-align-right {
-  padding-right: 12em;
+  padding-right: 8em;
 }
 #preview .ql-indent-5:not(.ql-direction-rtl) {
-  padding-left: 15em;
+  padding-left: 10em;
 }
 #preview .ql-indent-5.ql-direction-rtl.ql-align-right {
-  padding-right: 15em;
+  padding-right: 10em;
 }
 #preview .ql-indent-6:not(.ql-direction-rtl) {
-  padding-left: 18em;
+  padding-left: 12em;
 }
 #preview .ql-indent-6.ql-direction-rtl.ql-align-right {
-  padding-right: 18em;
+  padding-right: 12em;
 }
 #preview .ql-indent-7:not(.ql-direction-rtl) {
-  padding-left: 21em;
+  padding-left: 14em;
 }
 #preview .ql-indent-7.ql-direction-rtl.ql-align-right {
-  padding-right: 21em;
+  padding-right: 14em;
 }
 #preview .ql-indent-8:not(.ql-direction-rtl) {
-  padding-left: 24em;
+  padding-left: 16em;
 }
 #preview .ql-indent-8.ql-direction-rtl.ql-align-right {
-  padding-right: 24em;
+  padding-right: 16em;
 }
 #preview .ql-indent-9:not(.ql-direction-rtl) {
-  padding-left: 27em;
+  padding-left: 18em;
 }
 #preview .ql-indent-9.ql-direction-rtl.ql-align-right {
-  padding-right: 27em;
+  padding-right: 18em;
 }
 
 /*글자 크기*/
-#preview .ql-size-small {
-  font-size: 0.75em;
-}
 #preview .ql-size-large {
-  font-size: 1.5em;
+  font-size: 1.9em;
 }
 #preview .ql-size-huge {
-  font-size: 2.5em;
+  font-size: 2.3em;
 }
 
 /*문단정렬*/
