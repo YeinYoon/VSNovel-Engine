@@ -6,11 +6,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
 
+
 //추가 모듈
 require('dotenv').config();
 var session = require('express-session');
 const passport = require('passport');
 const passportConfig = require('./passport/index');
+var connectHistory = require('connect-history-api-fallback');
 
 var app = express();
 passportConfig();
@@ -56,6 +58,7 @@ app.use('/engine/user', userRouter);
 app.use('/engine/team', teamRouter);
 
 
+app.use(connectHistory());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
