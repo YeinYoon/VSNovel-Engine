@@ -5,7 +5,6 @@
 @commitContent="getContent"></WebNovelEditor>
 
 <div id="preview" v-html="contentHTML" ref="content"></div>
-
 </template>
 
 

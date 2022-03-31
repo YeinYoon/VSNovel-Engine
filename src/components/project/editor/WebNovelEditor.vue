@@ -1,4 +1,6 @@
 <template>
+<div>
+
 <button @click="save()">저장</button>
 <div class="Editor">
   <quill-editor
@@ -8,6 +10,8 @@
     :disabled="state.disabled"
     @change="onEditorChange($event)"
   />
+</div>
+
 </div>
 </template>
 
