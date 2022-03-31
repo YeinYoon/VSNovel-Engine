@@ -24,7 +24,10 @@ const store = createStore({
             cModalSize : "",
             cModalBtn1 : "",
             cModalBtn2 : "",
-            cModalAnswer : null // 유저의 답변
+            cModalAnswer : null, // 유저의 답변
+
+            //사이드바의 상태 by 석범
+            sideBarState : false,
         }
     },
     mutations : {
@@ -69,6 +72,12 @@ const store = createStore({
         },
         setAnswer(state, val) {
             state.cModalAnswer = val;
+        },
+
+
+        //사이드바 함수 by 석범
+        sideMenuOpen(state, val) {
+            state.sideBarState = val;
         }
     },
     getters : {
