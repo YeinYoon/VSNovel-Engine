@@ -1,5 +1,4 @@
 <template>
-
 <button class="btn btn-primary" @click="exportToPDF()">PDF 변환</button>
 <WebNovelEditor
 @commitContent="getContent"></WebNovelEditor>
