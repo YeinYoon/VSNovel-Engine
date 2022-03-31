@@ -99,9 +99,35 @@ body{
   width: calc(100vw - 140px);
   height: 100vh;
   /* 사이드바가 열림상태일때 routerRight 로 변경 닫혀있을때에는 routerLeft */
+
+}
+
+.RouterMoveLeft {
   animation-name: routerLeft; 
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
+}
+
+.RouterMoveRight {
+  animation-name: routerRight; 
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.RouterViewRight {
+  position: fixed;
+  left: 140px;
+  top: 30px;
+  width: calc(100vw - 140px);
+  height: 100vh;
+}
+
+.RouterViewLeft {
+  position: fixed;
+  left: 280px;
+  top: 30px;
+  width: calc(100vw - 280px);
+  height: 100vh;
 }
 
 .TaskBar {
