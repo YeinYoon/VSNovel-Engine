@@ -98,8 +98,7 @@ body{
   top: 30px;
   width: calc(100vw - 140px);
   height: 100vh;
-  /* 사이드바가 열림상태일때 routerRight 로 변경 닫혀있을때에는 routerLeft */
-
+  background: #353535;
 }
 
 .RouterMoveLeft {
@@ -114,7 +113,7 @@ body{
   animation-fill-mode: forwards;
 }
 
-.RouterViewRight {
+.RouterViewLeft {
   position: fixed;
   left: 140px;
   top: 30px;
@@ -122,7 +121,7 @@ body{
   height: 100vh;
 }
 
-.RouterViewLeft {
+.RouterViewRight {
   position: fixed;
   left: 280px;
   top: 30px;

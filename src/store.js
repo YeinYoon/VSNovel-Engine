@@ -26,8 +26,10 @@ const store = createStore({
             cModalBtn2 : "",
             cModalAnswer : null, // 유저의 답변
 
-            //사이드바의 상태 by 석범
-            sideBarState : false,
+            //사이드바의 상태와 애니메이션
+            sideBarState : "sideBarOff", // On, Off
+            sideBarFixed : ["RouterViewLeft", "RouterViewRight"], // 사이드바 고정상태
+            sideBarMove : ["RouterMoveLeft", "RouterMoveRight"] // move 애니메이션
         }
     },
     mutations : {

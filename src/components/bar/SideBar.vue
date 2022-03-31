@@ -1,6 +1,6 @@
 <template>
 <!--사이드바가 sideBarButton에 의해 true로 열리면 sideBarOn 으로 변경, false 땐 sideBarOff로 변경-->
- <div v-bind:class="{'sideBarOff':true}"> 
+ <div v-bind:class="{[`${this.$store.state.sideBarState}`]:true}"> 
      123
 
 

@@ -18,7 +18,7 @@ export default {
 <style>
 .barBackground {
     background: #5e5e5e;
-    height: 300px;
+    height: 30px;
 }
 
 .topmenus {

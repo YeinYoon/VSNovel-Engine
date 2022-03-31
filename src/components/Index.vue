@@ -185,7 +185,7 @@
   position: relative;
   top: 80px;
   left: 100px;
-  width: calc(100vw - 13%);
+  width: calc(100%);
   height: calc(100vh - 100px);
   /* background: white; */
 }
