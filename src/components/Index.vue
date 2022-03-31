@@ -71,17 +71,17 @@
 <style>
 .enginebackground {
   position: absolute;
+  width: 100%;
+  height: 100%;
   background:#353535;
-  width: calc(100vw - 120px);
-  height: 100vh;
-  overflow:auto;
+  overflow: hidden;
   color: white;
 }
 .invite_center{
   position: fixed;
-  left: 80%;
+  left: 90%;
   top: 50px;
-  z-index: 1;
+  z-index: 11; 
 }
 .invite_box{
   position: relative;
@@ -164,9 +164,9 @@
   margin: 2px;
 }
 .header{
-  position: fixed;
-  left: 20%;
-  top: 50px;
+  position: relative;
+  left: 100px;
+  top: 30px;
   display: table;
 }
 .header_icon{
@@ -182,24 +182,25 @@
   vertical-align: middle;
 }
 .section{
-  position: fixed;
-  top: 160px;
-  left: 20%;
-  width: calc(100vw - 20%);
-  height: calc(100vh - 110px);
+  position: relative;
+  top: 80px;
+  left: 100px;
+  width: calc(100vw - 13%);
+  height: calc(100vh - 100px);
   /* background: white; */
 }
 /*새 프로젝트*/
 .newpj_part{
   position: relative;
   height: 150px;
+  padding-right: 8%;
 }
 .newpj_icon{
   width: 35px;
   height: 35px;
   background: #2872f9;
   border-radius: 11px;
-  position: fixed;
+  position: absolute;
 }
 .newpj_icon_plus{
   position: absolute;
@@ -219,7 +220,7 @@
   position: relative;
   top: 55px;
   left: 45px;
-  width: calc(100% - 20%);
+  width: calc(100% - 25%);
   min-height: 60px;
   height: auto;
   border-radius: 20px;
@@ -239,7 +240,8 @@
 /*로드 프로젝트*/
 .loadpj_part{
   position: relative;
-  height: 100%;
+  height: calc(100% - 60px);
+  padding-right: 8%;
 }
 .loadpj_icon{
   width: 35px;
@@ -267,7 +269,7 @@
   position: relative;
   top: 20px;
   left: 45px;
-  width: calc(100% - 20%);
+  width: calc(100% - 25%);
   height: calc(100% - 280px);
   border-radius: 20px;
   background: #2a2a2a;
