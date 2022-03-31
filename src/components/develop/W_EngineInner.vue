@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import PlotController from './PlotController.vue'
-import EngineCanvas from './EngineCanvas.vue'
+import PlotController from './W_PlotController.vue'
+import EngineCanvas from './W_EngineCanvas.vue'
 
 export default {
-  name: 'EngineInner',
+  name: 'W_EngineInner',
   components: {
     PlotController,
     EngineCanvas,
@@ -46,6 +46,7 @@ export default {
   transform: translate(-100%);
   width: 220px;
   height: 100%;
+  padding: 20px;
   background: #272727;
   color: white;
   overflow: auto;
