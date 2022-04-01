@@ -26,10 +26,11 @@ const store = createStore({
             cModalBtn2 : "",
             cModalAnswer : null, // 유저의 답변
 
-            //사이드바의 상태와 애니메이션
-            sideBarState : "sideBarOff", // On, Off
-            sideBarFixed : ["RouterViewLeft", "RouterViewRight"], // 사이드바 고정상태
-            sideBarMove : ["RouterMoveLeft", "RouterMoveRight"] // move 애니메이션
+            // 사이드바
+            sideBar : false, // 사이드바 버튼 클릭시 상태체크
+            sideBarState : "sideBarOff", // On, Off Class
+            sideBarFixed : "RouterViewLeft", // 사이드바 고정 Class
+            sideBarMove : "RouterMoveLeft",// move 애니메이션 Class
         }
     },
     mutations : {
@@ -76,10 +77,18 @@ const store = createStore({
             state.cModalAnswer = val;
         },
 
-
-        //사이드바 함수 by 석범
-        sideMenuOpen(state, val) {
-            state.sideBarState = val;
+        //사이드바 열기, 닫기
+        sideMenuOn(state) {
+            state.sideBar = true;
+            state.sideBarState = "sideBarOn";
+            state.sideBarMove = "RouterMoveRight";
+            state.sideBarFixed = "RouterViewRight";
+        },
+        sideMenuOff(state) {
+            state.sideBar = false;
+            state.sideBarState = "sideBarOff";
+            state.sideBarMove = "RouterMoveLeft";
+            state.sideBarFixed = "RouterViewLeft";
         }
     },
     getters : {

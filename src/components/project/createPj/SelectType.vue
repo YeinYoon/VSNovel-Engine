@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:class="{[`${this.$store.state.sideBarFixed}`]:true}">
+    <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
         <div class="select_type_frame">
             <span class="title_type">제작 유형을 선택하세요.</span>
             <div class="type_box">

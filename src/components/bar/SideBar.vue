@@ -5,15 +5,31 @@
 
 
 
-     <div class="sideBarButton">
-       <span>◀</span>
+     <div class="sideBarButton" @click="sideBarClick()">
+       <span>{{btnIcon}}</span>
      </div>
  </div>
 </template>
 
 <script>
 export default {
-
+  name : "SideBar",
+  data() {
+    return {
+      btnIcon : "◀" 
+    }
+  },
+  methods : {
+    sideBarClick() {
+      if(this.$store.state.sideBar == false) {
+        this.$store.commit('sideMenuOn');
+        this.btnIcon = "▶"
+      } else {
+        this.$store.commit('sideMenuOff');
+        this.btnIcon = "◀"
+      }
+    }
+  }
 }
 </script>
 
