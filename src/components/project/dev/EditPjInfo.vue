@@ -23,6 +23,9 @@
 import axios from 'axios';
 export default {
     name : "EditPjInfo",
+    watch : {
+        
+    },
     created() {
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
@@ -74,37 +77,36 @@ export default {
             })
         },
 
-        async deletePj() {
+        deletePj() {
 
-            var val = await this.$store.commit('cModalOn', {
+            this.$store.commit('cModalOn', {
                 msg : `프로젝트 [${this.title}]를 삭제하시겠습니까?`,
                 size : "normal",
                 btn1 : "확인",
                 btn2 : "취소"
             })
-            console.log(val);
-
-            if(this.$store.state.cModalAnswer == true) {
-                console.log("삭제 실행처리");
-            } else {
-                console.log("삭제 취소함");
-            }
 
             // if(this.$store.state.cModalAnswer == true) {
-            //     console.log(this.$store.state.cModalAnswer);
-            //     axios.post('/engine/pj/deletePj', {pjCode : this.pjCode})
-            //     .then((result)=>{
-            //         if(result.data == "ok") {
-            //             this.$store.commit('gModalOn', {msg : "프로젝트가 삭제되었습니다.", size : "normal"});
-            //             this.$router.push('/');
-            //         } else {
-            //             this.$store.commit('gModalOn', {msg : "ERR : 삭제를 실패했습니다.", size : "normal"});
-            //         }
-            //     })
-            //     .catch((err)=>{
-            //         console.error(err);
-            //     })
+            //     console.log("삭제 실행처리");
+            // } else {
+            //     console.log("삭제 취소함");
             // }
+
+            if(this.$store.state.cModalAnswer == true) {
+                console.log(this.$store.state.cModalAnswer);
+                axios.post('/engine/pj/deletePj', {pjCode : this.pjCode})
+                .then((result)=>{
+                    if(result.data == "ok") {
+                        this.$store.commit('gModalOn', {msg : "프로젝트가 삭제되었습니다.", size : "normal"});
+                        this.$router.push('/');
+                    } else {
+                        this.$store.commit('gModalOn', {msg : "ERR : 삭제를 실패했습니다.", size : "normal"});
+                    }
+                })
+                .catch((err)=>{
+                    console.error(err);
+                })
+            }
         }
     }
 }

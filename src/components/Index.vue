@@ -10,7 +10,7 @@
           <img src="@/assets/icons/vsn_engine.png">
         </div>
         <div class="UserProfileInfo">
-          장석범
+          {{this.$store.state.userNickname}}
         </div>
         <div class="UserProfileDeco">
         </div>
@@ -64,22 +64,33 @@
         <div>
           <span class="loadpj_label">Load Project</span>
         </div>
-        <div class="loadpj_list_box">
-          <!-- <div class="loadpj_list_th">최근 프로젝트</div> -->
-          <!-- 프로젝트가 없을땐 이거 -->
-          <!-- <div class="loadpj_list_notfound"><p>프로젝트가 없어용!</p></div> -->
 
-          <div class="loadpj_list_tr"
-          v-for="pj in pjList" :key="pj.PROJ_CODE"
-          @click="goToDevPage(pj.PROJ_CODE)">
-            <p class="loadpj_list_tr_code">{{pj.PROJ_CODE}}</p>
-            <p class="loadpj_list_tr_type">{{pj.PROJ_TYPE}}</p>
-            <p class="loadpj_list_tr_title">{{pj.PROJ_TITLE}}</p>
-            <p class="loadpj_list_tr_status">{{pj.PROJ_STATUS}}</p>
-            <p class="loadpj_list_tr_retouchdate">{{pj.PROJ_RETOUCHDATE}}</p>
+        <div class="loadpj_list_box">
+
+          <div class="loadpj_list_Loading" v-if="$store.state.LoadingStatus">
+            <p>프로젝트 목록을 불러오는 중입니다.</p>
+          </div>
+
+          <div v-else-if="pjList.length != 0">
+
+            <div class="loadpj_list_tr"
+            v-for="pj in pjList" :key="pj.PROJ_CODE"
+            @click="goToDevPage(pj.PROJ_CODE)">
+              <p class="loadpj_list_tr_code">{{pj.PROJ_CODE}}</p>
+              <p class="loadpj_list_tr_type">{{pj.PROJ_TYPE}}</p>
+              <p class="loadpj_list_tr_title">{{pj.PROJ_TITLE}}</p>
+              <p class="loadpj_list_tr_status">{{pj.PROJ_STATUS}}</p>
+              <p class="loadpj_list_tr_retouchdate">{{pj.PROJ_RETOUCHDATE}}</p>
+            </div>
+
+          </div>
+
+          <div class="loadpj_list_notfound" v-else>
+            <p>프로젝트를 생성해주세요!</p>
           </div>
 
         </div>
+          
       </div>
     </div>
   </div>
@@ -363,7 +374,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 300px;
+  width: 350px;
   height: 50px;
   background: #5e5e5e;
   transform: translate(-50%, -50%);
@@ -371,6 +382,24 @@
   
 }
 .loadpj_list_notfound p{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loadpj_list_Loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 450px;
+  height: 50px;
+  background: #5e5e5e;
+  transform: translate(-50%, -50%);
+  border-radius: 25px;
+}
+
+.loadpj_list_Loading p{
   position: absolute;
   left: 50%;
   top: 50%;
