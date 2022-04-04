@@ -14,7 +14,6 @@
     <div v-else class="userName">로그인이 필요합니다</div>
   </div> -->
   <SideBar v-bind:class="{'SideBar':true}"></SideBar>
-  <TaskBar v-bind:class="{'TaskBar':true}"></TaskBar>
   <MainBar v-bind:class="{'MainBar':true}"></MainBar>
   <router-view></router-view>
 
@@ -26,8 +25,8 @@ import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
 import ConfirmModal from './components/modal/ConfirmModal.vue'
 import MainBar from './components/bar/MainBar.vue'
-import TaskBar from './components/bar/TaskBar.vue'
 import SideBar from './components/bar/SideBar.vue'
+import Please_Login from './components/develop/Please_Login.vue'
 
 export default {
   name: 'App',
@@ -36,8 +35,8 @@ export default {
     GlobalModal,
     ConfirmModal,
     MainBar,
-    TaskBar,
     SideBar,
+    Please_Login,
   },
   methods : {
     logout(){
@@ -66,7 +65,12 @@ body{
   overflow-x: hidden;
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
   font-weight: 500;
+  background: #353535;
 }
+:focus {
+  outline: none;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }
@@ -95,7 +99,6 @@ body{
 .RouterView {
   position: fixed;
   left: 140px;
-  top: 30px;
   width: calc(100vw - 140px);
   height: 100vh;
   background: #353535;
@@ -104,10 +107,9 @@ body{
 .FullView {
   position: fixed;
   top: 0px;
-  left: 140px;
-  width: calc(100vw - 140px);
+  width: calc(100vw);
   height: 100vh;
-  /* z-index: 4; */
+  z-index: 4;
 }
 
 .RouterMoveLeft {
@@ -125,7 +127,6 @@ body{
 .RouterViewLeft {
   position: fixed;
   left: 140px;
-  top: 30px;
   width: calc(100vw - 140px);
   height: 100vh;
 }
@@ -133,14 +134,8 @@ body{
 .RouterViewRight {
   position: fixed;
   left: 280px;
-  top: 30px;
   width: calc(100vw - 280px);
   height: 100vh;
-}
-
-.TaskBar {
-  position: relative;
-  z-index: -10;
 }
 
 .SideBar {

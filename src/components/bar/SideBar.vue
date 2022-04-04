@@ -61,9 +61,9 @@ export default {
 .sideBarButton {
   position: absolute;
   top: 50%;
-  left: 105%;
+  left: 100%;
   transform: translate(-50%, -50%);
-  width: 30px;
+  width: 25px;
   height: 120px;
   color: white;
   background: #5e5e5e;
@@ -80,7 +80,7 @@ export default {
 
 @keyframes sideBarOn {
   from {
-      left: -20px;
+      left: -25px;
   }
   to {
       left: 120px;
@@ -92,7 +92,7 @@ export default {
       left: 120px;
   }
   to {
-      left: -20px;
+      left: -25px;
   }
 }
 </style>
