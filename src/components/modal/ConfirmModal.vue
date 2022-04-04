@@ -53,7 +53,7 @@ export default {
   width: 100vw;
   height: 100vh;
   opacity:0;
-  z-index: 100;
+  z-index: 99;
   position: fixed;
   animation-duration: 0.3s;
   animation-name: backgrounding_on;
@@ -71,7 +71,7 @@ export default {
   background: #2a2a2a;
   animation-duration: 0.7s;
   animation-name: opening;
-  z-index: 2;
+  z-index: 100;
   opacity: 1;
 }
 .modal_frame_small{
@@ -85,7 +85,7 @@ export default {
   background: #2a2a2a;
   animation-duration: 0.7s;
   animation-name: opening;
-  z-index: 1;
+  z-index: 100;
   opacity: 1;
 }
 .modal_frame_big{
@@ -99,7 +99,7 @@ export default {
   background: #2a2a2a;
   animation-duration: 0.7s;
   animation-name: opening;
-  z-index: 1;
+  z-index: 100;
   opacity: 1;
 }
 .modal_inner{
@@ -161,8 +161,9 @@ export default {
   /*배경을 만드는 backgrounding_on*/
 @keyframes backgrounding_on {
   from {
+    opacity: 0;
   }
-
+    
   to {
     opacity: 0.3;
   }

@@ -1,6 +1,6 @@
 <template>
-<div class="RouterView">
-  <div v-bind:class="{'contentbackground':true}"><!--컴포넌트 전체영역-->
+<div class="FullView">
+  <div><!--컴포넌트 전체영역-->
     <img class="background_img" src="../../assets/background.png" alt=""><!--백그라운드 이미지-->
     <div class="sign_box"><!--전체 로그인 화면-->
       <div class="sign_title"> <!--로그인 타이틀-->
@@ -46,13 +46,6 @@
 </div>
 </template>
 <style>
-.contentbackground {
-  background:#353535;
-  width: 100vw;
-  height: 100vh;
-  z-index: -100;
-  overflow: auto;
-}
 .sign_box{
   position:absolute;
   width: 70%;
@@ -82,7 +75,6 @@
   font-size: 3em;
   font-weight: 700;
   color:white;
-  z-index: 1;
 }
 .sign_inner_box{
   position:absolute;
@@ -281,7 +273,6 @@
   height: 140px;
   background: black;
   opacity: 0.8;
-  z-index: 1;
 }
 .adver_img{
   position: absolute;
@@ -289,7 +280,6 @@
   width: 100%;
   height: 350px;
   object-fit: cover;
-  z-index: -1;
 }
 
 </style>

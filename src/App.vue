@@ -101,6 +101,15 @@ body{
   background: #353535;
 }
 
+.FullView {
+  position: fixed;
+  top: 0px;
+  left: 140px;
+  width: calc(100vw - 140px);
+  height: 100vh;
+  /* z-index: 4; */
+}
+
 .RouterMoveLeft {
   animation-name: routerLeft; 
   animation-duration: 0.7s;
