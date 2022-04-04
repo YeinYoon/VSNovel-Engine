@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:class="{'RouterView':true}">
+    <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
       <div class="create_pj_page_frame"> <!--여기서부터-->
         <span class="pj_info_type">프로젝트 정보를 입력하세요.</span> <!--논 애니메이션 여기부터-->
         <div class="create_pj_frame"> 
@@ -111,6 +111,7 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   font-size: 1.5em;
+  border: none;
 }
 .synopsis_input_frame {
   position: absolute;
@@ -136,6 +137,8 @@ export default {
   padding-right: 10px;
   font-size: 1.5em;
   white-space:pre-line;
+  border: none;
+  resize: none;
 }
 .create_button_frame {
   position: absolute;

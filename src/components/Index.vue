@@ -1,9 +1,25 @@
 <template>
-<div class="RouterView">
+<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   <div v-bind:class="{'enginebackground':true}">
   
-    <router-link to="/signin" v-if="$store.state.userNickname == null">임시 로그인</router-link>
-    <button v-else @click="logout()">로그아웃</button>
+
+
+    <div class="UserHeader"> <!-- 유저정보 헤더 -->
+      <div class="UserProfileFrame">
+        <div class="UserProfileImg">
+          <img src="@/assets/icons/vsn_engine.png">
+        </div>
+        <div class="UserProfileInfo">
+          장석범
+        </div>
+        <div class="UserProfileDeco">
+        </div>
+      </div>
+      <div class="UserSignFrame">
+        <router-link to="/signin" v-if="$store.state.userNickname == null"><button>로그인</button></router-link>
+        <button v-else @click="logout()">로그아웃</button>
+      </div>
+    </div>
 
     <div class="header"> <!--타이틀과 로고-->
       <img class="header_icon" src="..\assets\icons/vsn_engine.png"><span class="header_title">VSN Engine</span>
@@ -49,16 +65,18 @@
           <span class="loadpj_label">Load Project</span>
         </div>
         <div class="loadpj_list_box">
-          <div class="loadpj_list_th">최근 프로젝트</div>
+          <!-- <div class="loadpj_list_th">최근 프로젝트</div> -->
+          <!-- 프로젝트가 없을땐 이거 -->
+          <!-- <div class="loadpj_list_notfound"><p>프로젝트가 없어용!</p></div> -->
 
           <div class="loadpj_list_tr"
           v-for="pj in pjList" :key="pj.PROJ_CODE"
           @click="goToDevPage(pj.PROJ_CODE)">
-            <span>{{pj.PROJ_CODE}}</span><br>
-            <span>{{pj.PROJ_TYPE}}</span>&nbsp
-            <span>{{pj.PROJ_TITLE}}</span>&nbsp
-            <span>{{pj.PROJ_STATUS}}</span>&nbsp
-            <span>{{pj.PROJ_RETOUCHDATE}}</span>
+            <p class="loadpj_list_tr_code">{{pj.PROJ_CODE}}</p>
+            <p class="loadpj_list_tr_type">{{pj.PROJ_TYPE}}</p>
+            <p class="loadpj_list_tr_title">{{pj.PROJ_TITLE}}</p>
+            <p class="loadpj_list_tr_status">{{pj.PROJ_STATUS}}</p>
+            <p class="loadpj_list_tr_retouchdate">{{pj.PROJ_RETOUCHDATE}}</p>
           </div>
 
         </div>
@@ -77,10 +95,68 @@
   overflow: hidden;
   color: white;
 }
+.UserHeader {
+  position: relative;
+  width: 100%;
+  height: 75px;
+  background: #424242;
+}
+
+.UserProfileFrame {
+  position: absolute;
+  width: 250px;
+  height: 60px;
+  border-radius: 15px;
+  top: 7.5px;
+  left: 10px;
+  padding: 10px;
+  background: #505050;
+}
+.UserProfileImg {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.UserProfileImg img{
+  width: 100%;
+  object-fit: cover;
+}
+
+.UserProfileInfo {
+  position: relative;
+  left: 50px;
+  font-size: 1.1em;
+}
+.UserProfileDeco {
+  position: absolute;
+  width: 170px;
+  height: 10px;
+  background: #2872f9;
+  border-radius: 10px;
+  left: 60px;
+}
+
+.UserSignFrame {
+  float: right;
+  position: relative;
+  top: 20px;
+  right: 20px ;
+}
+.UserSignFrame button{
+  background: #2872f9;
+  border: none;
+  border-radius: 15px;
+  width: 100px;
+  height: 35px;
+  color: white;
+}
+
 .invite_center{
-  position: fixed;
-  left: 90%;
-  top: 50px;
+  float: right;
+  position: relative;
+  top: -122px;
+  left: -160px;
   z-index: 11; 
 }
 .invite_box{
@@ -165,7 +241,7 @@
 }
 .header{
   position: relative;
-  left: 100px;
+  left: 130px;
   top: 30px;
   display: table;
 }
@@ -184,7 +260,7 @@
 .section{
   position: relative;
   top: 80px;
-  left: 100px;
+  left: 130px;
   width: calc(100%);
   height: calc(100vh - 100px);
   /* background: white; */
@@ -282,16 +358,76 @@
   height: 40px;
   border-radius: 20px;
 }
+
+.loadpj_list_notfound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300px;
+  height: 50px;
+  background: #5e5e5e;
+  transform: translate(-50%, -50%);
+  border-radius: 25px;
+  
+}
+.loadpj_list_notfound p{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .loadpj_list_tr{
   background: #818181;
   margin: 15px 15px 15px 15px;
+  padding: 5px;
   width: calc(100% - 30px);
   height: 60px;
   border-radius: 20px;
+  cursor: pointer;
 }
 .loadpj_list_tr:hover{
   opacity: 0.8;
 }
+
+.loadpj_list_tr_code{
+  position: relative;
+  transform: translate(-50%, -50%);
+}
+
+.loadpj_list_tr_type{
+  position: absolute;
+  width: 40px;
+  left: 40px;
+  border-radius: 10px;
+  transform: translate(-50%, -115%);
+  background: #e2e2e2;
+}
+
+.loadpj_list_tr_title{
+  position: absolute;
+  font-size: 1.3em;
+  width: 500px;
+  left: 320px;
+  transform: translate(-50%, -150%);
+}
+
+.loadpj_list_tr_status{
+  position: absolute;
+  width: 50px;
+  background: #353535;
+  border-radius: 10px;
+  left: calc(100% - 50px);
+  transform: translate(-50%, -160%);
+}
+
+.loadpj_list_tr_retouchdate{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: calc(100% - 100px);
+  width: 200px;
+}
+
 </style>
 <script>
 import axios from '../axios'
@@ -305,6 +441,8 @@ export default {
         this.$store.commit('userLogin', result.data.USER_NICKNAME);
         await this.getPjList();
         await this.getNoticeList();
+      } else {
+        this.$router.push('/signin');
       }
     })
     .catch((err)=>{
