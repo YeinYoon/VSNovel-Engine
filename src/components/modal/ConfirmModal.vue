@@ -30,12 +30,10 @@ export default {
     modalCloseY() {
       this.$store.commit('setAnswer', true);
       this.$store.commit('cModalOff');
-      console.log(this.$store.state.cModalAnswer);
     },
     modalCloseN() {
       this.$store.commit('setAnswer', false);
       this.$store.commit('cModalOff');
-      console.log(this.$store.state.cModalAnswer);
     }
   },
   props: {
