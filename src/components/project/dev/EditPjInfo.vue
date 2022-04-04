@@ -1,4 +1,5 @@
 <template>
+<ConfirmModal ref="confirmModal"></ConfirmModal>
 <div class="RouterView">
 
     프로젝트 상태변경
@@ -20,11 +21,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import ConfirmModal from '../../modal/ConfirmModal.vue'
+import axios from '../../../axios';
 export default {
     name : "EditPjInfo",
-    watch : {
-        
+    components : {
+        ConfirmModal,
     },
     created() {
         this.pjCode = this.$route.params.pjCode;
@@ -35,7 +37,7 @@ export default {
             pjCode : "",
             status : "",
             title : "",
-            synopsis : ""
+            synopsis : "",
         }
     },
     methods : {
@@ -77,23 +79,16 @@ export default {
             })
         },
 
-        deletePj() {
-
-            this.$store.commit('cModalOn', {
+        async deletePj() {
+            
+            var result = await this.$refs.confirmModal.show({
                 msg : `프로젝트 [${this.title}]를 삭제하시겠습니까?`,
                 size : "normal",
                 btn1 : "확인",
                 btn2 : "취소"
-            })
+            });
 
-            // if(this.$store.state.cModalAnswer == true) {
-            //     console.log("삭제 실행처리");
-            // } else {
-            //     console.log("삭제 취소함");
-            // }
-
-            if(this.$store.state.cModalAnswer == true) {
-                console.log(this.$store.state.cModalAnswer);
+            if(result == true) {
                 axios.post('/engine/pj/deletePj', {pjCode : this.pjCode})
                 .then((result)=>{
                     if(result.data == "ok") {
@@ -106,7 +101,10 @@ export default {
                 .catch((err)=>{
                     console.error(err);
                 })
+            } else {
+               console.log('삭제 취소');
             }
+
         }
     }
 }

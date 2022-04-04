@@ -6,18 +6,18 @@
   </div>
   <!-- 모달창의 크기를 결정하는 modal_frame,
   모달창의 크기 또한 파라미터로 받아서 나오게 할수도 있겠다. 쓰는사람 마음대로-->
-  <div v-bind:class="{[`modal_frame_${this.$store.state.cModalSize}`]:true}">
+  <div v-bind:class="{[`modal_frame_${this.cModalSize}`]:true}">
     <!--모달 내 메세지 및 컨텐츠인 modal_inner, 여기에 단순히 메세지만을 표시할수도 
     작은 컴포넌트를 삽입할수도 있따.-->
     <div class="modal_inner">
-      <span>{{this.$store.state.cModalMsg}}</span> <!--메세지를 출력하는 예제-->
+      <span>{{this.cModalMsg}}</span> <!--메세지를 출력하는 예제-->
     </div>
       <!--모달을 닫는 버튼과 버튼내 메세지(확인, 취소 등등)-->
     <div class="modal_save_button" @click="modalCloseY()">
-      <span class="modal_save_ok">{{this.$store.state.cModalBtn1}}</span>
+      <span class="modal_save_ok">{{this.cModalBtn1}}</span>
     </div>
     <div class="modal_cancel_button" @click="modalCloseN()">
-      <span class="modal_cancel_ok">{{this.$store.state.cModalBtn2}}</span>
+      <span class="modal_cancel_ok">{{this.cModalBtn2}}</span>
     </div>
   </div>  
 </div>
@@ -26,22 +26,43 @@
 <script>
 export default {
   name : "ConfirmModal",
-  methods : {
-    modalCloseY() {
-      this.$store.commit('setAnswer', true);
-      this.$store.commit('cModalOff');
-    },
-    modalCloseN() {
-      this.$store.commit('setAnswer', false);
-      this.$store.commit('cModalOff');
+  data() {
+    return {
+      // 모달 데이터
+      cModalState : false,
+      cModalSize : "",
+      cModalMsg : "",
+      cModalBtn1 : "",
+      cModalBtn2 : "",
+
+      // 응답 프로미스
+      resolvePromise: undefined,
+      rejectPromise: undefined,
     }
   },
-  props: {
-    cModalState: {
-      type: Boolean,
-      required: true
+  methods : {
+    show(option = {}) {
+      this.cModalState = true;
+
+      this.cModalSize = option.size;
+      this.cModalMsg = option.msg;
+      this.cModalBtn1 = option.btn1;
+      this.cModalBtn2 = option.btn2;
+
+      return new Promise((resolve, reject)=>{
+        this.resolvePromise = resolve
+        this.rejectPromise = reject
+      })
+    },
+    modalCloseY() {
+      this.cModalState = false;
+      this.resolvePromise(true)
+    },
+    modalCloseN() {
+      this.cModalState = false; 
+      this.resolvePromise(false)
     }
-  }
+  },
 }
 </script>
 

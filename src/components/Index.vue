@@ -77,9 +77,12 @@
             v-for="pj in pjList" :key="pj.PROJ_CODE"
             @click="goToDevPage(pj.PROJ_CODE)">
               <p class="loadpj_list_tr_code">{{pj.PROJ_CODE}}</p>
-              <p class="loadpj_list_tr_type">{{pj.PROJ_TYPE}}</p>
+              <p class="loadpj_list_tr_type" v-if="pj.PROJ_TYPE == 'V'">비주얼</p>
+              <p class="loadpj_list_tr_type" v-else>웹</p>
               <p class="loadpj_list_tr_title">{{pj.PROJ_TITLE}}</p>
-              <p class="loadpj_list_tr_status">{{pj.PROJ_STATUS}}</p>
+              <p class="loadpj_list_tr_status" v-if="pj.PROJ_STATUS=='D'">개발</p>
+              <p class="loadpj_list_tr_status" v-else-if="pj.PROJ_STATUS=='S'">배포</p>
+              <p class="loadpj_list_tr_status" v-else>중단</p>
               <p class="loadpj_list_tr_retouchdate">{{pj.PROJ_RETOUCHDATE}}</p>
             </div>
 
@@ -491,7 +494,7 @@ export default {
       .then((result)=>{
         if(result.data=='ok') {
           this.$store.commit('userLogin', null);
-          this.$router.push('/');
+          this.$router.push('/signin');
         } else {
           console.log(result);
           alert(result.data);

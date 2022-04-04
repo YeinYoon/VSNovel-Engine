@@ -1,8 +1,6 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
-<ConfirmModal :cModalState="$store.state.cModalState"></ConfirmModal>
-
 
   <!-- <div id="bar">
     <router-link to="/" id="main">메인으로</router-link>
@@ -23,20 +21,16 @@
 import axios from './axios'
 import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
-import ConfirmModal from './components/modal/ConfirmModal.vue'
 import MainBar from './components/bar/MainBar.vue'
 import SideBar from './components/bar/SideBar.vue'
-import Please_Login from './components/develop/Please_Login.vue'
 
 export default {
   name: 'App',
   components: {
     Spinner,
     GlobalModal,
-    ConfirmModal,
     MainBar,
     SideBar,
-    Please_Login,
   },
   methods : {
     logout(){
