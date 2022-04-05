@@ -93,7 +93,7 @@ body{
 .RouterView {
   position: fixed;
   left: 140px;
-  width: calc(100vw - 140px);
+  width: calc(100vw - 135px);
   height: 100vh;
   background: #353535;
 }
@@ -101,9 +101,18 @@ body{
 .FullView {
   position: fixed;
   top: 0px;
-  width: calc(100vw);
+  width: 100vw;
   height: 100vh;
   z-index: 4;
+}
+
+.RouterModalView {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
 }
 
 .RouterMoveLeft {
@@ -120,8 +129,8 @@ body{
 
 .RouterViewLeft {
   position: fixed;
-  left: 140px;
-  width: calc(100vw - 140px);
+  left: 135px;
+  width: calc(100vw - 135px);
   height: 100vh;
 }
 
@@ -140,8 +149,8 @@ body{
 
 @keyframes routerRight {
   from {
-    left: 140px;
-    width: calc(100vw - 140px);
+    left: 135px;
+    width: calc(100vw - 135px);
   }
 
   to {
@@ -157,8 +166,8 @@ body{
   }
 
   to {
-    left: 140px;
-    width: calc(100vw - 140px);
+    left: 135px;
+    width: calc(100vw - 135px);
   }
 }
 </style>

@@ -1,31 +1,33 @@
 <template>
-<div class="RouterView">
+<div class="RouterModalView">
+    <div class="EditInner">
+        <div class="InnerPositioner">
+            <div>
+            <select v-model="searchType">
+                <option value="I" selected>아이디</option>
+                <option value="N">닉네임</option>
+            </select>
+            <input type="text" v-model="searchKeyword"> <button @click="userSearch()">유저 검색</button>
 
-    <div>
-      <select v-model="searchType">
-          <option value="I" selected>아이디</option>
-          <option value="N">닉네임</option>
-      </select>
-      <input type="text" v-model="searchKeyword"> <button @click="userSearch()">유저 검색</button>
+            <table border="2px">
+                <thead>
+                        <th>ID</th>
+                        <th>닉네임</th>
+                        <th>초대하기</th>
+                </thead>
+                <tbody>
+                    <tr v-for="user in userList" :key="user.USER_ID">
+                        <td :id="user.USER_ID">{{user.USER_ID}}</td>
+                        <td>{{user.USER_NICKNAME}}</td>
+                        <td><button @click="inviteUser(user.USER_ID)" :disabled="isInvite == user.USER_ID">초대</button></td>
+                    </tr>
+                </tbody>
+            </table>
 
-      <table border="2px">
-          <thead>
-                <th>ID</th>
-                <th>닉네임</th>
-                <th>초대하기</th>
-          </thead>
-          <tbody>
-              <tr v-for="user in userList" :key="user.USER_ID">
-                  <td :id="user.USER_ID">{{user.USER_ID}}</td>
-                  <td>{{user.USER_NICKNAME}}</td>
-                  <td><button @click="inviteUser(user.USER_ID)" :disabled="isInvite == user.USER_ID">초대</button></td>
-              </tr>
-          </tbody>
-      </table>
-
-      <button @click="back()">돌아가기</button>
-  </div>
-  
+            <button @click="back()">돌아가기</button>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -91,5 +93,21 @@ export default {
 </script>
 
 <style>
-
+.EditInner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 600px;
+    height: 400px;
+    transform: translate(-50%, -50%);
+    background: #353535;
+    color: white;
+    border-radius: 25px;
+}
+.InnerPositioner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
 </style>

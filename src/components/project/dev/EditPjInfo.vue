@@ -1,23 +1,33 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
-<div class="RouterView">
+    <div class="RouterModalView">
+        <div class="EditInner">
+            <div class="cancleButton" @click="back()">
+                <p>x</p>
+            </div>
 
-    프로젝트 상태변경
-    <select v-model="status">
-        <option value="D">개발중</option>
-        <option value="S">배포</option>
-        <option value="P">개발중단</option>
-    </select> <br>
-    <input type="text" placeholder="제목" v-model="title"> <br>
-    <textarea
-    cols="40"
-    rows="10"
-    v-model="synopsis"></textarea> <br>
+            <div class="InnerPositioner">
 
-    <button @click="saveEdit()">수정하기</button> <br>
-    <button @click="deletePj()">프로젝트 삭제</button>
+                프로젝트 상태변경
+                <select v-model="status">
+                    <option value="D">개발중</option>
+                    <option value="S">배포</option>
+                    <option value="P">개발중단</option>
+                </select> <br>
+                <input type="text" placeholder="제목" v-model="title"> <br>
+                <textarea
+                cols="40"
+                rows="10"
+                v-model="synopsis"></textarea> <br>
 
-</div>
+                <div class="buttonsFrame">
+                    <button @click="saveEdit()">수정하기</button>
+                    <button @click="deletePj()">프로젝트 삭제</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -79,6 +89,10 @@ export default {
             })
         },
 
+        back() {
+            this.$router.push(`/devPage/${this.pjCode}`);
+        },
+
         async deletePj() {
             
             var result = await this.$refs.confirmModal.show({
@@ -111,5 +125,44 @@ export default {
 </script>
 
 <style>
-
+.EditInner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 600px;
+    height: 400px;
+    transform: translate(-50%, -50%);
+    background: #353535;
+    color: white;
+    border-radius: 25px;
+}
+.InnerPositioner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.buttonsFrame {
+    position: absolute;
+    top: 105%;
+    width: 250px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.buttonsFrame button{
+    border: none;
+    background: #2872f9;
+    border-radius: 10px;
+    color: white;
+    display: inline-block;
+    width: 100px;
+    padding: 5px;
+    margin: 5px;
+}
+.cancleButton p{
+    float: right;
+    font-size: 2em;
+    margin-right: 10px;
+}
 </style>
