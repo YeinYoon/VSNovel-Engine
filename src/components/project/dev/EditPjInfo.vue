@@ -1,22 +1,24 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
-<div class="RouterView">
+<div class="editPjInfoFrame">
+    <div class="RouterView">
 
-    프로젝트 상태변경
-    <select v-model="status">
-        <option value="D">개발중</option>
-        <option value="S">배포</option>
-        <option value="P">개발중단</option>
-    </select> <br>
-    <input type="text" placeholder="제목" v-model="title"> <br>
-    <textarea
-    cols="40"
-    rows="10"
-    v-model="synopsis"></textarea> <br>
+        프로젝트 상태변경
+        <select v-model="status">
+            <option value="D">개발중</option>
+            <option value="S">배포</option>
+            <option value="P">개발중단</option>
+        </select> <br>
+        <input type="text" placeholder="제목" v-model="title"> <br>
+        <textarea
+        cols="40"
+        rows="10"
+        v-model="synopsis"></textarea> <br>
 
-    <button @click="saveEdit()">수정하기</button> <br>
-    <button @click="deletePj()">프로젝트 삭제</button>
+        <button @click="saveEdit()">수정하기</button> <br>
+        <button @click="deletePj()">프로젝트 삭제</button>
 
+    </div>
 </div>
 </template>
 
@@ -111,5 +113,10 @@ export default {
 </script>
 
 <style>
-
+.editPjInfoFrame {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
 </style>

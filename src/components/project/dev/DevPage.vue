@@ -1,5 +1,5 @@
 <template>
-<div class="RouterView">
+<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
 
     <div>
         Project [ {{title}} ]

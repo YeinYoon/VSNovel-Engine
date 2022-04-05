@@ -93,7 +93,7 @@ body{
 .RouterView {
   position: fixed;
   left: 140px;
-  width: calc(100vw - 140px);
+  width: calc(100vw - 135px);
   height: 100vh;
   background: #353535;
 }
@@ -120,8 +120,8 @@ body{
 
 .RouterViewLeft {
   position: fixed;
-  left: 140px;
-  width: calc(100vw - 140px);
+  left: 135px;
+  width: calc(100vw - 135px);
   height: 100vh;
 }
 
@@ -140,8 +140,8 @@ body{
 
 @keyframes routerRight {
   from {
-    left: 140px;
-    width: calc(100vw - 140px);
+    left: 135px;
+    width: calc(100vw - 135px);
   }
 
   to {
@@ -157,8 +157,8 @@ body{
   }
 
   to {
-    left: 140px;
-    width: calc(100vw - 140px);
+    left: 135px;
+    width: calc(100vw - 135px);
   }
 }
 </style>
