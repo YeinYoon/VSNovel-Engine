@@ -44,7 +44,7 @@ export default {
           this.$router.push('/');
         } else {
           console.log(result);
-          alert(result.data);
+          this.$store.commit('gModalOn', {msg : result.data, size : "normal"});
         }
       })
       .catch((err)=>{
