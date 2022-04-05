@@ -1,7 +1,6 @@
 <template>
 <div>
 
-<button @click="save()">저장</button>
 <div class="Editor">
   <quill-editor
     v-html="loadData"

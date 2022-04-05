@@ -7,12 +7,13 @@
     </div>
     <div class="WN_Editor">
       <WebNovelEditor
-      @commitContent="getContent"></WebNovelEditor>
+      @commitContent="getContent"
+      ref="webNovelEditor"></WebNovelEditor>
       <div id="preview" v-html="contentHTML" ref="content"></div>
     </div>
 
     <div class="SaveButton"> 
-      <button @click="save()">현재 상태 저장</button>
+      <button @click="saveAll()">현재 상태 저장</button>
     </div>
 
     <div class="pjInfo">
@@ -30,7 +31,10 @@
 
     <div class="ExportButton"> 
       <button @click="exportToPDF()">프로젝트 내보내기</button>
+      <button @click="saveText()">저장</button>
     </div>
+    
+    
   </div>
 </template>
 
@@ -89,7 +93,7 @@ export default {
             this.$router.push(`/devPage/${pjCode}/invitePj`);
         },
 
-        save() {
+        saveAll() {
             axios.patch('/engine/pj/devSave', {pjCode : this.pjCode})
             .then((result)=>{
                 if(result.data.msg == "ok") {
@@ -101,14 +105,20 @@ export default {
             })
         },
 
+        //에디터 작성 저장
+        saveText() {
+          this.$refs.webNovelEditor.save();
+        },
         getContent(content) {
             this.contentHTML = content;
         },
 
+        // 작성한 내용 미리보기
         viewContent() {
-            console.log(this.contentHTML);
+          //일렉트론 children Window 이용할것
         },
 
+        // PDF 변환
         exportToPDF () {
         html2pdf(this.$refs.content, {
           margin: 0.42,

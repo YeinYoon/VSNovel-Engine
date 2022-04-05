@@ -48,6 +48,7 @@ export default {
     name : "VDevBoard",
     created() {
         if(this.pjType == "V") {
+            console.log("비주얼 노벨 개발페이지 진입")
             this.getPlotList();
         }
     },

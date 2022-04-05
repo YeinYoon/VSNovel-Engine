@@ -2,8 +2,6 @@
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   <div v-bind:class="{'enginebackground':true}">
-  
-
 
     <div class="UserHeader"> <!-- 유저정보 헤더 -->
       <div class="UserProfileFrame">
@@ -35,15 +33,22 @@
       <div v-if="alramStatus">
         <div v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
           <!-- invite messeage를 포문 돌릴것 -->
-          <div v-for="n in noticeList" :key="n.SCHE_CODE">
-            <div class="invite_message">
-              {{n.SCHE_STDATE}}
-              <div>{{n.SCHE_CONTENT}}</div>
-              <button class="invite_button" @click="PjAccept(n.PROJ_CODE)">승인</button>
-              <button class="invite_button" @click="PjRefuse(n.PROJ_CODE)">거절</button>
+
+          <div v-if="noticeList.length > 0">
+
+            <div v-for="n in noticeList" :key="n.SCHE_CODE">
+              <div class="invite_message">
+                {{n.SCHE_STDATE}}
+                <div>{{n.SCHE_CONTENT}}</div>
+                <button class="invite_button" @click="PjAccept(n.PROJ_CODE)">승인</button>
+                <button class="invite_button" @click="PjRefuse(n.PROJ_CODE)">거절</button>
+              </div>
+              <hr>
             </div>
-            <hr>
+
           </div>
+          <div v-else>새로운 알림이 없습니다.</div>
+
         </div>
       </div>
     </div>
@@ -561,7 +566,7 @@ export default {
     },
 
     // 프로젝트 초대 수락
-    async PjAccept() {
+    async PjAccept(pjCode) {
       var accept = await this.$refs.confirmModal.show({
         msg : "초대를 수락하시겠습니까?",
         size : "normal",
@@ -569,14 +574,22 @@ export default {
         btn2 : "취소"
       });
       if(accept) { 
-        // axios.post('/engine/pj/PjAccept', )
+        axios.post('/engine/team/PjAccept', {pjCode : pjCode})
+        .then((result)=>{
+          if(result.data == "ok") {
+            this.getPjList();
+            this.getNoticeList();
+          } else {
+            this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
+          }
+        })
         console.log("초대 수락");
       } else {
         console.log("초대 보류");
       }
     },
     // 프로젝트 초대 거절
-    async PjRefuse() {
+    async PjRefuse(pjCode) {
       var refuse = await this.$refs.confirmModal.show({
         msg : "초대를 거절하시겠습니까?",
         size : "normal",
@@ -584,7 +597,14 @@ export default {
         btn2 : "취소"
       });
       if(refuse) { 
-        console.log("초대 거절");
+        axios.post('/engine/team/PjRefuse', {pjCode : pjCode})
+        .then((result)=>{
+          if(result.data == "err") {
+            this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});
+          } else {
+            this.getNoticeList();
+          }
+        })
       } else {
         console.log("거절 보류");
       }

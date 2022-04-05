@@ -36,11 +36,47 @@ router.post('/inviteUser', async (req, res)=>{
 
 // 알림 리스트
 router.get('/getNoticeList', async (req, res)=>{
-    var getList = await db.execute(`SELECT * FROM tbl_schedule WHERE user_id = '${req.user.USER_ID}'`);
+    var getList = await db.execute(`SELECT * FROM tbl_schedule
+    WHERE
+    user_id = '${req.user.USER_ID}'
+    AND NOT(sche_status = 'read')`);
     if(getList == "err") {
         res.send('err');
     } else {
         res.send(getList.rows);
+    }
+})
+
+//프로젝트 초대 수락
+router.post('/PjAccept', async (req,res)=>{
+    var inputMember = await db.execute(`INSERT INTO tbl_cooperation
+    VALUES('${req.user.USER_ID}', ${req.body.pjCode}, 1, 'Member', 0)`);
+    if(inputMember == "err") {
+        res.send('err');
+    } else {
+        var readNotice = await db.execute(`UPDATE tbl_schedule SET sche_status='read'
+        WHERE
+        proj_code = ${req.body.pjCode}
+        AND user_id = '${req.user.USER_ID}'
+        AND sche_status = 'inviteReq'`);
+        if(readNotice == "err") {
+            res.send("err")
+        } else {
+            res.send("ok");
+        }
+    }
+})
+
+router.post('/PjRefuse', async (req,res)=>{
+    var refusePj = await db.execute(`UPDATE tbl_schedule SET sche_status='read'
+    WHERE
+    proj_code = ${req.body.pjCode}
+    AND user_id = '${req.user.USER_ID}'
+    AND sche_status = 'inviteReq'`);
+    if(refusePj == "err") {
+        res.send("err");
+    } else {
+        res.send("ok");
     }
 })
 

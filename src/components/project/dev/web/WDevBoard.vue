@@ -11,7 +11,7 @@
 import WebNovelEditor from '../../editor/WebNovelEditor.vue'
 import html2pdf from 'html2pdf.js'
 export default {
-    name : "WDebBoard",
+    name : "WDevBoard",
     created() {
       if(this.pjType == "W") {
         console.log("웹소설 개발 페이지 진입");
