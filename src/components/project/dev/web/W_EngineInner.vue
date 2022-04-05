@@ -1,8 +1,9 @@
 <template>
-  <div class="RouterView">
+  <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
     <div class="enginebackground">
       <div class="EngineCanvas">
-        <EngineCanvas/>
+        <EngineCanvas>
+        </EngineCanvas>
       </div>
       <div class="PlotController">
         <PlotController/>

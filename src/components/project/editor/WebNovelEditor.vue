@@ -71,8 +71,9 @@ export default {
 </script>
 <style>
 .Editor {
-  width: 800px;
-  height: 500px;
+  width: 100%;
+  height: 100%;
+  
 }
 
 .ql-editor > * {
@@ -80,6 +81,9 @@ export default {
   color: black;
   font-size: 0.6em;
   font-family: "RIDIBatang";
+}
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border: none;
 }
 
 @font-face {

@@ -102,6 +102,88 @@
 </div>
 
 </template>
+<script>
+import axios from '../axios'
+export default {
+  name: 'Index',
+  created() {
+    axios.get('/engine/auth/loginCheck')
+    .then(async (result)=>{
+      if(result.data!="") {
+        console.log(result.data)
+        this.$store.commit('userLogin', result.data.USER_NICKNAME);
+        await this.getPjList();
+        await this.getNoticeList();
+      } else {
+        this.$router.push('/signin');
+      }
+    })
+    .catch((err)=>{
+      console.error(err);
+    });
+  },
+  data() {
+    return {
+      pjList : [],
+      noticeList : [],
+      alramStatus : false
+    }
+  },
+  methods : {
+
+    logout(){
+      axios.get('/engine/auth/logout')
+      .then((result)=>{
+        if(result.data=='ok') {
+          this.$store.commit('userLogin', null);
+          this.$router.push('/signin');
+        } else {
+          console.log(result);
+          alert(result.data);
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      })
+    },
+
+    goToDevPage(pjCode) {
+      this.$router.push(`/devPage/${pjCode}`);
+    },
+    
+    getPjList() {
+      axios.get('/engine/pj/getList')
+        .then((result)=>{
+          if(result.data != "empty") {
+            this.pjList = result.data;
+          }
+        })
+        .catch((err)=>{
+          console.error(err);
+      })
+    },
+
+    getNoticeList() {
+      axios.get('/engine/team/getNoticeList')
+      .then((result)=>{
+        if(result.data == "err") {
+          console.log("ERR : 알림 불러오기 실패")
+        } else {
+          this.noticeList = result.data;
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      });
+    },
+
+    alramCenterToggle() {
+      this.alramStatus = !this.alramStatus;
+    }
+  }
+}
+  
+</script>
 <style>
 .enginebackground {
   position: absolute;
@@ -422,7 +504,7 @@
   padding: 5px;
   width: calc(100% - 30px);
   height: 60px;
-  border-radius: 20px;
+  border-radius: 18px;
   cursor: pointer;
 }
 .loadpj_list_tr:hover{
@@ -465,91 +547,8 @@
 .loadpj_list_tr_retouchdate{
   position: absolute;
   transform: translate(-50%, -50%);
-  left: calc(100% - 100px);
+  left: calc(100% - 90px);
   width: 200px;
 }
 
 </style>
-<script>
-import axios from '../axios'
-export default {
-  name: 'Index',
-  created() {
-    axios.get('/engine/auth/loginCheck')
-    .then(async (result)=>{
-      if(result.data!="") {
-        console.log(result.data)
-        this.$store.commit('userLogin', result.data.USER_NICKNAME);
-        await this.getPjList();
-        await this.getNoticeList();
-      } else {
-        this.$router.push('/signin');
-      }
-    })
-    .catch((err)=>{
-      console.error(err);
-    });
-  },
-  data() {
-    return {
-      pjList : [],
-      noticeList : [],
-      alramStatus : false
-    }
-  },
-  methods : {
-
-    logout(){
-      axios.get('/engine/auth/logout')
-      .then((result)=>{
-        if(result.data=='ok') {
-          this.$store.commit('userLogin', null);
-          this.$router.push('/signin');
-        } else {
-          console.log(result);
-          alert(result.data);
-        }
-      })
-      .catch((err)=>{
-        console.error(err);
-      })
-    },
-
-    goToDevPage(pjCode) {
-      this.$router.push(`/devPage/${pjCode}`);
-    },
-    
-    getPjList() {
-      axios.get('/engine/pj/getList')
-        .then((result)=>{
-          if(result.data != "empty") {
-            this.pjList = result.data;
-          }
-        })
-        .catch((err)=>{
-          console.error(err);
-      })
-    },
-
-    getNoticeList() {
-      axios.get('/engine/team/getNoticeList')
-      .then((result)=>{
-        if(result.data == "err") {
-          console.log("ERR : 알림 불러오기 실패")
-        } else {
-          this.noticeList = result.data;
-        }
-      })
-      .catch((err)=>{
-        console.error(err);
-      });
-    },
-
-    alramCenterToggle() {
-      this.alramStatus = !this.alramStatus;
-    }
-  }
-}
-  
-</script>
-

@@ -2,6 +2,14 @@
 
 <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
 <div class="DevPageTemp">
+
+
+    <div v-if="pjType == 'W'">
+        <WDevBoard  
+        ></WDevBoard>
+    </div>
+
+    <div v-else-if="pjType == 'V'">
     <div>
         Project [ {{title}} ]
         마지막 저장 : {{retouchDate}}
@@ -11,18 +19,7 @@
         <button @click="goToInvitePj(pjCode)">유저 초대</button>
         <button @click="save()">저장</button>
     </div>
-
-    <div v-if="pjType == 'W'">
-        <WDevBoard  
-        :pjType="pjType"
-        :WpjCode="pjCode"
-        ></WDevBoard>
-    </div>
-
-    <div v-else-if="pjType == 'V'">
         <VDevBoard
-        :pjType="pjType"
-        :VpjCode="pjCode"
         ></VDevBoard>
     </div>
 
@@ -37,7 +34,7 @@
 <script>
 import axios from '../../../axios';
 
-import WDevBoard from './web/WDevBoard.vue';
+import WDevBoard from './web/W_EngineInner.vue';
 import VDevBoard from './visual/VDevBoard.vue';
 export default {
     name : "devPage",
@@ -105,12 +102,12 @@ export default {
 </script>
 
 <style>
-.editRouter {
+/* .editRouter {
     position: fixed;
     width: 300px;
     height: 600px;
     z-index: 1;
-}
+} */
 .DevPageTemp {
     background: white;
     width: 100%;
