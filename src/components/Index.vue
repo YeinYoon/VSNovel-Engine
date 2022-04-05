@@ -1,4 +1,5 @@
 <template>
+<ConfirmModal ref="confirmModal"></ConfirmModal>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   <div v-bind:class="{'enginebackground':true}">
   
@@ -28,16 +29,18 @@
       <div @click="alramCenterToggle()" class="invite_box">
         <img class="invite_icon" src="../assets/icons/white/notification.png">
       </div>
-      <div v-bind:class="{'invite_counter_on':true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
-        <span>9</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
+      <div v-bind:class="{[`invite_counter_${existNotice}`]:true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
+        <span>{{noticeList.length}}</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
       </div>
       <div v-if="alramStatus">
         <div v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
           <!-- invite messeage를 포문 돌릴것 -->
           <div v-for="n in noticeList" :key="n.SCHE_CODE">
             <div class="invite_message">
+              {{n.SCHE_STDATE}}
               <div>{{n.SCHE_CONTENT}}</div>
-              <button class="invite_button">승인</button><button class="invite_button">거절</button>
+              <button class="invite_button" @click="PjAccept(n.PROJ_CODE)">승인</button>
+              <button class="invite_button" @click="PjRefuse(n.PROJ_CODE)">거절</button>
             </div>
             <hr>
           </div>
@@ -471,6 +474,7 @@
 
 </style>
 <script>
+import ConfirmModal from './modal/ConfirmModal.vue'
 import axios from '../axios'
 export default {
   name: 'Index',
@@ -494,11 +498,13 @@ export default {
     return {
       pjList : [],
       noticeList : [],
-      alramStatus : false
+      alramStatus : false,
+      existNotice : "off"
     }
   },
   methods : {
 
+    //로그아웃
     logout(){
       axios.get('/engine/auth/logout')
       .then((result)=>{
@@ -515,10 +521,12 @@ export default {
       })
     },
 
+    // 해당 프로젝트 개발 페이지 이동
     goToDevPage(pjCode) {
       this.$router.push(`/devPage/${pjCode}`);
     },
     
+    // 프로젝트 목록 가져오기
     getPjList() {
       axios.get('/engine/pj/getList')
         .then((result)=>{
@@ -531,6 +539,7 @@ export default {
       })
     },
 
+    // 도착한 알림 목록 가져오기
     getNoticeList() {
       axios.get('/engine/team/getNoticeList')
       .then((result)=>{
@@ -538,6 +547,11 @@ export default {
           console.log("ERR : 알림 불러오기 실패")
         } else {
           this.noticeList = result.data;
+          if(result.data.length > 0) {
+            this.existNotice = "on";
+          } else {
+            this.existNotice = "off";
+          }
         }
       })
       .catch((err)=>{
@@ -545,9 +559,42 @@ export default {
       });
     },
 
+    // 프로젝트 초대 수락
+    async PjAccept() {
+      var accept = await this.$refs.confirmModal.show({
+        msg : "초대를 수락하시겠습니까?",
+        size : "normal",
+        btn1 : "수락",
+        btn2 : "취소"
+      });
+      if(accept) { 
+        // axios.post('/engine/pj/PjAccept', )
+        console.log("초대 수락");
+      } else {
+        console.log("초대 보류");
+      }
+    },
+    // 프로젝트 초대 거절
+    async PjRefuse() {
+      var refuse = await this.$refs.confirmModal.show({
+        msg : "초대를 거절하시겠습니까?",
+        size : "normal",
+        btn1 : "수락",
+        btn2 : "취소"
+      });
+      if(refuse) { 
+        console.log("초대 거절");
+      } else {
+        console.log("거절 보류");
+      }
+    },
+
     alramCenterToggle() {
       this.alramStatus = !this.alramStatus;
     }
+  },
+  components : {
+    ConfirmModal
   }
 }
   

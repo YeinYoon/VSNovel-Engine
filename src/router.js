@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import store from './store'
+//import store from './store'
 
 // 메인페이지
 import Index from './components/Index.vue';
@@ -52,24 +52,24 @@ const router = createRouter({
   routes,
 });
 
-//전역 가드
-router.beforeEach((to, from)=>{
-  console.log(to);
+// //전역 가드 (개발중)
+// router.beforeEach((to, from)=>{
+//   console.log(to);
 
-  const PathArr = ['/dev']
-  const check = PathArr.find((item)=>{
-    return to.path.startsWith(item)
-  })
-  if(check == undefined) {
-    return true
-  }
+//   const PathArr = ['/dev']
+//   const check = PathArr.find((item)=>{
+//     return to.path.startsWith(item)
+//   })
+//   if(check == undefined) {
+//     return true
+//   }
 
-  if(store.state.userNickname == null) {
-    console.log('login required')
-    return '/signin'
-  } else {
-    return true;
-  }
-})
+//   if(store.state.userNickname == null) {
+//     console.log('login required')
+//     return '/signin'
+//   } else {
+//     return true;
+//   }
+// })
 
 export default router; 
