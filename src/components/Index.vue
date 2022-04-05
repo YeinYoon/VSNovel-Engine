@@ -25,20 +25,22 @@
       <img class="header_icon" src="..\assets\icons/vsn_engine.png"><span class="header_title">VSN Engine</span>
     </div>
     <div class="invite_center">
-      <div class="invite_box">
+      <div @click="alramCenterToggle()" class="invite_box">
         <img class="invite_icon" src="../assets/icons/white/notification.png">
       </div>
       <div v-bind:class="{'invite_counter_on':true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
         <span>9</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
       </div>
-      <div v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
-        <!-- invite messeage를 포문 돌릴것 -->
-        <div v-for="n in noticeList" :key="n.SCHE_CODE">
-          <div class="invite_message">
-            <div>{{n.SCHE_CONTENT}}</div>
-            <button class="invite_button">승인</button><button class="invite_button">거절</button>
+      <div v-if="alramStatus">
+        <div v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
+          <!-- invite messeage를 포문 돌릴것 -->
+          <div v-for="n in noticeList" :key="n.SCHE_CODE">
+            <div class="invite_message">
+              <div>{{n.SCHE_CONTENT}}</div>
+              <button class="invite_button">승인</button><button class="invite_button">거절</button>
+            </div>
+            <hr>
           </div>
-          <hr>
         </div>
       </div>
     </div>
@@ -180,7 +182,12 @@
   background: #2872f9;
   border-radius: 15px;
   z-index: 12;
+  cursor: pointer;
 }
+.invite_box:hover{
+  opacity: 0.9;
+}
+
 .invite_icon{
   position: relative;
   left: 50%;
@@ -230,7 +237,7 @@
   width: 220px;
   max-height: 300px;
   overflow-y: auto;
-  background: #424242;
+  background: #797979;
   z-index: 11;
 }
 .invite_modal_off{
@@ -410,7 +417,7 @@
 }
 
 .loadpj_list_tr{
-  background: #818181;
+  background: #666666;
   margin: 15px 15px 15px 15px;
   padding: 5px;
   width: calc(100% - 30px);
@@ -429,11 +436,12 @@
 
 .loadpj_list_tr_type{
   position: absolute;
-  width: 40px;
-  left: 40px;
+  width: 60px;  
+  left: 35px;
   border-radius: 10px;
   transform: translate(-50%, -115%);
-  background: #e2e2e2;
+  background: #2872f9;
+  text-align: center;
 }
 
 .loadpj_list_tr_title{
@@ -451,6 +459,7 @@
   border-radius: 10px;
   left: calc(100% - 50px);
   transform: translate(-50%, -160%);
+  text-align: center;
 }
 
 .loadpj_list_tr_retouchdate{
@@ -484,7 +493,8 @@ export default {
   data() {
     return {
       pjList : [],
-      noticeList : []
+      noticeList : [],
+      alramStatus : false
     }
   },
   methods : {
@@ -533,8 +543,11 @@ export default {
       .catch((err)=>{
         console.error(err);
       });
-    }
+    },
 
+    alramCenterToggle() {
+      this.alramStatus = !this.alramStatus;
+    }
   }
 }
   
