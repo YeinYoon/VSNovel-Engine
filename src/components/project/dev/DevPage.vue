@@ -1,6 +1,7 @@
 <template>
-<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
 
+<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
+<div class="DevPageTemp">
     <div>
         Project [ {{title}} ]
         마지막 저장 : {{retouchDate}}
@@ -29,6 +30,7 @@
         <router-view></router-view>
     </div>
     
+</div>
 </div>
 </template>
 
@@ -108,5 +110,10 @@ export default {
     width: 300px;
     height: 600px;
     z-index: 1;
+}
+.DevPageTemp {
+    background: white;
+    width: 100%;
+    height: 100%;
 }
 </style>
