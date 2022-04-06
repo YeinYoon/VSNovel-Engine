@@ -513,6 +513,7 @@ export default {
       if(result.data!="") {
         console.log(result.data)
         this.$store.commit('userLogin', result.data.USER_NICKNAME);
+        console.log(`currentUser : ${this.$store.state.userNickname}`);
         await this.getPjList();
         await this.getNoticeList();
       } else {
