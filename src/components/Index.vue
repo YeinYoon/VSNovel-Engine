@@ -94,6 +94,10 @@
               <p class="loadpj_list_tr_status" v-else-if="pj.PROJ_STATUS=='S'">배포</p>
               <p class="loadpj_list_tr_status" v-else>중단</p>
               <p class="loadpj_list_tr_retouchdate">{{pj.PROJ_RETOUCHDATE}}</p>
+              <!--협업 혹은 개인구분 -->
+              <p class="loadpj_list_tr_teamtype_normal">개인</p> 
+              <!-- <p class="loadpj_list_tr_teamtype_coop">협업</p>  -->
+
             </div>
 
           </div>
@@ -474,8 +478,27 @@
 .loadpj_list_tr_retouchdate{
   position: absolute;
   transform: translate(-50%, -50%);
-  left: calc(100% - 90px);
+  left: calc(100% - 100px);
   width: 200px;
+}
+
+.loadpj_list_tr_teamtype_normal{
+  position: absolute;
+  width: 50px;
+  background: #2872f9;
+  border-radius: 10px;
+  left: calc(100% - 110px);
+  transform: translate(-50%, -160%);
+  text-align: center;
+}
+.loadpj_list_tr_teamtype_coop{
+  position: absolute;
+  width: 50px;
+  background: #88b975;
+  border-radius: 10px;
+  left: calc(100% - 110px);
+  transform: translate(-50%, -160%);
+  text-align: center;
 }
 
 </style>

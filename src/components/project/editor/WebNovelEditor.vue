@@ -71,8 +71,32 @@ export default {
 <style>
 .Editor {
   width: 100%;
-  height: 100%;
-  
+}
+
+.ql-toolbar {
+  position: sticky;
+  top: 0px;
+  background: white;
+  z-index: 10;
+  text-align: center;
+}
+.ql-toolbar.ql-snow {
+  padding-right: 175px;
+}
+
+.ql-container {
+  overflow-x: auto;
+}
+
+::-webkit-scrollbar{
+  display: block;
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5e5e5e;
+  border-radius: 25px;
+
 }
 
 .ql-editor > * {
@@ -81,7 +105,8 @@ export default {
   font-size: 0.6em;
   font-family: "RIDIBatang";
 }
-.ql-toolbar.ql-snow + .ql-container.ql-snow {
+.ql-container.ql-snow {
+  overflow: scroll;
   border: none;
 }
 

@@ -102,14 +102,14 @@ export default {
     position: absolute;
     transform: translate(-50%, -50%);
     left: 90%;
-    top: -530%;
+    top: -450%;
     width: 160%;
 }
 .button_img_visual{
     position: absolute;
     transform: translate(-50%, -50%);
     left: 90%;
-    top: -550%;
+    top: -460%;
     width: 110%;
     z-index: 2;
 }
@@ -117,7 +117,7 @@ export default {
     position: absolute;
     transform: translate(-50%, -50%);
     left: 90%;
-    top: -400%;
+    top: -380%;
     width: 50%;
     z-index: 3;
 }

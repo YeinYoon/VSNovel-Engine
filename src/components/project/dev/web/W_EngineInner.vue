@@ -1,5 +1,4 @@
 <template>
-  <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
     <div class="enginebackground">
       <div class="EngineCanvas">
         <EngineCanvas>
@@ -9,7 +8,6 @@
         <PlotController/>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -27,12 +25,7 @@ export default {
 </script>
 
 <style>
-.enginebackground {
-  width: 100%;
-  height: 100%;
-  background: #444444;
-  z-index: 1;
-}
+
 
 .EngineCanvas {
   position: absolute;

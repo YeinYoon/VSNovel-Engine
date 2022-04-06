@@ -1,15 +1,17 @@
 <template>
   <div class="CanvasBackground">
     <div class="Project_Header">
-        <div>
-          [{{title}}]
-        </div> 
+        <p>
+          {{title}}
+        </p> 
     </div>
-    <div class="WN_Editor">
-      <WebNovelEditor
-      @commitContent="getContent"
-      ref="webNovelEditor"></WebNovelEditor>
-      <div id="preview" v-html="contentHTML" ref="content"></div>
+    <div class="WN_Editor_Frame">
+      <div class="WN_Editor">
+        <WebNovelEditor
+        @commitContent="getContent"
+        ref="webNovelEditor"></WebNovelEditor>
+        <div id="preview" v-html="contentHTML" ref="content"></div>
+      </div>
     </div>
 
     <div class="SaveButton"> 
@@ -18,7 +20,7 @@
 
     <div class="pjInfo">
       <p>마지막 저장 : {{retouchDate}}</p>
-      상태 : {{status}}
+      <p>상태 : {{status}}</p>
     </div>
     
     <div class="PjEditButton"> 
@@ -31,7 +33,15 @@
 
     <div class="ExportButton"> 
       <button @click="exportToPDF()">프로젝트 내보내기</button>
-      <button @click="saveText()">저장</button>
+      
+    </div>
+
+    <div class="SaveTextButton">
+      <button @click="saveText()">초안저장</button>
+    </div>
+
+    <div class="PreviewButton">
+      <button @click="CHIHAHAHAHA()">원고 미리보기</button>
     </div>
     
     
@@ -143,7 +153,8 @@ export default {
 .pjInfo {
   position: absolute;
   left: calc(100% - 120px);
-  top: calc(100% - 60px);
+  top: calc(100% - 30px);
+  line-height: 10px;
   width: 300px;
   transform: translate(-50%, -50%);
 }
@@ -185,15 +196,28 @@ export default {
   font-size: 2em;
 }
 
+.Project_Header p{
+  width: 440px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.WN_Editor_Frame {
+  position: absolute;
+  top: 80px;
+  width: calc(100% - 40px);
+  height: calc(100% - 160px);
+  border-radius: 25px;
+  overflow: hidden;
+}
+
 .WN_Editor {
   background: white;
   position: absolute;
-  width: calc(100% - 40px);
-  height: calc(100% - 190px);
-  padding: 10px;
+  width: calc(100%);
+  height: calc(100%);
   color: black;
-  border-radius: 25px;
-  top: 80px;
   overflow: auto;
 }
 
@@ -217,7 +241,8 @@ export default {
   width: 140px;
   height: 40px;
   position: absolute;
-  top: calc(100% - 100px);
+  top: calc(100% - 60px);
+  left: 140px;
   z-index: 1;
 }
 
@@ -230,8 +255,40 @@ export default {
   color: white;
 }
 
+.SaveTextButton {
+  width: 100px;
+  height: 40px;
+  position: absolute;
+  top: calc(100% - 60px);
+  z-index: 1;
+}
 
+.SaveTextButton button {
+  background: #2872f9;
+  width: 100px;
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+  color: white;
+}
 
+.PreviewButton {
+  width: 120px;
+  height: 40px;
+  position: absolute;
+  top: calc(100% - 60px);
+  left: 300px;
+  z-index: 1;
+}
+
+.PreviewButton button {
+  background: #2872f9;
+  width: 120px;
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+  color: white;
+}
 
 
 #preview {

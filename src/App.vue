@@ -68,6 +68,7 @@ body{
 ::-webkit-scrollbar {
     display: none;
 }
+
 #bar {
   background-color: blanchedalmond;
 }
