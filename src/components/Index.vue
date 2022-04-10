@@ -2,7 +2,6 @@
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   <div v-bind:class="{'enginebackground':true}">
-
     <div class="UserHeader"> <!-- 유저정보 헤더 -->
       <div class="UserProfileFrame">
         <div class="UserProfileImg">
@@ -68,7 +67,7 @@
         </div>
       </div>
       <div class="loadpj_part">
-                <div class="loadpj_icon">
+        <div class="loadpj_icon">
           <img class="loadpj_icon_plus" src="..\assets\icons/white/magnifier.png">
         </div>
         <div>
@@ -95,8 +94,8 @@
               <p class="loadpj_list_tr_status" v-else>중단</p>
               <p class="loadpj_list_tr_retouchdate">{{pj.PROJ_RETOUCHDATE}}</p>
               <!--협업 혹은 개인구분 -->
-              <p class="loadpj_list_tr_teamtype_normal">개인</p> 
-              <!-- <p class="loadpj_list_tr_teamtype_coop">협업</p>  -->
+              <p class="loadpj_list_tr_teamtype_normal" v-if="pj.PROJ_COOPERATION == 'N'">개인</p> 
+              <p class="loadpj_list_tr_teamtype_coop" v-else>협업</p> 
 
             </div>
 

@@ -54,6 +54,17 @@ router.post('/PjAccept', async (req,res)=>{
     if(inputMember == "err") {
         res.send('err');
     } else {
+
+        // 프로젝트에 참여하는 인원이 1명(관리자)보다 많을 경우 해당 프로젝트는 개인에서 협업 상태로 변경
+        var isTeam = await db.execute(`SELECT COUNT(*) AS result FROM tbl_cooperation WHERE proj_code=${req.body.pjCode}`);
+        console.log(`해당 프로젝트에 참여하는 인원 : ${isTeam.rows[0].RESULT}명`);
+        if(isTeam.rows[0].RESULT > 1) {
+            var team = await db.execute(`UPDATE tbl_project SET proj_cooperation = 'Y' WHERE proj_code=${req.body.pjCode}`);
+            if(team == "err") {
+                console.log("프로젝트 협업 상태변경 실패");
+            }
+        }
+
         var readNotice = await db.execute(`UPDATE tbl_schedule SET sche_status='read'
         WHERE
         proj_code = ${req.body.pjCode}
@@ -67,6 +78,7 @@ router.post('/PjAccept', async (req,res)=>{
     }
 })
 
+// 프로젝트 초대 거절
 router.post('/PjRefuse', async (req,res)=>{
     var refusePj = await db.execute(`UPDATE tbl_schedule SET sche_status='read'
     WHERE
