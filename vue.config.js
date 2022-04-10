@@ -4,7 +4,7 @@ module.exports = {
       electronBuilder: {
         builderOptions: {
           productName: "VSNovel-Engine",
-          appId: 'VSNovel.com',
+          appId: 'VSNovel-Engine',
           win: {
             "target": [
               "nsis"
