@@ -1,7 +1,7 @@
 <template>
 <div class="FullView">
   <div><!--컴포넌트 전체영역-->
-    <img class="background_img" src="../../assets/background.png" alt=""><!--백그라운드 이미지-->
+    <img class="background_img" src="../../assets/imgs/background.png" alt=""><!--백그라운드 이미지-->
     <div class="sign_box"><!--전체 로그인 화면-->
       <div class="sign_title"> <!--로그인 타이틀-->
         <span>LOGIN</span>
@@ -37,7 +37,7 @@
         <div class="partion_block"> <!-- 로그인 및 광고영역간 공간분리 -->
         </div>
         <div class="adver_section"> <!--광고영역-->
-            <img class="adver_img" src="../../assets/adver.jpg" alt=""> <!--광고영역의 이미지-->
+            <img class="adver_img" src="../../assets/imgs/adver.jpg" alt=""> <!--광고영역의 이미지-->
             <div class="adver_info"><span>123</span></div> <!--광고대상의 정보박스-->
         </div> 
       </div>
