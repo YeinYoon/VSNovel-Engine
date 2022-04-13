@@ -1,6 +1,10 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
+  
+  <!--파일업로드 테스트중 <input multiple ref="img" type="file" @change="onInputImage()">
+  <button @click="upload()">업로드</button> -->
+
   <div v-bind:class="{'enginebackground':true}">
     <div class="UserHeader"> <!-- 유저정보 헤더 -->
       <div class="UserProfileFrame">
@@ -528,10 +532,30 @@ export default {
       pjList : [],
       noticeList : [],
       alramStatus : false,
-      existNotice : "off"
+      existNotice : "off",
+
+      img : ""
     }
   },
   methods : {
+
+    onInputImage() {
+      this.img = this.$refs.img.files
+    },
+
+    upload() {
+      console.log(this.img[0]);
+      axios.post('/engine/test/upload', {img : this.img[0]})
+      .then((result)=>{
+        if(result.data=="err") {
+          console.log(result);
+          console.log("업로드 실패");
+        } else {
+          console.log(result);
+          console.log("업로드 완료");
+        }
+      })
+    },
 
     //로그아웃
     logout(){

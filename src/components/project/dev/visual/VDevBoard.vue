@@ -23,7 +23,7 @@
             
             <img v-show="imageSrc" :src="imageSrc">
             
-            <input
+            <input ref="img"
             type="text"
             class="form-control"
             placeholder="드래그 앤 드롭으로 리소스를 올려보세요"

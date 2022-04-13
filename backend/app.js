@@ -52,6 +52,8 @@ var projectRouter = require('./routes/project');
 var userRouter = require('./routes/user');
 var teamRouter = require('./routes/team');
 
+//테스트 라우터
+var testRouter = require('./routes/test');
 
 app.use('/', indexRouter);
 app.use('/engine/auth', authRouter);
@@ -59,7 +61,7 @@ app.use('/engine/pj', projectRouter);
 app.use('/engine/user', userRouter);
 app.use('/engine/team', teamRouter);
 
-
+app.use('/engine/test', testRouter);
 
 
 // catch 404 and forward to error handler
