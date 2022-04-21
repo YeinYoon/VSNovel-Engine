@@ -150,6 +150,8 @@ export default {
   padding: 20px;
 }
 
+
+
 .pjInfo {
   position: absolute;
   left: calc(100% - 120px);

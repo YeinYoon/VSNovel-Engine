@@ -88,17 +88,6 @@ export default {
   overflow-x: auto;
 }
 
-::-webkit-scrollbar{
-  display: block;
-  width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #5e5e5e;
-  border-radius: 25px;
-
-}
-
 .ql-editor > * {
   cursor: text;
   color: black;
