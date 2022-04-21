@@ -2,10 +2,15 @@
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   
-  <input multiple ref="img" type="file" @change="onInputImage()">
-  <button @click="upload()">업로드</button>
-  <button @click="getImg()">가져오기</button>
-  <img :src="imgUrl" alt="테스트이미지">
+  <!-- <div>
+    <input multiple ref="img" type="file" @change="onInputImage()">
+    <button @click="upload()">업로드</button>
+    <button @click="getImg()">가져오기</button>
+    <img :src="imgUrl" alt="테스트이미지">
+    <button @click="delFile()">삭제</button>
+    <audio :src="mp3" controls></audio>
+    <button @click="getMp3()">오디오 가져오기</button>
+  </div> -->
 
   <div v-bind:class="{'enginebackground':true}">
     <div class="UserHeader"> <!-- 유저정보 헤더 -->
@@ -539,7 +544,8 @@ export default {
       existNotice : "off",
 
       img : "",
-      imgUrl : ""
+      imgUrl : "",
+      mp3 : ""
     }
   },
   methods : {
@@ -550,13 +556,20 @@ export default {
     },
     async upload() {
       console.log(this.img);
-      var result = await storage.upload('test/', this.img);
+      var result = await storage.uploadFile('test/', this.img);
       console.log(result);
     },
     async getImg() {
       var result = await storage.getUrlList("test/");
       console.log(result);
       // this.imgUrl = result;
+    },
+    async getMp3() {
+      var result = await storage.getUrl('test/PHONY_X_.mp3');
+      this.mp3 = result;
+    },
+    async delFile() {
+      await storage.deleteFile("test/프로젝트 관련.txt");
     },
 
     //로그아웃

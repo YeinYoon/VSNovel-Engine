@@ -1,4 +1,5 @@
 const AWS = require('aws-sdk');
+
 const s3 = new AWS.S3({
     region : "ap-northeast-2",
     //추후 .env로 보안관리 할것
@@ -49,7 +50,7 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
 }
 
 
-exports.upload = (filePath, file) =>{
+exports.uploadFile = (filePath, file) =>{
     const params = {
         Bucket: "vsnovel",
         Key : filePath + file.name, // 저장되는 파일의 경로 및 이름
@@ -58,8 +59,7 @@ exports.upload = (filePath, file) =>{
 
     s3.upload(params)
     .on("httpUploadProgress", evt => {
-        parseInt((evt.loaded * 100) / evt.total);
-        console.log(evt);
+        console.log(parseInt((evt.loaded * 100) / evt.total) + "%");
     })
     .send((err, data)=>{
         if(err) {
@@ -74,15 +74,43 @@ exports.upload = (filePath, file) =>{
     })
 }
 
-exports.delete = async(filePath) =>{
+exports.deleteFile = async(filePath) =>{
     const params = {
         Bucket: "vsnovel",
-        Key : filePath, // 저장되는 파일의 경로 및 이름
+        Key : filePath,
     }
 
-    await s3.deleteObject(params, (err)=>{
-        if(err) {
-            return "err"
+    await s3.deleteObject(params, (err, data)=>{
+        if(err){
+            throw err
         }
-    })
+        console.log(data);
+    });
+}
+
+exports.createProjectDir = async(pjCode) => {
+    const params = [
+        {
+            Bucket:"vsnovel",
+            Key : `PJ${pjCode}/bg/`
+        },
+        {
+            Bucket:"vsnovel",
+            Key : `PJ${pjCode}/bgm/`
+        },
+        {
+            Bucket:"vsnovel",
+            Key : `PJ${pjCode}/char/`
+        }
+    ];
+
+    for(var i=0; i<params.length; i++) {
+        s3.putObject(params[i])
+        .send(err => {
+            if (err) {
+                throw err;
+            }
+        });
+    }
+    
 }

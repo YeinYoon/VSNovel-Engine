@@ -4,6 +4,8 @@ var router = express.Router();
 var db = require('../database/db');
 var timestamp = require('../database/timestamp');
 
+var storage = require('../aws/aws'); //서버 스토리지
+
 // 새로운 프로젝트 생성
 router.post('/createNewPj', async (req, res)=>{
     var newDate = await timestamp.getTimestamp();
@@ -108,6 +110,7 @@ router.post('/createNewPj', async (req, res)=>{
         if(result == "err") {
             console.log("DB쿼리 실패");
         } else {
+            storage.createProjectDir(getThisPjCode); //서버 스토리지에 해당 프로젝트 리소스 폴더 생성
             console.log(`다음의 유저가 새로운 프로젝트를 생성함 : ${req.user.USER_ID}\n프로젝트 코드 : ${getThisPjCode}\n이름 : ${req.body.title}`);
             res.send("ok");
         }
@@ -213,12 +216,12 @@ router.post('/deletePj', async (req,res)=>{
         console.log("해당 프로젝트에 대한 스케쥴 시퀀스 삭제 실패");
     }
 
-
     var result = await db.execute(`DELETE tbl_project WHERE proj_code = ${req.body.pjCode}`);
     if(result == "err") {
         console.log("DB쿼리 실패");
         res.send("err");
     } else {
+        storage.deleteProjectDir(req.body.pjCode); // 서버스토리지에서 해당 프로젝트 리소스폴더 삭제
         res.send("ok");
     }
 })
