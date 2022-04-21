@@ -2,8 +2,10 @@
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   
-  <!-- <input multiple ref="img" type="file" @change="onInputImage()">
-  <button @click="upload()">업로드</button> -->
+  <input multiple ref="img" type="file" @change="onInputImage()">
+  <button @click="upload()">업로드</button>
+  <button @click="getImg()">가져오기</button>
+  <img :src="imgUrl" alt="테스트이미지">
 
   <div v-bind:class="{'enginebackground':true}">
     <div class="UserHeader"> <!-- 유저정보 헤더 -->
@@ -509,7 +511,7 @@
 import ConfirmModal from './modal/ConfirmModal.vue'
 import axios from '../axios'
 // 서버 스토리지
-// import storage from '../aws'
+import storage from '../aws'
 export default {
   name: 'Index',
   created() {
@@ -536,20 +538,26 @@ export default {
       alramStatus : false,
       existNotice : "off",
 
-      img : ""
+      img : "",
+      imgUrl : ""
     }
   },
   methods : {
 
-    // onInputImage() {
-    //   this.img = this.$refs.img.files[0];
-    //   console.log(this.img.name);
-    // },
-    // async upload() {
-    //   console.log(this.img);
-    //   var result = await storage.upload('test/', this.img);
-    //   console.log(result);
-    // },
+    onInputImage() {
+      this.img = this.$refs.img.files[0];
+      console.log(this.img.name);
+    },
+    async upload() {
+      console.log(this.img);
+      var result = await storage.upload('test/', this.img);
+      console.log(result);
+    },
+    async getImg() {
+      var result = await storage.getUrlList("test/");
+      console.log(result);
+      // this.imgUrl = result;
+    },
 
     //로그아웃
     logout(){
