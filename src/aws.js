@@ -7,6 +7,29 @@ const s3 = new AWS.S3({
     secretAccessKey: 'YJDi8K4VSP5bPhdNcC6hB/xreuKH2885200KS+LB' // 사용자의 secretAccessKey
 });
 
+exports.getJson = async (filePath) => { //단일 JSON 파일 가져오기
+    const params = {
+        Bucket: "vsnovel",
+        Key : filePath,
+    }
+
+    var result = (async () => {
+        try {
+            var data;
+            data = await s3
+            .getObject(params)
+            .promise()
+            .then((data)=>{
+                return data.Body
+            })
+        } catch (err) {
+          console.log(err);
+        }
+        return data
+    })();
+    
+    return result;
+}
 
 exports.getUrl = async (filePath) => { // 특정 경로의 파일 URL 가져오기 (단일)
     const params = {
@@ -86,31 +109,4 @@ exports.deleteFile = async(filePath) =>{
         }
         console.log(data);
     });
-}
-
-exports.createProjectDir = async(pjCode) => {
-    const params = [
-        {
-            Bucket:"vsnovel",
-            Key : `PJ${pjCode}/bg/`
-        },
-        {
-            Bucket:"vsnovel",
-            Key : `PJ${pjCode}/bgm/`
-        },
-        {
-            Bucket:"vsnovel",
-            Key : `PJ${pjCode}/char/`
-        }
-    ];
-
-    for(var i=0; i<params.length; i++) {
-        s3.putObject(params[i])
-        .send(err => {
-            if (err) {
-                throw err;
-            }
-        });
-    }
-    
 }

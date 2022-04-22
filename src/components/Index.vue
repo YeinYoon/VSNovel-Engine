@@ -2,7 +2,7 @@
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   
-  <!-- <div>
+  <div>
     <input multiple ref="img" type="file" @change="onInputImage()">
     <button @click="upload()">업로드</button>
     <button @click="getImg()">가져오기</button>
@@ -10,7 +10,9 @@
     <button @click="delFile()">삭제</button>
     <audio :src="mp3" controls></audio>
     <button @click="getMp3()">오디오 가져오기</button>
-  </div> -->
+  </div>
+
+  <button @click="getFile()">파일가져와 읽기</button>
 
   <div v-bind:class="{'enginebackground':true}">
     <div class="UserHeader"> <!-- 유저정보 헤더 -->
@@ -565,11 +567,16 @@ export default {
       // this.imgUrl = result;
     },
     async getMp3() {
-      var result = await storage.getUrl('test/PHONY_X_.mp3');
+      var result = await storage.getUrl('test/~~.mp3');
       this.mp3 = result;
     },
     async delFile() {
       await storage.deleteFile("test/프로젝트 관련.txt");
+    },
+    async getFile() {
+      var result = await storage.getJson("test/테스트.json");
+      var json = String.fromCharCode.apply(null, result);
+      console.log(json);
     },
 
     //로그아웃
