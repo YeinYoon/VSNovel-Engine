@@ -16,9 +16,7 @@ exports.getJson = async (filePath) => { //단일 JSON 파일 가져오기
     var result = (async () => {
         try {
             var data;
-            data = await s3
-            .getObject(params)
-            .promise()
+            data = await s3.getObject(params).promise()
             .then((data)=>{
                 return data.Body
             })

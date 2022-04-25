@@ -2,7 +2,7 @@
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   
-  <div>
+  <!-- <div>
     <input multiple ref="img" type="file" @change="onInputImage()">
     <button @click="upload()">업로드</button>
     <button @click="getImg()">가져오기</button>
@@ -10,9 +10,15 @@
     <button @click="delFile()">삭제</button>
     <audio :src="mp3" controls></audio>
     <button @click="getMp3()">오디오 가져오기</button>
-  </div>
+    <button @click="getFile()">파일가져와 읽기</button>
+    <input type="text" v-model="text">
+  </div> -->
 
-  <button @click="getFile()">파일가져와 읽기</button>
+  <div>
+    타이핑 테스트
+    <h3>{{txt}}</h3>
+    <button @click="next()">다음</button>
+  </div>
 
   <div v-bind:class="{'enginebackground':true}">
     <div class="UserHeader"> <!-- 유저정보 헤더 -->
@@ -522,6 +528,8 @@ import storage from '../aws'
 export default {
   name: 'Index',
   created() {
+    this.test(); // 타이핑 테스트
+
     axios.get('/engine/auth/loginCheck')
     .then(async (result)=>{
       if(result.data!="") {
@@ -545,13 +553,40 @@ export default {
       alramStatus : false,
       existNotice : "off",
 
+      // 서버스토리지 파일 테스트용
       img : "",
       imgUrl : "",
-      mp3 : ""
+      mp3 : "",
+      text : "",
+
+      //타이핑 애니메이션 테스트용
+      content : "Hello, I'm Sample Text",
+      txt : "",
+      count : 0
     }
   },
   methods : {
+    // 타이핑 테스트
+    typing() {
+      var char = 0;
+      if(this.count < this.content.length) {
+        char = this.content.charAt(this.count);
+        this.txt += char;
+        this.count++;
+      } else {
+        clearInterval(this.typing);
+      }
+    },
+    test() {
+      setInterval(this.typing, 100);
+    },
+    next() {
+      this.count = 0;
+      this.txt = "";
+      this.content = "is next Text!";
+    },
 
+    // 서버스토리지 테스트
     onInputImage() {
       this.img = this.$refs.img.files[0];
       console.log(this.img.name);
@@ -577,7 +612,10 @@ export default {
       var result = await storage.getJson("test/테스트.json");
       var json = String.fromCharCode.apply(null, result);
       console.log(json);
+      this.text = json;
     },
+
+
 
     //로그아웃
     logout(){
