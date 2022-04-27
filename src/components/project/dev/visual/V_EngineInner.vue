@@ -12,14 +12,12 @@
 </template>
 
 <script>
-// import PlotController from './V_PlotController.vue'
 import EngineCanvas from './V_EngineCanvas.vue'
 import storage from '../../../../aws'
 
 export default {
   name: 'V_EngineInner',
   components: {
-    PlotController,
     EngineCanvas,
   },
   created() {
