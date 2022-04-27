@@ -1,34 +1,33 @@
 <template>
 <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
-<div class="DevPageTemp">
-    <!-- <div>
-        Project [ {{title}} ]
-        마지막 저장 : {{retouchDate}}
-        상태 : {{status}}
+    <div class="DevPageTemp">
+        <div>
+            Project [ {{title}} ]
+            마지막 저장 : {{retouchDate}}
+            상태 : {{status}}
 
-        <button @click="goToEditPjInfo(pjCode)">프로젝트 정보수정</button>
-        <button @click="goToInvitePj(pjCode)">유저 초대</button>
-        <button @click="save()">저장</button>
-    </div> -->
+            <button @click="goToEditPjInfo(pjCode)">프로젝트 정보수정</button>
+            <button @click="goToInvitePj(pjCode)">유저 초대</button>
+            <button @click="save()">저장</button>
+        </div>
 
-    <div v-if="pjType == 'W'">
-        <WDevBoard
-        ></WDevBoard>
+        <div v-if="pjType == 'W'">
+            <WDevBoard
+            ></WDevBoard>
+        </div>
+
+        <div v-else-if="pjType == 'V'">
+            <VDevBoard
+            :pjType="pjType"
+            :VpjCode="pjCode"
+            ></VDevBoard>
+        </div>
+
+        <div class="editRouter"> <!--프로젝트 정보 수정, 팀 초대-->
+            <router-view></router-view>
+        </div>
+        
     </div>
-
-    <div v-else-if="pjType == 'V'">
-
-        <VDevBoard
-        :pjType="pjType"
-        :VpjCode="pjCode"
-        ></VDevBoard>
-    </div>
-
-    <div class="editRouter"> <!--프로젝트 정보 수정, 팀 초대-->
-        <router-view></router-view>
-    </div>
-    
-</div>
 </div>
 </template>
 
@@ -36,7 +35,7 @@
 import axios from '../../../axios';
 
 import WDevBoard from './web/W_EngineInner.vue';
-import VDevBoard from './visual/VDevBoard.vue';
+import VDevBoard from './visual/V_EngineInner.vue';
 export default {
     name : "devPage",
     created() {

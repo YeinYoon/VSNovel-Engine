@@ -1,8 +1,7 @@
 <template>
     <div class="enginebackground">
       <div class="EngineCanvas">
-        <EngineCanvas>
-        </EngineCanvas>
+        <EngineCanvas/>
       </div>
       <div class="PlotController">
         <PlotController/>
@@ -11,11 +10,11 @@
 </template>
 
 <script>
-import PlotController from './W_PlotController.vue'
-import EngineCanvas from './W_EngineCanvas.vue'
+import PlotController from './V_PlotController.vue'
+import EngineCanvas from './V_EngineCanvas.vue'
 
 export default {
-  name: 'W_EngineInner',
+  name: 'V_EngineInner',
   components: {
     PlotController,
     EngineCanvas,
