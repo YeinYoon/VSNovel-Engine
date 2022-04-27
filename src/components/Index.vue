@@ -14,11 +14,11 @@
     <input type="text" v-model="text">
   </div> -->
 
-  <div>
+  <!-- <div>
     타이핑 테스트
     <h3>{{txt}}</h3>
     <button @click="next()">다음</button>
-  </div>
+  </div> -->
 
   <div v-bind:class="{'enginebackground':true}">
     <div class="UserHeader"> <!-- 유저정보 헤더 -->

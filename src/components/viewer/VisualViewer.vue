@@ -68,20 +68,21 @@
 
     <!-- 좌측 상단 햄버거메뉴 -->
     <!-- 모바일 환경에서만 나올건지". PC에서도 반응형으로 제공할지는 선택 -->
+    <div class="Player">
       <div class="ViewerNav">
-        <img src="@/assets/icons/white/align_left.png" />
+        <!-- <img src="@/assets/icons/white/align_left.png" /> -->
       </div>
       <!-- 이미지 -->
 
       <!-- 내부 img태그의 src를 가공하여 사용, -->
       <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
-      <div class="SceneImg"> <!--이새끼 문제-->
+      <div class="SceneImg">
         <img :src="Now.img" v-if="Now.img!=''"/>
       </div>
 
       <!-- 이미지 끝. -->
       <!-- 대사 -->
-      <div class="SceneScriptFrame"> <!-- 이새끼도 문제 -->
+      <div class="SceneScriptFrame">
         <!-- 대사창 배경-->
         <div class="ScriptBackground"></div>
 
@@ -111,13 +112,14 @@
       <!-- 대사 끝 -->
     </div>
     <!-- <button @click="nextScene">click</button> -->
+  </div>
   <!-- 전체 끝 -->
 </template>
 
 <script>
-import storage from '../../../../aws'
+import storage from '../../aws'
 export default {
-    name : "VDevBoard",
+    name : "VisualViewer",
     data() {
         return {
             Now: {
@@ -368,29 +370,48 @@ export default {
 </script>
 
 <style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+#app {
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  /* color: #2c3e50; */
+  margin: 0px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0px;
+}
 
 .ViewerBackground {
   background: #5e5e5e;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
 }
 
 .SceneBackground {
   position: absolute;
   left: 0px;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: 1;
   overflow: hidden;
 }
 
 .ScenePauseBackground {
-  position: absolute;
+  position: fixed;
   z-index: 9;
-  background: rgba(0, 0, 0, 0.8);
-  width: 100%;
-  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
 }
 
 .VisualNovelLabel {
@@ -470,11 +491,11 @@ export default {
 }
 
 .SceneSaveBackground {
-  position: absolute;
+  position: fixed;
   z-index: 9;
   background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
 .SceneSaveBackground {
@@ -484,7 +505,7 @@ export default {
 }
 
 .SaveSlotsFrame {
-  position: absolute;
+  position: fixed;
   width: 70%;
   height: 60%;
   padding: 40px;
@@ -511,11 +532,11 @@ export default {
 }
 
 .SceneSelectBackground {
-  position: absolute;
+  position: fixed;
   z-index: 9;
   background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
 .SceneSelectFrame {
@@ -552,6 +573,7 @@ export default {
 .ViewerNav {
   width: 40px;
   height: 40px;
+  padding: 10px;
   border-radius: 10px;
   position: absolute;
   left: 10px;
@@ -567,13 +589,12 @@ export default {
 }
 
 .ViewerNav img {
-  margin: 10px;
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
 }
 
 .SceneImg {
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 60%;
   width: 100%;
@@ -583,17 +604,13 @@ export default {
 }
 
 .SceneImg img {
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  transform: translate(-50%, -50%);
   width: 80%;
   height: 80%;
   object-fit: contain;
 }
 
 .SceneScriptFrame {
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: calc(100% - 80px);
   transform: translate(-50%, -50%);
@@ -672,7 +689,6 @@ export default {
   color: white;
   text-align: left;
   overflow: hidden;
-  font-size: 1.2em;
 }
 
 /* 반응형 레이아웃 for 모바일 */
@@ -741,7 +757,6 @@ export default {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 80%;
-    text-align: center;
   }
 
   .PauseMenuButton {

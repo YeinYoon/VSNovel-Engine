@@ -1,18 +1,7 @@
 <template>
-
 <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
 <div class="DevPageTemp">
-
-    
-
-
-    <div v-if="pjType == 'W'">
-        <WDevBoard
-        ></WDevBoard>
-    </div>
-
-    <div v-else-if="pjType == 'V'">
-    <div>
+    <!-- <div>
         Project [ {{title}} ]
         마지막 저장 : {{retouchDate}}
         상태 : {{status}}
@@ -20,7 +9,15 @@
         <button @click="goToEditPjInfo(pjCode)">프로젝트 정보수정</button>
         <button @click="goToInvitePj(pjCode)">유저 초대</button>
         <button @click="save()">저장</button>
+    </div> -->
+
+    <div v-if="pjType == 'W'">
+        <WDevBoard
+        ></WDevBoard>
     </div>
+
+    <div v-else-if="pjType == 'V'">
+
         <VDevBoard
         :pjType="pjType"
         :VpjCode="pjCode"
