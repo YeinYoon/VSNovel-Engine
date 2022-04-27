@@ -221,7 +221,7 @@ router.post('/deletePj', async (req,res)=>{
         console.log("DB쿼리 실패");
         res.send("err");
     } else {
-        storage.deleteProjectDir(req.body.pjCode); // 서버스토리지에서 해당 프로젝트 리소스폴더 삭제
+        await storage.deleteProjectDir(req.body.pjCode); // 서버스토리지에서 해당 프로젝트 리소스폴더 삭제
         res.send("ok");
     }
 })

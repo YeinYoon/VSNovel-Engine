@@ -1,4 +1,5 @@
 <template>
+<button @click="deletePj()">삭제</button>
     <div class="enginebackground">
       <div class="EngineCanvas">
         <EngineCanvas/>
@@ -12,14 +13,12 @@
 </template>
 
 <script>
-// import PlotController from './V_PlotController.vue'
 import EngineCanvas from './V_EngineCanvas.vue'
 import storage from '../../../../aws'
-
+import axios from '../../../../axios'
 export default {
   name: 'V_EngineInner',
   components: {
-    PlotController,
     EngineCanvas,
   },
   created() {
@@ -36,11 +35,28 @@ export default {
   methods : {
     async getJson(pjCode) {
       var result = await storage.getJson(`PJ${pjCode}/PJ${pjCode}.json`);
-      var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
-      var string = new TextDecoder().decode(uint8array);
-      console.log(JSON.parse(string));
-      
-      this.scenario = JSON.parse(string);
+      if(result == undefined) {
+        console.log("해당 프로젝트의 JSON이 존재하지 않음")
+      } else {
+        var uint8array = new TextEncoder("utf-8").encode(result);
+        var string = new TextDecoder().decode(uint8array);
+        this.scenario = JSON.parse(string);
+        console.log(this.scenario);
+      }
+    },
+
+    deletePj() {
+      axios.post('/engine/pj/deletePj', {pjCode : this.pjCode})
+      .then((result)=>{
+        if(result.data=="ok") {
+          this.$router.push('/');
+        } else {
+          console.log("프로젝트 삭제 에러")
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      })
     }
   }
 }

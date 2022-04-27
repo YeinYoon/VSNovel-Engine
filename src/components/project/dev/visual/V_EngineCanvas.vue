@@ -310,8 +310,7 @@ export default {
           console.error(err);
         })
       },
-
-
+      
         //현재 JSON 파일 업로드
         async uploadJSON() {
         var data = JSON.stringify(this.scenario);
