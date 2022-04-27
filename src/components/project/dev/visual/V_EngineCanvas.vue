@@ -116,10 +116,26 @@
 
 <script>
 import storage from '../../../../aws'
+import axios from '../../../../axios'
 export default {
     name : "VDevBoard",
+    created() {
+        this.pjCode = this.$route.params.pjCode;
+        this.getPjInfo(this.pjCode);
+    },
+    watch : {
+        $route() {
+          this.getPjInfo(this.pjCode);
+        }
+    },
     data() {
         return {
+            pjType : "",
+            pjCode : "",
+            title : "",
+            retouchDate : "",
+            stat : "",
+
             Now: {
                 bg: "",
                 bgm: "",
@@ -277,16 +293,35 @@ export default {
         }
     },
     methods : {
+      //해당 프로젝트 정보 가져오기
+      getPjInfo() {
+        axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
+        .then((result)=>{
+          if(result.data == "err") {
+            this.$store.commit('gModalOn', "프로젝트 정보를 불러오는데 실패했습니다.", "normal");
+          } else {
+            this.title = result.data.PROJ_TITLE;
+            this.retouchDate = result.data.PROJ_RETOUCHDATE;
+            this.stat = result.data.PROJ_STATUS;
+            this.pjType = result.data.PROJ_TYPE;
+          }
+        })
+        .catch((err)=>{
+          console.error(err);
+        })
+      },
+
+
         //현재 JSON 파일 업로드
         async uploadJSON() {
         var data = JSON.stringify(this.scenario);
-        var fileName = "testSave.json"
+        var fileName = `PJ${this.pjCode}.json`
         var properties = {type:'text/plain'};
 
         var file = new File([data], fileName, properties); //새로운 파일 객체 생성
         console.log(file);
 
-        var result = await storage.uploadFile('test/', file);
+        var result = await storage.uploadFile(`PJ${this.pjCode}/`, file);
         console.log(result);
         },
         async getJSON() {

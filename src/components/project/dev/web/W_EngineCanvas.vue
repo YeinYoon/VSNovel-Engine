@@ -61,7 +61,7 @@ export default {
     },
     watch : {
         $route() {
-            this.getPjInfo(this.pjCode);
+          this.getPjInfo(this.pjCode);
         }
     },
     data(){
@@ -130,13 +130,13 @@ export default {
 
         // PDF 변환
         exportToPDF () {
-        html2pdf(this.$refs.content, {
-          margin: 0.42,
-          filename: 'document.pdf',
-          image: { type: 'jpeg', quality: 1.98 },
-          html2canvas: { dpi: 192, letterRendering: true },
-          jsPDF: {orientation: 'portrait', unit: 'in', format: 'a4'} 
-			    })
+          html2pdf(this.$refs.content, {
+            margin: 0.42,
+            filename: 'document.pdf',
+            image: { type: 'jpeg', quality: 1.98 },
+            html2canvas: { dpi: 192, letterRendering: true },
+            jsPDF: {orientation: 'portrait', unit: 'in', format: 'a4'} 
+          })
         },
   }
 }
