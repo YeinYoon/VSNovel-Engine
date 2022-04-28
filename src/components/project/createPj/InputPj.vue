@@ -21,6 +21,7 @@
 
 <script>
 import axios from '../../../axios'
+import storage from '../../../aws'
 export default {
   name : "InputPj",
   data() {
@@ -38,8 +39,17 @@ export default {
       }
 
       axios.post('/engine/pj/createNewPj', newProject)
-      .then((result)=>{
-        if(result.data=="ok") {
+      .then(async (result)=>{
+        if(result.data!="err") {
+          var data = JSON.stringify({});
+          var fileName = `PJ${result.data.pjCode}.json`
+          var properties = {type:'text/plain'};
+          var file = new File([data], fileName, properties); //새로운 파일 객체 생성
+          console.log(file);
+
+          var upload = await storage.uploadFile(`PJ${result.data.pjCode}/`, file);
+          console.log(upload);
+
           this.$store.commit('gModalOn', {msg : "새로운 프로젝트가 생성됐습니다.", size : "normal"});
           this.$router.push('/');
         } else {

@@ -49,12 +49,12 @@ export default {
   methods : {
     async getJson(pjCode) {
       var result = await storage.getJson(`PJ${pjCode}/PJ${pjCode}.json`);
-      if(result == undefined) {
-        console.log("해당 프로젝트의 JSON이 존재하지 않음")
+      var uint8array = new TextEncoder("utf-8").encode(result);
+      var json = JSON.parse(new TextDecoder().decode(uint8array));
+      if(Object.keys(json).length === 0) {
+        console.log("해당 프로젝트의 JSON이 비어있음");
       } else {
-        var uint8array = new TextEncoder("utf-8").encode(result);
-        var string = new TextDecoder().decode(uint8array);
-        this.scenario = JSON.parse(string);
+        this.scenario = json;
         console.log('hi there')
         console.log(this.scenario);
       }
