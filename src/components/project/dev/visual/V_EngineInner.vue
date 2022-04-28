@@ -6,7 +6,7 @@
       </div>
       <div class="PlotController">
         <div class="PCBackground">
-          <div v-for="(plot, i) in scenario">
+          <div v-for="(plot, i) in scenario" draggable="true" class="bigBox">
             {{i}}
             <hr>
             <div v-for="(page, j) in plot" @click="goToPlot(i,j)">
@@ -84,6 +84,9 @@ export default {
 </script>
 
 <style>
+.bigBox{
+  cursor:move
+}
 .enginebackground {
   width: 100%;
   height: 100%;
