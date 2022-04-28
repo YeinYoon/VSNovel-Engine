@@ -6,10 +6,10 @@
       </div>
       <div class="PlotController">
         <div class="PCBackground">
-          <div v-for="(plot, i) in scenario" draggable="true" class="bigBox">
+          <div v-for="(plot, i) in scenario" :key="i" draggable="true" class="bigBox">
             {{i}}
             <hr>
-            <div v-for="(page, j) in plot" @click="goToPlot(i,j)">
+            <div v-for="(page, j) in plot" :key="j" @click="goToPlot(i,j)">
               {{j}}
               <span v-if="page.select==undefined">-> {{page.move.plot}},{{page.move.index}}</span>
               <div v-else>
