@@ -48,6 +48,9 @@ export default {
             isInvite : ""
         }
     },
+    props:{
+        isInvitePj:Boolean
+    },
     methods : {
         userSearch() {
             var searchData = {
@@ -86,7 +89,8 @@ export default {
         },
 
         back() {
-            this.$router.push(`/devPage/${this.pjCode}`);
+            this.$emit('pjInvite',false)
+            // this.$router.push(`/devPage/${this.pjCode}`);
         }
     }
 }

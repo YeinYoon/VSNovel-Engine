@@ -1,5 +1,7 @@
 <template>
 <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
+    <edit-pj-info v-if="isEditPj" :isEditPj="isEditPj" @pjEdit="pjEdit"></edit-pj-info>
+    <invite-pj v-if="isInvitePj" :isInvitePj="isInvitePj" @pjInvite="pjInvite"></invite-pj>
     <div class="DevPageTemp">
         <!-- <div>
             Project [ {{title}} ]
@@ -12,7 +14,7 @@
         </div> -->
 
         <div v-if="pjType == 'W'">
-            <WDevBoard
+            <WDevBoard  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
             ></WDevBoard>
         </div>
 
@@ -34,6 +36,8 @@ import axios from '../../../axios';
 
 import WDevBoard from './web/W_EngineInner.vue';
 import VDevBoard from './visual/V_EngineInner.vue';
+import EditPjInfo from './EditPjInfo.vue'
+import InvitePj from './InvitePj.vue'
 export default {
     name : "devPage",
     created() {
@@ -52,6 +56,8 @@ export default {
             title : "",
             retouchDate : "",
             status : "",
+            isInvitePj: false,
+            isEditPj: false,
         }
     },
     methods : {
@@ -90,11 +96,20 @@ export default {
                     this.$store.commit('gModalOn', {msg : "ERR : 프로젝트 저장 실패", size : "normal"});
                 }
             })
+        },
+        pjEdit: function(bool){
+            console.log('hi')
+            this.isEditPj=bool
+        },
+        pjInvite: function(bool){
+            this.isInvitePj=bool
         }
     },
     components : {
         WDevBoard,
-        VDevBoard
+        VDevBoard,
+        EditPjInfo,
+        InvitePj
     }
 }
 </script>

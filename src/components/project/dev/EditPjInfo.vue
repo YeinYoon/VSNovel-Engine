@@ -38,6 +38,9 @@ export default {
     components : {
         ConfirmModal,
     },
+    props:{
+        isEditPj:Boolean
+    },
     created() {
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
@@ -90,6 +93,7 @@ export default {
         },
 
         back() {
+            this.$emit('pjEdit',false)
             this.$router.push(`/devPage/${this.pjCode}`);
         },
 
@@ -135,6 +139,7 @@ export default {
     background: #353535;
     color: white;
     border-radius: 25px;
+    z-index: 99;
 }
 .InnerPositioner {
     position: absolute;

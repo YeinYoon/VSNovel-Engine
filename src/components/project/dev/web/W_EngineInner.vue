@@ -1,7 +1,7 @@
 <template>
     <div class="enginebackground">
       <div class="EngineCanvas">
-        <EngineCanvas>
+        <EngineCanvas :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit='pjEdit' @pjInvite='pjInvite'>
         </EngineCanvas>
       </div>
       <div class="PlotController">
@@ -20,6 +20,28 @@ export default {
     PlotController,
     EngineCanvas,
   },
+  props:{
+    isEditPj : Boolean,
+    isInvitePj : Boolean
+  },
+  data(){
+    return{
+      editPj:false,
+      invitePj:false
+    }
+  },
+  created(){
+    this.editPj=this.isEditPj
+    this.invitePj=this.isInvitePj
+  },
+  methods:{
+    pjEdit: function(bool){
+      this.$emit('pjEdit',bool)
+    },
+    pjInvite: function(bool){
+      this.$emit('pjInvite',bool)
+    }
+  }
 }
 
 </script>

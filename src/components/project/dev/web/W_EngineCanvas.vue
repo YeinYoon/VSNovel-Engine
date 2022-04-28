@@ -55,6 +55,10 @@ import html2pdf from 'html2pdf.js'
 
 export default {
   name: 'W_EngineCanvas',
+  props:{
+    isEditPj : Boolean,
+    isInvitePj : Boolean
+  },
   created() {
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
@@ -96,11 +100,15 @@ export default {
         },
 
         goToEditPjInfo(pjCode) {
-            this.$router.push(`/devPage/${pjCode}/editInfo`);
+          console.log('edit', pjCode)
+          this.$emit('pjEdit',true)
+            // this.$router.push(`/devPage/${pjCode}/editInfo`);
         },
 
         goToInvitePj(pjCode) {
-            this.$router.push(`/devPage/${pjCode}/invitePj`);
+          this.$emit('pjInvite',true)
+          console.log(pjCode)
+            // this.$router.push(`/devPage/${pjCode}/invitePj`);
         },
 
         saveAll() {

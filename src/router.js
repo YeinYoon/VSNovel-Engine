@@ -10,7 +10,7 @@ import Login from './components/auth/Login.vue';
 import createNewPj from './components/project/createPj/CreateNewPj.vue';
 import DevPage from './components/project/dev/DevPage.vue';
 import EditPjInfo from './components/project/dev/EditPjInfo.vue';
-import invitePj from './components/project/team/InvitePj.vue';
+import invitePj from './components/project/dev/InvitePj.vue';
 
 const routes = [
   {
