@@ -2,11 +2,24 @@
 <button @click="deletePj()">삭제</button>
     <div class="enginebackground">
       <div class="EngineCanvas">
-        <EngineCanvas/>
+        <EngineCanvas :plot="plot" :index="index"/>
       </div>
       <div class="PlotController">
         <div class="PCBackground">
-          123
+          <div v-for="(plot, i) in scenario">
+            {{i}}
+            <hr>
+            <div v-for="(page, j) in plot" @click="goToPlot(i,j)">
+              {{j}}
+              <span v-if="page.select==undefined">-> {{page.move.plot}},{{page.move.index}}</span>
+              <div v-else>
+                <p v-if="page.select.select1!=undefined">({{page.select.select1.text}})선택 시-> {{page.select.select1.plot}}, {{page.select.select1.index}}</p>
+                <p v-if="page.select.select2!=undefined">({{page.select.select2.text}})선택 시-> {{page.select.select2.plot}}, {{page.select.select2.index}}</p>
+                <p v-if="page.select.select3!=undefined">({{page.select.select3.text}})선택 시-> {{page.select.select3.plot}}, {{page.select.select3.index}}</p>
+              </div>
+              <hr>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -28,8 +41,9 @@ export default {
   data() {
     return {
       pjCode : "",
-
-      scenario : ""
+      index:"",
+      plot:"",
+      scenario : {}
     }
   },
   methods : {
@@ -41,6 +55,7 @@ export default {
         var uint8array = new TextEncoder("utf-8").encode(result);
         var string = new TextDecoder().decode(uint8array);
         this.scenario = JSON.parse(string);
+        console.log('hi there')
         console.log(this.scenario);
       }
     },
@@ -57,6 +72,11 @@ export default {
       .catch((err)=>{
         console.error(err);
       })
+    },
+    goToPlot(plot, index){
+      console.log(plot, index)
+      this.plot = plot
+      this.index = index
     }
   }
 }

@@ -118,15 +118,14 @@
 import storage from '../../../../aws'
 import axios from '../../../../axios'
 export default {
+  props:{
+    index:Number,
+    plot:String
+  },
     name : "VDevBoard",
     created() {
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
-    },
-    watch : {
-        $route() {
-          this.getPjInfo(this.pjCode);
-        }
     },
     data() {
         return {
@@ -396,6 +395,20 @@ export default {
         this.position.index=index
         this.status='play'
         this.loadData()
+        }
+    },
+    
+    watch : {
+        $route() {
+          this.getPjInfo(this.pjCode);
+        },
+        index: function(newIndex){
+          this.position.index=newIndex
+          this.loadData()
+        },
+        plot: function(newPlot){
+          this.position.plot=newPlot
+          this.loadData()
         }
     },
 }
