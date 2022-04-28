@@ -16,17 +16,17 @@ export default {
   name : "SideBar",
   data() {
     return {
-      btnIcon : "◀" 
+      btnIcon : "▶" 
     }
   },
   methods : {
     sideBarClick() {
       if(this.$store.state.sideBar == false) {
         this.$store.commit('sideMenuOn');
-        this.btnIcon = "▶"
+        this.btnIcon = "◀"
       } else {
         this.$store.commit('sideMenuOff');
-        this.btnIcon = "◀"
+        this.btnIcon = "▶"
       }
     }
   }
@@ -37,7 +37,7 @@ export default {
 .sideBarOn {
   display:table;
   background:#2c2c2c;
-  width: 160px;
+  width: 300px;
   height: 100vh;
   text-align: center;
   overflow:auto;
@@ -48,7 +48,7 @@ export default {
 .sideBarOff {
   display:table;
   background:#2c2c2c;
-  width: 160px;
+  width: 300px;
   height: 100vh;
   text-align: center;
   overflow:auto;
@@ -80,19 +80,19 @@ export default {
 
 @keyframes sideBarOn {
   from {
-      left: -25px;
+      left: -150px;
   }
   to {
-      left: 120px;
+      left: 100px;
   }
 }
 
 @keyframes sideBarOff {
   from {
-      left: 120px;
+      left: 100px;
   }
   to {
-      left: -25px;
+      left: -165px;
   }
 }
 </style>

@@ -2,7 +2,7 @@
 <button @click="deletePj()">삭제</button>
     <div class="enginebackground">
       <div class="EngineCanvas">
-        <EngineCanvas :plot="plot" :index="index"/>
+        <EngineCanvas :plot="plot" :index="index" :scenario="scenario"/>
       </div>
       <div class="PlotController">
         <div class="PCBackground">
