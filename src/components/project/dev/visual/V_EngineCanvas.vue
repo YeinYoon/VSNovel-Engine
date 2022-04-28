@@ -1,5 +1,7 @@
 <template>
     <div class="ViewerBackground">
+    <button v-if="editMod == false" @click="this.editMod = true;">수정하기</button>
+    <button v-else @click="save()">저장</button>
     <!-- 백그라운드 -->
     <!-- 내부 img태그의 src를 가공하여 사용, -->
     <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
@@ -84,7 +86,6 @@
       <div class="SceneScriptFrame"> <!-- 이새끼도 문제 -->
         <!-- 대사창 배경-->
         <div class="ScriptBackground"></div>
-
         <!-- 대사창 툴바 -->
         <div class="ScriptToolBar">
           <div class="ToolBarEl" @click="uploadJSON()">JSON 업로드</div>
@@ -94,14 +95,27 @@
         </div>
 
         <!-- 화자 -->
-        <div class="SceneSpeakerName">
-          <span>{{Now.name}}</span>
-        </div>
+        
+          <label for="name">
+          <div v-if="editMod" class="SceneSpeakerName" contenteditable="true">
+            <span id="name" ref="cngName">{{ Now.name }}</span>
+          </div>
+          <div v-else class="SceneSpeakerName">
+            <span id="name">{{Now.name}}</span>
+          </div>
+          
+          </label>
 
         <!-- 대사 -->
-        <div class="SceneScript">
-          <span>{{ Now.text }}</span>
+        
+        <label for="text">
+        <div v-if="editMod" class="SceneScript" contenteditable="true">
+          <span id="text" ref="cngText">{{ Now.text }}</span>
         </div>
+        <div v-else class="SceneScript">
+          <span id="text">{{ Now.text }}</span>
+        </div>
+        </label>
 
         <!-- 다음 대사 버튼 -->
         <div class="NextScriptButton" @click="nextScene">
@@ -135,6 +149,8 @@ export default {
             title : "",
             retouchDate : "",
             stat : "",
+
+            editMod : false,
 
             Now: {
                 bg: "",
@@ -293,23 +309,23 @@ export default {
         }
     },
     methods : {
-      //해당 프로젝트 정보 가져오기
-      getPjInfo() {
-        axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
-        .then((result)=>{
-          if(result.data == "err") {
-            this.$store.commit('gModalOn', "프로젝트 정보를 불러오는데 실패했습니다.", "normal");
-          } else {
-            this.title = result.data.PROJ_TITLE;
-            this.retouchDate = result.data.PROJ_RETOUCHDATE;
-            this.stat = result.data.PROJ_STATUS;
-            this.pjType = result.data.PROJ_TYPE;
-          }
-        })
-        .catch((err)=>{
-          console.error(err);
-        })
-      },
+        //해당 프로젝트 정보 가져오기
+        getPjInfo() {
+          axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
+          .then((result)=>{
+            if(result.data == "err") {
+              this.$store.commit('gModalOn', "프로젝트 정보를 불러오는데 실패했습니다.", "normal");
+            } else {
+              this.title = result.data.PROJ_TITLE;
+              this.retouchDate = result.data.PROJ_RETOUCHDATE;
+              this.stat = result.data.PROJ_STATUS;
+              this.pjType = result.data.PROJ_TYPE;
+            }
+          })
+          .catch((err)=>{
+            console.error(err);
+          })
+        },
       
         //현재 JSON 파일 업로드
         async uploadJSON() {
@@ -329,6 +345,17 @@ export default {
         var string = new TextDecoder().decode(uint8array);
         console.log(JSON.parse(string));
         },
+
+        save() {
+          eval()
+          eval()
+          this.scenario.시작[0].name = this.$refs.cngName.innerHTML;
+          this.scenario.시작[0].text = this.$refs.cngText.innerHTML;
+          console.log(this.scenario);
+          this.editMod = false;
+        },
+
+
 
 
         loadData: function () {
@@ -693,7 +720,7 @@ export default {
   position: absolute;
   left: 0px;
   top: 60px;
-  /* width: calc(100% - 40px); */
+  width: calc(100% - 40px);
   height: calc(100% - 200px);
   overflow: hidden;
   padding-left: 20px;

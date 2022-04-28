@@ -6,7 +6,7 @@
       </div>
       <div class="PlotController">
         <div class="PCBackground">
-          123
+          {{scenario}}
         </div>
       </div>
     </div>
