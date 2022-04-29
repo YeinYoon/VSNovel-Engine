@@ -64,9 +64,7 @@ export default {
         this.getPjInfo(this.pjCode);
     },
     watch : {
-        $route() {
-          this.getPjInfo(this.pjCode);
-        }
+      
     },
     data(){
         return {
@@ -75,6 +73,7 @@ export default {
             title : "",
             retouchDate : "",
             status : "",
+
             contentHTML : "",
         }
     },

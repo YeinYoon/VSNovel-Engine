@@ -14,13 +14,13 @@
         </div> -->
 
         <div v-if="pjType == 'W'">
-            <WDevBoard  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
-            ></WDevBoard>
+            <WEngineInner  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
+            ></WEngineInner>
         </div>
 
         <div v-else-if="pjType == 'V'">
-            <VDevBoard
-            ></VDevBoard>
+            <VEngineInner
+            ></VEngineInner>
         </div>
 
         <div class="editRouter"> <!--프로젝트 정보 수정, 팀 초대-->
@@ -34,8 +34,8 @@
 <script>
 import axios from '../../../axios';
 
-import WDevBoard from './web/W_EngineInner.vue';
-import VDevBoard from './visual/V_EngineInner.vue';
+import WEngineInner from './web/W_EngineInner.vue';
+import VEngineInner from './visual/V_EngineInner.vue';
 import EditPjInfo from './EditPjInfo.vue'
 import InvitePj from './InvitePj.vue'
 export default {
@@ -78,14 +78,6 @@ export default {
             })
         },
 
-        goToEditPjInfo(pjCode) {
-            this.$router.push(`/devPage/${pjCode}/editInfo`);
-        },
-
-        goToInvitePj(pjCode) {
-            this.$router.push(`/devPage/${pjCode}/invitePj`);
-        },
-
         save() {
             axios.patch('/engine/pj/devSave', {pjCode : this.pjCode})
             .then((result)=>{
@@ -98,6 +90,7 @@ export default {
             })
         },
         pjEdit: function(bool){
+            if(!bool)this.getPjInfo()
             console.log('hi')
             this.isEditPj=bool
         },
@@ -106,8 +99,8 @@ export default {
         }
     },
     components : {
-        WDevBoard,
-        VDevBoard,
+        WEngineInner,
+        VEngineInner,
         EditPjInfo,
         InvitePj
     }

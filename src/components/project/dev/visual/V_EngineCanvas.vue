@@ -190,14 +190,7 @@ export default {
             console.error(err);
           })
         },
-        
-        // async getJSON() {
-        //   var result = await storage.getJson(`PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
-        //   var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
-        //   var string = new TextDecoder().decode(uint8array);
-        //   console.log(JSON.parse(string));
-        //   this.scenario = JSON.parse(string);
-        // },
+      
         //현재 JSON 파일 업로드
         async uploadJSON() {
         var data = JSON.stringify(this.scenario);
@@ -209,6 +202,12 @@ export default {
 
         var result = await storage.uploadFile(`PJ${this.pjCode}/`, file);
         console.log(result);
+        },
+        async getJSON() {
+          var result = await storage.getJson(`PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
+          var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
+          var string = new TextDecoder().decode(uint8array);
+          console.log(JSON.parse(string));
         },
 
         save() {

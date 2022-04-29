@@ -1,7 +1,7 @@
 <template>
     <div class="enginebackground">
       <div class="EngineCanvas">
-        <EngineCanvas :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit='pjEdit' @pjInvite='pjInvite'>
+        <EngineCanvas :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit='pjEdit' @pjInvite='pjInvite' ref="canvas">
         </EngineCanvas>
       </div>
       <div class="PlotController">
@@ -36,10 +36,19 @@ export default {
   },
   methods:{
     pjEdit: function(bool){
+      console.log('hihihihihih'+ bool)
       this.$emit('pjEdit',bool)
     },
     pjInvite: function(bool){
       this.$emit('pjInvite',bool)
+    }
+  },
+  watch: {
+    editPj(edit, pre){
+      console.log('변화됨 :' + edit + " " + pre)
+      if(!edit){
+        this.$router.go();
+      }
     }
   }
 }

@@ -82,7 +82,7 @@ export default {
             .then((result)=>{
                 if(result.data=="ok") {
                     this.$store.commit('gModalOn', {msg : "수정되었습니다.", size : "small"});
-                    this.$router.push(`/devPage/${this.pjCode}`);
+                    this.$emit('pjEdit', false);
                 } else {
                     this.$store.commit('gModalOn', {msg : "ERR : 프로젝트 수정 실패.", size : "small"});
                 }
