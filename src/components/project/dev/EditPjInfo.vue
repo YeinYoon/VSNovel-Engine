@@ -1,6 +1,6 @@
 <template>
-<ConfirmModal ref="confirmModal"></ConfirmModal>
     <div class="RouterModalView">
+        <ConfirmModal ref="confirmModal"></ConfirmModal>
         <div class="EditInner">
             <div class="cancleButton" @click="back()">
                 <p>x</p>

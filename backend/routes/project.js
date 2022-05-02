@@ -228,48 +228,4 @@ router.post('/deletePj', async (req,res)=>{
 })
 
 
-// 플롯 리스트 가져오기
-router.post('/getPlotList', async (req, res)=>{
-    console.log(`해당 프로젝트의 플롯 목록을 불러옴 : ${req.body.pjCode}`);
-    var result = await db.execute(`SELECT * FROM tbl_plot WHERE proj_code = ${req.body.pjCode}`);
-    result = result.rows;
-
-    if(result.length == 0) {
-        res.send("empty");
-    } else {
-        res.send(result);
-    }
-})
-
-// 플롯 생성
-router.post('/createPlot', async (req, res)=>{
-    console.log(`새로운 플롯을 생성함\n 대상 프로젝트 : ${req.body.pjCode}`);
-
-    if(req.body.title.length == 0) { // 플롯 제목 미입력시
-
-        var result = await db.execute(`INSERT INTO tbl_plot(proj_code, plot_code)
-        VALUES(${req.body.pjCode}, tbl_plot_${req.body.pjCode}_seq.NEXTVAL)`);
-        if(result == "err") {
-            res.send("err");
-        } else {
-            // 플롯별 최초 페이지 생성 코드 작성 예정
-            res.send("ok");
-        }
-
-    } else { // 플롯 제목 입력시
-
-        var result2 = await db.execute(`INSERT INTO tbl_plot
-        VALUES(${req.body.pjCode}, tbl_plot_${req.body.pjCode}_seq.NEXTVAL, '${req.body.title}')`);
-        if(result2 == "err") {
-            res.send("err");
-        } else {
-            // 플롯별 최초 페이지 생성 코드 작성 예정
-            res.send("ok");
-        }        
-
-    }
-    
-})
-
-
 module.exports = router;

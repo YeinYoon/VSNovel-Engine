@@ -52,8 +52,8 @@ export default {
       disabled: false,
     });
 
-    const onEditorChange = ({ quill, html, text }) => {
-      console.log("editor change!", quill, html, text);
+    const onEditorChange = ({ html }) => {
+      // console.log("editor change!", quill, html, text);
       state._content = html;
     };
 

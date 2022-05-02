@@ -54,8 +54,6 @@ const router = createRouter({
 
 //전역 가드
 router.beforeEach((to, from)=>{
-  console.log(to);
-
   const PathArr = ['/devPage']
   const check = PathArr.find((item)=>{
     return to.path.startsWith(item)

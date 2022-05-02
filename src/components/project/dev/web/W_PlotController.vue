@@ -1,15 +1,10 @@
 <template>
   <div class="PCBackground">
-    <div v-for="plot in plotList" :key="plot.PLOT_CODE">
-      <p>{{plot.PLOT_TITLE}}</p>
-    </div>
-
     <div class="PlotList">
 
       <div class="PlotBlock"> <!--플롯 블록 -->
 
         <p class="PlotTitle">플롯제목</p> <!-- 플롯 제목 출력부 -->
-
         <p class="PlotTime">시간</p> <!-- 플롯 수정시간 출력부 -->
 
         <!-- 플롯의 순서 -->
@@ -26,21 +21,17 @@
       </div> <!--플롯 블록 -->
 
       <div class="PlotBlock">
-
         <p class="PlotTitle">플롯제목</p>
-
         <p class="PlotTime">시간</p>
 
         <div class="PlotNumberIcon">
           <p class="PlotNumber">1</p>
         </div>
-
       </div> 
 
       <div class="PlotBlock">
 
         <p class="PlotTitle">플롯제목</p>
-
         <p class="PlotTime">시간</p>
 
         <div class="PlotNumberIcon">
@@ -61,32 +52,18 @@
 </template>
 
 <script>
-import axios from '../../../../axios'
 export default {
   name: 'W_PlotController',
   created() {
-    this.getPlotList();
+    
   },
   data() {
     return {
       pjCode : "",
-      plotList : [],
+      
     }
   },
   methods : {
-    getPlotList() {
-      axios.post('/engine/pj/getPlotList', {pjCode : this.$route.params.pjCode})
-      .then((result)=>{
-        console.log(result);
-        if(result.data != "empty") {
-          this.plotList = result.data;
-        }
-      })
-      .catch((err)=>{
-        console.error(err);
-      })
-    },
-
 
   }
 }
