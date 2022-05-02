@@ -43,7 +43,7 @@
     <div class="PreviewButton">
       <button @click="CHIHAHAHAHA()">원고 미리보기</button>
     </div>
-    
+    <img :src="output">
     
   </div>
 </template>
@@ -51,7 +51,6 @@
 <script>
 import axios from '../../../../axios';
 import WebNovelEditor from '../../editor/WebNovelEditor.vue'
-import html2pdf from 'html2pdf.js'
 
 export default {
   name: 'W_EngineCanvas',
@@ -75,6 +74,8 @@ export default {
             status : "",
 
             contentHTML : "",
+
+            output:null
         }
     },
     components : {
@@ -136,14 +137,19 @@ export default {
         },
 
         // PDF 변환
-        exportToPDF () {
-          html2pdf(this.$refs.content, {
-            margin: 0.42,
-            filename: 'document.pdf',
-            image: { type: 'jpeg', quality: 1.98 },
-            html2canvas: { dpi: 192, letterRendering: true },
-            jsPDF: {orientation: 'portrait', unit: 'in', format: 'a4'} 
-          })
+        async exportToPDF () {
+          const el = this.$refs.content
+          const Option = {
+            type: 'dataURL'
+          }
+          this.output = await this.$html2canvas(el, Option)
+          // html2pdf(this.$refs.content, {
+          //   margin: 0.42,
+          //   filename: 'document.pdf',
+          //   image: { type: 'jpeg', quality: 1.98 },
+          //   html2canvas: { dpi: 192, letterRendering: true },
+          //   jsPDF: {orientation: 'portrait', unit: 'in', format: 'a4'} 
+          // })
         },
   }
 }
