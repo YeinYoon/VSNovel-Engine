@@ -1,10 +1,10 @@
 <template>
     <div class="enginebackground">
       <div class="EngineCanvas">
-        <EngineCanvas :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit='pjEdit' @pjInvite='pjInvite' ref="canvas">
+        <EngineCanvas :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit='pjEdit' @pjInvite='pjInvite' ref="canvas" :NovelPlot="NovelPlot">
         </EngineCanvas>
       </div>
-      <div class="PlotController">
+      <div class="PlotController" :NovelPlot="NovelPlot">
         <PlotController/>
       </div>
     </div>
@@ -13,7 +13,7 @@
 <script>
 import PlotController from './W_PlotController.vue'
 import EngineCanvas from './W_EngineCanvas.vue'
-
+import storage from '../../../../aws'
 export default {
   name: 'W_EngineInner',
   components: {
@@ -25,12 +25,26 @@ export default {
     isInvitePj : Boolean
   },
   data(){
-    return{
+    return {
       editPj:false,
-      invitePj:false
+      invitePj:false,
+
+      pjCode : "",
+
+      NovelPlot : [
+        {
+          title : "챕터 제목",
+          content : "텍스트",
+          retouchTime : "-",
+          index : 0
+        },
+      ]
     }
   },
   created(){
+    this.pjCode = this.$route.params.pjCode;
+    this.getData();
+
     this.editPj=this.isEditPj
     this.invitePj=this.isInvitePj
   },
@@ -41,7 +55,21 @@ export default {
     },
     pjInvite: function(bool){
       this.$emit('pjInvite',bool)
-    }
+    },
+
+
+    async getData() {
+      var result = await storage.getJson(`PJ${this.pjCode}/PJ${this.pjCode}.json`);
+      var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
+      var string = new TextDecoder().decode(uint8array);
+      console.log(JSON.parse(string));
+      var data = JSON.parse(string);
+
+      if(Object.keys(data).length != 0) {
+        this.NovelPlot = data;
+      } 
+      
+    }    
   },
   watch: {
     editPj(edit, pre){

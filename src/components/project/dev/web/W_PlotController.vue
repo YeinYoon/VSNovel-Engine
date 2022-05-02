@@ -2,42 +2,13 @@
   <div class="PCBackground">
     <div class="PlotList">
 
-      <div class="PlotBlock"> <!--플롯 블록 -->
-
-        <p class="PlotTitle">플롯제목</p> <!-- 플롯 제목 출력부 -->
-        <p class="PlotTime">시간</p> <!-- 플롯 수정시간 출력부 -->
-
-        <!-- 플롯의 순서 -->
-        <div class="PlotNumberIcon"> 
-          <p class="PlotNumber">1</p>
-        </div>
-         <!-- 플롯의 순서 -->
-
-        <!-- <div class="PlotNumberControl"> 
-          <button class="NumberShiftUp">▲</button>
-          <button class="NumberShiftDown">▼</button>
-        </div> -->
-
-      </div> <!--플롯 블록 -->
-
-      <div class="PlotBlock">
-        <p class="PlotTitle">플롯제목</p>
-        <p class="PlotTime">시간</p>
+      <div class="PlotBlock" v-for="(p, i) in NovelPlot" :key="i">
+        <p class="PlotTitle">{{p.title}}</p>
+        <p class="PlotTime">{{p.retouchTime}}</p>
 
         <div class="PlotNumberIcon">
-          <p class="PlotNumber">1</p>
+          <p class="PlotNumber">{{p.index + 1}}</p>
         </div>
-      </div> 
-
-      <div class="PlotBlock">
-
-        <p class="PlotTitle">플롯제목</p>
-        <p class="PlotTime">시간</p>
-
-        <div class="PlotNumberIcon">
-          <p class="PlotNumber">1</p>
-        </div>
-
       </div> 
 
       <div class="PlotBlock"> <!--엔드블록-->
@@ -54,12 +25,14 @@
 <script>
 export default {
   name: 'W_PlotController',
+  props : {
+    NovelPlot : Object
+  },
   created() {
-    
+    console.log(this.NovelPlot);
   },
   data() {
     return {
-      pjCode : "",
       
     }
   },
