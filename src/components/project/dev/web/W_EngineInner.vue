@@ -1,11 +1,24 @@
 <template>
     <div class="enginebackground">
       <div class="EngineCanvas">
-        <EngineCanvas :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit='pjEdit' @pjInvite='pjInvite' ref="canvas" :NovelPlot="NovelPlot">
+        <EngineCanvas
+        :isEditPj="isEditPj"
+        :isInvitePj="isInvitePj"
+        @pjEdit='pjEdit'
+        @pjInvite='pjInvite'
+        :NovelPlot="NovelPlot"
+        :nowPlot="nowPlot"
+        @savePlot="savePlot"
+        @deletePlot="deletePlot"
+        ref="canvas" >
         </EngineCanvas>
       </div>
-      <div class="PlotController" :NovelPlot="NovelPlot">
-        <PlotController/>
+      <div class="PlotController">
+        <PlotController
+        :NovelPlot="NovelPlot"
+        @addPlot="addPlot()"
+        @selectPlot="selectPlot"
+        ref="controller"/>
       </div>
     </div>
 </template>
@@ -14,8 +27,15 @@
 import PlotController from './W_PlotController.vue'
 import EngineCanvas from './W_EngineCanvas.vue'
 import storage from '../../../../aws'
+import timestamp from '../../../../timestamp'
 export default {
   name: 'W_EngineInner',
+  created(){
+    this.pjCode = this.$route.params.pjCode;
+    this.getData();
+    this.editPj=this.isEditPj
+    this.invitePj=this.isInvitePj
+  },
   components: {
     PlotController,
     EngineCanvas,
@@ -32,21 +52,10 @@ export default {
       pjCode : "",
 
       NovelPlot : [
-        {
-          title : "챕터 제목",
-          content : "텍스트",
-          retouchTime : "-",
-          index : 0
-        },
-      ]
+        
+      ],
+      nowPlot : 0
     }
-  },
-  created(){
-    this.pjCode = this.$route.params.pjCode;
-    this.getData();
-
-    this.editPj=this.isEditPj
-    this.invitePj=this.isInvitePj
   },
   methods:{
     pjEdit: function(bool){
@@ -57,19 +66,63 @@ export default {
       this.$emit('pjInvite',bool)
     },
 
-
     async getData() {
       var result = await storage.getJson(`PJ${this.pjCode}/PJ${this.pjCode}.json`);
       var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
       var string = new TextDecoder().decode(uint8array);
-      console.log(JSON.parse(string));
       var data = JSON.parse(string);
 
       if(Object.keys(data).length != 0) {
         this.NovelPlot = data;
-      } 
-      
-    }    
+      } else {
+        this.addPlot();
+      }
+    },
+
+    addPlot() {
+      var newCode = Date.now() + Math.random();
+      newCode = newCode.toString();
+      newCode = newCode.split('.')
+      newCode = newCode[1];
+
+      this.NovelPlot.push({
+        title : "새 플롯",
+        content : "새 텍스트",
+        retouchTime : "-",
+        plCode : newCode
+      })
+    },
+    selectPlot(plCode) {
+      var index = this.NovelPlot.findIndex(p => p.plCode == plCode);
+      this.nowPlot = index;
+    },
+    savePlot(data) {
+      if(data.title == "") {
+        data.title = "무제"
+      }
+      this.NovelPlot[this.nowPlot].title = data.title;
+      this.NovelPlot[this.nowPlot].content = data.content;
+      this.NovelPlot[this.nowPlot].retouchTime = timestamp.getTimestamp();
+
+      this.sortPlot();
+    },
+    deletePlot() {
+      if(this.NovelPlot.length != 1) {
+        this.NovelPlot.splice(this.nowPlot, 1);
+        this.sortPlot();
+
+        //삭제후 플롯 이동코드 작성 필요
+
+      } else {
+        this.$store.commit('gModalOn', {size : "normal", msg : "최소 하나의 플롯이 존재해야 합니다."});
+      }
+    },
+
+    sortPlot() {
+      this.NovelPlot.sort((a,b)=>{ 
+        return new Date(b.retouchTime) - new Date(a.retouchTime);
+      })
+    }
   },
   watch: {
     editPj(edit, pre){

@@ -2,16 +2,12 @@
   <div class="PCBackground">
     <div class="PlotList">
 
-      <div class="PlotBlock" v-for="(p, i) in NovelPlot" :key="i">
+      <div class="PlotBlock" v-for="(p, i) in NovelPlot" :key="i" @click="this.$emit('selectPlot', p.plCode);">
         <p class="PlotTitle">{{p.title}}</p>
         <p class="PlotTime">{{p.retouchTime}}</p>
-
-        <div class="PlotNumberIcon">
-          <p class="PlotNumber">{{p.index + 1}}</p>
-        </div>
       </div> 
 
-      <div class="PlotBlock"> <!--엔드블록-->
+      <div class="PlotBlock" @click="this.$emit('addPlot');"> <!--엔드블록-->
         <div class="PlotAddButton">
           <img class="" src="@/assets/icons/white/plus.png">
         </div>
@@ -27,9 +23,6 @@ export default {
   name: 'W_PlotController',
   props : {
     NovelPlot : Object
-  },
-  created() {
-    console.log(this.NovelPlot);
   },
   data() {
     return {

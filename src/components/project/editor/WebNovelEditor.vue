@@ -1,9 +1,7 @@
 <template>
 <div>
-
 <div class="Editor">
   <quill-editor
-    v-html="loadData"
     v-model:value="state.content"
     :options="state.editorOption"
     :disabled="state.disabled"
@@ -21,18 +19,16 @@ export default {
   name: "App",
   data() {
     return {
-      loadData : "",
+      
     }
   },
   methods : {
-    save() {
-      this.$emit("commitContent",this.state._content);
-      //DB 저장코드 작성하면 될듯 ㅎㅎ;
-    }
+
   },
 
-  setup() {
+  setup(props, {emit}) {
     const state = reactive({
+      content : "",
       _content: "",
       editorOption: {
         placeholder: "",
@@ -55,6 +51,7 @@ export default {
     const onEditorChange = ({ html }) => {
       // console.log("editor change!", quill, html, text);
       state._content = html;
+      emit("commitContent",state._content);
     };
 
     return {
