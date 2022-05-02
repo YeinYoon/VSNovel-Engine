@@ -10,10 +10,10 @@
         <WebNovelEditor
         @commitContent="getContent"
         ref="webNovelEditor"></WebNovelEditor>
-        <div id="preview" v-html="contentHTML" ref="content"></div>
+        <!-- <div id="preview" v-html="contentHTML" ref="content"></div> -->
       </div>
       <div class="WN_Preview"> 
-        123
+        <div id="preview" v-html="contentHTML" ref="content"></div>
       </div>
     </div>
 
@@ -237,6 +237,7 @@ export default {
   overflow: auto;
   border-radius: 25px;
   padding: 20px;
+  white-space: normal;
 }
 
 .SaveButton {

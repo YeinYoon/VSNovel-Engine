@@ -81,7 +81,7 @@ export default {
   text-align: center;
 }
 .ql-toolbar.ql-snow {
-  /* padding-right: 175px; */
+  padding: 5px;
 }
 
 .ql-container {
