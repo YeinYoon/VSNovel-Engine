@@ -38,7 +38,7 @@ export default {
         placeholder: "",
         modules: {
           toolbar: [
-            [],[],[],[],[],[],[],[],[],[],[],[], // 메뉴 정렬용
+            // [],[],[],[],[],[],[],[],[],[],[],[], 메뉴정렬용이라는데 뺐음
             ["bold", "italic", "underline"],
             [{ indent: "-1" }, { indent: "+1" }],
             [{ size: [false, "large", "huge"] }],
@@ -81,7 +81,7 @@ export default {
   text-align: center;
 }
 .ql-toolbar.ql-snow {
-  padding-right: 175px;
+  /* padding-right: 175px; */
 }
 
 .ql-container {
@@ -91,7 +91,7 @@ export default {
 .ql-editor > * {
   cursor: text;
   color: black;
-  font-size: 0.6em;
+  font-size: 1em;
   font-family: "RIDIBatang";
 }
 .ql-container.ql-snow {

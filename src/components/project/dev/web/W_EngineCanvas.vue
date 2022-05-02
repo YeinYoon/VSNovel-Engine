@@ -12,6 +12,9 @@
         ref="webNovelEditor"></WebNovelEditor>
         <div id="preview" v-html="contentHTML" ref="content"></div>
       </div>
+      <div class="WN_Preview"> 
+        123
+      </div>
     </div>
 
     <div class="SaveButton"> 
@@ -217,10 +220,23 @@ export default {
 .WN_Editor {
   background: white;
   position: absolute;
-  width: calc(100%);
+  width: calc(50% - 10px);
   height: calc(100%);
   color: black;
   overflow: auto;
+  border-radius: 25px;
+
+}
+.WN_Preview {
+  background: white;
+  position: absolute;
+  left: calc(50% + 20px);
+  width: calc(50% - 20px);
+  height: calc(100%);
+  color: black;
+  overflow: auto;
+  border-radius: 25px;
+  padding: 20px;
 }
 
 .SaveButton {
