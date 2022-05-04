@@ -3,8 +3,14 @@
     <div class="PlotList">
 
       <div class="PlotBlock" v-for="(p, i) in NovelPlot" :key="i" @click="this.$emit('selectPlot', p.plCode);">
-        <p class="PlotTitle">{{p.title}}</p>
-        <p class="PlotTime">{{p.retouchTime}}</p>
+        <div v-if="i == nowPlot">
+          <p class="PlotTitle_now">{{p.title}}</p>
+          <p class="PlotTime_now">{{p.retouchTime}}</p>
+        </div>
+        <div v-else>
+          <p class="PlotTitle">{{p.title}}</p>
+          <p class="PlotTime">{{p.retouchTime}}</p>
+        </div>
       </div> 
 
       <div class="PlotBlock" @click="this.$emit('addPlot');"> <!--엔드블록-->
@@ -22,7 +28,8 @@
 export default {
   name: 'W_PlotController',
   props : {
-    NovelPlot : Object
+    NovelPlot : Object,
+    nowPlot : Number,
   },
   data() {
     return {
@@ -57,6 +64,18 @@ export default {
   width: 100%;
   height: 90px;
   background: rgb(90, 90, 90);
+  cursor: pointer;
+}
+
+.PlotBlock:nth-child(nowPlot) {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  width: 100%;
+  height: 90px;
+  background: rgb(90, 90, 90);
+  cursor: pointer;
 }
 
 .PlotTitle {
@@ -67,6 +86,19 @@ export default {
 
 .PlotTime {
   position: absolute;
+  left: 15px;
+  top: 35px;
+}
+
+.PlotTitle_now {
+  position: absolute;
+  color: #2872f9;
+  left: 15px;
+  top: 10px;
+}
+.PlotTime_now {
+  position: absolute;
+  color: #2872f9;
   left: 15px;
   top: 35px;
 }

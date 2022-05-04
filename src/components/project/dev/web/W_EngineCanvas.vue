@@ -65,6 +65,8 @@ export default {
   },
   watch : {
     nowPlot() {
+      console.log("선택된 플롯의 인덱스 : ",this.nowPlot);
+
       this.inputPlotTitle = false;
 
       this.title = this.NovelPlot[this.nowPlot].title;

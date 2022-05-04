@@ -18,6 +18,7 @@
         :NovelPlot="NovelPlot"
         @addPlot="addPlot()"
         @selectPlot="selectPlot"
+        :nowPlot="nowPlot"
         ref="controller"/>
       </div>
     </div>
@@ -51,15 +52,12 @@ export default {
 
       pjCode : "",
 
-      NovelPlot : [
-        
-      ],
-      nowPlot : 0
+      NovelPlot : [],
+      nowPlot : null
     }
   },
   methods:{
     pjEdit: function(bool){
-      console.log('hihihihihih'+ bool)
       this.$emit('pjEdit',bool)
     },
     pjInvite: function(bool){
@@ -74,6 +72,7 @@ export default {
 
       if(Object.keys(data).length != 0) {
         this.NovelPlot = data;
+        this.nowPlot = 0;
       } else {
         this.addPlot();
       }
@@ -104,25 +103,18 @@ export default {
       this.NovelPlot[this.nowPlot].content = data.content;
       this.NovelPlot[this.nowPlot].retouchTime = timestamp.getTimestamp();
 
-      this.sortPlot();
     },
     deletePlot() {
       if(this.NovelPlot.length != 1) {
         this.NovelPlot.splice(this.nowPlot, 1);
-        this.sortPlot();
 
-        //삭제후 플롯 이동코드 작성 필요
+        //삭제시 플롯 이동코드 필요
 
       } else {
         this.$store.commit('gModalOn', {size : "normal", msg : "최소 하나의 플롯이 존재해야 합니다."});
       }
     },
 
-    sortPlot() {
-      this.NovelPlot.sort((a,b)=>{ 
-        return new Date(b.retouchTime) - new Date(a.retouchTime);
-      })
-    }
   },
   watch: {
     editPj(edit, pre){
