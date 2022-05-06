@@ -42,7 +42,7 @@
     </div>
 
     <div class="ExportButton"> 
-      <button>프로젝트 저장</button>
+      <button @click="this.$emit('pjSave')">프로젝트 저장</button>
     </div>
 
     
@@ -156,6 +156,13 @@ export default {
             jsPDF: {orientation: 'portrait', unit: 'in', format: 'a4'} 
           })
         },
+
+        plotMove() { // 0번째 플롯을 삭제했을시 작동
+          this.inputPlotTitle = false;
+          this.title = this.NovelPlot[this.nowPlot].title;
+          this.contentHTML = this.NovelPlot[this.nowPlot].content;
+          this.$refs.webNovelEditor.state.content = this.contentHTML;
+        }
   }
 }
 </script>

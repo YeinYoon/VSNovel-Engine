@@ -10,6 +10,7 @@
         :nowPlot="nowPlot"
         @savePlot="savePlot"
         @deletePlot="deletePlot"
+        @pjSave="pjSave"
         ref="canvas" >
         </EngineCanvas>
       </div>
@@ -106,14 +107,29 @@ export default {
     },
     deletePlot() {
       if(this.NovelPlot.length != 1) {
+        let index = this.nowPlot;
         this.NovelPlot.splice(this.nowPlot, 1);
-
-        //삭제시 플롯 이동코드 필요
-
+        this.nowPlot = index - 1;
+        if(this.nowPlot == -1) {
+          this.nowPlot = index;
+          this.$refs.canvas.plotMove();
+        }
       } else {
-        this.$store.commit('gModalOn', {size : "normal", msg : "최소 하나의 플롯이 존재해야 합니다."});
+        this.$store.commit('gModalOn', {size : "normal", msg : "삭제를 위해 최소 2개의 플롯이 필요합니다."});
       }
     },
+
+    async pjSave() {
+      var data = JSON.stringify(this.NovelPlot);
+      var fileName = `PJ${this.pjCode}.json`
+      var properties = {type:'text/plain'};
+
+      var file = new File([data], fileName, properties); //새로운 파일 객체 생성
+      console.log(file);
+
+      var result = await storage.uploadFile(`PJ${this.pjCode}/`, file);
+      console.log(result);
+    }
 
   },
   watch: {
