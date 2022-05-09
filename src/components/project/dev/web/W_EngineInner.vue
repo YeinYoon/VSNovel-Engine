@@ -21,6 +21,7 @@
         @selectPlot="selectPlot"
         @indexCng="indexCng"
         :nowPlot="nowPlot"
+        @deletePlot="deletePlot"
         ref="controller"/>
       </div>
     </div>

@@ -38,7 +38,6 @@
       <button
       @click="this.inputPlotTitle = false; this.$emit('savePlot', {title : this.title, content : this.contentHTML})">
       플롯 저장</button>
-      <button @click="this.$emit('deletePlot')">플롯 삭제</button>
     </div>
 
     <div class="ExportButton"> 

@@ -6,6 +6,7 @@
           <div v-if="i == nowPlot">
             <p class="PlotTitle_now">{{p.title}}</p>
             <p class="PlotTime_now">{{p.retouchTime}}</p>
+            <div class="PlotDelButton"><img src="@/assets/icons/white/trash_white_two.png"></div>
           </div>
           <div v-else>
             <p class="PlotTitle">{{p.title}}</p>
@@ -74,18 +75,12 @@ export default defineComponent({
   width: 100%;
   height: 90px;
   background: rgb(90, 90, 90);
-  cursor: pointer;
+  transform: scale(1);
+  transition: all ease 0.2s;
 }
 
-.PlotBlock:nth-child(nowPlot) {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 5px;
-  border-radius: 10px;
-  width: 100%;
-  height: 90px;
-  background: rgb(90, 90, 90);
-  cursor: pointer;
+.PlotBlock:hover {
+  transform: scale(1.02);
 }
 
 .PlotTitle {
@@ -97,7 +92,7 @@ export default defineComponent({
 .PlotTime {
   position: absolute;
   left: 15px;
-  top: 35px;
+  top: 30px;
 }
 
 .PlotTitle_now {
@@ -110,7 +105,7 @@ export default defineComponent({
   position: absolute;
   color: #2872f9;
   left: 15px;
-  top: 35px;
+  top: 30px;
 }
 
 .PlotNumberIcon {
@@ -171,7 +166,23 @@ export default defineComponent({
   height: 40px;
 }
 
-.PlotBlock:hover {
-  opacity: 0.9;
+.PlotDelButton {
+  position: absolute;
+  left: calc(100% - 35px);
+  top: calc(100% - 35px);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: #464646;
+  cursor: pointer;
+}
+
+.PlotDelButton img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
 }
 </style>
