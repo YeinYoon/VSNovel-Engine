@@ -30,11 +30,11 @@
         </div>
       </div>
 
-      <div class="PlotMultiDelTool" @click="this.$emit('addPlot');"> 
+      <!-- <div class="PlotMultiDelTool" @click="this.$emit('addPlot');"> 
         <div class="PlotToolButton">
           <img class="" src="@/assets/icons/white/plus.png">
         </div>
-      </div> 
+      </div>  -->
 
     </div>
   </div>
@@ -98,7 +98,7 @@ export default defineComponent({
   margin-bottom: 5px;
   margin-right: 5px;
   border-radius: 10px;
-  width: 33%;
+  width: 100%;
   height: 30px;
   background: rgb(90, 90, 90);
   transform: scale(1);
