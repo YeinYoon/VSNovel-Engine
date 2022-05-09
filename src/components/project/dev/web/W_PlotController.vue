@@ -1,55 +1,19 @@
 <template>
   <div class="PCBackground">
-    <div v-for="plot in plotList" :key="plot.PLOT_CODE">
-      <p>{{plot.PLOT_TITLE}}</p>
-    </div>
-
     <div class="PlotList">
-
-      <div class="PlotBlock"> <!--플롯 블록 -->
-
-        <p class="PlotTitle">플롯제목</p> <!-- 플롯 제목 출력부 -->
-
-        <p class="PlotTime">시간</p> <!-- 플롯 수정시간 출력부 -->
-
-        <!-- 플롯의 순서 -->
-        <div class="PlotNumberIcon"> 
-          <p class="PlotNumber">1</p>
-        </div>
-         <!-- 플롯의 순서 -->
-
-        <!-- <div class="PlotNumberControl"> 
-          <button class="NumberShiftUp">▲</button>
-          <button class="NumberShiftDown">▼</button>
-        </div> -->
-
-      </div> <!--플롯 블록 -->
-
-      <div class="PlotBlock">
-
-        <p class="PlotTitle">플롯제목</p>
-
-        <p class="PlotTime">시간</p>
-
-        <div class="PlotNumberIcon">
-          <p class="PlotNumber">1</p>
-        </div>
-
-      </div> 
-
-      <div class="PlotBlock">
-
-        <p class="PlotTitle">플롯제목</p>
-
-        <p class="PlotTime">시간</p>
-
-        <div class="PlotNumberIcon">
-          <p class="PlotNumber">1</p>
-        </div>
-
-      </div> 
-
-      <div class="PlotBlock"> <!--엔드블록-->
+      <Draggable class="dragArea list-group w-full" :list="this.NovelPlot" @change="log">
+        <div class="PlotBlock" v-for="(p, i) in NovelPlot" :key="i" @click="this.$emit('selectPlot', p.plCode);">
+          <div v-if="i == nowPlot">
+            <p class="PlotTitle_now">{{p.title}}</p>
+            <p class="PlotTime_now">{{p.retouchTime}}</p>
+          </div>
+          <div v-else>
+            <p class="PlotTitle">{{p.title}}</p>
+            <p class="PlotTime">{{p.retouchTime}}</p>
+          </div>
+        </div> 
+      </Draggable>
+      <div class="PlotBlock" @click="this.$emit('addPlot');"> <!--엔드블록-->
         <div class="PlotAddButton">
           <img class="" src="@/assets/icons/white/plus.png">
         </div>
@@ -61,35 +25,31 @@
 </template>
 
 <script>
-import axios from '../../../../axios'
-export default {
+import { defineComponent } from "@vue/runtime-core"
+import { VueDraggableNext } from 'vue-draggable-next'
+export default defineComponent({
   name: 'W_PlotController',
-  created() {
-    this.getPlotList();
+  props : {
+    NovelPlot : Object,
+    nowPlot : Number,
   },
   data() {
     return {
-      pjCode : "",
-      plotList : [],
+      enabled: true,
+      dragging: false,
     }
   },
   methods : {
-    getPlotList() {
-      axios.post('/engine/pj/getPlotList', {pjCode : this.$route.params.pjCode})
-      .then((result)=>{
-        console.log(result);
-        if(result.data != "empty") {
-          this.plotList = result.data;
-        }
-      })
-      .catch((err)=>{
-        console.error(err);
-      })
-    },
-
-
+    log(evt) {
+      console.log(evt);
+      console.log(this.NovelPlot);
+      this.$emit('indexCng', evt.moved.newIndex);
+    }
+  },
+  components : {
+    Draggable : VueDraggableNext
   }
-}
+})
 </script>
 
 <style>
@@ -114,6 +74,18 @@ export default {
   width: 100%;
   height: 90px;
   background: rgb(90, 90, 90);
+  cursor: pointer;
+}
+
+.PlotBlock:nth-child(nowPlot) {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  width: 100%;
+  height: 90px;
+  background: rgb(90, 90, 90);
+  cursor: pointer;
 }
 
 .PlotTitle {
@@ -124,6 +96,19 @@ export default {
 
 .PlotTime {
   position: absolute;
+  left: 15px;
+  top: 35px;
+}
+
+.PlotTitle_now {
+  position: absolute;
+  color: #2872f9;
+  left: 15px;
+  top: 10px;
+}
+.PlotTime_now {
+  position: absolute;
+  color: #2872f9;
   left: 15px;
   top: 35px;
 }

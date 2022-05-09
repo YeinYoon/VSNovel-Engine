@@ -1,15 +1,18 @@
 <template>
   <div class="CanvasBackground">
-    <div class="Project_Header">
-        <p>
+    <div class="Project_Header" @dblclick="inputPlotTitle = true">
+        <p v-if="inputPlotTitle == false">
           {{title}}
-        </p> 
+        </p>
+        <input v-else v-model="title">
     </div>
     <div class="WN_Editor_Frame">
       <div class="WN_Editor">
         <WebNovelEditor
         @commitContent="getContent"
         ref="webNovelEditor"></WebNovelEditor>
+      </div>
+      <div class="WN_Preview"> 
         <div id="preview" v-html="contentHTML" ref="content"></div>
       </div>
     </div>
@@ -31,19 +34,18 @@
       <button @click="goToInvitePj(pjCode)">유저 초대</button>
     </div>
 
-    <div class="ExportButton"> 
-      <button @click="exportToPDF()">프로젝트 내보내기</button>
-      
-    </div>
-
     <div class="SaveTextButton">
-      <button @click="saveText()">초안저장</button>
+      <button
+      @click="this.inputPlotTitle = false; this.$emit('savePlot', {title : this.title, content : this.contentHTML})">
+      플롯 저장</button>
+      <button @click="this.$emit('deletePlot')">플롯 삭제</button>
     </div>
 
-    <div class="PreviewButton">
-      <button @click="CHIHAHAHAHA()">원고 미리보기</button>
+    <div class="ExportButton"> 
+      <button @click="this.$emit('pjSave')">프로젝트 저장</button>
     </div>
-    <img :src="output">
+
+    
     
   </div>
 </template>
@@ -56,14 +58,28 @@ export default {
   name: 'W_EngineCanvas',
   props:{
     isEditPj : Boolean,
-    isInvitePj : Boolean
+    isInvitePj : Boolean,
+    NovelPlot : Object,
+    nowPlot : Number
   },
-  created() {
+  watch : {
+    nowPlot() {
+      console.log("선택된 플롯의 인덱스 : ",this.nowPlot);
+
+      this.inputPlotTitle = false;
+
+      this.title = this.NovelPlot[this.nowPlot].title;
+      this.contentHTML = this.NovelPlot[this.nowPlot].content;
+      this.$refs.webNovelEditor.state.content = this.contentHTML;
+    }
+  },
+  mounted() {
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
-    },
-    watch : {
-      
+
+        // this.title = this.NovelPlot[0].title;
+        // this.contentHTML = this.NovelPlot[0].content;
+        // this.$refs.webNovelEditor.state.content = this.NovelPlot[0].content;
     },
     data(){
         return {
@@ -73,6 +89,7 @@ export default {
             retouchDate : "",
             status : "",
 
+            inputPlotTitle : false,
             contentHTML : "",
 
             output:null
@@ -88,7 +105,7 @@ export default {
                 if(result.data == "err") {
                     this.$store.commit('gModalOn', "프로젝트 정보를 불러오는데 실패했습니다.", "normal");
                 } else {
-                    this.title = result.data.PROJ_TITLE;
+                    this.title = this.NovelPlot[0].title;
                     this.retouchDate = result.data.PROJ_RETOUCHDATE;
                     this.status = result.data.PROJ_STATUS;
                     this.pjType = result.data.PROJ_TYPE;
@@ -102,13 +119,11 @@ export default {
         goToEditPjInfo(pjCode) {
           console.log('edit', pjCode)
           this.$emit('pjEdit',true)
-            // this.$router.push(`/devPage/${pjCode}/editInfo`);
         },
 
         goToInvitePj(pjCode) {
           this.$emit('pjInvite',true)
           console.log(pjCode)
-            // this.$router.push(`/devPage/${pjCode}/invitePj`);
         },
 
         saveAll() {
@@ -123,10 +138,6 @@ export default {
             })
         },
 
-        //에디터 작성 저장
-        saveText() {
-          this.$refs.webNovelEditor.save();
-        },
         getContent(content) {
             this.contentHTML = content;
         },
@@ -151,6 +162,13 @@ export default {
           //   jsPDF: {orientation: 'portrait', unit: 'in', format: 'a4'} 
           // })
         },
+
+        plotMove() { // 0번째 플롯을 삭제했을시 작동
+          this.inputPlotTitle = false;
+          this.title = this.NovelPlot[this.nowPlot].title;
+          this.contentHTML = this.NovelPlot[this.nowPlot].content;
+          this.$refs.webNovelEditor.state.content = this.contentHTML;
+        }
   }
 }
 </script>
@@ -230,10 +248,24 @@ export default {
 .WN_Editor {
   background: white;
   position: absolute;
-  width: calc(100%);
+  width: calc(50% - 10px);
   height: calc(100%);
   color: black;
   overflow: auto;
+  border-radius: 25px;
+
+}
+.WN_Preview {
+  background: white;
+  position: absolute;
+  left: calc(50% + 20px);
+  width: calc(50% - 20px);
+  height: calc(100%);
+  color: black;
+  overflow: auto;
+  border-radius: 25px;
+  padding: 20px;
+  white-space: normal;
 }
 
 .SaveButton {

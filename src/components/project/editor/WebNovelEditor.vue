@@ -1,9 +1,7 @@
 <template>
 <div>
-
 <div class="Editor">
   <quill-editor
-    v-html="loadData"
     v-model:value="state.content"
     :options="state.editorOption"
     :disabled="state.disabled"
@@ -21,24 +19,22 @@ export default {
   name: "App",
   data() {
     return {
-      loadData : "",
+      
     }
   },
   methods : {
-    save() {
-      this.$emit("commitContent",this.state._content);
-      //DB 저장코드 작성하면 될듯 ㅎㅎ;
-    }
+
   },
 
-  setup() {
+  setup(props, {emit}) {
     const state = reactive({
+      content : "",
       _content: "",
       editorOption: {
         placeholder: "",
         modules: {
           toolbar: [
-            [],[],[],[],[],[],[],[],[],[],[],[], // 메뉴 정렬용
+            // [],[],[],[],[],[],[],[],[],[],[],[], 메뉴정렬용이라는데 뺐음
             ["bold", "italic", "underline"],
             [{ indent: "-1" }, { indent: "+1" }],
             [{ size: [false, "large", "huge"] }],
@@ -52,9 +48,10 @@ export default {
       disabled: false,
     });
 
-    const onEditorChange = ({ quill, html, text }) => {
-      console.log("editor change!", quill, html, text);
+    const onEditorChange = ({ html }) => {
+      // console.log("editor change!", quill, html, text);
       state._content = html;
+      emit("commitContent",state._content);
     };
 
     return {
@@ -81,7 +78,7 @@ export default {
   text-align: center;
 }
 .ql-toolbar.ql-snow {
-  padding-right: 175px;
+  padding: 5px;
 }
 
 .ql-container {
@@ -91,7 +88,7 @@ export default {
 .ql-editor > * {
   cursor: text;
   color: black;
-  font-size: 0.6em;
+  font-size: 1em;
   font-family: "RIDIBatang";
 }
 .ql-container.ql-snow {
