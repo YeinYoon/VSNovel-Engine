@@ -1,6 +1,7 @@
 <template>
   <div class="PCBackground">
     <div class="PlotList">
+
       <Draggable class="dragArea list-group w-full" :list="this.NovelPlot" @change="log">
         <div class="PlotBlock" v-for="(p, i) in NovelPlot" :key="i" @click="this.$emit('selectPlot', p.plCode);">
           <div v-if="i == nowPlot">
@@ -14,14 +15,28 @@
           </div>
         </div> 
       </Draggable>
-      <div class="PlotBlock" @click="this.$emit('addPlot');"> <!--엔드블록-->
+
+      <!-- <div class="PlotBlock" @click="this.$emit('addPlot');"> 
         <div class="PlotAddButton">
+          <img class="" src="@/assets/icons/white/plus.png">
+        </div>
+      </div>  -->
+
+    </div>
+    <div class="PlotToolbar">
+      <div class="PlotAddTool" @click="this.$emit('addPlot');"> 
+        <div class="PlotToolButton">
+          <img class="" src="@/assets/icons/white/plus.png">
+        </div>
+      </div>
+
+      <div class="PlotMultiDelTool" @click="this.$emit('addPlot');"> 
+        <div class="PlotToolButton">
           <img class="" src="@/assets/icons/white/plus.png">
         </div>
       </div> 
 
     </div>
-
   </div>
 </template>
 
@@ -63,8 +78,56 @@ export default defineComponent({
   position: absolute;
   left: 0px;
   width: 100%;
-  height: 100%;
+  height: 90%;
   padding: 10px;
+  overflow: auto;
+}
+
+.PlotToolbar {
+  position: absolute;
+  top: calc(100% - 55px);
+  left: 0px;
+  width: 100%;
+  height: calc(10% - 30px);
+  padding: 10px;
+}
+
+.PlotAddTool {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+  width: 33%;
+  height: 30px;
+  background: rgb(90, 90, 90);
+  transform: scale(1);
+  transition: all ease 0.2s;
+}
+
+.PlotToolButton {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.PlotToolButton img{
+  width: 20px;
+  height: 20px;
+}
+
+.PlotMultiDelTool {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  border-radius: 10px;
+  width: 33%;
+  height: 30px;
+  background: rgb(90, 90, 90);
+  transform: scale(1);
+  transition: all ease 0.2s;
 }
 
 .PlotBlock {
@@ -153,18 +216,6 @@ export default defineComponent({
   background: #2872f9;
   color: white;
   border: none;
-}
-
-.PlotAddButton {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.PlotAddButton img{
-  width: 40px;
-  height: 40px;
 }
 
 .PlotDelButton {

@@ -1,6 +1,6 @@
 <template>
-    <div class="enginebackground">
-      <div class="EngineCanvas">
+    <div class="Wenginebackground">
+      <div class="WEngineCanvas">
         <EngineCanvas
         :isEditPj="isEditPj"
         :isInvitePj="isInvitePj"
@@ -14,7 +14,7 @@
         ref="canvas" >
         </EngineCanvas>
       </div>
-      <div class="PlotController">
+      <div class="WPlotController">
         <PlotController
         :NovelPlot="NovelPlot"
         @addPlot="addPlot()"
@@ -150,21 +150,21 @@ export default {
 </script>
 
 <style>
-.enginebackground {
+.Wenginebackground {
   width: 100%;
   height: 100%;
   background: #444444;
   z-index: 1;
 }
 
-.EngineCanvas {
+.WEngineCanvas {
   position: absolute;
   width: calc(100% - 220px);
   height: 100%;
   color: white;
 }
 
-.PlotController {
+.WPlotController {
   position: absolute;
   left: 100%;
   transform: translate(-100%);

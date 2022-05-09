@@ -1,11 +1,11 @@
 <template>
 <button @click="deletePj()">삭제</button>
-    <div class="enginebackground">
-      <div class="EngineCanvas">
+    <div class="Venginebackground">
+      <div class="VEngineCanvas">
         <EngineCanvas :plot="plot" :index="index" :scenario="scenario"/>
       </div>
-      <div class="PlotController">
-        <div class="PCBackground">
+      <div class="VPlotController">
+        <div class="VPCBackground">
           <div v-for="(plot, i) in scenario" :key="i" draggable="true" class="bigBox">
             {{i}}
             <hr>
@@ -91,21 +91,21 @@ export default {
 .bigBox{
   cursor:move
 }
-.enginebackground {
+.Venginebackground {
   width: 100%;
   height: 100%;
   background: #444444;
   z-index: 1;
 }
 
-.EngineCanvas {
+.VEngineCanvas {
   position: absolute;
   width: calc(100% - 220px);
   height: 100%;
   color: white;
 }
 
-.PlotController {
+.VPlotController {
   position: absolute;
   left: 100%;
   transform: translate(-100%);
@@ -117,7 +117,7 @@ export default {
   overflow: auto;
 }
 
-.PCBackground {
+.VPCBackground {
   width: 100%;
   height: 100%;
 }
