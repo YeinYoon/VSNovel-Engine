@@ -20,6 +20,7 @@
         @addPlot="addPlot()"
         @selectPlot="selectPlot"
         :nowPlot="nowPlot"
+        @deletePlot="deletePlot"
         ref="controller"/>
       </div>
     </div>

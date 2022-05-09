@@ -6,11 +6,13 @@
         <div v-if="i == nowPlot">
           <p class="PlotTitle_now">{{p.title}}</p>
           <p class="PlotTime_now">{{p.retouchTime}}</p>
+          <button class="PlotDelButton" @click="this.$emit('deletePlot')"><img src="@/assets/icons/white/trash_white.png"></button>
         </div>
         <div v-else>
           <p class="PlotTitle">{{p.title}}</p>
           <p class="PlotTime">{{p.retouchTime}}</p>
         </div>
+        
       </div> 
 
       <div class="PlotBlock" @click="this.$emit('addPlot');"> <!--엔드블록-->
@@ -64,18 +66,12 @@ export default {
   width: 100%;
   height: 90px;
   background: rgb(90, 90, 90);
-  cursor: pointer;
+  transform: scale(1);
+  transition: all ease 0.2s;
 }
 
-.PlotBlock:nth-child(nowPlot) {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 5px;
-  border-radius: 10px;
-  width: 100%;
-  height: 90px;
-  background: rgb(90, 90, 90);
-  cursor: pointer;
+.PlotBlock:hover {
+  transform: scale(1.02);
 }
 
 .PlotTitle {
@@ -87,7 +83,7 @@ export default {
 .PlotTime {
   position: absolute;
   left: 15px;
-  top: 35px;
+  top: 30px;
 }
 
 .PlotTitle_now {
@@ -100,7 +96,7 @@ export default {
   position: absolute;
   color: #2872f9;
   left: 15px;
-  top: 35px;
+  top: 30px;
 }
 
 .PlotNumberIcon {
@@ -161,7 +157,19 @@ export default {
   height: 40px;
 }
 
-.PlotBlock:hover {
-  opacity: 0.9;
+.PlotDelButton {
+  position: absolute;
+  left: calc(100% - 35px);
+  top: calc(100% - 35px);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: #464646;
+  cursor: pointer;
+}
+
+.PlotDelButton img {
+  width: 100%;
 }
 </style>
