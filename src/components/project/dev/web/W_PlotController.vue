@@ -1,18 +1,18 @@
 <template>
   <div class="PCBackground">
     <div class="PlotList">
-
-      <div class="PlotBlock" v-for="(p, i) in NovelPlot" :key="i" @click="this.$emit('selectPlot', p.plCode);">
-        <div v-if="i == nowPlot">
-          <p class="PlotTitle_now">{{p.title}}</p>
-          <p class="PlotTime_now">{{p.retouchTime}}</p>
-        </div>
-        <div v-else>
-          <p class="PlotTitle">{{p.title}}</p>
-          <p class="PlotTime">{{p.retouchTime}}</p>
-        </div>
-      </div> 
-
+      <Draggable class="dragArea list-group w-full" :list="this.NovelPlot" @change="log">
+        <div class="PlotBlock" v-for="(p, i) in NovelPlot" :key="i" @click="this.$emit('selectPlot', p.plCode);">
+          <div v-if="i == nowPlot">
+            <p class="PlotTitle_now">{{p.title}}</p>
+            <p class="PlotTime_now">{{p.retouchTime}}</p>
+          </div>
+          <div v-else>
+            <p class="PlotTitle">{{p.title}}</p>
+            <p class="PlotTime">{{p.retouchTime}}</p>
+          </div>
+        </div> 
+      </Draggable>
       <div class="PlotBlock" @click="this.$emit('addPlot');"> <!--엔드블록-->
         <div class="PlotAddButton">
           <img class="" src="@/assets/icons/white/plus.png">
@@ -25,7 +25,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "@vue/runtime-core"
+import { VueDraggableNext } from 'vue-draggable-next'
+export default defineComponent({
   name: 'W_PlotController',
   props : {
     NovelPlot : Object,
@@ -33,13 +35,21 @@ export default {
   },
   data() {
     return {
-      
+      enabled: true,
+      dragging: false,
     }
   },
   methods : {
-
+    log(evt) {
+      console.log(evt);
+      console.log(this.NovelPlot);
+      this.$emit('indexCng', evt.moved.newIndex);
+    }
+  },
+  components : {
+    Draggable : VueDraggableNext
   }
-}
+})
 </script>
 
 <style>
