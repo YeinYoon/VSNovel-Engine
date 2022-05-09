@@ -95,6 +95,8 @@ export default {
         retouchTime : "-",
         plCode : newCode
       })
+
+      this.nowPlot = 0;
     },
     selectPlot(plCode) {
       var index = this.NovelPlot.findIndex(p => p.plCode == plCode);
