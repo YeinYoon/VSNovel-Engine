@@ -6,7 +6,7 @@
           <div v-if="i == nowPlot">
             <p class="PlotTitle_now">{{p.title}}</p>
             <p class="PlotTime_now">{{p.retouchTime}}</p>
-            <div class="PlotDelButton"><img src="@/assets/icons/white/trash_white_two.png"></div>
+            <div class="PlotDelButton" @click="this.$emit('deletePlot')"><img src="@/assets/icons/white/trash_white_two.png"></div>
           </div>
           <div v-else>
             <p class="PlotTitle">{{p.title}}</p>
@@ -81,6 +81,7 @@ export default defineComponent({
 
 .PlotBlock:hover {
   transform: scale(1.02);
+
 }
 
 .PlotTitle {
