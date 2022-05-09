@@ -1,14 +1,12 @@
 <template>
     <div class="ViewerBackground">
-    <button v-if="editMod == false" @click="this.editMod = true;">수정하기</button>
-    <button v-else @click="save()">저장</button>
     <!-- 백그라운드 -->
     <!-- 내부 img태그의 src를 가공하여 사용, -->
     <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
     <div class="SceneBackground">
+      
       <img src="@/assets/background.jpg" />
     </div>
-    
     <!-- 백그라운드 끝. -->
 
     <!-- 선택지 -->
@@ -71,7 +69,16 @@
     <!-- 좌측 상단 햄버거메뉴 -->
     <!-- 모바일 환경에서만 나올건지". PC에서도 반응형으로 제공할지는 선택 -->
       <div class="ViewerNav">
-        <img src="@/assets/icons/white/align_left.png" />
+        <div class="NavItems">
+          <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
+          <img src="@/assets/icons/white/checked.png" v-else @click="save()">
+        </div>
+        <div class="NavItems">
+          <img src="@/assets/icons/white/downcloud.png">
+        </div>
+        <div class="NavItems">
+          <img src="@/assets/icons/white/upcloud.png">
+        </div>
       </div>
       <!-- 이미지 -->
 
@@ -184,6 +191,7 @@ export default {
               this.retouchDate = result.data.PROJ_RETOUCHDATE;
               this.stat = result.data.PROJ_STATUS;
               this.pjType = result.data.PROJ_TYPE;
+              this.loadData()
             }
           })
           .catch((err)=>{
@@ -490,26 +498,32 @@ export default {
 }
 
 .ViewerNav {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
   position: absolute;
   left: 10px;
   top: 10px;
-  color: white;
-  z-index: 1;
+  z-index: 89;
+
+  /* 다해놨어 정인쨩 > <  */
+}
+
+.NavItems{
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 2px;
+  display: table;
   transition: background-color 0.3s ease-out 100ms;
 }
 
-.ViewerNav:hover {
+.NavItems:hover {
   background: #2872f9;
   transition: 0.3s;
 }
 
-.ViewerNav img {
+.NavItems img{
   margin: 10px;
-  width: 50%;
-  height: 50%;
+  height: 20px;
 }
 
 .SceneImg {

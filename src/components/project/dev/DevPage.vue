@@ -19,7 +19,7 @@
         </div>
 
         <div v-else-if="pjType == 'V'">
-            <VEngineInner
+            <VEngineInner  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
             ></VEngineInner>
         </div>
 
