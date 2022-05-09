@@ -5497,7 +5497,7 @@
     "toposort" "^1.0.0"
     "util.promisify" "1.0.0"
 
-"html2canvas@^1.0.0", "html2canvas@^1.0.0-alpha.12", "html2canvas@^1.0.0-rc.5":
+"html2canvas@^1.0.0", "html2canvas@^1.0.0-rc.5":
   "integrity" "sha512-fPU6BHNpsyIhr8yyMpTLLxAbkaK8ArIBcmZIRiBLiDhjeqvXolaEmDGmELFuX9I4xDcaKKcJl+TKZLqruBbmWA=="
   "resolved" "https://registry.npmjs.org/html2canvas/-/html2canvas-1.4.1.tgz"
   "version" "1.4.1"
@@ -10298,13 +10298,6 @@
   "integrity" "sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog=="
   "resolved" "https://registry.npmjs.org/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz"
   "version" "2.3.4"
-
-"vue-html2canvas@^0.0.4":
-  "integrity" "sha512-Sx2b0l7og3BokpH3RxLcK5DF1X3VYj+SyEJg/klobDoI0yJgDDn6NH6/Atz6v4GJJJdQkFlXnl0mFZ9N4F/cgw=="
-  "resolved" "https://registry.npmjs.org/vue-html2canvas/-/vue-html2canvas-0.0.4.tgz"
-  "version" "0.0.4"
-  dependencies:
-    "html2canvas" "^1.0.0-alpha.12"
 
 "vue-loader-v16@npm:vue-loader@^16.1.0":
   "integrity" "sha512-7vKN45IxsKxe5GcVCbc2qFU5aWzyiLrYJyUuMz4BQLKctCj/fmCa0w6fGiiQ2cLFetNcek1ppGJQDCup0c1hpA=="
