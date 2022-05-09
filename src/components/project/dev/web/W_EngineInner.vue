@@ -1,6 +1,6 @@
 <template>
-    <div class="enginebackground">
-      <div class="EngineCanvas">
+    <div class="Wenginebackground">
+      <div class="WEngineCanvas">
         <EngineCanvas
         :isEditPj="isEditPj"
         :isInvitePj="isInvitePj"
@@ -14,13 +14,14 @@
         ref="canvas" >
         </EngineCanvas>
       </div>
-      <div class="PlotController">
+      <div class="WPlotController">
         <PlotController
         :NovelPlot="NovelPlot"
         @addPlot="addPlot()"
         @selectPlot="selectPlot"
         @indexCng="indexCng"
         :nowPlot="nowPlot"
+        @deletePlot="deletePlot"
         ref="controller"/>
       </div>
     </div>
@@ -67,7 +68,7 @@ export default {
     },
 
     async getData() {
-      var result = await storage.getJson(`PJ${this.pjCode}/PJ${this.pjCode}.json`);
+      var result = await storage.getJson(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`);
       var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
       var string = new TextDecoder().decode(uint8array);
       var data = JSON.parse(string);
@@ -81,6 +82,7 @@ export default {
     },
 
     addPlot() {
+      //플롯 고유코드 부여
       var newCode = Date.now() + Math.random();
       newCode = newCode.toString();
       newCode = newCode.split('.')
@@ -89,9 +91,12 @@ export default {
       this.NovelPlot.push({
         title : "새 플롯",
         content : "새 텍스트",
+        img : "",
         retouchTime : "-",
         plCode : newCode
       })
+
+      this.nowPlot = 0;
     },
     selectPlot(plCode) {
       var index = this.NovelPlot.findIndex(p => p.plCode == plCode);
@@ -131,7 +136,7 @@ export default {
       var file = new File([data], fileName, properties); //새로운 파일 객체 생성
       console.log(file);
 
-      var result = await storage.uploadFile(`PJ${this.pjCode}/`, file);
+      var result = await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
       console.log(result);
     }
 
@@ -149,21 +154,21 @@ export default {
 </script>
 
 <style>
-.enginebackground {
+.Wenginebackground {
   width: 100%;
   height: 100%;
   background: #444444;
   z-index: 1;
 }
 
-.EngineCanvas {
+.WEngineCanvas {
   position: absolute;
   width: calc(100% - 220px);
   height: 100%;
   color: white;
 }
 
-.PlotController {
+.WPlotController {
   position: absolute;
   left: 100%;
   transform: translate(-100%);

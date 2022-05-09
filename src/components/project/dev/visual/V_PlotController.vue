@@ -21,7 +21,7 @@ export default {
   },
   methods : {
     async getJson(pjCode) {
-      var result = await storage.getJson(`PJ${pjCode}/PJ${pjCode}.json`);
+      var result = await storage.getJson(`Project/PJ${pjCode}/PJ${pjCode}.json`);
       var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
       var string = new TextDecoder().decode(uint8array);
       console.log(JSON.parse(string));

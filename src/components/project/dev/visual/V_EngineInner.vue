@@ -69,9 +69,9 @@ export default {
   },
   methods: {
     async getJson(pjCode) {
-      console.log("hi");
-      console.log(pjCode);
-      var result = await storage.getJson(`PJ${pjCode}/PJ${pjCode}.json`);
+      console.log('hi')
+      console.log(pjCode)
+      var result = await storage.getJson(`Project/PJ${pjCode}/PJ${pjCode}.json`);
       var uint8array = new TextEncoder("utf-8").encode(result);
       var json = new TextDecoder().decode(uint8array);
       console.log(json);
@@ -118,21 +118,21 @@ export default {
 .bigBox {
   cursor: move;
 }
-.enginebackground {
+.Venginebackground {
   width: 100%;
   height: 100%;
   background: #444444;
   z-index: 1;
 }
 
-.EngineCanvas {
+.VEngineCanvas {
   position: absolute;
   width: calc(100% - 220px);
   height: 100%;
   color: white;
 }
 
-.PlotController {
+.VPlotController {
   position: absolute;
   left: 100%;
   transform: translate(-100%);
@@ -144,7 +144,7 @@ export default {
   overflow: auto;
 }
 
-.PCBackground {
+.VPCBackground {
   width: 100%;
   height: 100%;
 }
