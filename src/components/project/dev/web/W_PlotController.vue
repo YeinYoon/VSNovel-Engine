@@ -81,6 +81,7 @@ export default defineComponent({
 
 .PlotBlock:hover {
   transform: scale(1.02);
+  
 }
 
 .PlotTitle {
