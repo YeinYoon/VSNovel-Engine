@@ -52,8 +52,6 @@
 <script>
 import axios from '../../../../axios';
 import WebNovelEditor from '../../editor/WebNovelEditor.vue'
-import html2pdf from 'html2pdf.js'
-
 export default {
   name: 'W_EngineCanvas',
   props:{
@@ -138,22 +136,6 @@ export default {
 
         getContent(content) {
             this.contentHTML = content;
-        },
-
-        // 작성한 내용 미리보기
-        viewContent() {
-          //일렉트론 children Window 이용할것
-        },
-
-        // PDF 변환
-        exportToPDF () {
-          html2pdf(this.$refs.content, {
-            margin: 0.42,
-            filename: 'document.pdf',
-            image: { type: 'jpeg', quality: 1.98 },
-            html2canvas: { dpi: 192, letterRendering: true },
-            jsPDF: {orientation: 'portrait', unit: 'in', format: 'a4'} 
-          })
         },
 
         plotMove() { // 0번째 플롯을 삭제했을시 작동

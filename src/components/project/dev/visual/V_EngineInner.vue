@@ -50,7 +50,7 @@ export default {
     async getJson(pjCode) {
       console.log('hi')
       console.log(pjCode)
-      var result = await storage.getJson(`PJ${pjCode}/PJ${pjCode}.json`);
+      var result = await storage.getJson(`Project/PJ${pjCode}/PJ${pjCode}.json`);
       var uint8array = new TextEncoder("utf-8").encode(result);
       var json = new TextDecoder().decode(uint8array);
       console.log(json)

@@ -11,15 +11,15 @@ exports.createProjectDir = async(pjCode) => {
     const params = [
         {
             Bucket:"vsnovel",
-            Key : `PJ${pjCode}/bg/`
+            Key : `Project/PJ${pjCode}/bg/`
         },
         {
             Bucket:"vsnovel",
-            Key : `PJ${pjCode}/bgm/`
+            Key : `Project/PJ${pjCode}/bgm/`
         },
         {
             Bucket:"vsnovel",
-            Key : `PJ${pjCode}/char/`
+            Key : `Project/PJ${pjCode}/char/`
         }
     ];
 
@@ -37,7 +37,7 @@ exports.createProjectDir = async(pjCode) => {
 exports.deleteProjectDir = async(pjCode) => {
     let params = {
         Bucket: "vsnovel",
-        Prefix: `PJ${pjCode}/`
+        Prefix: `Project/PJ${pjCode}/`
     };
     const listedObjects = await s3.listObjectsV2(params).promise();
     const deleteParams = {

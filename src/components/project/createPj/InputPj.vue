@@ -47,7 +47,7 @@ export default {
           var file = new File([data], fileName, properties); //새로운 파일 객체 생성
           console.log(file);
 
-          var upload = await storage.uploadFile(`PJ${result.data.pjCode}/`, file);
+          var upload = await storage.uploadFile(`Project/PJ${result.data.pjCode}/`, file);
           console.log(upload);
 
           this.$store.commit('gModalOn', {msg : "새로운 프로젝트가 생성됐습니다.", size : "normal"});

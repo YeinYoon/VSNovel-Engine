@@ -200,11 +200,11 @@ export default {
         var file = new File([data], fileName, properties); //새로운 파일 객체 생성
         console.log(file);
 
-        var result = await storage.uploadFile(`PJ${this.pjCode}/`, file);
+        var result = await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
         console.log(result);
         },
         async getJSON() {
-          var result = await storage.getJson(`PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
+          var result = await storage.getJson(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
           var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
           var string = new TextDecoder().decode(uint8array);
           console.log(JSON.parse(string));
