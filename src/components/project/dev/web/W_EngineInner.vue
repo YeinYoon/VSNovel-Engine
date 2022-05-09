@@ -19,6 +19,7 @@
         :NovelPlot="NovelPlot"
         @addPlot="addPlot()"
         @selectPlot="selectPlot"
+        @indexCng="indexCng"
         :nowPlot="nowPlot"
         @deletePlot="deletePlot"
         ref="controller"/>
@@ -118,6 +119,9 @@ export default {
       } else {
         this.$store.commit('gModalOn', {size : "normal", msg : "삭제를 위해 최소 2개의 플롯이 필요합니다."});
       }
+    },
+    indexCng(index) {
+      this.nowPlot = index;
     },
 
     async pjSave() {
