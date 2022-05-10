@@ -3,20 +3,17 @@
   ><button @click="goToInvitePj()">유저 초대</button>
   <div class="Venginebackground">
     <div class="VEngineCanvas">
-      <EngineCanvas :plot="plot" :index="index" :scenario="scenario" />
+      <EngineCanvas :plot="plot" :index="index" :scenario="scenario" @getCloudJSON="getCloudJSON"/>
     </div>
     <div class="VPlotController">
       <div class="VPCBackground">
         <div
           v-for="(plot, i) in scenario"
-          :key="i"
-          draggable="true"
-          class="bigBox"
-        >
-          {{ i }}
+          :key="i">
+          {{ i }}<span @click="addPage(i)">추가</span>
           <hr />
-          <div v-for="(page, j) in plot" :key="j" @click="goToPlot(i, j)">
-            {{ j }}
+          <div v-for="(page, j) in plot" :key="j">
+            <span @click="goToPlot(i, j)">{{ j }}</span>
             <span v-if="page.select == undefined"
               >-> {{ page.move.plot }},{{ page.move.index }}</span
             >
@@ -35,6 +32,7 @@
               </p>
             </div>
             <hr />
+            
           </div>
         </div>
       </div>
@@ -68,6 +66,9 @@ export default {
     };
   },
   methods: {
+    getCloudJSON(json){
+      this.scenario=json
+    },
     async getJson(pjCode) {
       console.log('hi')
       console.log(pjCode)
@@ -110,14 +111,16 @@ export default {
     goToInvitePj: function () {
       this.$emit("pjInvite", true);
     },
+    addPage(plot){
+      console.log(plot+this.scenario.시작)
+      eval("this.scenario."+plot+'.push({"bg": "","bgm": "","name": "이름","text": "대화","img": "","move": {"plot": "'+plot+'","index":0}})')
+      console.log(this.scenario);
+    }
   },
 };
 </script>
 
 <style>
-.bigBox {
-  cursor: move;
-}
 .Venginebackground {
   width: 100%;
   height: 100%;

@@ -74,10 +74,10 @@
           <img src="@/assets/icons/white/checked.png" v-else @click="save()">
         </div>
         <div class="NavItems">
-          <img src="@/assets/icons/white/downcloud.png">
+          <img src="@/assets/icons/white/downcloud.png" @click="getJSON()">
         </div>
         <div class="NavItems">
-          <img src="@/assets/icons/white/upcloud.png">
+          <img src="@/assets/icons/white/upcloud.png" @click="uploadJSON()">
         </div>
       </div>
       <!-- 이미지 -->
@@ -94,12 +94,6 @@
         <!-- 대사창 배경-->
         <div class="ScriptBackground"></div>
         <!-- 대사창 툴바 -->
-        <div class="ScriptToolBar">
-          <div class="ToolBarEl" @click="uploadJSON()">JSON 업로드</div>
-          <div class="ToolBarEl" @click="getJSON()">JSON 불러오기</div>
-          <div class="ToolBarEl">빨리감기</div>
-          <div class="ToolBarEl">백로그</div>
-        </div>
 
         <!-- 화자 -->
         
@@ -216,6 +210,7 @@ export default {
           var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
           var string = new TextDecoder().decode(uint8array);
           console.log(JSON.parse(string));
+          this.$emit('getCloudJSON',JSON.parse(string))
         },
 
         save() {
