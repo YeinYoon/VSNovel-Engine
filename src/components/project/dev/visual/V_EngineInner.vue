@@ -1,12 +1,12 @@
 <template>
   <button @click="goToEditPjInfo()">정보 수정</button
   ><button @click="goToInvitePj()">유저 초대</button>
-  <div class="enginebackground">
-    <div class="EngineCanvas">
+  <div class="Venginebackground">
+    <div class="VEngineCanvas">
       <EngineCanvas :plot="plot" :index="index" :scenario="scenario" />
     </div>
-    <div class="PlotController">
-      <div class="PCBackground">
+    <div class="VPlotController">
+      <div class="VPCBackground">
         <div
           v-for="(plot, i) in scenario"
           :key="i"
