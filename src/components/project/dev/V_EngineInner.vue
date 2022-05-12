@@ -42,8 +42,8 @@
 
 <script>
 import EngineCanvas from "./V_EngineCanvas.vue";
-import storage from "../../../../aws";
-import axios from "../../../../axios";
+import storage from "../../../aws";
+import axios from "../../../axios";
 export default {
   name: "V_EngineInner",
   components: {

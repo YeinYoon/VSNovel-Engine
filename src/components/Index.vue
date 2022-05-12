@@ -105,8 +105,6 @@
             v-for="pj in pjList" :key="pj.PROJ_CODE"
             @click="goToDevPage(pj.PROJ_CODE)">
               <p class="loadpj_list_tr_code">{{pj.PROJ_CODE}}</p>
-              <p class="loadpj_list_tr_type" v-if="pj.PROJ_TYPE == 'V'">비주얼</p>
-              <p class="loadpj_list_tr_type" v-else>웹</p>
               <p class="loadpj_list_tr_title">{{pj.PROJ_TITLE}}</p>
               <p class="loadpj_list_tr_status" v-if="pj.PROJ_STATUS=='D'">개발</p>
               <p class="loadpj_list_tr_status" v-else-if="pj.PROJ_STATUS=='S'">배포</p>
@@ -463,16 +461,6 @@
 .loadpj_list_tr_code{
   position: relative;
   transform: translate(-50%, -50%);
-}
-
-.loadpj_list_tr_type{
-  position: absolute;
-  width: 60px;  
-  left: 35px;
-  border-radius: 10px;
-  transform: translate(-50%, -115%);
-  background: #2872f9;
-  text-align: center;
 }
 
 .loadpj_list_tr_title{

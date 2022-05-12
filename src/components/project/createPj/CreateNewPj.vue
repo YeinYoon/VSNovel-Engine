@@ -1,37 +1,25 @@
 <template>
 <div class="RouterView">
 
-    <div v-if="type == null">
-        <SelectType
-        @selectType="inputType"></SelectType>
-    </div>
-  
-    <div v-else>
+    <div>
         <InputPj
-        :type="type"></InputPj>
+        :type="'V'"></InputPj>
     </div>
     
 </div>
 </template>
 
 <script>
-import SelectType from './SelectType.vue'
 import InputPj from './InputPj.vue'
 export default {
     name:"CreateNewPj",
     data() {
         return {
-            type : null
         }
     },
     methods : {
-        inputType(val) {
-            this.type = val;
-            console.log(val);
-        }
     },
     components : {
-        SelectType,
         InputPj
     }
 }

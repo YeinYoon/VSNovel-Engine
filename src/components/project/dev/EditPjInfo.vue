@@ -119,6 +119,9 @@ export default {
                 .catch((err)=>{
                     console.error(err);
                 })
+                .finally(()=>{
+                    this.$router.push('/')
+                })
             } else {
                console.log('삭제 취소');
             }

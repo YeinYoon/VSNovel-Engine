@@ -130,8 +130,8 @@
 </template>
 
 <script>
-import storage from '../../../../aws'
-import axios from '../../../../axios'
+import storage from '../../../aws'
+import axios from '../../../axios'
 export default {
   props:{
     index:Number,

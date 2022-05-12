@@ -12,13 +12,7 @@
             <button @click="goToInvitePj(pjCode)">유저 초대</button>
             <button @click="save()">저장</button>
         </div> -->
-
-        <div v-if="pjType == 'W'">
-            <WEngineInner  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
-            ></WEngineInner>
-        </div>
-
-        <div v-else-if="pjType == 'V'">
+        <div>
             <VEngineInner  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
             ></VEngineInner>
         </div>
@@ -34,8 +28,7 @@
 <script>
 import axios from '../../../axios';
 
-import WEngineInner from './web/W_EngineInner.vue';
-import VEngineInner from './visual/V_EngineInner.vue';
+import VEngineInner from './V_EngineInner.vue';
 import EditPjInfo from './EditPjInfo.vue'
 import InvitePj from './InvitePj.vue'
 export default {
@@ -99,7 +92,6 @@ export default {
         }
     },
     components : {
-        WEngineInner,
         VEngineInner,
         EditPjInfo,
         InvitePj
