@@ -7,7 +7,7 @@
     </div>
     <div class="VPlotController">
       <div class="VPCBackground">
-        <div
+        <!-- <div
           v-for="(plot, i) in scenario"
           :key="i">
           {{ i }}<span @click="addPage(i)">추가</span>
@@ -33,6 +33,19 @@
             </div>
             <hr />
             
+          </div>
+        </div> -->
+
+        <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
+          123
+        </div>
+        <div class="VpcInner"> <!-- 플롯 컨트롤러 상단 도구와 분리 -->
+          123 
+          <div class="VpcBlock"> <!-- 플롯 박스 -->
+
+          </div>
+          <div class="VpcBlock"> <!-- 플롯 박스 -->
+
           </div>
         </div>
       </div>
@@ -150,5 +163,27 @@ export default {
 .VPCBackground {
   width: 100%;
   height: 100%;
+}
+
+.VpcTopToolbar {
+  width: 100%;
+  height: 50px;
+  border-radius: 20px;
+  background: rgb(88, 88, 88);
+}
+
+.VpcBlock {
+  height: 100px;
+  width: 100%;
+  border-radius: 10px;
+  background: rgb(119, 119, 119);
+  margin-bottom: 10px;
+}
+
+.VpcBlock_Number {
+  height: 10px;
+  width: 10px;
+  border-radius: 10px;
+  background: white;
 }
 </style>
