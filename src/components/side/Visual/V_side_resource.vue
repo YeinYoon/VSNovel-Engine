@@ -1,5 +1,5 @@
 <template>
-  <div class="PCBackground">
+  <div class="VSBackground">
     리소스매니저
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style>
-.PCBackground {
+.VSBackground {
   width: 100%;
   height: 100%;
 }
