@@ -4,7 +4,6 @@
      123
 
 
-
      <div class="sideBarButton" @click="sideBarClick()">
        <span>{{btnIcon}}</span>
      </div>
@@ -21,6 +20,7 @@ export default {
   },
   methods : {
     sideBarClick() {
+
       if(this.$store.state.sideBar == false) {
         this.$store.commit('sideMenuOn');
         this.btnIcon = "◀"
@@ -28,12 +28,37 @@ export default {
         this.$store.commit('sideMenuOff');
         this.btnIcon = "▶"
       }
+      
     }
   }
 }
 </script>
 
 <style>
+.sideBarOnMain {
+  display:table;
+  background:#2c2c2c;
+  width: 300px;
+  height: 100vh;
+  text-align: center;
+  overflow:auto;
+  animation-name: sideBarMainOn;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.sideBarOffMain {
+  display:table;
+  background:#2c2c2c;
+  width: 300px;
+  height: 100vh;
+  text-align: center;
+  overflow:auto;
+  animation-name: sideBarMainOff;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+
 .sideBarOn {
   display:table;
   background:#2c2c2c;
@@ -93,6 +118,24 @@ export default {
   }
   to {
       left: -165px;
+  }
+}
+
+@keyframes sideBarMainOn {
+  from {
+      left: -275px;
+  }
+  to {
+      left: 100px;
+  }
+}
+
+@keyframes sideBarMainOff {
+  from {
+      left: 100px;
+  }
+  to {
+      left: -275px;
   }
 }
 </style>
