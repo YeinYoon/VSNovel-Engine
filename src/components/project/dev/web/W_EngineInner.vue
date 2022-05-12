@@ -113,18 +113,20 @@ export default {
     },
     deletePlot() {
       if(this.NovelPlot.length != 1) {
-        let index = this.nowPlot;
         this.NovelPlot.splice(this.nowPlot, 1);
-        this.nowPlot = index - 1;
+        this.nowPlot = this.nowPlot - 1; 
         if(this.nowPlot == -1) {
-          this.nowPlot = index;
-          this.$refs.canvas.plotMove();
+          this.nowPlot = 0;
+          this.$refs.canvas.plotMove0();
         }
       } else {
         this.$store.commit('gModalOn', {size : "normal", msg : "삭제를 위해 최소 2개의 플롯이 필요합니다."});
       }
     },
     indexCng(index) {
+      if(this.nowPlot==index) {
+        this.$refs.canvas.plotMove0();
+      }
       this.nowPlot = index;
     },
 

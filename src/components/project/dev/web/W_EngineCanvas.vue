@@ -69,15 +69,12 @@ export default {
       this.title = this.NovelPlot[this.nowPlot].title;
       this.contentHTML = this.NovelPlot[this.nowPlot].content;
       this.$refs.webNovelEditor.state.content = this.contentHTML;
+      console.log(this.contentHTML);
     }
   },
   mounted() {
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
-
-        // this.title = this.NovelPlot[0].title;
-        // this.contentHTML = this.NovelPlot[0].content;
-        // this.$refs.webNovelEditor.state.content = this.NovelPlot[0].content;
     },
     data(){
         return {
@@ -135,10 +132,10 @@ export default {
         },
 
         getContent(content) {
-            this.contentHTML = content;
+          this.contentHTML = content;
         },
 
-        plotMove() { // 0번째 플롯을 삭제했을시 작동
+        plotMove0() { // 0번째 플롯을 삭제했을시 작동 -> 같은 인덱스 값이기 때문에 데이터 재로드
           this.inputPlotTitle = false;
           this.title = this.NovelPlot[this.nowPlot].title;
           this.contentHTML = this.NovelPlot[this.nowPlot].content;

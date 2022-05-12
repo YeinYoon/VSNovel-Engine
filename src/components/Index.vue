@@ -615,8 +615,6 @@ export default {
       this.text = json;
     },
 
-
-
     //로그아웃
     logout(){
       axios.get('/engine/auth/logout')
