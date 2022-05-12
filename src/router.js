@@ -29,7 +29,8 @@ const routes = [
         path : "invitePj",
         component : invitePj
       }
-    ]
+    ],
+    props:true
   },
   {
     path : "/devPage/:pjCode",
@@ -43,7 +44,8 @@ const routes = [
         path : "invitePj",
         component : invitePj
       }
-    ]
+    ],
+    props:true
   }
 ];
 

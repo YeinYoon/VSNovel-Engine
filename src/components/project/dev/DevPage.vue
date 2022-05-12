@@ -1,5 +1,5 @@
 <template>
-<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
+<div :class="{ [`${this.condition}`]:true}">
     <edit-pj-info v-if="isEditPj" :isEditPj="isEditPj" @pjEdit="pjEdit"></edit-pj-info>
     <invite-pj v-if="isInvitePj" :isInvitePj="isInvitePj" @pjInvite="pjInvite"></invite-pj>
     <div class="DevPageTemp">
@@ -37,9 +37,20 @@ export default {
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
     },
+    props:{
+        side:Boolean,
+        main:Boolean
+    },
     watch : {
         $route() {
             this.getPjInfo(this.pjCode);
+        },
+        side(){
+            console.log(this.side)
+            if(!this.side){
+                this.condition="RouterViewLeft"
+            }
+            else this.condition="RouterViewRight"
         }
     },
     data(){
@@ -51,6 +62,7 @@ export default {
             status : "",
             isInvitePj: false,
             isEditPj: false,
+            condition: "RouterViewLeft"
         }
     },
     methods : {

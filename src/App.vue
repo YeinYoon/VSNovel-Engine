@@ -11,9 +11,9 @@
     </div>
     <div v-else class="userName">로그인이 필요합니다</div>
   </div> -->
-  <SideBar v-bind:class="{'SideBar':true}"></SideBar>
-  <MainBar v-bind:class="{'MainBar':true}"></MainBar>
-  <router-view></router-view>
+  <SideBar v-bind:class="{'SideBar':true}" :main="mainBar" :side="sideBar" @cngSide="cngSide"></SideBar>
+  <MainBar v-bind:class="{'MainBar':true}" :main="mainBar" :side="sideBar"></MainBar>
+  <router-view :main="mainBar" :side="sideBar"></router-view>
 
 </template>
 
@@ -32,6 +32,12 @@ export default {
     MainBar,
     SideBar,
   },
+  data(){
+    return{
+      mainBar:true,
+      sideBar:false
+    }
+  },
   methods : {
     logout(){
       axios.get('/engine/auth/logout')
@@ -47,6 +53,16 @@ export default {
       .catch((err)=>{
         console.error(err);
       })
+    },
+    cngSide(value){
+      this.sideBar=value
+      console.log(this.sideBar)
+    }
+  },
+  watch:{
+    $route(){
+      if(this.$route.fullPath=='/' || this.$route.fullPath=='createNewPj') this.mainBar = true
+      else this.mainBar=false
     }
   }
 }
@@ -121,7 +137,7 @@ body{
   z-index: 99;
 }
 
-.RouterMoveLeft {
+/* .RouterMoveLeft {
   animation-name: routerLeft; 
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
@@ -131,13 +147,17 @@ body{
   animation-name: routerRight; 
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
-}
+} */
 
 .RouterViewLeft {
   position: fixed;
   left: 135px;
   width: calc(100vw - 135px);
   height: 100vh;
+  
+  animation-name: routerLeft; 
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
 }
 
 .RouterViewRight {
@@ -145,8 +165,32 @@ body{
   left: 400px;
   width: calc(100vw - 400px);
   height: 100vh;
+  
+  animation-name: routerRight; 
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+.mainRouterViewLeft {
+  position: fixed;
+  left: 0px;
+  width: calc(100vw - 0px);
+  height: 100vh;
+  
+  animation-name: routerLeftMain; 
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
 }
 
+.mainRouterViewRight {
+  position: fixed;
+  left: 300px;
+  width: calc(100vw - 300px);
+  height: 100vh;
+  
+  animation-name: routerRightMain; 
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
 .SideBar {
   position:fixed;
   z-index: 2;
@@ -174,6 +218,29 @@ body{
   to {
     left: 135px;
     width: calc(100vw - 135px);
+  }
+}
+@keyframes routerRightMain {
+  from {
+    left: 20px;
+    width: calc(100vw - 20px);
+  }
+
+  to {
+    left: 300px;
+    width: calc(100vw - 300px);
+  }
+}
+
+@keyframes routerLeftMain {
+  from {
+    left: 300px;
+    width: calc(100vw - 300px);
+  }
+
+  to {
+    left: 20px;
+    width: calc(100vw - 20px);
   }
 }
 </style>

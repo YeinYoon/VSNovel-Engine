@@ -1,6 +1,6 @@
 <template>
 <!--사이드바가 sideBarButton에 의해 true로 열리면 sideBarOn 으로 변경, false 땐 sideBarOff로 변경-->
- <div v-bind:class="{[`${this.$store.state.sideBarState}`]:true}"> 
+ <div v-bind:class="{[`${this.condition}`]:true}"> 
      123
 
 
@@ -15,20 +15,39 @@ export default {
   name : "SideBar",
   data() {
     return {
-      btnIcon : "▶" 
+      btnIcon : "▶",//▶◀
+      condition : "sideBarOffMain"
     }
+  },
+  props:{
+    main: Boolean,
+    side: Boolean
   },
   methods : {
     sideBarClick() {
-
-      if(this.$store.state.sideBar == false) {
-        this.$store.commit('sideMenuOn');
-        this.btnIcon = "◀"
-      } else {
-        this.$store.commit('sideMenuOff');
+      if(this.side) {
+        console.log(!this.side)
         this.btnIcon = "▶"
+        this.$emit("cngSide",!this.side)
+      } else {
+        console.log(!this.side)
+        this.btnIcon = "◀"
+        this.$emit("cngSide",!this.side)
       }
-      
+    }
+  },
+  watch:{
+    side(){
+      this.condition = ((this.side)?"sideBarOn":"sideBarOff")
+      if(this.main){
+        this.condition+="Main"
+      }
+    },
+    main(){
+      this.condition = ((this.side)?"sideBarOn":"sideBarOff")
+      if(this.main){
+        this.condition+="Main"
+      }
     }
   }
 }
@@ -123,19 +142,19 @@ export default {
 
 @keyframes sideBarMainOn {
   from {
-      left: -275px;
+      left: -280px;
   }
   to {
-      left: 100px;
+      left: 0px;
   }
 }
 
 @keyframes sideBarMainOff {
   from {
-      left: 100px;
+      left: 0px;
   }
   to {
-      left: -275px;
+      left: -280px;
   }
 }
 </style>

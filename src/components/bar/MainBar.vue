@@ -1,5 +1,5 @@
 <template>
-  <div v-if="main == false"> <!-- 스토어 조건문 달아주셈 -->
+  <div v-if="!main"> <!-- 스토어 조건문 달아주셈 -->
   <div v-bind:class="{'mainmenu':true}">
     <div v-bind:class="{'menus':true}">
       <div v-bind:class="{'menubox':true}">
@@ -39,11 +39,9 @@
 <script>
   export default {
     name: 'MainBar',
-    data() {
-      return{
-        main : true,
-      }
-    }
+    props:{
+      main:Boolean
+    },
   }
 </script>
 
