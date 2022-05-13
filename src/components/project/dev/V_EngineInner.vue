@@ -5,8 +5,9 @@
     <div class="VEngineCanvas">
       <EngineCanvas :plot="plot" :index="index" :scenario="scenario" @getCloudJSON="getCloudJSON"/>
     </div>
-    <div class="VPlotController">
-      <div class="VPCBackground">
+    
+    <div class="VPlotController"> <!-- 플롯 컨트롤러 -->
+      <div class="VPCBackground"> <!-- 플롯 컨트롤러 백그라운드 -->
         <!-- <div
           v-for="(plot, i) in scenario"
           :key="i">
@@ -37,19 +38,44 @@
         </div> -->
 
         <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
-          123
-        </div>
-        <div class="VpcInner"> <!-- 플롯 컨트롤러 상단 도구와 분리 -->
-          123 
-          <div class="VpcBlock"> <!-- 플롯 박스 -->
-
+          <div class="VpcTool_addplot">
+            <p>플롯추가</p>
           </div>
-          <div class="VpcBlock"> <!-- 플롯 박스 -->
+        </div> <!-- 플롯 추가등의 버튼 -->
 
-          </div>
-        </div>
-      </div>
-    </div>
+        <div class="VpcInner"> <!-- 플롯 컨트롤러 상단 도구와 분리 -->     
+          
+          <div class="VpcBlock"> <!-- 플롯 박스 -->
+            <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
+              <div class="VpcBlock_Title"><p>플롯제목제목</p></div>
+              <div class="VpcBlock_Opener"><p>ㅜ</p></div>
+            </div>
+
+            <div class="VpcBlockInner"> <!-- 플롯 내부 조회 -->
+              <div class="VpcPageNormal">
+                123123
+              </div>
+
+              <div class="VpcPageSelect">
+                12124214
+              </div>
+
+              <div class="VpcPageNormal">
+                123123
+              </div>
+
+              <div class="VpcPageSelect">
+                12124214
+              </div>  
+            </div><!-- 플롯 블록 이너 끝 -->
+
+          </div> <!-- 플롯 블록 끝 -->
+
+
+        </div> <!-- VpcInner 끝 -->
+
+      </div> <!-- 플롯 컨트롤러 백그라운드 -->
+    </div> <!-- 플롯 컨트롤러 -->
   </div>
 </template>
 
@@ -172,18 +198,95 @@ export default {
   background: rgb(88, 88, 88);
 }
 
+.VpcTool_addplot {
+  width: 60px;
+  height: 30px;
+  position: relative;
+  left: 10px;
+  top: 10px;
+  background: #2872f9;
+  border-radius: 10px;
+  display: table;
+  cursor: pointer;
+}
+
+.VpcTool_addplot p {
+  position: relative;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 0.9em;
+}
+
+.VpcInner {
+  margin-top: 10px;
+}
+
 .VpcBlock {
-  height: 100px;
   width: 100%;
   border-radius: 10px;
   background: rgb(119, 119, 119);
   margin-bottom: 10px;
 }
 
-.VpcBlock_Number {
-  height: 10px;
-  width: 10px;
+.VpcBlockLabel {
+  width: 100%;
+  height: 40px;
+  background: rgb(71, 71, 71);
   border-radius: 10px;
-  background: white;
 }
+
+.VpcBlock_Title {
+  position: relative;
+  left: 10px;
+  top: 10px;
+  height: 20px;
+  width: 100px;
+  border-radius: 30px;
+}
+
+.VpcBlock_Title p {
+  position: absolute;
+  font-size: 0.9em;
+}
+
+.VpcBlock_Opener {
+  position: relative;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  height: 25px;
+  width: 50px;
+  background: #797979;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.VpcBlock_Opener p {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50% ,-50%);
+  font-size: 0.9em;
+}
+
+.VpcBlockInner {
+  padding: 7px;
+}
+
+.VpcPageNormal {
+  width: 100%;
+  background: rgb(161, 161, 161);
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.VpcPageSelect {
+  width: 100%;
+  background: rgb(161, 161, 161);
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
 </style>
