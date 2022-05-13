@@ -155,7 +155,6 @@ export default {
     .catch((err)=>{
       console.error(err);
     });
-    console.log(this.main)
   },
   props:{
     main:Boolean,
@@ -182,7 +181,6 @@ export default {
   },
   watch:{
     side(){
-      console.log(this.side)
       if(this.side){
         this.condition="mainRouterViewRight"
       }

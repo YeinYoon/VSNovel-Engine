@@ -2,7 +2,8 @@
   <div v-if="!main"> <!-- 스토어 조건문 달아주셈 -->
   <div v-bind:class="{'mainmenu':true}">
     <div v-bind:class="{'menus':true}">
-      <div v-bind:class="{'menubox':true}">
+
+      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'R')">
         <img class="menubox_icon_resource" src="../../assets/icons/white/folder.png">
       </div>
       <br>
@@ -20,11 +21,11 @@
       </div>
       <br> -->
 
-      <div v-bind:class="{'menubox':true}">
+      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'C')">
         <img class="menubox_icon_cooperation" src="../../assets/icons/white/handshake.png">
       </div>
       <br>
-      <div v-bind:class="{'menubox':true}">
+      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'S')">
         <img class="menubox_icon_setting" src="../../assets/icons/white/gear.png">
       </div>
       <br>

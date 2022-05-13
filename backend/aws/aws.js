@@ -19,7 +19,7 @@ exports.createProjectDir = async(pjCode) => {
         },
         {
             Bucket:"vsnovel",
-            Key : `Project/PJ${pjCode}/char/`
+            Key : `Project/PJ${pjCode}/img/`
         }
     ];
 

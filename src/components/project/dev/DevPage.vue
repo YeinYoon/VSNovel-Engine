@@ -46,7 +46,6 @@ export default {
             this.getPjInfo(this.pjCode);
         },
         side(){
-            console.log(this.side)
             if(!this.side){
                 this.condition="RouterViewLeft"
             }

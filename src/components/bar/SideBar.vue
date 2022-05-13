@@ -1,23 +1,46 @@
 <template>
 <!--사이드바가 sideBarButton에 의해 true로 열리면 sideBarOn 으로 변경, false 땐 sideBarOff로 변경-->
- <div v-bind:class="{[`${this.condition}`]:true}"> 
-     
-     <!--상태값에 따른 컴포넌트 호출 (아마 store 사용할수도.)-->
+<div v-bind:class="{[`${this.condition}`]:true}"> 
 
-     <div class="sideBarButton" @click="sideBarClick()">
-       <span>{{btnIcon}}</span>
-     </div>
- </div>
+  <div v-if="this.$store.state.sideMenuState == 'C'">
+    <VsideCoop :pjCode="pjCode"></VsideCoop>
+  </div>
+
+  <div v-else-if="this.$store.state.sideMenuState == 'R'">
+    <VsideResource :pjCode="pjCode"></VsideResource>
+  </div>
+
+  <div v-else-if="this.$store.state.sideMenuState == 'S'">
+    <VsideSetting :pjCode="pjCode"></VsideSetting>
+  </div>
+
+  <div v-else>
+    메인화면 사이드
+  </div>
+
+  <div class="sideBarButton" @click="sideBarClick()">
+    <span>{{btnIcon}}</span>
+  </div>
+</div>
 </template>
 
 <script>
+import VsideCoop from '../side/Visual/V_side_coop.vue'
+import VsideResource from '../side/Visual/V_side_resource.vue'
+import VsideSetting from '../side/Visual/V_side_setting.vue'
 export default {
   name : "SideBar",
   data() {
     return {
+      pjCode  : null,
       btnIcon : "▶",//▶◀
       condition : "sideBarOffMain"
     }
+  },
+  components : {
+    VsideCoop,
+    VsideResource,
+    VsideSetting
   },
   props:{
     main: Boolean,
@@ -26,17 +49,19 @@ export default {
   methods : {
     sideBarClick() {
       if(this.side) {
-        console.log(!this.side)
         this.btnIcon = "▶"
         this.$emit("cngSide",!this.side)
       } else {
-        console.log(!this.side)
         this.btnIcon = "◀"
         this.$emit("cngSide",!this.side)
       }
     }
   },
   watch:{
+    $route() {
+      this.pjCode = this.$route.params.pjCode;
+    },
+
     side(){
       this.condition = ((this.side)?"sideBarOn":"sideBarOff")
       if(this.main){

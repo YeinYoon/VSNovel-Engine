@@ -46,7 +46,6 @@ export default {
     },
     cngSide(value){
       this.sideBar=value
-      console.log(this.sideBar)
     }
   },
   watch:{

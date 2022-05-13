@@ -19,90 +19,90 @@ router.post('/createNewPj', async (req, res)=>{
         var getThisPjCode = await db.execute(`SELECT proj_code FROM tbl_project WHERE proj_title = '${req.body.title}'`);
         getThisPjCode = getThisPjCode.rows[0].PROJ_CODE;
 
-        // 프로젝트 플롯 시퀀스 생성
-        var createPlotSeq = await db.execute(`CREATE SEQUENCE tbl_plot_${getThisPjCode}_seq
-        MINVALUE      1
-        MAXVALUE      9999
-        INCREMENT BY  1
-        START WITH    1
-        NOCACHE
-        NOORDER
-        NOCYCLE`)
-        if(createPlotSeq == "err") {
-            console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 플롯 시퀀스 생성 실패`);
-        }
+        // // 프로젝트 플롯 시퀀스 생성
+        // var createPlotSeq = await db.execute(`CREATE SEQUENCE tbl_plot_${getThisPjCode}_seq
+        // MINVALUE      1
+        // MAXVALUE      9999
+        // INCREMENT BY  1
+        // START WITH    1
+        // NOCACHE
+        // NOORDER
+        // NOCYCLE`)
+        // if(createPlotSeq == "err") {
+        //     console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 플롯 시퀀스 생성 실패`);
+        // }
 
-        // 프로젝트 페이지 시퀀스 생성
-        var createPageSeq = await db.execute(`CREATE SEQUENCE tbl_page_${getThisPjCode}_seq
-        MINVALUE      1
-        MAXVALUE      99999
-        INCREMENT BY  1
-        START WITH    1
-        NOCACHE
-        NOORDER
-        NOCYCLE`)
-        if(createPageSeq == "err") {
-            console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 페이지 시퀀스 생성 실패`);
-        }
+        // // 프로젝트 페이지 시퀀스 생성
+        // var createPageSeq = await db.execute(`CREATE SEQUENCE tbl_page_${getThisPjCode}_seq
+        // MINVALUE      1
+        // MAXVALUE      99999
+        // INCREMENT BY  1
+        // START WITH    1
+        // NOCACHE
+        // NOORDER
+        // NOCYCLE`)
+        // if(createPageSeq == "err") {
+        //     console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 페이지 시퀀스 생성 실패`);
+        // }
 
-        // 프로젝트 텍스트 시퀀스 생성
-        var createTextSeq = await db.execute(`CREATE SEQUENCE tbl_text_${getThisPjCode}_seq
-        MINVALUE      1
-        MAXVALUE      99999
-        INCREMENT BY  1
-        START WITH    1
-        NOCACHE
-        NOORDER
-        NOCYCLE`);
-        if(createTextSeq == "err") {
-            console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 텍스트 시퀀스 생성 실패`);
-        }
+        // // 프로젝트 텍스트 시퀀스 생성
+        // var createTextSeq = await db.execute(`CREATE SEQUENCE tbl_text_${getThisPjCode}_seq
+        // MINVALUE      1
+        // MAXVALUE      99999
+        // INCREMENT BY  1
+        // START WITH    1
+        // NOCACHE
+        // NOORDER
+        // NOCYCLE`);
+        // if(createTextSeq == "err") {
+        //     console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 텍스트 시퀀스 생성 실패`);
+        // }
                 
-        //프로젝트 리소스 시퀀스 생성
-        var createResourceSeq = await db.execute(`CREATE SEQUENCE tbl_resource_${getThisPjCode}_seq
-        MINVALUE      1
-        MAXVALUE      99999
-        INCREMENT BY  1
-        START WITH    1
-        NOCACHE
-        NOORDER
-        NOCYCLE`);
-        if(createResourceSeq == "err") {
-            console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 리소스 시퀀스 생성 실패`);
-        }
+        // //프로젝트 리소스 시퀀스 생성
+        // var createResourceSeq = await db.execute(`CREATE SEQUENCE tbl_resource_${getThisPjCode}_seq
+        // MINVALUE      1
+        // MAXVALUE      99999
+        // INCREMENT BY  1
+        // START WITH    1
+        // NOCACHE
+        // NOORDER
+        // NOCYCLE`);
+        // if(createResourceSeq == "err") {
+        //     console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 리소스 시퀀스 생성 실패`);
+        // }
 
-        //프로젝트 변경점 시퀀스 생성
-        var createChangeSeq = await db.execute(`CREATE SEQUENCE tbl_change_${getThisPjCode}_seq
-        MINVALUE      1
-        MAXVALUE      9999999999
-        INCREMENT BY  1
-        START WITH    1
-        NOCACHE
-        NOORDER
-        NOCYCLE`);
-        if(createChangeSeq == "err") {
-            console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 변경점 시퀀스 생성 실패`);
-        }
+        // //프로젝트 변경점 시퀀스 생성
+        // var createChangeSeq = await db.execute(`CREATE SEQUENCE tbl_change_${getThisPjCode}_seq
+        // MINVALUE      1
+        // MAXVALUE      9999999999
+        // INCREMENT BY  1
+        // START WITH    1
+        // NOCACHE
+        // NOORDER
+        // NOCYCLE`);
+        // if(createChangeSeq == "err") {
+        //     console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 변경점 시퀀스 생성 실패`);
+        // }
 
-        // 프로젝트 스케쥴 시퀀스 생성
-        var createScheSeq = await db.execute(`CREATE SEQUENCE tbl_schedule_${getThisPjCode}_seq
-        MINVALUE      1
-        MAXVALUE      9999999999
-        INCREMENT BY  1
-        START WITH    1
-        NOCACHE
-        NOORDER
-        NOCYCLE`);
-        if(createScheSeq == "err") {
-            console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 스케쥴 시퀀스 생성 실패`);
-        }
+        // // 프로젝트 스케쥴 시퀀스 생성
+        // var createScheSeq = await db.execute(`CREATE SEQUENCE tbl_schedule_${getThisPjCode}_seq
+        // MINVALUE      1
+        // MAXVALUE      9999999999
+        // INCREMENT BY  1
+        // START WITH    1
+        // NOCACHE
+        // NOORDER
+        // NOCYCLE`);
+        // if(createScheSeq == "err") {
+        //     console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 스케쥴 시퀀스 생성 실패`);
+        // }
 
-        // 시작 플롯 생성
-        var createStartPlot = await db.execute(`INSERT INTO tbl_plot
-        VALUES(${getThisPjCode}, -1, 'start_plot')`);
-        if(createStartPlot == "err") {
-            console.log("시작 플롯 생성 실패");
-        }
+        // // 시작 플롯 생성
+        // var createStartPlot = await db.execute(`INSERT INTO tbl_plot
+        // VALUES(${getThisPjCode}, -1, 'start_plot')`);
+        // if(createStartPlot == "err") {
+        //     console.log("시작 플롯 생성 실패");
+        // }
                 
         // 프로젝트 팀(협업) 설정
         var result = await db.execute(`INSERT INTO tbl_cooperation(user_id, proj_code, coop_role)

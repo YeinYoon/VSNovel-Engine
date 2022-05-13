@@ -47,14 +47,15 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
     let keyList = [];
     let urlList = [];
 
-    await s3.listObjectsV2(params, async (err, data)=>{
+    await s3.listObjects(params, async (err, data)=>{
         if(err) {
             throw err;
         }
         let contents = data.Contents;
         contents.forEach((content) => {
             keyList.push(content.Key); // "ex) content.Key => assets/images/1.png"
-            urlList.push({key : content.Key, url : null});
+            var fileName = content.Key.split('/');
+            urlList.push({key : content.Key, name: fileName[fileName.length-1], url : null});
         });
 
         for(var i=0; i<keyList.length; i++) {
@@ -65,8 +66,7 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
             var url = await s3.getSignedUrl("getObject", params);
             urlList[i].url = url;
         }
-    });
-    
+    })
     return urlList;
 }
 
