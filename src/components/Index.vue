@@ -138,6 +138,8 @@ import storage from '../aws'
 export default {
   name: 'Index',
   created() {
+    this.$store.commit('cngSideMenu', 'M');
+
     this.test(); // 타이핑 테스트
 
     axios.get('/engine/auth/loginCheck')
@@ -167,6 +169,7 @@ export default {
       alramStatus : false,
       existNotice : "off",
       condition : "mainRouterViewLeft",
+
       // 서버스토리지 파일 테스트용
       img : "",
       imgUrl : "",

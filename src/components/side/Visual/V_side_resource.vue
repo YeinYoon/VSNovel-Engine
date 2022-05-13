@@ -1,43 +1,47 @@
 <template>
   <div class="VSBackground">
-    {{bg}}
+    <div v-for="(bg, i) in bg" :key="i">
+      <p>{{bg.name}}</p>
+    </div>
+
+    <div v-for="(bgm, i) in bgm" :key="i">
+      <p>{{bgm.name}}</p>
+    </div>
+
+    <div v-for="(img, i) in img" :key="i">
+      <p>{{img.name}}</p>
+    </div>
   </div>
 </template>
 
 <script>
-import {toRaw} from 'vue'
 import storage from '../../../aws'
 export default {
   name: 'V_side_resource',
   props : {
     pjCode : String
   },
-  created() {
+  mounted() {
     this.getData();
   },
   data() {
     return {
-      bg : [],
-      bgm : [],
-      img : []
+      bg : null,
+      bgm : null,
+      img : null
     }
   },
   methods : {
     async getData() {
       console.log("해당 프로젝트의 리소스 파일을 불러옴", this.pjCode);
-      var bg = await storage.getUrlList(`Project/PJ${this.pjCode}/bg/`);
-      this.bg = bg
+      this.bg = await storage.getUrlList(`Project/PJ${this.pjCode}/bg/`);
+      this.bgm = await storage.getUrlList(`Project/PJ${this.pjCode}/bgm/`);
+      this.img = await storage.getUrlList(`Project/PJ${this.pjCode}/img/`);
 
-      var bgm = await storage.getUrlList(`Project/PJ${this.pjCode}/bgm/`);
-      this.bgm = bgm
-
-      var img = await storage.getUrlList(`Project/PJ${this.pjCode}/img/`);
-      this.img = img
-
-      this.bg = toRaw(this.bg);
-      this.bgm = toRaw(this.bgm);
-      this.img = toRaw(this.img);
-    },
+      console.log("bg : ", this.bg);
+      console.log("bgm : ", this.bgm);
+      console.log("img : ", this.img)
+    }
 
   },
 
