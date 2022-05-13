@@ -1,6 +1,6 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
-<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
+<div  :class="{[`${this.condition}`]:true}"><!--[`${this.$store.state.sideBarMove}`]:true--> 
   
   <!-- <div>
     <input multiple ref="img" type="file" @change="onInputImage()">
@@ -130,6 +130,230 @@
 </div>
 
 </template>
+<script>
+import ConfirmModal from './modal/ConfirmModal.vue'
+import axios from '../axios'
+// 서버 스토리지
+import storage from '../aws'
+export default {
+  name: 'Index',
+  created() {
+    this.test(); // 타이핑 테스트
+
+    axios.get('/engine/auth/loginCheck')
+    .then(async (result)=>{
+      if(result.data!="") {
+        console.log(result.data)
+        this.$store.commit('userLogin', result.data.USER_NICKNAME);
+        console.log(`currentUser : ${this.$store.state.userNickname}`);
+        await this.getPjList();
+        await this.getNoticeList();
+      } else {
+        this.$router.push('/signin');
+      }
+    })
+    .catch((err)=>{
+      console.error(err);
+    });
+    console.log(this.main)
+  },
+  props:{
+    main:Boolean,
+    side:Boolean
+  },
+  data() {
+    return {
+      pjList : [],
+      noticeList : [],
+      alramStatus : false,
+      existNotice : "off",
+      condition : "mainRouterViewLeft",
+      // 서버스토리지 파일 테스트용
+      img : "",
+      imgUrl : "",
+      mp3 : "",
+      text : "",
+
+      //타이핑 애니메이션 테스트용
+      content : "Hello, I'm Sample Text",
+      txt : "",
+      count : 0
+    }
+  },
+  watch:{
+    side(){
+      console.log(this.side)
+      if(this.side){
+        this.condition="mainRouterViewRight"
+      }
+      else{
+        this.condition="mainRouterViewLeft"
+      }
+    }
+  },
+  methods : {
+    // 타이핑 테스트
+    typing() {
+      var char = 0;
+      if(this.count < this.content.length) {
+        char = this.content.charAt(this.count);
+        this.txt += char;
+        this.count++;
+      } else {
+        clearInterval(this.typing);
+      }
+    },
+    test() {
+      setInterval(this.typing, 100);
+    },
+    next() {
+      this.count = 0;
+      this.txt = "";
+      this.content = "is next Text!";
+    },
+
+    // 서버스토리지 테스트
+    onInputImage() {
+      this.img = this.$refs.img.files[0];
+      console.log(this.img.name);
+    },
+    async upload() {
+      console.log(this.img);
+      var result = await storage.uploadFile('test/', this.img);
+      console.log(result);
+    },
+    async getImg() {
+      var result = await storage.getUrlList("test/");
+      console.log(result);
+      // this.imgUrl = result;
+    },
+    async getMp3() {
+      var result = await storage.getUrl('test/~~.mp3');
+      this.mp3 = result;
+    },
+    async delFile() {
+      await storage.deleteFile("test/프로젝트 관련.txt");
+    },
+    async getFile() {
+      var result = await storage.getJson("test/테스트.json");
+      var json = String.fromCharCode.apply(null, result);
+      console.log(json);
+      this.text = json;
+    },
+
+
+
+    //로그아웃
+    logout(){
+      axios.get('/engine/auth/logout')
+      .then((result)=>{
+        if(result.data=='ok') {
+          this.$store.commit('userLogin', null);
+          this.$router.push('/signin');
+        } else {
+          console.log(result);
+          alert(result.data);
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      })
+    },
+
+    // 해당 프로젝트 개발 페이지 이동
+    goToDevPage(pjCode) {
+      this.$router.push(`/devPage/${pjCode}`);
+    },
+    
+    // 프로젝트 목록 가져오기
+    getPjList() {
+      axios.get('/engine/pj/getList')
+        .then((result)=>{
+          if(result.data != "empty") {
+            this.pjList = result.data;
+          }
+        })
+        .catch((err)=>{
+          console.error(err);
+      })
+    },
+
+    // 도착한 알림 목록 가져오기
+    getNoticeList() {
+      axios.get('/engine/team/getNoticeList')
+      .then((result)=>{
+        if(result.data == "err") {
+          console.log("ERR : 알림 불러오기 실패")
+        } else {
+          this.noticeList = result.data;
+          if(result.data.length > 0) {
+            this.existNotice = "on";
+          } else {
+            this.existNotice = "off";
+          }
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      });
+    },
+
+    // 프로젝트 초대 수락
+    async PjAccept(pjCode) {
+      var accept = await this.$refs.confirmModal.show({
+        msg : "초대를 수락하시겠습니까?",
+        size : "normal",
+        btn1 : "수락",
+        btn2 : "취소"
+      });
+      if(accept) { 
+        axios.post('/engine/team/PjAccept', {pjCode : pjCode})
+        .then((result)=>{
+          if(result.data == "ok") {
+            this.getPjList();
+            this.getNoticeList();
+          } else {
+            this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
+          }
+        })
+        console.log("초대 수락");
+      } else {
+        console.log("초대 보류");
+      }
+    },
+    // 프로젝트 초대 거절
+    async PjRefuse(pjCode) {
+      var refuse = await this.$refs.confirmModal.show({
+        msg : "초대를 거절하시겠습니까?",
+        size : "normal",
+        btn1 : "수락",
+        btn2 : "취소"
+      });
+      if(refuse) { 
+        axios.post('/engine/team/PjRefuse', {pjCode : pjCode})
+        .then((result)=>{
+          if(result.data == "err") {
+            this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});
+          } else {
+            this.getNoticeList();
+          }
+        })
+      } else {
+        console.log("거절 보류");
+      }
+    },
+
+    alramCenterToggle() {
+      this.alramStatus = !this.alramStatus;
+    }
+  },
+  components : {
+    ConfirmModal
+  }
+}
+  
+</script>
+
 
 <style>
 .enginebackground {
@@ -508,211 +732,3 @@
 }
 
 </style>
-<script>
-import ConfirmModal from './modal/ConfirmModal.vue'
-import axios from '../axios'
-// 서버 스토리지
-import storage from '../aws'
-export default {
-  name: 'Index',
-  created() {
-    this.test(); // 타이핑 테스트
-
-    axios.get('/engine/auth/loginCheck')
-    .then(async (result)=>{
-      if(result.data!="") {
-        console.log(result.data)
-        this.$store.commit('userLogin', result.data.USER_NICKNAME);
-        console.log(`currentUser : ${this.$store.state.userNickname}`);
-        await this.getPjList();
-        await this.getNoticeList();
-      } else {
-        this.$router.push('/signin');
-      }
-    })
-    .catch((err)=>{
-      console.error(err);
-    });
-  },
-  data() {
-    return {
-      pjList : [],
-      noticeList : [],
-      alramStatus : false,
-      existNotice : "off",
-
-      // 서버스토리지 파일 테스트용
-      img : "",
-      imgUrl : "",
-      mp3 : "",
-      text : "",
-
-      //타이핑 애니메이션 테스트용
-      content : "Hello, I'm Sample Text",
-      txt : "",
-      count : 0
-    }
-  },
-  methods : {
-    // 타이핑 테스트
-    typing() {
-      var char = 0;
-      if(this.count < this.content.length) {
-        char = this.content.charAt(this.count);
-        this.txt += char;
-        this.count++;
-      } else {
-        clearInterval(this.typing);
-      }
-    },
-    test() {
-      setInterval(this.typing, 100);
-    },
-    next() {
-      this.count = 0;
-      this.txt = "";
-      this.content = "is next Text!";
-    },
-
-    // 서버스토리지 테스트
-    onInputImage() {
-      this.img = this.$refs.img.files[0];
-      console.log(this.img.name);
-    },
-    async upload() {
-      console.log(this.img);
-      var result = await storage.uploadFile('test/', this.img);
-      console.log(result);
-    },
-    async getImg() {
-      var result = await storage.getUrlList("test/");
-      console.log(result);
-      // this.imgUrl = result;
-    },
-    async getMp3() {
-      var result = await storage.getUrl('test/~~.mp3');
-      this.mp3 = result;
-    },
-    async delFile() {
-      await storage.deleteFile("test/프로젝트 관련.txt");
-    },
-    async getFile() {
-      var result = await storage.getJson("test/테스트.json");
-      var json = String.fromCharCode.apply(null, result);
-      console.log(json);
-      this.text = json;
-    },
-
-
-
-    //로그아웃
-    logout(){
-      axios.get('/engine/auth/logout')
-      .then((result)=>{
-        if(result.data=='ok') {
-          this.$store.commit('userLogin', null);
-          this.$router.push('/signin');
-        } else {
-          console.log(result);
-          alert(result.data);
-        }
-      })
-      .catch((err)=>{
-        console.error(err);
-      })
-    },
-
-    // 해당 프로젝트 개발 페이지 이동
-    goToDevPage(pjCode) {
-      this.$router.push(`/devPage/${pjCode}`);
-    },
-    
-    // 프로젝트 목록 가져오기
-    getPjList() {
-      axios.get('/engine/pj/getList')
-        .then((result)=>{
-          if(result.data != "empty") {
-            this.pjList = result.data;
-          }
-        })
-        .catch((err)=>{
-          console.error(err);
-      })
-    },
-
-    // 도착한 알림 목록 가져오기
-    getNoticeList() {
-      axios.get('/engine/team/getNoticeList')
-      .then((result)=>{
-        if(result.data == "err") {
-          console.log("ERR : 알림 불러오기 실패")
-        } else {
-          this.noticeList = result.data;
-          if(result.data.length > 0) {
-            this.existNotice = "on";
-          } else {
-            this.existNotice = "off";
-          }
-        }
-      })
-      .catch((err)=>{
-        console.error(err);
-      });
-    },
-
-    // 프로젝트 초대 수락
-    async PjAccept(pjCode) {
-      var accept = await this.$refs.confirmModal.show({
-        msg : "초대를 수락하시겠습니까?",
-        size : "normal",
-        btn1 : "수락",
-        btn2 : "취소"
-      });
-      if(accept) { 
-        axios.post('/engine/team/PjAccept', {pjCode : pjCode})
-        .then((result)=>{
-          if(result.data == "ok") {
-            this.getPjList();
-            this.getNoticeList();
-          } else {
-            this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
-          }
-        })
-        console.log("초대 수락");
-      } else {
-        console.log("초대 보류");
-      }
-    },
-    // 프로젝트 초대 거절
-    async PjRefuse(pjCode) {
-      var refuse = await this.$refs.confirmModal.show({
-        msg : "초대를 거절하시겠습니까?",
-        size : "normal",
-        btn1 : "수락",
-        btn2 : "취소"
-      });
-      if(refuse) { 
-        axios.post('/engine/team/PjRefuse', {pjCode : pjCode})
-        .then((result)=>{
-          if(result.data == "err") {
-            this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});
-          } else {
-            this.getNoticeList();
-          }
-        })
-      } else {
-        console.log("거절 보류");
-      }
-    },
-
-    alramCenterToggle() {
-      this.alramStatus = !this.alramStatus;
-    }
-  },
-  components : {
-    ConfirmModal
-  }
-}
-  
-</script>
-
