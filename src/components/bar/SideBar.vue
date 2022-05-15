@@ -152,13 +152,13 @@ export default {
       left: -150px;
   }
   to {
-      left: 100px;
+      left: 120px;
   }
 }
 
 @keyframes sideBarOff {
   from {
-      left: 100px;
+      left: 120px;
   }
   to {
       left: -165px;
