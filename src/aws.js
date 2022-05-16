@@ -88,11 +88,16 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
             let contents = data.Contents;
             contents.forEach((content) => {
                 keyList.push(content.Key); // "ex) content.Key => assets/images/1.png"
-                var fileName = content.Key.split('/');
-
+                
+                var fileName = content.Key.split('/'); // 이름
                 var temp = fileName[fileName.length-1];
-                var extension = temp.split('.');
-                urlList.push({key : content.Key, name: fileName[fileName.length-1], ex : extension[extension.length-1], url : null});
+                var extension = temp.split('.'); // 확장자
+                urlList.push({
+                    key : content.Key,
+                    name: fileName[fileName.length-1],
+                    ex : extension[extension.length-1],
+                    url : null
+                });
             });
 
             for(var i=0; i<keyList.length; i++) {
