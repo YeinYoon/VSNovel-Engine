@@ -38,6 +38,38 @@ exports.getUrl = async (filePath) => { // 특정 경로의 파일 URL 가져오�
     return url;
 }
 
+exports.getDirList = async(filepath) => { // 해당 프로젝트 내부의 폴더목록 가져오기
+    const params = {
+        Bucket: "vsnovel",
+        Prefix : filepath
+    }
+
+    let temp = [];
+    let dirList = [];
+
+    var data = new Promise(function(resolve, reject){
+        s3.listObjectsV2(params, async(err, data) => {
+            if (err) { 
+                return reject(err);
+            }
+
+            let contents = data.Contents;
+            contents.forEach((content) => {
+                var folderName = content.Key.split('/');
+                temp.push(folderName[folderName.length-2]);
+            });
+            
+            const set = new Set(temp);
+            dirList = [...set];
+
+            dirList.splice(0,1); // 필요없는 빈 데이터 삭제
+            resolve(dirList);
+        });
+    });
+      
+    return data;
+}
+
 exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스트 가져오기
     const params = {
         Bucket: "vsnovel",
@@ -48,7 +80,7 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
     let urlList = [];
 
     var data = new Promise(function(resolve, reject){
-        s3.listObjects(params, async(err, data) => {
+        s3.listObjectsV2(params, async(err, data) => {
             if (err) { 
             return reject(err);
             }
@@ -57,7 +89,10 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
             contents.forEach((content) => {
                 keyList.push(content.Key); // "ex) content.Key => assets/images/1.png"
                 var fileName = content.Key.split('/');
-                urlList.push({key : content.Key, name: fileName[fileName.length-1], url : null});
+
+                var temp = fileName[fileName.length-1];
+                var extension = temp.split('.');
+                urlList.push({key : content.Key, name: fileName[fileName.length-1], ex : extension[extension.length-1], url : null});
             });
 
             for(var i=0; i<keyList.length; i++) {

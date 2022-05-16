@@ -20,65 +20,44 @@
     파일 리스트를 보고있는지 판단하는 변수가 필요합니다. -->
 
 
-    <div class="VSFolderList"> <!-- 폴더 리스트 --> <!-- if문 -->
+    <div class="VSFolderList" v-if="clickFolder == false">
       폴더리스트
 
-      <div class="VSFolder"> <!-- 이걸 반복 --> <!-- for문 -->
+      <div class="VSFolder" v-for="(f, i) in folderList" :key="i" @click="this.currentFolder = f;">
 
-        <div class="VSFolderThumnail"> <!-- 폴더 이미지는 데이터 없어도됨 -->
+        <div class="VSFolderThumnail"> 
           <img src="@/assets/sample.png">
         </div>
 
-        <div class="VSFolderName"> <!-- 폴더 이름 데이터 -->
-          <p>폴더명</p>
+        <div class="VSFolderName">
+          <p>{{f}}</p>
         </div>
 
-      </div> <!-- 여기까지 -->
+      </div>
 
-    </div> <!-- 폴더리스트 끝 -->
+    </div>
 
 
 
-    <div class="VSFileList"> <!-- 파일 리스트 --> <!-- if문 -->
+    <div class="VSFileList" v-else>
       파일리스트
 
-      <div class="VSFile"> <!-- 이걸 반복 -->
+      <div class="VSFile" v-for="(f, i) in fileList" :key="i">
 
-        <div class="VSFileThumnail"> <!-- 파일 이미지는 썸네일 필요. 단 이미지 파일 (png,jpeg,gif 만 썸네일, 그외엔 형식에 맞는 아이콘 표시) --> 
+        <div class="VSFileThumnail" v-if="f.ex == 'mp3'">
           <img src="@/assets/sample.png">
         </div>
-
-        <div class="VSFileName"> <!-- 파일 이름 -->
-          <p>파일명</p>
+        <div class="VSFileThumnail" v-else>
+          <img :src="f.url">
         </div>
 
-      </div> <!-- 여기까지 -->
-
-      <div class="VSFile"> <!-- 이걸 반복 -->
-
-        <div class="VSFileThumnail"> <!-- 파일 이미지는 썸네일 필요. 단 이미지 파일 (png,jpeg,gif 만 썸네일, 그외엔 형식에 맞는 아이콘 표시) --> 
-          <img src="@/assets/sample.png">
+        <div class="VSFileName">
+          <p>{{f.name}}</p>
         </div>
 
-        <div class="VSFileName"> <!-- 파일 이름 -->
-          <p>파일명</p>
-        </div>
+      </div> 
 
-      </div> <!-- 여기까지 -->
-
-      <div class="VSFile"> <!-- 이걸 반복 -->
-
-        <div class="VSFileThumnail"> <!-- 파일 이미지는 썸네일 필요. 단 이미지 파일 (png,jpeg,gif 만 썸네일, 그외엔 형식에 맞는 아이콘 표시) --> 
-          <img src="@/assets/sample.png">
-        </div>
-
-        <div class="VSFileName"> <!-- 파일 이름 -->
-          <p>파일명</p>
-        </div>
-
-      </div> <!-- 여기까지 -->
-
-    </div> <!-- 폴더 내부 리스트 끝 -->
+    </div> 
 
     <!-- 파일리스트는 리스트방식, 갤러리방식 두가지로 제공하고싶으니 파일 정보 불러올때 염두해주셈!! 미리 변수값이 있으면 좋겠음!! -->
 
@@ -97,25 +76,30 @@ export default {
   },
   data() {
     return {
-      bg : null,
-      bgm : null,
-      img : null
+      clickFolder : false,
+      currentFolder : null,
+      folderList : [],
+      fileList : []
     }
   },
   methods : {
     async getData() {
-      console.log("해당 프로젝트의 리소스 파일을 불러옴", this.pjCode);
-      this.bg = await storage.getUrlList(`Project/PJ${this.pjCode}/bg/`);
-      this.bgm = await storage.getUrlList(`Project/PJ${this.pjCode}/bgm/`);
-      this.img = await storage.getUrlList(`Project/PJ${this.pjCode}/img/`);
+      console.log("해당 프로젝트의 폴더 목록을 불러옴", this.pjCode);
+      this.folderList = await storage.getDirList(`Project/PJ${this.pjCode}/resource/`);
+      console.log(this.folderList);
+    },
 
-      console.log("bg : ", this.bg);
-      console.log("bgm : ", this.bgm);
-      console.log("img : ", this.img)
+    async getFileList(folderName) {
+      this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${folderName}/`);
+      console.log(this.fileList);
     }
-
   },
-
+  watch : {
+    currentFolder(cngFolder) {
+      this.clickFolder = true;
+      this.getFileList(cngFolder);
+    }
+  }
   
 }
 </script>
