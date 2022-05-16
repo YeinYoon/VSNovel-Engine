@@ -20,14 +20,27 @@
     파일 리스트를 보고있는지 판단하는 변수가 필요합니다. -->
 
 
+    <div class="VSResourceTool">
+      <div class="VSResourceTitle"><span>리소스 관리</span></div>
+      <div class="VSResourceButtons">
+        <button>업로드</button> <!-- 업로드 -->
+        <button>폴더추가</button> <!-- 폴더추가 -->
+        <button>기능?</button> <!-- 폴더이동 -->
+      </div>
+    </div>
+    
+
     <div class="VSFolderList" v-if="clickFolder == false">
-      폴더리스트
+
+      <div class="VSResourceSubTitle"><p>경로/폴더명</p></div>
 
       <div class="VSFolder" v-for="(f, i) in folderList" :key="i" @click="this.currentFolder = f;">
 
         <div class="VSFolderThumnail"> 
           <img src="@/assets/sample.png">
         </div>
+
+        <div class="VSFolderDelButton"><span>삭제</span></div>
 
         <div class="VSFolderName">
           <p>{{f}}</p>
@@ -40,7 +53,9 @@
 
 
     <div class="VSFileList" v-else>
-      파일리스트
+
+      <div class="VSFileLocation"><span>경로/경로/경로/경로</span></div>
+      <div class="VSFileReturn"><span>뒤로가기</span></div>
 
       <div class="VSFile" v-for="(f, i) in fileList" :key="i">
 
@@ -49,6 +64,10 @@
         </div>
         <div class="VSFileThumnail" v-else>
           <img :src="f.url">
+        </div>
+
+        <div class="VSFileDelButton">
+          <span>삭제</span>
         </div>
 
         <div class="VSFileName">
@@ -112,29 +131,108 @@ export default {
   color: white;
 }
 
+.VSResourceTool {
+  width: 100%;
+  height: 80px;
+  position: relative;
+  background: #474747;
+  border-radius: 0px 0px 10px 10px;
+  overflow: hidden;
+}
+
+.VSResourceTitle {
+  position: relative;
+  width: 100%;
+  left: 0px;
+  font-size: 1em;
+}
+
+.VSResourceTitle span{
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 1em;
+}
+
+.VSResourceButtons {
+  position: relative;
+  width: 100%;
+  top: 35px;
+  height: 40px;
+  padding: 7px;
+  text-align: center;
+
+  /* background: white; */
+}
+
+.VSResourceButtons button {
+  display: inline;
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 2px;
+  color: white;
+  border: none;
+  background: #2872f9;
+}
+
 .VSFolderList {
   width: 100%;
-  padding: 25px;
+  padding: 20px;
   /* background: white; */
 }
 
 .VSFolder {
-  width: 100%;
-  height: 160px;
+  position: relative;
+  display: inline-block;
+  width: calc(50% - 10px);
+  margin: 0px 5px 10px 5px;
+  height: 120px;
   background: #5e5e5e;
-  border-radius: 25px;
-  margin-bottom: 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all ease 0.2s;
+}
+
+.VSFolder:hover {
+  height: 150px;
+  background: #777777;
+}
+
+.VSFolder:hover .VSFolderDelButton {
+  display: block;
+}
+
+.VSFolderDelButton {
+  position: absolute;
+  left: 75px;
+  top: 120px;
+  width: 40px;
+  height: 25px;
+  background: #2872f9;
+  border-radius: 10px;
+  display: none;
+  animation-name: delOpen;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.VSFolderDelButton span{
+  font-size: 0.9em;
+  position: absolute;
+  left: 6.5px;
+  top: 1px;
 }
 
 .VSFolderThumnail {
   position: relative;
-  left: 50%;
-  top: 42%;
+  left: 12px;
+  top: 10px;
   background: rgb(59, 59, 59);
   width: 80%;
-  height: 100px;
-  transform: translate(-50%, -50%);
-  border: 5px rgb(59, 59, 59) solid;
+  height: 80px;
+  border: 3px rgb(59, 59, 59) solid;
   border-radius: 10px;
 }
 
@@ -148,7 +246,7 @@ export default {
   position: relative;
   /* background: red; */
   left: 50%;
-  top: 14px;
+  top: 0px;
   transform: translate(-50%, 50%);
   width: 70%;
   border-radius: 10px;
@@ -163,47 +261,138 @@ export default {
 
 .VSFileList {
   width: 100%;
-  padding: 25px;
+  padding: 15px 20px 0px 20px;
+}
+
+.VSFileLocation {
+  display: inline-block;
+  position: relative;
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+.VSFileLocation span{
+  position: relative;
+  height: 20px;
+  left: 0px;
+  white-space: nowrap;
+  word-break:break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  direction: rtl;
+  text-align: left;
+
+}
+
+.VSFileReturn {
+  display: inline-block;
+  position: relative;
+  text-align: right;
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+.VSFileReturn span{
+  position: relative;
+  height: 20px;
+  left: 0px;
+  white-space: nowrap;
+  word-break:break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .VSFile {
-  width: 100%;
-  height: 160px;
+  position: relative;
+  display: inline-block;
+  width: calc(50% - 10px);
+  margin: 0px 5px 10px 5px;
+  height: 120px;
   background: #5e5e5e;
-  border-radius: 25px;
-  margin-bottom: 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all ease-out 0.2s;
+}
+
+.VSFile:hover .VSFileDelButton{
+  display: block;
+}
+
+.VSFile:hover {
+  height: 150px;
+  background: #777777;
 }
 
 .VSFileThumnail {
   position: relative;
-  left: 50%;
-  top: 42%;
+  left: 12px;
+  top: 10px;
   background: rgb(59, 59, 59);
   width: 80%;
-  height: 100px;
-  transform: translate(-50%, -50%);
-  border: 5px rgb(59, 59, 59) solid;
+  height: 80px;
+  border: 3px rgb(59, 59, 59) solid;
   border-radius: 10px;
 }
 
 .VSFileThumnail img {
   width: 100%;
   height: 100%;
+  border-radius: 10px;
   object-fit: cover;
+}
+
+.VSFileDelButton {
+  position: absolute;
+  left: 75px;
+  top: 120px;
+  width: 40px;
+  height: 25px;
+  background: #2872f9;
+  border-radius: 10px;
+  display: none;
+  animation-name: delOpen;
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+}
+
+.VSFileDelButton span{
+  font-size: 0.9em;
+  position: absolute;
+  left: 7px;
+  top: 1px;
+}
+
+.VSFileDelButton:hover {
+  background: #366fda;
 }
 
 .VSFileName {
   position: relative;
   /* background: red; */
-  left: 50%;
-  top: 14px;
+  left: 65px;
+  top: 3px;
   transform: translate(-50%, 50%);
-  width: 70%;
-  border-radius: 10px;
+  width: 110px;
+  height: 20px;
 }
 
 .VSFileName p {
   width: 100%;
   height: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break:break-all;
+}
+
+@keyframes delOpen {
+  from {
+    opacity: 0;
+    background: #2872f9;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 </style>
