@@ -1,5 +1,5 @@
 <template>
-<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
+<div :class="{ [`${this.condition}`]:true}">
     <edit-pj-info v-if="isEditPj" :isEditPj="isEditPj" @pjEdit="pjEdit"></edit-pj-info>
     <invite-pj v-if="isInvitePj" :isInvitePj="isInvitePj" @pjInvite="pjInvite"></invite-pj>
     <div class="DevPageTemp">
@@ -12,14 +12,8 @@
             <button @click="goToInvitePj(pjCode)">유저 초대</button>
             <button @click="save()">저장</button>
         </div> -->
-
-        <div v-if="pjType == 'W'">
-            <WEngineInner  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
-            ></WEngineInner>
-        </div>
-
-        <div v-else-if="pjType == 'V'">
-            <VEngineInner
+        <div>
+            <VEngineInner  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
             ></VEngineInner>
         </div>
 
@@ -34,8 +28,7 @@
 <script>
 import axios from '../../../axios';
 
-import WEngineInner from './web/W_EngineInner.vue';
-import VEngineInner from './visual/V_EngineInner.vue';
+import VEngineInner from './V_EngineInner.vue';
 import EditPjInfo from './EditPjInfo.vue'
 import InvitePj from './InvitePj.vue'
 export default {
@@ -44,9 +37,19 @@ export default {
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
     },
+    props:{
+        side:Boolean,
+        main:Boolean
+    },
     watch : {
         $route() {
             this.getPjInfo(this.pjCode);
+        },
+        side(){
+            if(!this.side){
+                this.condition="RouterViewLeft"
+            }
+            else this.condition="RouterViewRight"
         }
     },
     data(){
@@ -58,6 +61,7 @@ export default {
             status : "",
             isInvitePj: false,
             isEditPj: false,
+            condition: "RouterViewLeft"
         }
     },
     methods : {
@@ -99,7 +103,6 @@ export default {
         }
     },
     components : {
-        WEngineInner,
         VEngineInner,
         EditPjInfo,
         InvitePj

@@ -1,11 +1,14 @@
 <template>
+  <div v-if="!main"> <!-- 스토어 조건문 달아주셈 -->
   <div v-bind:class="{'mainmenu':true}">
     <div v-bind:class="{'menus':true}">
-      <div v-bind:class="{'menubox':true}">
+
+      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'R')">
         <img class="menubox_icon_resource" src="../../assets/icons/white/folder.png">
       </div>
       <br>
-      <div v-bind:class="{'menubox':true}">
+
+      <!-- <div v-bind:class="{'menubox':true}">
         <img class="menubox_icon_text" src="../../assets/icons/white/comment_two.png">
       </div>
       <br>
@@ -16,12 +19,13 @@
       <div v-bind:class="{'menubox':true }">
         <img class="menubox_icon_scene" src="../../assets/icons/white/background_two.png">
       </div>
-      <br>
-      <div v-bind:class="{'menubox':true}">
+      <br> -->
+
+      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'C')">
         <img class="menubox_icon_cooperation" src="../../assets/icons/white/handshake.png">
       </div>
       <br>
-      <div v-bind:class="{'menubox':true}">
+      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'S')">
         <img class="menubox_icon_setting" src="../../assets/icons/white/gear.png">
       </div>
       <br>
@@ -30,27 +34,30 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
   export default {
     name: 'MainBar',
-    data() {
-      return{
-      }
-    }
+    props:{
+      main:Boolean
+    },
   }
 </script>
 
 <style>
 .mainmenu {
+  position: absolute;
   display:table;
   background:#262626;
-  left: 45px;
+  left: 0px;
   width: 100%;
   height: 100vh;
   text-align: center;
   overflow:auto;
+  animation-name: menuOn;
+  animation-duration: 0.7s;
 }
 .menus{
   display:table-cell;
@@ -127,5 +134,14 @@
   left: 1px;
   width: 50px;
   height: 50px;
+}
+
+@keyframes menuOn {
+  from {
+    left: -170px;
+  }
+  to {
+    left: 0px;
+  }
 }
 </style>

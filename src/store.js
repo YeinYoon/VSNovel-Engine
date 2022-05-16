@@ -23,6 +23,8 @@ const store = createStore({
             sideBarState : "sideBarOff", // On, Off Class
             sideBarFixed : "RouterViewLeft", // 사이드바 고정 Class
             sideBarMove : "RouterMoveLeft",// move 애니메이션 Class
+
+            sideMenuState : "M" //R : 리소스, C : 협업, S : 설정, M : 메인
         }
     },
     mutations : {
@@ -66,6 +68,10 @@ const store = createStore({
             state.sideBarState = "sideBarOff";
             state.sideBarMove = "RouterMoveLeft";
             state.sideBarFixed = "RouterViewLeft";
+        },
+
+        cngSideMenu(state, val) {
+            state.sideMenuState = val;
         }
     },
 })
