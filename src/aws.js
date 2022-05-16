@@ -44,7 +44,6 @@ exports.getDirList = async(filepath) => { // 해당 프로젝트 내부의 폴�
         Prefix : filepath
     }
 
-    let temp = [];
     let dirList = [];
 
     var data = new Promise(function(resolve, reject){
@@ -54,17 +53,23 @@ exports.getDirList = async(filepath) => { // 해당 프로젝트 내부의 폴�
             }
             var reqPath = filepath.split('/');
             reqPath.splice(-1,1);
-            console.log("요청한 경로", reqPath);
 
             let contents = data.Contents;
             contents.forEach((content) => {    
                 var folderName = content.Key.split('/');
                 folderName.splice(-1,1);
-                temp.push(folderName[reqPath.length]);
+                dirList.push({
+                    name : folderName[reqPath.length],
+                    key : content.Key
+                });
             });
             
-            const set = new Set(temp);
-            dirList = [...set];
+            dirList = dirList.reduce(function(acc, current) { //중복값 제거후 순수 폴더 리스트 추출
+                if (acc.findIndex(({ name }) => name === current.name) === -1) {
+                  acc.push(current);
+                }
+                return acc;
+            }, []);
 
             dirList.splice(0,1); // 필요없는 빈 데이터 삭제
             resolve(dirList);
@@ -86,25 +91,50 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
     var data = new Promise(function(resolve, reject){
         s3.listObjectsV2(params, async(err, data) => {
             if (err) { 
-            return reject(err);
+                return reject(err);
             }
+
+            var reqPath = filePath.split('/');
+            reqPath.splice(-1,1);
+            console.log("리소스 요청 경로 : ", reqPath);
 
             let contents = data.Contents;
             contents.forEach((content) => {
                 keyList.push(content.Key); // "ex) content.Key => assets/images/1.png"
+                
+                var filePath = content.Key.split('/'); // 이름
+                if(filePath[filePath.length-1] == "") {
+                    filePath.splice(-1,1);
+                }
 
-                var fileName = content.Key.split('/'); // 이름
-                var temp = fileName[fileName.length-1];
+                var temp = filePath[filePath.length-1]; // 확장자
                 var extension = temp.split('.'); // 확장자
-                urlList.push({
-                    key : content.Key,
-                    name: fileName[fileName.length-1],
-                    ex : extension[extension.length-1],
-                    url : null
-                });
-            });
+                
 
-            for(var i=0; i<keyList.length; i++) {
+                if(reqPath.length+1 == filePath.length) {
+
+                    if(extension.length == 1) { //확장자가 없다면 폴더
+                        urlList.push({
+                            key : content.Key,
+                            name: filePath[filePath.length-1],
+                            ex : 'dir',
+                            url : null
+                        });
+                    } else {
+                        urlList.push({
+                            key : content.Key,
+                            name: filePath[filePath.length-1],
+                            ex : extension[extension.length-1],
+                            url : null
+                        });
+                    }
+
+                }
+                
+            });
+            
+            keyList.splice(0,1);
+            for(var i=0; i<urlList.length; i++) {
                 const params = {
                     Bucket: "vsnovel",
                     Key : keyList[i],
@@ -112,7 +142,6 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
                 var url = await s3.getSignedUrl("getObject", params);
                 urlList[i].url = url;
             }
-            urlList.splice(0,1); // 필요없는 빈 데이터 삭제
             
             resolve(urlList);
         });

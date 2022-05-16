@@ -16,7 +16,7 @@
 
       <div class="VSResourceSubTitle"><p>{{folderPath}}</p></div>
 
-      <div class="VSFolder" v-for="(f, i) in folderList" :key="i" @click="this.currentFolder = f;">
+      <div class="VSFolder" v-for="(f, i) in folderList" :key="i" @click="goToFolder(f.key)">
 
         <div class="VSFolderThumnail"> 
           <img src="@/assets/sample.png">
@@ -25,7 +25,7 @@
         <div class="VSFolderDelButton"><span>삭제</span></div>
 
         <div class="VSFolderName">
-          <p>{{f}}</p>
+          <p>{{f.name}}</p>
         </div>
 
       </div>
@@ -33,15 +33,17 @@
     </div>
 
 
-
     <div class="VSFileList" v-else>
 
       <div class="VSFileLocation"><span>{{folderPath}}</span></div>
-      <div class="VSFileReturn" @click="this.clickFolder = false"><span>뒤로가기</span></div>
+      <div class="VSFileReturn" @click="back()"><span>뒤로가기</span></div>
 
       <div class="VSFile" v-for="(f, i) in fileList" :key="i">
 
         <div class="VSFileThumnail" v-if="f.ex == 'mp3'">
+          <img src="@/assets/sample.png">
+        </div>
+        <div class="VSFileThumnail" v-if="f.ex == 'dir'" @click="goToFolder(f.key)">
           <img src="@/assets/sample.png">
         </div>
         <div class="VSFileThumnail" v-else>
@@ -79,26 +81,48 @@ export default {
   mounted() {
     this.getData();
   },
+  watch : {
+    folderPath(cng, pre) {
+      console.log(pre, "->", cng);
+    }
+  },
   data() {
     return {
       clickFolder : false,
-      currentFolder : null,
+      preFolderPath : ['/'],
       folderPath : "/",
-      folderList : [],
+      folderList : [], //root 폴더 리스트
       fileList : []
     }
   },
   methods : {
+    //Root에서 시작할때의 함수
     async getData() {
       console.log("해당 프로젝트의 폴더 목록을 불러옴", this.pjCode);
       this.folderList = await storage.getDirList(`Project/PJ${this.pjCode}/resource/`);
       console.log(this.folderList);
     },
-
     async getFileList(folderName) {
       this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${folderName}/`);
       console.log(this.fileList);
     },
+
+    //내부 폴더 진입시의 함수
+    async goToFolder(key) {
+      this.clickFolder = true;
+      this.folderPath = key;
+      var temp = this.folderPath.split('/');
+      temp = temp.slice(3); //'Project', 'PJ137', 'resource' 제외
+      const path = temp.join('/');
+      
+      this.folderPath = path;
+      this.preFolderPath.push(path);
+  
+      this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${path}`);
+      console.log(this.fileList);
+    },
+
+
 
     async deleteFile(name, key) {
       var result = await this.$refs.confirmModal.show({
@@ -116,15 +140,20 @@ export default {
           console.log("파일 삭제 실패");
         }
       }
+    },
+
+    async back() {
+      if(this.preFolderPath.length == 1) {
+        this.folderPath = this.preFolderPath[0];
+        this.clickFolder = false;
+        this.folderList = await storage.getDirList(`Project/PJ${this.pjCode}/resource/`);
+      } else {
+        this.folderPath = this.preFolderPath[this.preFolderPath.length-1];
+        this.preFolderPath.splice(-1,1);
+        this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+      }
     }
   },
-  watch : {
-    currentFolder(cngFolder) {
-      this.clickFolder = true;
-      this.getFileList(cngFolder);
-      
-    }
-  }
   
 }
 </script>
