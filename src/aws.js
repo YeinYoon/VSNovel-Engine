@@ -52,11 +52,15 @@ exports.getDirList = async(filepath) => { // 해당 프로젝트 내부의 폴�
             if (err) { 
                 return reject(err);
             }
+            var reqPath = filepath.split('/');
+            reqPath.splice(-1,1);
+            console.log("요청한 경로", reqPath);
 
             let contents = data.Contents;
-            contents.forEach((content) => {
+            contents.forEach((content) => {    
                 var folderName = content.Key.split('/');
-                temp.push(folderName[folderName.length-2]);
+                folderName.splice(-1,1);
+                temp.push(folderName[reqPath.length]);
             });
             
             const set = new Set(temp);
@@ -88,7 +92,7 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
             let contents = data.Contents;
             contents.forEach((content) => {
                 keyList.push(content.Key); // "ex) content.Key => assets/images/1.png"
-                
+
                 var fileName = content.Key.split('/'); // 이름
                 var temp = fileName[fileName.length-1];
                 var extension = temp.split('.'); // 확장자
@@ -148,10 +152,13 @@ exports.deleteFile = async(filePath) =>{
         Key : filePath,
     }
 
-    await s3.deleteObject(params, (err, data)=>{
-        if(err){
-            throw err
-        }
-        console.log(data);
-    });
+    var data = new Promise((resolve, reject)=>{
+        s3.deleteObject(params, async (err)=>{
+            if(err){
+                reject(err)
+            }
+            resolve("ok")
+        });
+    })
+    return data
 }

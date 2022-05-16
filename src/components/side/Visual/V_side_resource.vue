@@ -1,24 +1,6 @@
 <template>
+<ConfirmModal ref="confirmModal"></ConfirmModal>
   <div class="VSBackgroundRes">
-    <!-- <div v-for="(bg, i) in bg" :key="i">
-      <p>{{bg.name}}</p>
-    </div>
-
-    <div v-for="(bgm, i) in bgm" :key="i">
-      <p>{{bgm.name}}</p>
-    </div>
-
-    <div v-for="(img, i) in img" :key="i">
-      <p>{{img.name}}</p>
-    </div>  -->
-
-    <!-- 작업 가이드 -->
-    <!-- 레이아웃 구성은 폴더 리스트와 파일 리스트로 구성됩니다. -->
-    <!-- 폴더 내부를 조회하기전에는 폴더 리스트를 노출해 프로젝트의 폴더들을 표시합니다. -->
-    <!-- 폴더 내부를 조회하기위해 각 폴더의 아이콘을 클릭하면 파일 리스트로 전환됩니다. -->
-    <!-- 따라서 각 레이아웃을 샥샥 교체하기위해 변수 하나를 만들어서 현재 폴더리스트를 보고있는지. 
-    파일 리스트를 보고있는지 판단하는 변수가 필요합니다. -->
-
 
     <div class="VSResourceTool">
       <div class="VSResourceTitle"><span>리소스 관리</span></div>
@@ -32,7 +14,7 @@
 
     <div class="VSFolderList" v-if="clickFolder == false">
 
-      <div class="VSResourceSubTitle"><p>경로/폴더명</p></div>
+      <div class="VSResourceSubTitle"><p>{{folderPath}}</p></div>
 
       <div class="VSFolder" v-for="(f, i) in folderList" :key="i" @click="this.currentFolder = f;">
 
@@ -54,8 +36,8 @@
 
     <div class="VSFileList" v-else>
 
-      <div class="VSFileLocation"><span>경로/경로/경로/경로</span></div>
-      <div class="VSFileReturn"><span>뒤로가기</span></div>
+      <div class="VSFileLocation"><span>{{folderPath}}</span></div>
+      <div class="VSFileReturn" @click="this.clickFolder = false"><span>뒤로가기</span></div>
 
       <div class="VSFile" v-for="(f, i) in fileList" :key="i">
 
@@ -66,7 +48,7 @@
           <img :src="f.url">
         </div>
 
-        <div class="VSFileDelButton">
+        <div class="VSFileDelButton" @click="deleteFile(f.name, f.key)">
           <span>삭제</span>
         </div>
 
@@ -84,9 +66,13 @@
 </template>
 
 <script>
+import ConfirmModal from '../../modal/ConfirmModal.vue'
 import storage from '../../../aws'
 export default {
   name: 'V_side_resource',
+  components : {
+    ConfirmModal
+  },
   props : {
     pjCode : String
   },
@@ -97,6 +83,7 @@ export default {
     return {
       clickFolder : false,
       currentFolder : null,
+      folderPath : "/",
       folderList : [],
       fileList : []
     }
@@ -111,12 +98,31 @@ export default {
     async getFileList(folderName) {
       this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${folderName}/`);
       console.log(this.fileList);
+    },
+
+    async deleteFile(name, key) {
+      var result = await this.$refs.confirmModal.show({
+        msg : `파일 [${name}]를 삭제하시겠습니까?`,
+        size : "normal",
+        btn1 : "확인",
+        btn2 : "취소"
+      });
+
+      if(result == true) {
+        var res = await storage.deleteFile(key);
+        if(res == "ok") {
+          this.getFileList(this.currentFolder);
+        } else {
+          console.log("파일 삭제 실패");
+        }
+      }
     }
   },
   watch : {
     currentFolder(cngFolder) {
       this.clickFolder = true;
       this.getFileList(cngFolder);
+      
     }
   }
   
