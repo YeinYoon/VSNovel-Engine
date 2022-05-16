@@ -193,15 +193,15 @@ body{
   }
 
   to {
-    left: 400px;
-    width: calc(100vw - 400px);
+    left: 420px;
+    width: calc(100vw - 420px);
   }
 }
 
 @keyframes routerLeft {
   from {
-    left: 400px;
-    width: calc(100vw - 400px);
+    left: 420px;
+    width: calc(100vw - 420px);
   }
 
   to {
