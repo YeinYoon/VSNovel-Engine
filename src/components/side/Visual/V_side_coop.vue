@@ -1,5 +1,5 @@
 <template>
-  <div class="VSBackground">
+  <div class="VSBackgroundCoop">
     협업메뉴
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style>
-.VSBackground {
+.VSBackgroundCoop {
   width: 100%;
   height: 100%;
 }

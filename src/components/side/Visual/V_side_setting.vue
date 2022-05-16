@@ -1,5 +1,5 @@
 <template>
-  <div class="VSBackground">
+  <div class="VSBackgroundSet">
     설정
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style>
-.VSBackground {
+.VSBackgroundSet {
   width: 100%;
   height: 100%;
 }

@@ -85,7 +85,6 @@ export default {
   width: 300px;
   height: 100vh;
   text-align: center;
-  overflow:auto;
   animation-name: sideBarMainOn;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
@@ -97,7 +96,6 @@ export default {
   width: 300px;
   height: 100vh;
   text-align: center;
-  overflow:auto;
   animation-name: sideBarMainOff;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
@@ -108,8 +106,8 @@ export default {
   background:#2c2c2c;
   width: 300px;
   height: 100vh;
+  overflow: auto;
   text-align: center;
-  overflow:auto;
   animation-name: sideBarOn;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
@@ -120,7 +118,6 @@ export default {
   width: 300px;
   height: 100vh;
   text-align: center;
-  overflow:auto;
   animation-name: sideBarOff;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
