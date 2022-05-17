@@ -12,7 +12,7 @@
         class="Fmodal_UploadAreaInput"
         multiple ref="fileM"
         type="file"
-        @change="onInputImage()"
+        @change="onFileChange"
         @dragover.prevent
         @dragenter.prevent
         @drop.prevent="onDrop">
@@ -49,6 +49,8 @@ export default {
       fModalBtn1 : "",
       fModalBtn2 : "",
 
+      files : []
+
       // 응답 프로미스
       // resolvePromise: undefined,
       // rejectPromise: undefined,
@@ -77,9 +79,24 @@ export default {
       // this.resolvePromise(false)
     },
 
-    onDrop (event) {
-      this.inputFile(event.dataTransfer.files);
+    onDragenter() {
+      this.isDragged = true
     },
+    onDragleave() {
+      this.isDragged = false
+    },
+    onDragover(event) {
+      event.preventDefault();
+    },    
+    onDrop(event) {
+      this.isDragged = false
+      this.files = event.dataTransfer.files;
+      console.log(this.files);
+    },
+    onFileChange(event) {
+      this.files = event.target.files;
+      console.log(this.files);
+    }
     
   },
 }
