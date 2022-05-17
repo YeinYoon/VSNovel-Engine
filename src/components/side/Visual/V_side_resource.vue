@@ -1,7 +1,7 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <FileModal ref="fileModal" @uploadOk="uploadOk()"></FileModal>
-<InputModal ref="inputModal"></InputModal>
+<InputModal ref="inputModal" @inputRes="inputFolderName"></InputModal>
 
   <div class="VSBackgroundRes">
 
@@ -144,6 +144,28 @@ export default {
         msg : "폴더 이름을 입력해주세요.",
         size : "normal"
       })
+    },
+    async inputFolderName(val) {
+      var path;
+      if(this.folderPath == "/") {
+        path = `Project/PJ${this.pjCode}/resource/`+val+'/';
+      } else {
+        path = `Project/PJ${this.pjCode}/resource/`+this.folderPath+val+'/';
+      }
+      
+      console.log("새로운 폴더 생성", path);
+
+      var result = await storage.createFolder(path);
+      if(result=="ok") {
+        if(this.folderPath == "/") {
+          this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+        } else {
+          this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+        }
+      } else {
+        console.error("폴더 생성 실패");
+      }
+
     },
 
     // 파일 업로드 관련

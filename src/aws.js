@@ -190,6 +190,26 @@ exports.deleteFile = async(filePath) =>{
         });
     })
     return data
+},
+
+exports.createFolder = async(path) => {
+    const params = {
+        Bucket: "vsnovel",
+        Key : path,
+    }
+
+    var data = new Promise((resolve, reject)=>{
+        s3.putObject(params).send((err, data) => {
+            if (err) {
+                reject(err)
+            }
+            console.log(data);
+            resolve("ok");
+        });
+    })
+
+    return data
+
 }
 
 exports.deleteFolder = async(filePath)=> {

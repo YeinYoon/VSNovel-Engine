@@ -7,10 +7,10 @@
     <div class="InputModalTitle"><p>{{msg}}</p></div>
 
     <div class="Imodal_inner">
-      <div class="Imodal_inputTag"><input></div>
+      <div class="Imodal_inputTag"><input v-model="input"></div>
     </div>
 
-    <div class="Fmodal_save_button" @click="fileUpload()">
+    <div class="Fmodal_save_button" @click="inputVal()">
       <span class="Fmodal_save_ok">확인</span>
     </div>
 
@@ -36,6 +36,15 @@ export default {
     }
   },
   methods : {
+    inputVal() {
+      if(this.input == "") {
+        console.log("폴더 이름이 비어있음");
+      } else {
+        this.$emit('inputRes', this.input);
+        this.modalClose();
+      }
+      
+    },
     modalClose() {
       this.iModalState = false; 
     },
