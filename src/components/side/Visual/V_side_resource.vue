@@ -1,12 +1,13 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
+<FileModal ref="fileModal"></FileModal>
   <div class="VSBackgroundRes">
 
     <div class="VSResourceTool">
       <div class="VSResourceTitle"><span>리소스 관리</span></div>
       <div class="VSResourceButtons">
-        <button>업로드</button> <!-- 업로드 -->
-        <button>폴더추가</button> <!-- 폴더추가 -->
+        <button @click="uploadFile()">업로드</button> <!-- 업로드 -->
+        <button @click="createDir()">폴더추가</button> <!-- 폴더추가 -->
         <button>기능?</button> <!-- 폴더이동 -->
       </div>
     </div>
@@ -69,11 +70,13 @@
 
 <script>
 import ConfirmModal from '../../modal/ConfirmModal.vue'
+import FileModal from '../../modal/FileModal.vue'
 import storage from '../../../aws'
 export default {
   name: 'V_side_resource',
   components : {
-    ConfirmModal
+    ConfirmModal,
+    FileModal
   },
   props : {
     pjCode : String
@@ -92,7 +95,10 @@ export default {
       preFolderPath : ['/'],
       folderPath : "/",
       folderList : [], //root 폴더 리스트
-      fileList : []
+      fileList : [],
+
+      //업로드 관련
+      files : []
     }
   },
   methods : {
@@ -122,7 +128,14 @@ export default {
       console.log(this.fileList);
     },
 
-
+    uploadFile() {
+      this.$refs.fileModal.show({
+        msg : `ㅎㅇ`,
+        size : "big",
+        btn1 : "확인",
+        btn2 : "취소"
+      });
+    },
 
     async deleteFile(name, key) {
       var result = await this.$refs.confirmModal.show({
