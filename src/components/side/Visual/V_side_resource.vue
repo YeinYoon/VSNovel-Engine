@@ -1,6 +1,8 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <FileModal ref="fileModal" @uploadOk="uploadOk()"></FileModal>
+<InputModal ref="inputModal"></InputModal>
+
   <div class="VSBackgroundRes">
 
     <div class="VSResourceTool">
@@ -77,12 +79,14 @@
 <script>
 import ConfirmModal from '../../modal/ConfirmModal.vue'
 import FileModal from '../../modal/FileModal.vue'
+import InputModal from '../../modal/InputModal.vue'
 import storage from '../../../aws'
 export default {
   name: 'V_side_resource',
   components : {
     ConfirmModal,
-    FileModal
+    FileModal,
+    InputModal
   },
   props : {
     pjCode : String
@@ -136,7 +140,10 @@ export default {
 
     // 새 폴더 생성
     createDir() {
-      
+      this.$refs.inputModal.show({
+        msg : "폴더 이름을 입력해주세요.",
+        size : "normal"
+      })
     },
 
     // 파일 업로드 관련

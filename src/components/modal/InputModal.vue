@@ -1,18 +1,15 @@
 <template>
-<div v-if="fModalState">
+<div v-if="iModalState">
   <div class="modal_opacity">
   </div>
 
   <div v-bind:class="{[`Imodal_frame`]:true}">
-    <div class="InputModalTitle"><p>지시사항 내용</p></div>
+    <div class="InputModalTitle"><p>{{msg}}</p></div>
+
     <div class="Imodal_inner">
       
-      </div>
-
-      
-
     </div>
-      
+
     <div class="Fmodal_save_button" @click="fileUpload()">
       <span class="Fmodal_save_ok">확인</span>
     </div>
@@ -21,96 +18,33 @@
       <span class="Fmodal_cancel_ok">취소</span>
     </div>
 
-  </div>  
-</div>
+  </div>
+
+</div> 
 </template>
 
 <script>
-const AWS = require('aws-sdk');
-const s3 = new AWS.S3({
-  region : "ap-northeast-2",
-  //추후 .env로 보안관리 할것
-  accessKeyId: 'AKIARKU2Y4IXVCR266PO', // 사용자의 AccessKey
-  secretAccessKey: 'YJDi8K4VSP5bPhdNcC6hB/xreuKH2885200KS+LB' // 사용자의 secretAccessKey
-});
 export default {
-  name : "UploadModal",
+  name : "InputModal",
   data() {
     return {
       // 모달 데이터
-      fModalState : false,
-      fModalSize : "",
-
-      pjCode : "",
-      path : "",
-      percent : "",
-
-      files : []
+      iModalState : false,
+      iModalSize : "",
+      msg : "",
+      input : "",
     }
   },
   methods : {
     modalClose() {
-      this.fModalState = false; 
-      this.files = [];
+      this.iModalState = false; 
     },
     show(option = {}) {
-      this.fModalState = true;
-      this.fModalSize = option.size;
-      this.path = option.path;
-      this.pjCode = option.pjCode;
+      this.iModalState = true;
+      this.iModalSize = option.size;
+      this.msg = option.msg;
     },
 
-    //파일 드래그앤드롭 업로드
-    onDragenter() {
-      this.isDragged = true
-    },
-    onDragleave() {
-      this.isDragged = false
-    },
-    onDragover(event) {
-      event.preventDefault();
-    },    
-    onDrop(event) {
-      this.isDragged = false
-      this.files = event.dataTransfer.files;
-      console.log(this.files);
-    },
-    onFileChange(event) {
-      this.files = event.target.files;
-      console.log(this.files);
-    },
-
-    fileUpload() {
-      if(this.path == "/") {
-        this.path = '';
-      }
-
-      for(var i=0; i<this.files.length; i++) {
-
-        const params = {
-          Bucket: "vsnovel",
-          Key : `Project/PJ${this.pjCode}/resource/${this.path}` + this.files[i].name, // 저장되는 파일의 경로 및 이름
-          Body : this.files[i] // 파일
-        }
-
-        s3.upload(params)
-        .on("httpUploadProgress", evt => {
-          this.percent = parseInt((evt.loaded * 100) / evt.total) + "%";
-        })
-        .send((err, data)=>{
-          if(err) {
-            console.log("파일 업로드 실패");
-            console.error(err);
-            return "err"
-          } else {
-            console.log("파일 업로드 성공", data);
-            this.$emit('uploadOk');
-          }
-        })
-
-      }
-
-    }
   },
 }
 </script>
@@ -128,7 +62,7 @@ export default {
   animation-fill-mode: forwards;
   z-index: 1;
 }
-.Fmodal_frame{
+.Imodal_frame{
   position: fixed;
   top: 50%;
   left: 50%;
@@ -142,7 +76,7 @@ export default {
   z-index: 100;
   opacity: 1;
 }
-.Fmodal_inner{
+.Imodal_inner{
   color: white;
   position: fixed;
   top: 45%;
@@ -152,7 +86,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.Fmodal_Path {
+.Imodal_Path {
   position: absolute;
   left: -30px;
   top : -20px;
