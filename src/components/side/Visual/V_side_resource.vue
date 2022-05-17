@@ -24,8 +24,8 @@
         <div class="VSFileThumnail" v-if="f.ex == 'mp3'">
           <img src="@/assets/sample.png">
         </div>
-        <div class="VSFileThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
-          <img src="@/assets/sample.png">
+        <div class="VSFolderThumnail" v-if="f.ex == 'dir'" @click="goToFolder(f.key)">
+          <img src="@/assets/icons/white/folder.png">
         </div>
         <div class="VSFileThumnail" v-else>
           <img :src="f.url">
@@ -52,8 +52,8 @@
         <div class="VSFileThumnail" v-if="f.ex == 'mp3'">
           <img src="@/assets/sample.png">
         </div>
-        <div class="VSFileThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
-          <img src="@/assets/sample.png">
+        <div class="VSFolderThumnail" v-if="f.ex == 'dir'" @click="goToFolder(f.key)">
+          <img src="@/assets/icons/white/folder.png">
         </div>
         <div class="VSFileThumnail" v-else>
           <img :src="f.url">
@@ -298,6 +298,7 @@ export default {
 .VSResourceSubTitle {
   /* display: inline-block; */
   position: relative;
+  top: -6px;
   width: 50%;
   margin-bottom: 5px;
 }
@@ -327,13 +328,13 @@ export default {
   height: 120px;
   background: #5e5e5e;
   border-radius: 15px;
-  cursor: pointer;
+  /* cursor: pointer; */
   transition: all ease 0.2s;
 }
 
 .VSFolder:hover {
   height: 150px;
-  background: #777777;
+  background: #696969;
 }
 
 .VSFolder:hover .VSFolderDelButton {
@@ -352,6 +353,7 @@ export default {
   animation-name: delOpen;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
+  cursor: pointer;
 }
 
 .VSFolderDelButton span{
@@ -366,10 +368,16 @@ export default {
   left: 12px;
   top: 10px;
   background: rgb(59, 59, 59);
+  padding: 10px 10px 10px 13px;
   width: 80%;
   height: 80px;
-  border: 3px rgb(59, 59, 59) solid;
+  /* border: 3px rgb(59, 59, 59) solid; */
   border-radius: 10px;
+  cursor: pointer;
+}
+
+.VSFolderThumnail:hover {
+  opacity: 0.9;
 }
 
 .VSFolderThumnail img {
@@ -451,7 +459,7 @@ export default {
   height: 120px;
   background: #5e5e5e;
   border-radius: 15px;
-  cursor: pointer;
+  /* cursor: pointer; */
   transition: all ease-out 0.2s;
 }
 
@@ -461,7 +469,7 @@ export default {
 
 .VSFile:hover {
   height: 150px;
-  background: #777777;
+  background: #696969;
 }
 
 .VSFileThumnail {
@@ -473,6 +481,11 @@ export default {
   height: 80px;
   border: 3px rgb(59, 59, 59) solid;
   border-radius: 10px;
+  cursor: pointer;
+}
+
+.VSFileThumnail:hover {
+  opacity: 0.9;
 }
 
 .VSFileThumnail img {
@@ -494,6 +507,7 @@ export default {
   animation-name: delOpen;
   animation-duration: 0.8s;
   animation-fill-mode: forwards;
+  cursor: pointer;
 }
 
 .VSFileDelButton span{

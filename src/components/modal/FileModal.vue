@@ -1,7 +1,5 @@
 <template>
 <div v-if="fModalState">
-  <div class="modal_opacity">
-  </div>
 
   <div v-bind:class="{[`Fmodal_frame`]:true}">
     <div class="FileManagerTitle"><p>VSN 파일 매니저</p></div>
@@ -148,18 +146,6 @@ export default {
 </script>
 
 <style>
-.modal_opacity{
-  background: black;
-  width: 100vw;
-  height: 100vh;
-  opacity:0;
-  z-index: 99;
-  position: fixed;
-  animation-duration: 0.3s;
-  animation-name: backgrounding_on;
-  animation-fill-mode: forwards;
-  z-index: 1;
-}
 .Fmodal_frame{
   position: fixed;
   top: 50%;
@@ -170,7 +156,7 @@ export default {
   border-radius: 25px;
   background: #2a2a2a;
   animation-duration: 0.7s;
-  animation-name: opening;
+  animation-name: Fopening;
   z-index: 100;
   opacity: 1;
 }
@@ -387,7 +373,7 @@ export default {
 }
 /* 애니메이션들,*/
   /*열리는 애니메이션 opening*/
-@keyframes opening {
+@keyframes Fopening {
   from {
     top:150%;
     opacity: 0;
@@ -399,7 +385,7 @@ export default {
   }
 }
   /*배경을 만드는 backgrounding_on*/
-@keyframes backgrounding_on {
+@keyframes Fbackgrounding_on {
   from {
     opacity: 0;
   }
