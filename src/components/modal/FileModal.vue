@@ -3,10 +3,15 @@
   <div class="modal_opacity">
   </div>
 
-  <div v-bind:class="{[`modal_frame_${this.fModalSize}`]:true}">
+  <div v-bind:class="{[`Fmodal_frame`]:true}">
+    <div class="FileManagerTitle"><p>VSN 파일 매니저</p></div>
+    <div class="Fmodal_inner">
 
-    <div class="modal_inner">
-      VSN 파일 매니저
+      <div class="Fmodal_UploadArea">
+        <p class="UploadBefore">업로드할 파일을 이곳에 Drag&Drop</p>
+        <p class="UploadAfter">+</p>
+      </div>
+
       <input
       multiple ref="fileM"
       type="file"
@@ -18,12 +23,12 @@
 
     </div>
       
-    <div class="modal_save_button" @click="modalCloseY()">
-      <span class="modal_save_ok">{{this.fModalBtn1}}</span>
+    <div class="Fmodal_save_button" @click="modalCloseY()">
+      <span class="Fmodal_save_ok">{{this.fModalBtn1}}</span>
     </div>
 
-    <div class="modal_cancel_button" @click="modalCloseN()">
-      <span class="modal_cancel_ok">{{this.fModalBtn2}}</span>
+    <div class="Fmodal_cancel_button" @click="modalCloseN()">
+      <span class="Fmodal_cancel_ok">{{this.fModalBtn2}}</span>
     </div>
 
   </div>  
@@ -91,13 +96,13 @@ export default {
   animation-fill-mode: forwards;
   z-index: 1;
 }
-.modal_frame_normal{
+.Fmodal_frame{
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 200px;
+  width: 600px;
+  height: 350px;
   border-radius: 25px;
   background: #2a2a2a;
   animation-duration: 0.7s;
@@ -105,72 +110,97 @@ export default {
   z-index: 100;
   opacity: 1;
 }
-.modal_frame_small{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 125px;
-  border-radius: 25px;
-  background: #2a2a2a;
-  animation-duration: 0.7s;
-  animation-name: opening;
-  z-index: 100;
-  opacity: 1;
-}
-.modal_frame_big{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px;
-  height: 400px;
-  border-radius: 25px;
-  background: #2a2a2a;
-  animation-duration: 0.7s;
-  animation-name: opening;
-  z-index: 100;
-  opacity: 1;
-}
-.modal_inner{
+.Fmodal_inner{
   color: white;
   position: fixed;
-  top: 50%;
+  top: 45%;
+  left: 50%;
+  width: 500px;
+  height: 170px;
+  transform: translate(-50%, -50%);
+}
+
+.Fmodal_UploadArea {
+  width: 100%;
+  height: calc(100% - 20px);
+  border: white 3px dashed;
+  transition: all ease 0.5s;
+  margin-bottom: 10px;
+}
+
+.Fmodal_UploadArea:hover{
+  opacity: 0.4;
+}
+
+.UploadBefore {
+  position: absolute;
+  left: 50%;
+  top: 43%;
+  font-size: 1.3em;
+  width: 300px;
+  transform: translate(-50%, -50%);
+  display: block;
+  transition: all ease 0.3s;
+}
+
+.UploadAfter {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  font-size: 4em;
+  transform: translate(-50%, -50%);
+  /* display: none; */
+  transition: all ease 0.3s;
+  opacity: 0;
+}
+
+.Fmodal_UploadArea:hover .UploadBefore {
+  opacity: 0;
+}
+
+.Fmodal_UploadArea:hover .UploadAfter {
+  opacity: 1;
+}
+
+.FileManagerTitle {
+  position: absolute;
+  left: 20px;
+  top: 15px;
+  color: white;
+  font-size: 1.3em;
+}
+
+.Fmodal_save_button{
+  width: 20%;
+  height: 15%;
+  background: #2872f9;
+  border-radius: 20px;
+  z-index: 2;
+  display: table;
+  position: fixed;
+  top: 88%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.modal_save_button{
-  width: 25%;
-  height: 20%;
+.Fmodal_cancel_button{
+  width: 10%;
+  height: 10%;
   background: #2872f9;
   border-radius: 20px;
   z-index: 2;
   display: table;
   position: fixed;
-  top: 85%;
-  left: 35%;
+  top: 30px;
+  left: calc(100% - 50px);
   transform: translate(-50%, -50%);
 }
-.modal_cancel_button{
-  width: 25%;
-  height: 20%;
-  background: #2872f9;
-  border-radius: 20px;
-  z-index: 2;
-  display: table;
-  position: fixed;
-  top: 85%;
-  left: 65%;
-  transform: translate(-50%, -50%);
-}
-.modal_save_ok{
+.Fmodal_save_ok{
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   color: white;
 }
-.modal_cancel_ok{
+.Fmodal_cancel_ok{
   display: table-cell;
   vertical-align: middle;
   text-align: center;
