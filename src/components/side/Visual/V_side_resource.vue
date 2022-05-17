@@ -6,7 +6,7 @@
     <div class="VSResourceTool">
       <div class="VSResourceTitle"><span>리소스 관리</span></div>
       <div class="VSResourceButtons">
-        <button @click="uploadFile()">업로드</button> <!-- 업로드 -->
+        <button @click="fileManagerOpen(this.folderPath)">업로드</button> <!-- 업로드 -->
         <button @click="createDir()">폴더추가</button> <!-- 폴더추가 -->
         <button>기능?</button> <!-- 폴더이동 -->
       </div>
@@ -128,12 +128,10 @@ export default {
       console.log(this.fileList);
     },
 
-    uploadFile() {
+    fileManagerOpen(folderPath) {
       this.$refs.fileModal.show({
-        msg : `ㅎㅇ`,
         size : "big",
-        btn1 : "확인",
-        btn2 : "취소"
+        path : folderPath
       });
     },
 

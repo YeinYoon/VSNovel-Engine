@@ -6,8 +6,8 @@
   <div v-bind:class="{[`Fmodal_frame`]:true}">
     <div class="FileManagerTitle"><p>VSN 파일 매니저</p></div>
     <div class="Fmodal_inner">
-
-      <div class="Fmodal_UploadArea">
+      대상 경로 : {{path}}
+      <div class="Fmodal_UploadArea" v-if="this.files.length == 0">
         <input
         class="Fmodal_UploadAreaInput"
         multiple ref="fileM"
@@ -20,17 +20,23 @@
         <p class="UploadAfter">+</p>
       </div>
 
+      <div v-else>
+        <ul>
+          <li v-for="(f, i) in files" :key="i">{{f.name}}</li>
+        </ul>
+      </div>
+
 
       
 
     </div>
       
-    <div class="Fmodal_save_button" @click="modalCloseY()">
-      <span class="Fmodal_save_ok">{{this.fModalBtn1}}</span>
+    <div class="Fmodal_save_button" @click=";">
+      <span class="Fmodal_save_ok">업로드</span>
     </div>
 
-    <div class="Fmodal_cancel_button" @click="modalCloseN()">
-      <span class="Fmodal_cancel_ok">{{this.fModalBtn2}}</span>
+    <div class="Fmodal_cancel_button" @click="modalClose()">
+      <span class="Fmodal_cancel_ok">취소</span>
     </div>
 
   </div>  
@@ -45,40 +51,23 @@ export default {
       // 모달 데이터
       fModalState : false,
       fModalSize : "",
-      fModalMsg : "",
-      fModalBtn1 : "",
-      fModalBtn2 : "",
+
+      path : "",
 
       files : []
-
-      // 응답 프로미스
-      // resolvePromise: undefined,
-      // rejectPromise: undefined,
     }
   },
   methods : {
+    modalClose() {
+      this.fModalState = false; 
+    },
     show(option = {}) {
       this.fModalState = true;
-
       this.fModalSize = option.size;
-      this.fModalMsg = option.msg;
-      this.fModalBtn1 = option.btn1;
-      this.fModalBtn2 = option.btn2;
-
-      // return new Promise((resolve, reject)=>{
-      //   this.resolvePromise = resolve
-      //   this.rejectPromise = reject
-      // })
-    },
-    modalCloseY() {
-      this.fModalState = false;
-      // this.resolvePromise(true)
-    },
-    modalCloseN() {
-      this.fModalState = false; 
-      // this.resolvePromise(false)
+      this.path = option.path;
     },
 
+    //파일 드래그앤드롭 업로드
     onDragenter() {
       this.isDragged = true
     },
@@ -96,7 +85,8 @@ export default {
     onFileChange(event) {
       this.files = event.target.files;
       console.log(this.files);
-    }
+    },
+
     
   },
 }
