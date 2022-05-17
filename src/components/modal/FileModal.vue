@@ -142,6 +142,10 @@ export default {
   /* margin-bottom: 10px; */
 }
 
+.Fmodal_UploadAreaInput::file-selector-button {
+  display: none;
+}
+
 .Fmodal_UploadArea:hover{
   opacity: 0.4;
 }
@@ -174,10 +178,12 @@ export default {
 
 .Fmodal_UploadArea:hover .UploadBefore {
   opacity: 0;
+  display: none;
 }
 
 .Fmodal_UploadArea:hover .UploadAfter {
   opacity: 1;
+  display: block;
 }
 
 .Fmodal_UploadAreaInput:hover .UploadBefore {
