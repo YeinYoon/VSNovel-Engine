@@ -21,6 +21,7 @@
       </div>
 
       <div v-else>
+        퍼센테이지 : {{percent}}
         <ul>
           <li v-for="(f, i) in files" :key="i">{{f.name}}</li>
         </ul>
@@ -44,7 +45,7 @@
 
     </div>
       
-    <div class="Fmodal_save_button" @click=";">
+    <div class="Fmodal_save_button" @click="fileUpload()">
       <span class="Fmodal_save_ok">업로드</span>
     </div>
 
@@ -57,6 +58,13 @@
 </template>
 
 <script>
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3({
+  region : "ap-northeast-2",
+  //추후 .env로 보안관리 할것
+  accessKeyId: 'AKIARKU2Y4IXVCR266PO', // 사용자의 AccessKey
+  secretAccessKey: 'YJDi8K4VSP5bPhdNcC6hB/xreuKH2885200KS+LB' // 사용자의 secretAccessKey
+});
 export default {
   name : "UploadModal",
   data() {
@@ -65,7 +73,9 @@ export default {
       fModalState : false,
       fModalSize : "",
 
+      pjCode : "",
       path : "",
+      percent : "",
 
       files : []
     }
@@ -79,6 +89,7 @@ export default {
       this.fModalState = true;
       this.fModalSize = option.size;
       this.path = option.path;
+      this.pjCode = option.pjCode;
     },
 
     //파일 드래그앤드롭 업로드
@@ -101,7 +112,37 @@ export default {
       console.log(this.files);
     },
 
-    
+    fileUpload() {
+      if(this.path == "/") {
+        this.path = '';
+      }
+
+      for(var i=0; i<this.files.length; i++) {
+
+        const params = {
+          Bucket: "vsnovel",
+          Key : `Project/PJ${this.pjCode}/resource/${this.path}` + this.files[i].name, // 저장되는 파일의 경로 및 이름
+          Body : this.files[i] // 파일
+        }
+
+        s3.upload(params)
+        .on("httpUploadProgress", evt => {
+          this.percent = parseInt((evt.loaded * 100) / evt.total) + "%";
+        })
+        .send((err, data)=>{
+          if(err) {
+            console.log("파일 업로드 실패");
+            console.error(err);
+            return "err"
+          } else {
+            console.log("파일 업로드 성공", data);
+            this.$emit('uploadOk');
+          }
+        })
+
+      }
+
+    }
   },
 }
 </script>

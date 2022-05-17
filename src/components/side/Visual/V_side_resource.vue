@@ -1,6 +1,6 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
-<FileModal ref="fileModal"></FileModal>
+<FileModal ref="fileModal" @uploadOk="uploadOk()"></FileModal>
   <div class="VSBackgroundRes">
 
     <div class="VSResourceTool">
@@ -17,13 +17,19 @@
 
       <div class="VSResourceSubTitle"><span>{{folderPath}}</span></div>
 
-      <div class="VSFolder" v-for="(f, i) in folderList" :key="i" @click="goToFolder(f.key)">
+      <div class="VSFolder" v-for="(f, i) in rootList" :key="i">
 
-        <div class="VSFolderThumnail"> 
+        <div class="VSFileThumnail" v-if="f.ex == 'mp3'">
           <img src="@/assets/sample.png">
         </div>
+        <div class="VSFileThumnail" v-if="f.ex == 'dir'" @click="goToFolder(f.key)">
+          <img src="@/assets/sample.png">
+        </div>
+        <div class="VSFileThumnail" v-else>
+          <img :src="f.url">
+        </div>
 
-        <div class="VSFolderDelButton"><span>삭제</span></div>
+        <div class="VSFolderDelButton" @click="deleteFile(f.name, f.key)"><span>삭제</span></div>
 
         <div class="VSFolderName">
           <p>{{f.name}}</p>
@@ -94,7 +100,7 @@ export default {
       clickFolder : false,
       preFolderPath : ['/'],
       folderPath : "/",
-      folderList : [], //root 폴더 리스트
+      rootList : [], //root 폴더 리스트
       fileList : [],
 
       //업로드 관련
@@ -104,9 +110,9 @@ export default {
   methods : {
     //Root에서 시작할때의 함수
     async getData() {
-      console.log("해당 프로젝트의 폴더 목록을 불러옴", this.pjCode);
-      this.folderList = await storage.getDirList(`Project/PJ${this.pjCode}/resource/`);
-      console.log(this.folderList);
+      console.log("해당 프로젝트의 파일 목록을 불러옴", this.pjCode);
+      this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+      console.log(this.rootList);
     },
     async getFileList(folderName) {
       this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${folderName}/`);
@@ -131,8 +137,17 @@ export default {
     fileManagerOpen(folderPath) {
       this.$refs.fileModal.show({
         size : "big",
-        path : folderPath
+        path : folderPath,
+        pjCode : this.pjCode
       });
+    },
+
+    async uploadOk() {
+      if(this.folderPath == "/") {
+        this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+      } else {
+        this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+      }
     },
 
     async deleteFile(name, key) {
@@ -146,7 +161,13 @@ export default {
       if(result == true) {
         var res = await storage.deleteFile(key);
         if(res == "ok") {
-          this.getFileList(this.currentFolder);
+
+          if(this.folderPath == "/") {
+            this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+          } else {
+            this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+          }
+          
         } else {
           console.log("파일 삭제 실패");
         }
