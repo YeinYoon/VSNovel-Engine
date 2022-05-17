@@ -6,7 +6,7 @@
   <div v-bind:class="{[`Fmodal_frame`]:true}">
     <div class="FileManagerTitle"><p>VSN 파일 매니저</p></div>
     <div class="Fmodal_inner">
-      대상 경로 : {{path}}
+      <div class="Fmodal_Path">대상 경로 : {{path}}</div>
       <div class="Fmodal_UploadArea" v-if="this.files.length == 0">
         <input
         class="Fmodal_UploadAreaInput"
@@ -24,6 +24,19 @@
         <ul>
           <li v-for="(f, i) in files" :key="i">{{f.name}}</li>
         </ul>
+      </div>
+
+      <div class="Fmodal_UploadArea_After" v-if="this.files.length > 0">
+        <input
+        class="Fmodal_UploadAreaInput_After"
+        multiple ref="fileM"
+        type="file"
+        @change="onFileChange"
+        @dragover.prevent
+        @dragenter.prevent
+        @drop.prevent="onDrop">
+        <p class="UploadBefore_After">업로드할 파일을 이곳에 Drag&Drop</p>
+        <p class="UploadAfter_After">+</p>
       </div>
 
 
@@ -129,6 +142,12 @@ export default {
   transform: translate(-50%, -50%);
 }
 
+.Fmodal_Path {
+  position: absolute;
+  left: -30px;
+  top : -20px;
+}
+
 .Fmodal_UploadArea {
   position: absolute;
   top: 5px;
@@ -200,6 +219,85 @@ export default {
 .Fmodal_UploadAreaInput:hover .UploadAfter {
   opacity: 1;
 }
+
+
+
+.Fmodal_UploadArea_After {
+  position: absolute;
+  top: 5px;
+  left: 55%;
+  width: calc(70% + 10px);
+  height: calc(100%);
+  /* border: white 3px dashed; */
+  transition: all ease 0.5s;
+  /* margin-bottom: 10px; */
+}
+
+.Fmodal_UploadAreaInput_After {
+  position: absolute;
+  /* left: 55%; */
+  top: 5px;
+  width: 70%;
+  height: calc(100%);
+  border: white 3px dashed;
+  transition: all ease 0.5s;
+  /* margin-bottom: 10px; */
+}
+
+.Fmodal_UploadAreaInput_After::file-selector-button {
+  display: none;
+}
+
+.Fmodal_UploadArea_After:hover{
+  opacity: 0.4;
+}
+
+.Fmodal_UploadAreaInput_After:hover{
+  opacity: 0.4;
+}
+
+.UploadBefore_After {
+  position: absolute;
+  left: 51%;
+  top: 54%;
+  font-size: 0.8em;
+  width: 300px;
+  transform: translate(-50%, -50%);
+  display: block;
+  transition: all ease 0.3s;
+}
+
+.UploadAfter_After {
+  position: absolute;
+  left: 36%;
+  top: 52%;
+  font-size: 3em;
+  transform: translate(-50%, -50%);
+  /* display: none; */
+  transition: all ease 0.3s;
+  opacity: 0;
+}
+
+.Fmodal_UploadArea_After:hover .UploadBefore_After {
+  opacity: 0;
+  display: none;
+}
+
+.Fmodal_UploadArea_After:hover .UploadAfter_After {
+  opacity: 1;
+  display: block;
+}
+
+.Fmodal_UploadAreaInput_After:hover .UploadBefore_After {
+  opacity: 0;
+}
+
+.Fmodal_UploadAreaInput_After:hover .UploadAfter_After {
+  opacity: 1;
+}
+
+
+
 
 .FileManagerTitle {
   position: absolute;
