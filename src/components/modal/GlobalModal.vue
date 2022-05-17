@@ -2,18 +2,18 @@
 <div v-if="gModalState">
   <!-- 모달창이 나올떄 뒷 배경을 흐리게 만드는 녀석
   이걸 안쓰고 싶을땐 단순히 modal_opacity만을 주석처리하면 된다.-->
-  <div class="modal_opacity">
+  <div class="Gmodal_opacity">
   </div>
   <!-- 모달창의 크기를 결정하는 modal_frame-->
-  <div v-bind:class="{[`modal_frame_${this.$store.state.gModalSize}`]:true}">
+  <div v-bind:class="{[`Gmodal_frame_${this.$store.state.gModalSize}`]:true}">
     <!--모달 내 메세지 및 컨텐츠인 modal_inner, 여기에 단순히 메세지만을 표시할수도 
     작은 컴포넌트를 삽입할수도 있따.-->
-    <div class="modal_inner">
+    <div class="Gmodal_inner">
       <span>{{this.$store.state.gModalMsg}}</span> <!--메세지를 출력-->
     </div>
       <!--모달을 닫는 버튼과 버튼내 메세지(확인, 취소 등등)-->
-    <div class="modal_close_button">
-      <span class="modal_close_ok" @click="modalClose()">확인</span>
+    <div class="Gmodal_close_button">
+      <span class="Gmodal_close_ok" @click="modalClose()">확인</span>
     </div>
   </div>  
 </div>
@@ -24,14 +24,14 @@
   width: 100vw;
   height: 100vh;
   opacity:0;
-  z-index: 100;
+  z-index: 99;
   position: fixed;
   animation-duration: 0.3s;
-  animation-name: backgrounding_on;
+  animation-name: Gbackgrounding_on;
   animation-fill-mode: forwards;
-  z-index: 1;
+  /* z-index: 1; */
 }
-.modal_frame_normal{
+.Gmodal_frame_normal{
   position: fixed;
   top: 50%;
   left: 50%;
@@ -41,11 +41,11 @@
   border-radius: 25px;
   background: #2a2a2a;
   animation-duration: 0.7s;
-  animation-name: opening;
-  z-index: 1;
+  animation-name: Gopening;
+  z-index: 100;
   opacity: 1;
 }
-.modal_frame_small{
+.Gmodal_frame_small{
   position: fixed;
   top: 50%;
   left: 50%;
@@ -55,11 +55,11 @@
   border-radius: 25px;
   background: #2a2a2a;
   animation-duration: 0.7s;
-  animation-name: opening;
-  z-index: 1;
+  animation-name: Gopening;
+  z-index: 100;
   opacity: 1;
 }
-.modal_frame_big{
+.Gmodal_frame_big{
   position: fixed;
   top: 50%;
   left: 50%;
@@ -69,18 +69,18 @@
   border-radius: 25px;
   background: #2a2a2a;
   animation-duration: 0.7s;
-  animation-name: opening;
-  z-index: 1;
+  animation-name: Gopening;
+  z-index: 100;
   opacity: 1;
 }
-.modal_inner{
+.Gmodal_inner{
   color: white;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.modal_close_button{
+.Gmodal_close_button{
   width: 40%;
   height: 15%;
   background: #2872f9;
@@ -93,7 +93,7 @@
   transform: translate(-50%, -50%);
   cursor: pointer;
 }
-.modal_close_ok{
+.Gmodal_close_ok{
   display: table-cell;
   vertical-align: middle;
   text-align: center;
@@ -102,7 +102,7 @@
 }
 /* 애니메이션들,*/
   /*열리는 애니메이션 opening*/
-@keyframes opening {
+@keyframes Gopening {
   from {
     top:150%;
     opacity: 0;
@@ -115,7 +115,7 @@
 }
 
   /*배경을 만드는 backgrounding_on*/
-@keyframes backgrounding_on {
+@keyframes Gbackgrounding_on {
   from {
   }
 

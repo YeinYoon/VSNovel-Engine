@@ -97,7 +97,7 @@ body{
   left: 0px;
   overflow: auto;
   top: 0px;
-  z-index: 3;
+  z-index: 2;
 }
 
 .RouterView {
@@ -180,6 +180,7 @@ body{
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
 }
+
 .SideBar {
   position:fixed;
   z-index: 2;

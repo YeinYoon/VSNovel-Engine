@@ -1,7 +1,5 @@
 <template>
 <div v-if="iModalState">
-  <div class="modal_opacity">
-  </div>
 
   <div v-bind:class="{[`Imodal_frame`]:true}">
     <div class="InputModalTitle"><p>{{msg}}</p></div>
@@ -10,12 +8,12 @@
       <div class="Imodal_inputTag"><input v-model="input"></div>
     </div>
 
-    <div class="Fmodal_save_button" @click="inputVal()">
-      <span class="Fmodal_save_ok">확인</span>
+    <div class="Imodal_save_button" @click="inputVal()">
+      <span class="Imodal_save_ok">확인</span>
     </div>
 
-    <div class="Fmodal_cancel_button" @click="modalClose()">
-      <span class="Fmodal_cancel_ok">취소</span>
+    <div class="Imodal_cancel_button" @click="modalClose()">
+      <span class="Imodal_cancel_ok">취소</span>
     </div>
 
   </div>
@@ -59,18 +57,6 @@ export default {
 </script>
 
 <style>
-.modal_opacity{
-  background: black;
-  width: 100vw;
-  height: 100vh;
-  opacity:0;
-  z-index: 99;
-  position: fixed;
-  animation-duration: 0.3s;
-  animation-name: backgrounding_on;
-  animation-fill-mode: forwards;
-  z-index: 1;
-}
 
 .Imodal_frame{
   position: fixed;
@@ -82,7 +68,7 @@ export default {
   border-radius: 25px;
   background: #2a2a2a;
   animation-duration: 0.7s;
-  animation-name: opening;
+  animation-name: Iopening;
   z-index: 100;
   opacity: 1;
 }
@@ -123,7 +109,7 @@ export default {
 
 }
 
-.Fmodal_save_button{
+.Imodal_save_button{
   width: 25%;
   height: 20%;
   background: #2872f9;
@@ -135,7 +121,7 @@ export default {
   left: 35%;
   transform: translate(-50%, -50%);
 }
-.Fmodal_cancel_button{
+.Imodal_cancel_button{
   width: 25%;
   height: 20%;
   background: #ff4c4c;
@@ -147,13 +133,13 @@ export default {
   left: 65%;
   transform: translate(-50%, -50%);
 }
-.Fmodal_save_ok{
+.Imodal_save_ok{
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   color: white;
 }
-.Fmodal_cancel_ok{
+.Imodal_cancel_ok{
   display: table-cell;
   vertical-align: middle;
   text-align: center;
@@ -161,7 +147,7 @@ export default {
 }
 /* 애니메이션들,*/
   /*열리는 애니메이션 opening*/
-@keyframes opening {
+@keyframes Iopening {
   from {
     top:150%;
     opacity: 0;
@@ -173,7 +159,7 @@ export default {
   }
 }
   /*배경을 만드는 backgrounding_on*/
-@keyframes backgrounding_on {
+@keyframes Ibackgrounding_on {
   from {
     opacity: 0;
   }
