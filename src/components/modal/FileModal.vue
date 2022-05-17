@@ -60,6 +60,7 @@ export default {
   methods : {
     modalClose() {
       this.fModalState = false; 
+      this.files = [];
     },
     show(option = {}) {
       this.fModalState = true;

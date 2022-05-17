@@ -5,6 +5,7 @@
   <!-- <div>
     <input multiple ref="img" type="file" @change="onInputImage()">
     <button @click="upload()">업로드</button>
+    {{percent}}
     <button @click="getImg()">가져오기</button>
     <img :src="imgUrl" alt="테스트이미지">
     <button @click="delFile()">삭제</button>
@@ -131,6 +132,14 @@
 
 </template>
 <script>
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3({
+    region : "ap-northeast-2",
+    //추후 .env로 보안관리 할것
+    accessKeyId: 'AKIARKU2Y4IXVCR266PO', // 사용자의 AccessKey
+    secretAccessKey: 'YJDi8K4VSP5bPhdNcC6hB/xreuKH2885200KS+LB' // 사용자의 secretAccessKey
+});
+
 import ConfirmModal from './modal/ConfirmModal.vue'
 import axios from '../axios'
 // 서버 스토리지
@@ -175,6 +184,7 @@ export default {
       imgUrl : "",
       mp3 : "",
       text : "",
+      percent : "",
 
       //타이핑 애니메이션 테스트용
       content : "Hello, I'm Sample Text",
@@ -219,9 +229,26 @@ export default {
       console.log(this.img.name);
     },
     async upload() {
-      console.log(this.img);
-      var result = await storage.uploadFile('test/', this.img);
-      console.log(result);
+      const params = {
+        Bucket: "vsnovel",
+        Key : '/' + this.img.name, // 저장되는 파일의 경로 및 이름
+        Body : this.img // 파일
+      }
+
+      s3.upload(params)
+      .on("httpUploadProgress", evt => {
+        this.percent = parseInt((evt.loaded * 100) / evt.total) + "%";
+      })
+      .send((err, data)=>{
+          if(err) {
+              console.log("파일 업로드 실패");
+              console.error(err);
+              return "err"
+          } else {
+              console.log("파일 업로드 성공", data);
+              return "ok"
+          }
+      })
     },
     async getImg() {
       var result = await storage.getUrlList("test/");

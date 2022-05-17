@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk');
-
 const s3 = new AWS.S3({
     region : "ap-northeast-2",
     //추후 .env로 보안관리 할것
@@ -151,29 +150,31 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
 }
 
 
-exports.uploadFile = (filePath, file) =>{
-    const params = {
-        Bucket: "vsnovel",
-        Key : filePath + file.name, // 저장되는 파일의 경로 및 이름
-        Body : file // 파일
-    }
+// exports.uploadFile = (filePath, file) =>{
+//     const params = {
+//         Bucket: "vsnovel",
+//         Key : filePath + file.name, // 저장되는 파일의 경로 및 이름
+//         Body : file // 파일
+//     }
 
-    s3.upload(params)
-    .on("httpUploadProgress", evt => {
-        console.log(parseInt((evt.loaded * 100) / evt.total) + "%");
-    })
-    .send((err, data)=>{
-        if(err) {
-            console.log("파일 업로드 실패");
-            console.error(err);
-            return "err"
-        } else {
-            console.log("파일 업로드 성공");
-            console.log(data);
-            return "ok"
-        }
-    })
-}
+//     var Progress = s3.upload(params)
+//     .on("httpUploadProgress", evt => {
+//         return parseInt((evt.loaded * 100) / evt.total) + "%";
+//     })
+//     .send((err, data)=>{
+//         if(err) {
+//             console.log("파일 업로드 실패");
+//             console.error(err);
+//             return "err"
+//         } else {
+//             console.log("파일 업로드 성공", data);
+//             return "ok"
+//         }
+//     })
+
+//     console.log(Progress);
+//     return Progress
+// }
 
 exports.deleteFile = async(filePath) =>{
     const params = {
