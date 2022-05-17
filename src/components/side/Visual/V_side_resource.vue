@@ -24,7 +24,7 @@
         <div class="VSFileThumnail" v-if="f.ex == 'mp3'">
           <img src="@/assets/sample.png">
         </div>
-        <div class="VSFileThumnail" v-if="f.ex == 'dir'" @click="goToFolder(f.key)">
+        <div class="VSFileThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
           <img src="@/assets/sample.png">
         </div>
         <div class="VSFileThumnail" v-else>
