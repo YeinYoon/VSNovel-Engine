@@ -14,7 +14,7 @@
 
     <div class="VSFolderList" v-if="clickFolder == false">
 
-      <div class="VSResourceSubTitle"><p>{{folderPath}}</p></div>
+      <div class="VSResourceSubTitle"><span>{{folderPath}}</span></div>
 
       <div class="VSFolder" v-for="(f, i) in folderList" :key="i" @click="goToFolder(f.key)">
 
@@ -201,6 +201,13 @@ export default {
   /* background: white; */
 }
 
+.VSResourceSubTitle {
+  /* display: inline-block; */
+  position: relative;
+  width: 50%;
+  margin-bottom: 5px;
+}
+
 .VSResourceButtons button {
   display: inline;
   width: 80px;
@@ -325,16 +332,21 @@ export default {
   text-align: right;
   width: 50%;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .VSFileReturn span{
+  background: #2872f9;
   position: relative;
   height: 20px;
   left: 0px;
+  top: 2px;
   white-space: nowrap;
   word-break:break-all;
   text-overflow: ellipsis;
   overflow: hidden;
+  padding: 6px;
+  border-radius: 10px;
 }
 
 .VSFile {
