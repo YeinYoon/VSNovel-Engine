@@ -8,17 +8,19 @@
     <div class="Fmodal_inner">
 
       <div class="Fmodal_UploadArea">
+        <input
+        class="Fmodal_UploadAreaInput"
+        multiple ref="fileM"
+        type="file"
+        @change="onInputImage()"
+        @dragover.prevent
+        @dragenter.prevent
+        @drop.prevent="onDrop">
         <p class="UploadBefore">업로드할 파일을 이곳에 Drag&Drop</p>
         <p class="UploadAfter">+</p>
       </div>
 
-      <input
-      multiple ref="fileM"
-      type="file"
-      @change="onInputImage()"
-      @dragover.prevent
-      @dragenter.prevent
-      @drop.prevent="onDrop">
+
       
 
     </div>
@@ -121,21 +123,37 @@ export default {
 }
 
 .Fmodal_UploadArea {
+  position: absolute;
+  top: 5px;
+  width: calc(100% + 10px);
+  height: calc(100%);
+  /* border: white 3px dashed; */
+  transition: all ease 0.5s;
+  /* margin-bottom: 10px; */
+}
+
+.Fmodal_UploadAreaInput {
+  position: absolute;
+  top: 5px;
   width: 100%;
-  height: calc(100% - 20px);
+  height: calc(100%);
   border: white 3px dashed;
   transition: all ease 0.5s;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .Fmodal_UploadArea:hover{
   opacity: 0.4;
 }
 
+.Fmodal_UploadAreaInput:hover{
+  opacity: 0.4;
+}
+
 .UploadBefore {
   position: absolute;
   left: 50%;
-  top: 43%;
+  top: 54%;
   font-size: 1.3em;
   width: 300px;
   transform: translate(-50%, -50%);
@@ -146,7 +164,7 @@ export default {
 .UploadAfter {
   position: absolute;
   left: 50%;
-  top: 42%;
+  top: 52%;
   font-size: 4em;
   transform: translate(-50%, -50%);
   /* display: none; */
@@ -159,6 +177,14 @@ export default {
 }
 
 .Fmodal_UploadArea:hover .UploadAfter {
+  opacity: 1;
+}
+
+.Fmodal_UploadAreaInput:hover .UploadBefore {
+  opacity: 0;
+}
+
+.Fmodal_UploadAreaInput:hover .UploadAfter {
   opacity: 1;
 }
 
