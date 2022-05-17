@@ -99,7 +99,7 @@ export default {
     return {
       clickFolder : false,
       preFolderPath : ['/'],
-      folderPath : "/",
+      folderPath : "/", // 현재 폴더 경로
       rootList : [], //root 폴더 리스트
       fileList : [],
 
@@ -108,7 +108,7 @@ export default {
     }
   },
   methods : {
-    //Root에서 시작할때의 함수
+    //root에서 시작할때의 함수
     async getData() {
       console.log("해당 프로젝트의 파일 목록을 불러옴", this.pjCode);
       this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
@@ -134,6 +134,12 @@ export default {
       console.log(this.fileList);
     },
 
+    // 새 폴더 생성
+    createDir() {
+      
+    },
+
+    // 파일 업로드 관련
     fileManagerOpen(folderPath) {
       this.$refs.fileModal.show({
         size : "big",
@@ -141,7 +147,6 @@ export default {
         pjCode : this.pjCode
       });
     },
-
     async uploadOk() {
       if(this.folderPath == "/") {
         this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
@@ -150,38 +155,66 @@ export default {
       }
     },
 
+
+    // 파일 또는 폴더 삭제
     async deleteFile(name, key) {
-      var result = await this.$refs.confirmModal.show({
-        msg : `파일 [${name}]를 삭제하시겠습니까?`,
-        size : "normal",
-        btn1 : "확인",
-        btn2 : "취소"
-      });
-
-      if(result == true) {
-        var res = await storage.deleteFile(key);
-        if(res == "ok") {
-
-          if(this.folderPath == "/") {
-            this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+      var fileType = name.split('.');
+      if(fileType[1] == undefined) { //확장자가 없을 경우 폴더 삭제로 인식
+        var resultD = await this.$refs.confirmModal.show({
+          msg : `폴더 [${name}]를 삭제하시겠습니까? 폴더 내부 파일도 함께 삭제됩니다.`,
+          size : "normal",
+          btn1 : "확인",
+          btn2 : "취소"
+        });
+        if(resultD == true) {
+          var resD = await storage.deleteFolder(key);
+          if(resD == "ok") {
+            if(this.folderPath == "/") {
+              this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+            } else {
+              this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+            }
           } else {
-            this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+            console.error("폴더 삭제 실패");
           }
-          
-        } else {
-          console.log("파일 삭제 실패");
         }
+
+      } else { // 단일 파일 삭제일 경우
+
+        var resultF = await this.$refs.confirmModal.show({
+          msg : `파일 [${name}]를 삭제하시겠습니까?`,
+          size : "normal",
+          btn1 : "확인",
+          btn2 : "취소"
+        });
+        if(resultF == true) {
+          var resF = await storage.deleteFile(key);
+          if(resF == "ok") {
+
+            if(this.folderPath == "/") {
+              this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+            } else {
+              this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+            }
+            
+          } else {
+            console.error("파일 삭제 실패");
+          }
+        }
+
       }
+
     },
 
+    // 이전 경로로 돌아가기
     async back() {
-      if(this.preFolderPath.length == 1) {
+      this.preFolderPath.splice(-1,1);
+      if(this.preFolderPath.length == 1) { //루트에 도착했을 경우
         this.folderPath = this.preFolderPath[0];
         this.clickFolder = false;
         this.folderList = await storage.getDirList(`Project/PJ${this.pjCode}/resource/`);
       } else {
         this.folderPath = this.preFolderPath[this.preFolderPath.length-1];
-        this.preFolderPath.splice(-1,1);
         this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
       }
     }

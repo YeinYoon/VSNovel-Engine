@@ -95,7 +95,6 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
 
             var reqPath = filePath.split('/');
             reqPath.splice(-1,1);
-            console.log("리소스 요청 경로 : ", reqPath);
 
             let contents = data.Contents;
             contents.forEach((content) => {
@@ -184,6 +183,34 @@ exports.deleteFile = async(filePath) =>{
 
     var data = new Promise((resolve, reject)=>{
         s3.deleteObject(params, async (err)=>{
+            if(err){
+                reject(err)
+            }
+            resolve("ok")
+        });
+    })
+    return data
+}
+
+exports.deleteFolder = async(filePath)=> {
+    const params = {
+        Bucket: "vsnovel",
+        Prefix : filePath,
+    }
+
+    const listedObjects = await s3.listObjectsV2(params).promise();
+    const deleteParams = {
+        Bucket: params.Bucket,
+        Delete: { Objects: [] }
+    };
+
+    var data = new Promise((resolve, reject)=>{
+
+        listedObjects.Contents.forEach(({ Key }) => {
+            deleteParams.Delete.Objects.push({ Key });
+        });
+
+        s3.deleteObjects(deleteParams, async (err)=>{
             if(err){
                 reject(err)
             }
