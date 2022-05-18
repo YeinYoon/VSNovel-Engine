@@ -31,7 +31,19 @@
           <img :src="f.url">
         </div>
 
-        <div class="VSFolderDelButton" @click="deleteFile(f.name, f.key)"><span>삭제</span></div>
+        
+        <div class="VSFolderMoveButton" @click="deleteFile(f.name, f.key)">
+          <img src="@/assets/icons/white/redo.png">
+        </div>
+
+        <div class="VSFolderDetailButton" @click="deleteFile(f.name, f.key)">
+          <img src="@/assets/icons/white/editing.png">
+        </div>
+
+        <div class="VSFolderDelButton" @click="deleteFile(f.name, f.key)">
+          <img src="@/assets/icons/white/trash_white.png">
+        </div>
+
 
         <div class="VSFolderName">
           <p>{{f.name}}</p>
@@ -59,8 +71,16 @@
           <img :src="f.url">
         </div>
 
+        <div class="VSFileMoveButton" @click="deleteFile(f.name, f.key)">
+          <img src="@/assets/icons/white/redo.png">
+        </div>
+
+        <div class="VSFileDetailButton" @click="deleteFile(f.name, f.key)">
+          <img src="@/assets/icons/white/editing.png">
+        </div>
+
         <div class="VSFileDelButton" @click="deleteFile(f.name, f.key)">
-          <span>삭제</span>
+          <img src="@/assets/icons/white/trash_white.png">
         </div>
 
         <div class="VSFileName">
@@ -341,11 +361,19 @@ export default {
   display: block;
 }
 
-.VSFolderDelButton {
+.VSFolder:hover .VSFolderMoveButton {
+  display: block;
+}
+
+.VSFolder:hover .VSFolderDetailButton {
+  display: block;
+}
+
+.VSFolderMoveButton {
   position: absolute;
-  left: 75px;
-  top: 120px;
-  width: 40px;
+  left: 12px;
+  top: 118px;
+  width: 30px;
   height: 25px;
   background: #2872f9;
   border-radius: 10px;
@@ -356,12 +384,71 @@ export default {
   cursor: pointer;
 }
 
-.VSFolderDelButton span{
-  font-size: 0.9em;
+.VSFolderMoveButton img{
+  width: 60%;
   position: absolute;
-  left: 6.5px;
-  top: 1px;
+  left: 6.2px;
+  top: 3.5px;
 }
+
+.VSFolderMoveButton:hover {
+  background: #0084ff;
+}
+
+
+.VSFolderDetailButton {
+  position: absolute;
+  left: 46px;
+  top: 118px;
+  width: 30px;
+  height: 25px;
+  background: #2872f9;
+  border-radius: 10px;
+  display: none;
+  animation-name: delOpen;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  cursor: pointer;
+}
+
+.VSFolderDetailButton img{
+  width: 50%;
+  position: absolute;
+  left: 8px;
+  top: 5.4px;
+}
+
+.VSFolderDetailButton:hover {
+  background: #0084ff;
+}
+
+
+.VSFolderDelButton {
+  position: absolute;
+  left: 80px;
+  top: 118px;
+  width: 30px;
+  height: 25px;
+  background: #2872f9;
+  border-radius: 10px;
+  display: none;
+  animation-name: delOpen;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  cursor: pointer;
+}
+
+.VSFolderDelButton img{
+  width: 60%;
+  position: absolute;
+  left: 5.5px;
+  top: 3.5px;
+}
+
+.VSFolderDelButton:hover {
+  background: #0084ff;
+}
+
 
 .VSFolderThumnail {
   position: relative;
@@ -463,7 +550,15 @@ export default {
   transition: all ease-out 0.2s;
 }
 
-.VSFile:hover .VSFileDelButton{
+.VSFile:hover .VSFileDelButton {
+  display: block;
+}
+
+.VSFile:hover .VSFileMoveButton {
+  display: block;
+}
+
+.VSFile:hover .VSFileDetailButton {
   display: block;
 }
 
@@ -495,30 +590,85 @@ export default {
   object-fit: cover;
 }
 
-.VSFileDelButton {
+
+.VSFileMoveButton {
   position: absolute;
-  left: 75px;
-  top: 120px;
-  width: 40px;
+  left: 12px;
+  top: 118px;
+  width: 30px;
   height: 25px;
   background: #2872f9;
   border-radius: 10px;
   display: none;
   animation-name: delOpen;
-  animation-duration: 0.8s;
+  animation-duration: 0.7s;
   animation-fill-mode: forwards;
   cursor: pointer;
 }
 
-.VSFileDelButton span{
-  font-size: 0.9em;
+.VSFileMoveButton img{
+  width: 60%;
   position: absolute;
-  left: 7px;
-  top: 1px;
+  left: 6.2px;
+  top: 3.5px;
+}
+
+.VSFileMoveButton:hover {
+  background: #0084ff;
+}
+
+
+.VSFileDetailButton {
+  position: absolute;
+  left: 46px;
+  top: 118px;
+  width: 30px;
+  height: 25px;
+  background: #2872f9;
+  border-radius: 10px;
+  display: none;
+  animation-name: delOpen;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  cursor: pointer;
+}
+
+.VSFileDetailButton img{
+  width: 50%;
+  position: absolute;
+  left: 8px;
+  top: 5.4px;
+}
+
+.VSFileDetailButton:hover {
+  background: #0084ff;
+}
+
+
+.VSFileDelButton {
+  position: absolute;
+  left: 80px;
+  top: 118px;
+  width: 30px;
+  height: 25px;
+  background: #2872f9;
+  border-radius: 10px;
+  display: none;
+  animation-name: delOpen;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  cursor: pointer;
+}
+
+.VSFileDelButton img{
+  width: 60%;
+  position: absolute;
+  left: 5.5px;
+  top: 3.5px;
 }
 
 .VSFileDelButton:hover {
-  background: #366fda;
+  background: #0084ff;
 }
 
 .VSFileName {
