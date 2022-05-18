@@ -40,6 +40,7 @@ export default {
   methods : {
     modalClose() {
       this.iModalState = false; 
+      this.input = "";
     },
     show(option = {}) {
       this.iModalState = true;

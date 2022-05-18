@@ -162,7 +162,6 @@ export default {
     createDir() {
       this.$refs.inputModal.show({
         msg : "폴더 이름을 입력해주세요.",
-        size : "normal"
         size : "normal",
         type : "newFolder",
       })
@@ -192,6 +191,7 @@ export default {
 
     // 파일 업로드 관련
     fileManagerOpen(folderPath) {
+      this.$refs.fileUploadModal.show({
         size : "big",
         path : folderPath,
         pjCode : this.pjCode
