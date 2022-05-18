@@ -31,18 +31,13 @@ export default {
       iModalSize : "",
       msg : "",
       input : "",
+      type : "",
+
+      //이름 변경 관련
+      key : ""
     }
   },
   methods : {
-    inputVal() {
-      if(this.input == "") {
-        console.log("폴더 이름이 비어있음");
-      } else {
-        this.$emit('inputRes', this.input);
-        this.modalClose();
-      }
-      
-    },
     modalClose() {
       this.iModalState = false; 
     },
@@ -50,6 +45,39 @@ export default {
       this.iModalState = true;
       this.iModalSize = option.size;
       this.msg = option.msg;
+      this.type = option.type; // 어떤 것에 대한 입력 처리인가?
+
+      switch(this.type) { // 타입에 따른 행동 코드
+
+        case "rename" :
+          this.input = option.preName;
+          this.key = option.key;
+          break
+
+      }
+
+    },
+
+    inputVal() {
+      if(this.input == "") {
+        console.log("내용이 비어있음");
+      } else {
+
+        switch(this.type) {
+
+          case "newFolder" :
+            this.$emit('inputFolderName', this.input);
+            this.modalClose();
+            break;
+
+          case "rename" :
+            this.$emit('inputNewName', {newName : this.input, key : this.key});
+            this.modalClose();
+            break;
+
+        }
+
+      }
     },
 
   },
@@ -69,7 +97,6 @@ export default {
   background: #2a2a2a;
   animation-duration: 0.7s;
   animation-name: Iopening;
-  z-index: 100;
   opacity: 1;
 }
 

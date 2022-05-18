@@ -85,7 +85,7 @@ export default {
   },
   methods : {
     modalClose() {
-      this.fModalState = false; 
+      this.fModalState = false;
       this.files = [];
       this.currentUpload = '-',
       this.progress = '-'

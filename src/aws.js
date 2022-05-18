@@ -234,8 +234,49 @@ exports.deleteFolder = async(filePath)=> {
             if(err){
                 reject(err)
             }
-            resolve("ok")
+            resolve("ok");
         });
     })
     return data
+}
+
+
+exports.editName = async(key, newName, filePath) => { // 폴더 및 파일 이름 수정 (새로운 이름으로 카피 후 이전 파일 삭제)
+
+    //encodeURIComponent는 기존에 이름이 한글이었던 파일을 수정할시 해당 key값에 꼭 적용해주어야 한다.
+    var copyParamKey = encodeURIComponent(key);
+
+    const copyParams = {
+        Bucket: "vsnovel",
+        CopySource : "vsnovel/"+copyParamKey, // 복사할 대상 key값
+        Key : filePath + newName, //새롭게 복사할 경로
+    }
+    console.log(copyParams);
+
+
+    const deleteParams = {
+        Bucket: "vsnovel",
+        Key : key,        
+    }
+    console.log(deleteParams);
+    
+
+    var data = new Promise((resolve, reject) => {
+        s3.copyObject(copyParams, (err) => {
+            if (err) {
+                reject(err);
+            }
+     
+            s3.deleteObject(deleteParams, async (err)=>{
+                if(err){
+                    reject(err)
+                }
+                resolve("ok");
+            });
+
+        });
+    });
+
+    return data
+
 }

@@ -1,5 +1,7 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
+<Opacity :opacityState="$store.state.opacityState"></Opacity>
+
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
 
   <SideBar v-bind:class="{'SideBar':true}" :main="mainBar" :side="sideBar" @cngSide="cngSide"></SideBar>
@@ -11,6 +13,7 @@
 import axios from './axios'
 import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
+import Opacity from './components/modal/Opacity.vue'
 import MainBar from './components/bar/MainBar.vue'
 import SideBar from './components/bar/SideBar.vue'
 
@@ -19,6 +22,7 @@ export default {
   components: {
     Spinner,
     GlobalModal,
+    Opacity,
     MainBar,
     SideBar,
   },
@@ -97,7 +101,7 @@ body{
   left: 0px;
   overflow: auto;
   top: 0px;
-  z-index: 2;
+  z-index: 1;
 }
 
 .RouterView {
@@ -183,7 +187,7 @@ body{
 
 .SideBar {
   position:fixed;
-  z-index: 2;
+  z-index: 4;
 }
 
 

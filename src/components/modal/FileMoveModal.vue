@@ -23,33 +23,23 @@
 
 <script>
 export default {
-  name : "FMnputModal",
+  name : "FileMoveModal",
   data() {
     return {
       // 모달 데이터
-      iModalState : false,
-      iModalSize : "",
-      msg : "",
-      input : "",
+      FMModalState : false,
+      fModalSize : "",
+
+
     }
   },
   methods : {
-    inputVal() {
-      if(this.input == "") {
-        console.log("폴더 이름이 비어있음");
-      } else {
-        this.$emit('inputRes', this.input);
-        this.modalClose();
-      }
-      
-    },
     modalClose() {
-      this.iModalState = false; 
+      this.FMModalState = false;
     },
     show(option = {}) {
-      this.iModalState = true;
-      this.iModalSize = option.size;
-      this.msg = option.msg;
+      this.FMModalState = true;
+      this.fModalSize = option.size;
     },
 
   },

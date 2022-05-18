@@ -1,7 +1,7 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
-<FileModal ref="fileModal" @uploadOk="uploadOk()"></FileModal>
-<InputModal ref="inputModal" @inputRes="inputFolderName"></InputModal>
+<FileUploadModal ref="fileUploadModal" @uploadOk="uploadOk()"></FileUploadModal>
+<InputModal ref="inputModal" @inputFolderName="inputFolderName" @inputNewName="inputNewName"></InputModal>
 
   <div class="VSBackgroundRes">
 
@@ -36,7 +36,7 @@
           <img src="@/assets/icons/white/redo.png">
         </div>
 
-        <div class="VSFolderDetailButton" @click="deleteFile(f.name, f.key)">
+        <div class="VSFolderDetailButton" @click="editName(f.name, f.key)">
           <img src="@/assets/icons/white/editing.png">
         </div>
 
@@ -75,7 +75,7 @@
           <img src="@/assets/icons/white/redo.png">
         </div>
 
-        <div class="VSFileDetailButton" @click="deleteFile(f.name, f.key)">
+        <div class="VSFileDetailButton" @click="editName(f.name, f.key)">
           <img src="@/assets/icons/white/editing.png">
         </div>
 
@@ -98,14 +98,14 @@
 
 <script>
 import ConfirmModal from '../../modal/ConfirmModal.vue'
-import FileModal from '../../modal/FileModal.vue'
+import FileUploadModal from '../../modal/FileUploadModal.vue'
 import InputModal from '../../modal/InputModal.vue'
 import storage from '../../../aws'
 export default {
   name: 'V_side_resource',
   components : {
     ConfirmModal,
-    FileModal,
+    FileUploadModal,
     InputModal
   },
   props : {
@@ -163,6 +163,8 @@ export default {
       this.$refs.inputModal.show({
         msg : "폴더 이름을 입력해주세요.",
         size : "normal"
+        size : "normal",
+        type : "newFolder",
       })
     },
     async inputFolderName(val) {
@@ -190,7 +192,6 @@ export default {
 
     // 파일 업로드 관련
     fileManagerOpen(folderPath) {
-      this.$refs.fileModal.show({
         size : "big",
         path : folderPath,
         pjCode : this.pjCode
@@ -204,11 +205,43 @@ export default {
       }
     },
 
+    //폴더 및 파일 이름 변경 관련
+    async editName(name, key) {
+      this.$store.commit('opacityOn');
+      this.$refs.inputModal.show({
+        msg : "이름 변경",
+        size : "normal",
+        type : "rename",
+        preName : name,
+        key : key
+      })
+    },
+    async inputNewName(data) {
+      var path;
+      if(this.folderPath == '/') {
+        path = `Project/PJ${this.pjCode}/resource/`;
+      } else {
+        path = `Project/PJ${this.pjCode}/resource/${this.folderPath}`;
+      }
+
+      var result = await storage.editName(data.key, data.newName, path);
+      if(result == "ok") {
+        if(this.folderPath == "/") {
+          this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+        } else {
+          this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+        }
+      } else {
+        console.error("이름 변경 실패");
+      }
+    },
+
 
     // 파일 또는 폴더 삭제
     async deleteFile(name, key) {
       var fileType = name.split('.');
       if(fileType[1] == undefined) { //확장자가 없을 경우 폴더 삭제로 인식
+
         var resultD = await this.$refs.confirmModal.show({
           msg : `폴더 [${name}]를 삭제하시겠습니까? 폴더 내부 파일도 함께 삭제됩니다.`,
           size : "normal",
@@ -229,7 +262,7 @@ export default {
         }
 
       } else { // 단일 파일 삭제일 경우
-
+      
         var resultF = await this.$refs.confirmModal.show({
           msg : `파일 [${name}]를 삭제하시겠습니까?`,
           size : "normal",
@@ -278,6 +311,7 @@ export default {
   height: 100vh;
   overflow: auto;
   color: white;
+  position: relative;
 }
 
 .VSResourceTool {
