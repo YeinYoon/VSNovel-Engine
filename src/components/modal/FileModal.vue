@@ -4,7 +4,8 @@
   <div v-bind:class="{[`Fmodal_frame`]:true}">
     <div class="FileManagerTitle"><p>VSN 파일 매니저</p></div>
     <div class="Fmodal_inner">
-      <div class="Fmodal_Path">대상 경로 : {{path}}</div>
+      <div class="Fmodal_Path" v-if="path == '/'">대상 경로 : /</div>
+      <div class="Fmodal_Path" v-else>대상 경로 : {{path}}</div>
       <div class="Fmodal_UploadArea" v-if="this.files.length == 0">
         <input
         class="Fmodal_UploadAreaInput"
@@ -19,7 +20,6 @@
       </div>
 
       <div v-else>
-        퍼센테이지 : {{percent}}
         <ul>
           <li v-for="(f, i) in files" :key="i">{{f.name}}</li>
         </ul>
@@ -38,7 +38,8 @@
         <p class="UploadAfter_After">+</p>
       </div>
 
-
+      업로드 : {{currentUpload}}
+      진행도 : {{progress}}
       
 
     </div>
@@ -73,7 +74,9 @@ export default {
 
       pjCode : "",
       path : "",
-      percent : "",
+
+      currentUpload : "",
+      progress : "",
 
       files : []
     }
@@ -82,6 +85,8 @@ export default {
     modalClose() {
       this.fModalState = false; 
       this.files = [];
+      this.currentUpload = '-',
+      this.progress = '-'
     },
     show(option = {}) {
       this.fModalState = true;
@@ -102,11 +107,15 @@ export default {
     },    
     onDrop(event) {
       this.isDragged = false
-      this.files = event.dataTransfer.files;
+      for(var i=0; i<event.dataTransfer.files.length; i++) {
+        this.files.push(event.dataTransfer.files[i]);
+      }
       console.log(this.files);
     },
     onFileChange(event) {
-      this.files = event.target.files;
+      for(var i=0; i< event.target.files.length; i++) {
+        this.files.push(event.target.files[i]);
+      }
       console.log(this.files);
     },
 
@@ -123,9 +132,10 @@ export default {
           Body : this.files[i] // 파일
         }
 
+        this.currentUpload = this.files[i].name;
         s3.upload(params)
         .on("httpUploadProgress", evt => {
-          this.percent = parseInt((evt.loaded * 100) / evt.total) + "%";
+          this.progress = parseInt((evt.loaded * 100) / evt.total) + "%";
         })
         .send((err, data)=>{
           if(err) {
@@ -137,7 +147,8 @@ export default {
             this.$emit('uploadOk');
           }
         })
-
+        
+        this.progress = 0;
       }
 
     }

@@ -173,8 +173,6 @@ export default {
         path = `Project/PJ${this.pjCode}/resource/`+this.folderPath+val+'/';
       }
       
-      console.log("새로운 폴더 생성", path);
-
       var result = await storage.createFolder(path);
       if(result=="ok") {
         if(this.folderPath == "/") {
@@ -182,6 +180,7 @@ export default {
         } else {
           this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
         }
+        console.log("새로운 폴더 생성", path);
       } else {
         console.error("폴더 생성 실패");
       }
