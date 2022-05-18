@@ -19,7 +19,7 @@
         <p class="UploadAfter">+</p>
       </div>
 
-      <div v-else>
+      <div class="Fmodal_FileList" v-else>
         <ul>
           <li v-for="(f, i) in files" :key="i">{{f.name}}</li>
         </ul>
@@ -38,8 +38,10 @@
         <p class="UploadAfter_After">+</p>
       </div>
 
+      <div class="Fmodal_Progress">
       업로드 : {{currentUpload}}
       진행도 : {{progress}}
+      </div>
       
 
     </div>
@@ -162,8 +164,8 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
-  height: 350px;
+  width: 650px;
+  height: 400px;
   border-radius: 25px;
   background: #2a2a2a;
   animation-duration: 0.7s;
@@ -174,7 +176,7 @@ export default {
 .Fmodal_inner{
   color: white;
   position: fixed;
-  top: 45%;
+  top: 42%;
   left: 50%;
   width: 500px;
   height: 170px;
@@ -335,7 +337,19 @@ export default {
   opacity: 1;
 }
 
+.Fmodal_FileList {
+  position: absolute;
+  width: 50%;
+  top: 10px;
+  height: 100%;
+  border: 3px white dashed;
+  overflow: auto;
+}
 
+.Fmodal_Progress {
+  position: absolute;
+  top: 185px;
+}
 
 
 .FileManagerTitle {

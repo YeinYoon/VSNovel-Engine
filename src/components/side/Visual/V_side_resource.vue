@@ -173,6 +173,8 @@ export default {
         path = `Project/PJ${this.pjCode}/resource/`+this.folderPath+val+'/';
       }
       
+      console.log("새로운 폴더 생성", path);
+
       var result = await storage.createFolder(path);
       if(result=="ok") {
         if(this.folderPath == "/") {
@@ -180,7 +182,6 @@ export default {
         } else {
           this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
         }
-        console.log("새로운 폴더 생성", path);
       } else {
         console.error("폴더 생성 실패");
       }
@@ -475,16 +476,20 @@ export default {
 .VSFolderName {
   position: relative;
   /* background: red; */
-  left: 50%;
-  top: 0px;
+  left: 65px;
+  top: 3px;
   transform: translate(-50%, 50%);
-  width: 70%;
-  border-radius: 10px;
+  width: 110px;
+  height: 20px;
 }
 
 .VSFolderName p {
   width: 100%;
   height: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break:break-all;
 }
 
 
