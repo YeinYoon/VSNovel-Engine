@@ -43,18 +43,33 @@ export default {
   },
   props:{
     main: Boolean,
-    side: Boolean
+    side: Boolean,
+    sideBarStatus : String,
   },
   methods : {
     sideBarClick() {
       if(this.$store.state.sideBar == false) {
-        this.$store.commit('sideMenuOn');
-        this.$store.commit('sideAnimationFixed');
-        this.btnIcon = "▶"
+        if(this.sideBarStatus == 'Main') {
+          this.$store.commit('sideMenuOnMain');
+          this.$store.commit('sideAnimationFixed');
+          this.btnIcon = "▶"
+        }
+        else {
+          this.$store.commit('sideMenuOn');
+          this.$store.commit('sideAnimationFixed');
+          this.btnIcon = "▶"
+        }
       } else {
+        if(this.sideBarStatus == 'Main') {
+          this.$store.commit('sideMenuOffMain');
+          this.$store.commit('sideAnimationFixed');
+          this.btnIcon = "▶"
+        }
+        else {
         this.$store.commit('sideMenuOff');
         this.$store.commit('sideAnimationFixed');
         this.btnIcon = "◀"
+        }
       }
     }
   },
@@ -62,6 +77,7 @@ export default {
     $route() {
       this.pjCode = this.$route.params.pjCode;
     },
+
   }
 }
 </script>

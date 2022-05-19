@@ -2,8 +2,12 @@
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
   <Opacity></Opacity>
-  <SideBar v-bind:class="{'SideBar':true}"></SideBar>
-  <MainBar v-bind:class="{'MainBar':true}"></MainBar>
+  <SideBar 
+  v-bind:class="{'SideBar':true}"
+  :sideBarStatus = "sideBarStatus">
+  </SideBar>
+  
+  <MainBar v-bind:class="{'MainBar':true}" v-if="mainBar == true"></MainBar>
   <router-view></router-view>
 </template>
 
@@ -24,8 +28,7 @@ export default {
   },
   data(){
     return{
-      mainBar:true,
-      sideBar:false
+      sideBarStatus:'sideBarStatus',
     }
   },
   methods : {
@@ -47,8 +50,14 @@ export default {
   },
   watch:{
     $route(){
-      if(this.$route.fullPath=='/' || this.$route.fullPath=='createNewPj') this.mainBar = true
-      else this.mainBar=false
+      if(this.$route.fullPath=='/' || this.$route.fullPath=='createNewPj') {
+        this.mainBar = false;
+        this.sideBarStatus = 'Main';
+      }
+      else {
+        this.sideBarStatus = 'Another';
+        this.mainBar = true
+      }
     }
   }
 }
@@ -109,7 +118,7 @@ body{
   top: 0px;
   width: 100vw;
   height: 100vh;
-  z-index: 4;
+  z-index: 99;
 }
 
 .RouterModalView {
@@ -151,10 +160,12 @@ body{
 
 .mainRouterViewLeft {
   position: fixed;
-  left: 0px;
-  width: calc(100vw - 0px);
+  left: 20px;
+  width: calc(100vw - 20px);
   height: 100vh;
-  
+}
+
+.mainRouterMoveLeft {
   animation-name: routerLeftMain; 
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
@@ -165,13 +176,20 @@ body{
   left: 300px;
   width: calc(100vw - 300px);
   height: 100vh;
-  
+}
+
+.mainRouterMoveRight {
   animation-name: routerRightMain; 
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
 }
 
 .SideBar {
+  position: absolute;
+}
+
+.SideBarMain {
+  left: -120px;
   position: absolute;
 }
 

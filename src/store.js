@@ -69,6 +69,22 @@ const store = createStore({
             state.sideBarMove = "RouterMoveLeft";
             state.sideBarFixed = "RouterViewLeft";
         },
+        
+        //메인화면에서의 사이드바 열기, 닫기
+        sideMenuOnMain(state) {
+            state.sideAnimationState = true;
+            state.sideBar = true;
+            state.sideBarState = "sideBarOnMain";
+            state.sideBarMove = "mainRouterMoveRight";
+            state.sideBarFixed = "mainRouterViewRight";
+        },
+        sideMenuOffMain(state) {
+            state.sideAnimationState = true;
+            state.sideBar = false;
+            state.sideBarState = "sideBarOffMain";
+            state.sideBarMove = "mainRouterMoveLeft";
+            state.sideBarFixed = "mainRouterViewLeft";
+        },
 
         sideAnimationFixed(state) {
             console.log(state.sideAnimationState);
