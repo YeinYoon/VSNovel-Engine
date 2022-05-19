@@ -1,6 +1,9 @@
 <template>
 <div v-if="iModalState">
 
+    <div class="Fmodal_opacity">
+    </div>
+
   <div v-bind:class="{[`Imodal_frame`]:true}">
     <div class="InputModalTitle"><p>{{msg}}</p></div>
 
@@ -87,6 +90,19 @@ export default {
 
 <style>
 
+.Imodal_opacity{
+  background: black;
+  width: calc(100vw + 120px);
+  height: 100vh;
+  opacity: 0;
+  z-index: 4;
+  position: fixed;
+  animation-duration: 0.3s;
+  animation-name: backgrounding_on;
+  animation-fill-mode: forwards;
+  left: -120px;
+}
+
 .Imodal_frame{
   position: fixed;
   top: 50%;
@@ -99,6 +115,7 @@ export default {
   animation-duration: 0.7s;
   animation-name: Iopening;
   opacity: 1;
+  z-index: 100;
 }
 
 .Imodal_inner{
@@ -148,6 +165,7 @@ export default {
   top: 82%;
   left: 35%;
   transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 .Imodal_cancel_button{
   width: 25%;
@@ -160,6 +178,7 @@ export default {
   top: 82%;
   left: 65%;
   transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 .Imodal_save_ok{
   display: table-cell;

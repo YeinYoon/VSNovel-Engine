@@ -1,5 +1,7 @@
 <template>
 <div v-if="gModalState">
+    <div class="modal_opacity">
+    </div>
   <!-- 모달창이 나올떄 뒷 배경을 흐리게 만드는 녀석
   이걸 안쓰고 싶을땐 단순히 modal_opacity만을 주석처리하면 된다.-->
   <!-- 모달창의 크기를 결정하는 modal_frame-->
@@ -17,6 +19,19 @@
 </div>
 </template>
 <style>
+.modal_opacity{
+  background: black;
+  width: calc(100vw + 120px);
+  height: 100vh;
+  opacity: 0;
+  z-index: 4;
+  position: fixed;
+  animation-duration: 0.3s;
+  animation-name: backgrounding_on;
+  animation-fill-mode: forwards;
+  left: -120px;
+}
+
 .Gmodal_frame_normal{
   position: fixed;
   top: 50%;

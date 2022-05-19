@@ -2,7 +2,8 @@
 <div v-if="cModalState">
   <!-- 모달창이 나올떄 뒷 배경을 흐리게 만드는 녀석
   이걸 안쓰고 싶을땐 단순히 modal_opacity만을 주석처리하면 된다.-->
-  
+      <div class="Cmodal_opacity">
+    </div>
   <!-- 모달창의 크기를 결정하는 modal_frame,
   모달창의 크기 또한 파라미터로 받아서 나오게 할수도 있겠다. 쓰는사람 마음대로-->
   <div v-bind:class="{[`Cmodal_frame_${this.cModalSize}`]:true}">
@@ -66,6 +67,19 @@ export default {
 </script>
 
 <style>
+.Cmodal_opacity{
+  background: black;
+  width: calc(100vw + 120px);
+  height: 100vh;
+  opacity: 0;
+  z-index: 4;
+  position: fixed;
+  animation-duration: 0.3s;
+  animation-name: backgrounding_on;
+  animation-fill-mode: forwards;
+  left: -120px;
+}
+
 .Cmodal_frame_normal{
   position: fixed;
   top: 50%;

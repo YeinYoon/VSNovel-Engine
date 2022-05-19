@@ -18,10 +18,12 @@
     메인화면 사이드
   </div>
 
-  <div class="sideBarButton" @click="sideBarClick()">
-    <span>{{btnIcon}}</span>
-  </div>
+
 </div>
+
+  <div v-bind:class="{[`${this.sideButtonCondition}`]:true}" @click="sideBarClick()">
+    <span class="sideBarButtonSpan">{{btnIcon}}</span>
+  </div>
 </template>
 
 <script>
@@ -34,7 +36,8 @@ export default {
     return {
       pjCode  : null,
       btnIcon : "▶",//▶◀
-      condition : "sideBarOffMain"
+      condition : "sideBarOffMain",
+      sideButtonCondition : "sideBarButtonOff"
     }
   },
   components : {
@@ -51,9 +54,11 @@ export default {
       if(this.side) {
         this.btnIcon = "▶"
         this.$emit("cngSide",!this.side)
+        this.sideButtonCondition = "sideBarButtonOff"
       } else {
         this.btnIcon = "◀"
         this.$emit("cngSide",!this.side)
+        this.sideButtonCondition = "sideBarButtonOn"
       }
     }
   },
@@ -66,12 +71,14 @@ export default {
       this.condition = ((this.side)?"sideBarOn":"sideBarOff")
       if(this.main){
         this.condition+="Main"
+        this.sideButtonCondition+="Main"
       }
     },
     main(){
       this.condition = ((this.side)?"sideBarOn":"sideBarOff")
       if(this.main){
         this.condition+="Main"
+        this.sideButtonCondition+="Main"
       }
     }
   }
@@ -87,6 +94,7 @@ export default {
   animation-name: sideBarMainOn;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
+  position: fixed;
 }
 
 .sideBarOffMain {
@@ -97,33 +105,36 @@ export default {
   animation-name: sideBarMainOff;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
+  position: fixed;
 }
 
 .sideBarOn {
   display:table;
   background:#2c2c2c;
-  width: 300px;
+  width: 295px;
   height: 100vh;
-  overflow: auto;
+  /* overflow: auto; */
   animation-name: sideBarOn;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
+  position: absolute;
 }
+
 .sideBarOff {
   display:table;
   background:#2c2c2c;
-  width: 300px;
+  width: 295px;
   height: 100vh;
   animation-name: sideBarOff;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
+  position: absolute;
 }
 
 
-.sideBarButton {
+.sideBarButtonOn {
   position: absolute;
   top: 50%;
-  left: 100%;
   transform: translate(-50%, -50%);
   width: 25px;
   height: 120px;
@@ -131,8 +142,61 @@ export default {
   background: #5e5e5e;
   border-radius: 10px;
   cursor: pointer;
+  z-index: 3;
+  animation-name: sideBarButtonOn;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
 }
-.sideBarButton span{
+
+.sideBarButtonOff {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: 120px;
+  color: white;
+  background: #5e5e5e;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 3;
+  animation-name: sideBarButtonOff;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.sideBarButtonOnMain {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: 120px;
+  color: white;
+  background: #5e5e5e;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 3;
+  animation-name: sideBarButtonOnMain;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.sideBarButtonOffMain {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: 120px;
+  color: white;
+  background: #5e5e5e;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 3;
+  animation-name: sideBarButtonOffMain;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.sideBarButtonSpan{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -142,7 +206,7 @@ export default {
 
 @keyframes sideBarOn {
   from {
-      left: -150px;
+      left: -165px;
   }
   to {
       left: 120px;
@@ -174,5 +238,45 @@ export default {
   to {
       left: -280px;
   }
+}
+
+@keyframes sideBarButtonOn {
+  from {
+    left: 130px;
+  }
+  to {
+    left: 415px;
+  }
+  
+}
+
+@keyframes sideBarButtonOff {
+  from {
+    left: 415px;
+  }
+  to {
+    left: 130px;
+  }
+  
+}
+
+@keyframes sideBarButtonOnMain {
+  from {
+    left: 20px;
+  }
+  to {
+    left: 300px;
+  }
+  
+}
+
+@keyframes sideBarButtonOffMain {
+  from {
+    left: 300px;
+  }
+  to {
+    left: 20px;
+  }
+  
 }
 </style>

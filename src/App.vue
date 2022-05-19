@@ -101,7 +101,7 @@ body{
   left: 0px;
   overflow: auto;
   top: 0px;
-  z-index: 1;
+  z-index: 3;
 }
 
 .RouterView {
@@ -184,34 +184,32 @@ body{
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
 }
-
+/* 
 .SideBar {
-  position:fixed;
-  z-index: 4;
-}
+} */
 
 
 @keyframes routerRight {
   from {
-    left: 135px;
-    width: calc(100vw - 135px);
+    left: 130px;
+    width: calc(100vw - 130px);
   }
 
   to {
-    left: 420px;
-    width: calc(100vw - 420px);
+    left: 415px;
+    width: calc(100vw - 415px);
   }
 }
 
 @keyframes routerLeft {
   from {
-    left: 420px;
-    width: calc(100vw - 420px);
+    left: 415px;
+    width: calc(100vw - 415px);
   }
 
   to {
-    left: 135px;
-    width: calc(100vw - 135px);
+    left: 130px;
+    width: calc(100vw - 130px);
   }
 }
 @keyframes routerRightMain {
