@@ -1,5 +1,5 @@
 <template>
-<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
+<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
     <edit-pj-info v-if="isEditPj" :isEditPj="isEditPj" @pjEdit="pjEdit"></edit-pj-info>
     <invite-pj v-if="isInvitePj" :isInvitePj="isInvitePj" @pjInvite="pjInvite"></invite-pj>
     <div class="DevPageTemp">
@@ -16,11 +16,6 @@
             <VEngineInner  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
             ></VEngineInner>
         </div>
-
-        <div class="editRouter"> <!--프로젝트 정보 수정, 팀 초대-->
-            <router-view></router-view>
-        </div>
-        
     </div>
 </div>
 </template>

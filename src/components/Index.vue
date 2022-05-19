@@ -1,7 +1,7 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
-<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
-  
+<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
+
   <!-- <div>
     <input multiple ref="img" type="file" @change="onInputImage()">
     <button @click="upload()">업로드</button>

@@ -1,12 +1,26 @@
 <template>
   <div class="VSBackgroundSet">
-    설정
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'V_side_setting',
+    name : "V_side_setting",
+    created() {
+
+    },
+    data() {
+        return {
+
+        }
+    },
+    props:{
+
+    },
+    methods : {
+
+    }
 }
 </script>
 
