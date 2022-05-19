@@ -1,7 +1,5 @@
 <template>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
-    <edit-pj-info v-if="isEditPj" :isEditPj="isEditPj" @pjEdit="pjEdit"></edit-pj-info>
-    <invite-pj v-if="isInvitePj" :isInvitePj="isInvitePj" @pjInvite="pjInvite"></invite-pj>
     <div class="DevPageTemp">
         <!-- <div>
             Project [ {{title}} ]
@@ -13,7 +11,7 @@
             <button @click="save()">저장</button>
         </div> -->
         <div>
-            <VEngineInner  :isEditPj="isEditPj" :isInvitePj="isInvitePj" @pjEdit="pjEdit" @pjInvite="pjInvite"
+            <VEngineInner
             ></VEngineInner>
         </div>
     </div>
@@ -22,10 +20,7 @@
 
 <script>
 import axios from '../../../axios';
-
 import VEngineInner from './V_EngineInner.vue';
-import EditPjInfo from './EditPjInfo.vue'
-import InvitePj from './InvitePj.vue'
 export default {
     name : "devPage",
     created() {
@@ -51,11 +46,6 @@ export default {
         return {
             pjType : "",
             pjCode : "",
-            title : "",
-            retouchDate : "",
-            status : "",
-            isInvitePj: false,
-            isEditPj: false,
             condition: "RouterViewLeft"
         }
     },
@@ -88,19 +78,9 @@ export default {
                 }
             })
         },
-        pjEdit: function(bool){
-            if(!bool)this.getPjInfo()
-            console.log('hi')
-            this.isEditPj=bool
-        },
-        pjInvite: function(bool){
-            this.isInvitePj=bool
-        }
     },
     components : {
         VEngineInner,
-        EditPjInfo,
-        InvitePj
     }
 }
 </script>

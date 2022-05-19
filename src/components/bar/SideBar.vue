@@ -19,7 +19,7 @@
   </div>
 
   <div class="sideBarButton" @click="sideBarClick()">
-    <span>{{btnIcon}}</span>
+    <div class="sideBarBar"></div>
   </div>
 </div>
 </template>
@@ -33,7 +33,6 @@ export default {
   data() {
     return {
       pjCode  : null,
-      btnIcon : "▶",//▶◀
     }
   },
   components : {
@@ -49,35 +48,40 @@ export default {
   methods : {
     sideBarClick() {
       if(this.$store.state.sideBar == false) {
+
         if(this.sideBarStatus == 'Main') {
+          console.log("Main 사이드 On")
           this.$store.commit('sideMenuOnMain');
           this.$store.commit('sideAnimationFixed');
-          this.btnIcon = "▶"
         }
         else {
           this.$store.commit('sideMenuOn');
           this.$store.commit('sideAnimationFixed');
-          this.btnIcon = "▶"
         }
+
       } else {
+
         if(this.sideBarStatus == 'Main') {
+          console.log("Main 사이드 Off")
           this.$store.commit('sideMenuOffMain');
           this.$store.commit('sideAnimationFixed');
-          this.btnIcon = "▶"
         }
         else {
-        this.$store.commit('sideMenuOff');
-        this.$store.commit('sideAnimationFixed');
-        this.btnIcon = "◀"
+          this.$store.commit('sideMenuOff');
+          this.$store.commit('sideAnimationFixed');
         }
+
       }
-    }
+    },
   },
   watch:{
     $route() {
       this.pjCode = this.$route.params.pjCode;
     },
-
+    sideBarStatus(cng, pre) {
+      console.log(pre, "->", cng);
+      // this.sideBarClick();
+    }
   }
 }
 </script>
@@ -89,7 +93,7 @@ export default {
   width: 300px;
   height: 100vh;
   animation-name: sideBarMainOn;
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
   animation-fill-mode: forwards;
 }
 
@@ -99,7 +103,7 @@ export default {
   width: 300px;
   height: 100vh;
   animation-name: sideBarMainOff;
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
   animation-fill-mode: forwards;
 }
 
@@ -110,7 +114,7 @@ export default {
   height: 100vh;
   /* overflow: auto; */
   animation-name: sideBarOn;
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
   animation-fill-mode: forwards;
 }
 
@@ -120,7 +124,7 @@ export default {
   width: 295px;
   height: 100vh;
   animation-name: sideBarOff;
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
   animation-fill-mode: forwards;
 }
 
@@ -130,7 +134,7 @@ export default {
   left: 100%;
   transform: translate(-50%, -50%);
   width: 25px;
-  height: 120px;
+  height: 100px;
   color: white;
   background: #5e5e5e;
   border-radius: 10px;
@@ -143,6 +147,17 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.sideBarBar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 50%;
+  background: rgb(166, 166, 166);
+  border-radius: 5px;
 }
 
 

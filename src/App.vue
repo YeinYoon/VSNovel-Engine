@@ -1,10 +1,10 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
-  <Opacity></Opacity>
+  <!-- <Opacity></Opacity> -->
   <SideBar 
   v-bind:class="{'SideBar':true}"
-  :sideBarStatus = "sideBarStatus">
+  :sideBarStatus="sideBarStatus">
   </SideBar>
   
   <MainBar v-bind:class="{'MainBar':true}" v-if="mainBar == true"></MainBar>
@@ -20,6 +20,9 @@ import SideBar from './components/bar/SideBar.vue'
 
 export default {
   name: 'App',
+  created() {
+    this.$store.commit('sideMenuOffMain');
+  },
   components: {
     Spinner,
     GlobalModal,
@@ -28,7 +31,8 @@ export default {
   },
   data(){
     return{
-      sideBarStatus:'sideBarStatus',
+      sideBarStatus:'Main',
+      mainBar : false
     }
   },
   methods : {
@@ -52,11 +56,13 @@ export default {
     $route(){
       if(this.$route.fullPath=='/' || this.$route.fullPath=='createNewPj') {
         this.mainBar = false;
+        this.$store.commit('sideMenuOffMain');
         this.sideBarStatus = 'Main';
-      }
-      else {
+      } else {
+        console.log("Main이 아닌곳에 진입함");
         this.sideBarStatus = 'Another';
-        this.mainBar = true
+        this.$store.commit('sideMenuOff');
+        this.mainBar = true;
       }
     }
   }
@@ -133,13 +139,13 @@ body{
 
 .RouterMoveLeft {
   animation-name: routerLeft; 
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
   animation-fill-mode: forwards;
 }
 
 .RouterMoveRight {
   animation-name: routerRight; 
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
   animation-fill-mode: forwards;
 }
 
@@ -167,7 +173,7 @@ body{
 
 .mainRouterMoveLeft {
   animation-name: routerLeftMain; 
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
   animation-fill-mode: forwards;
 }
 
@@ -180,7 +186,7 @@ body{
 
 .mainRouterMoveRight {
   animation-name: routerRightMain; 
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
   animation-fill-mode: forwards;
 }
 

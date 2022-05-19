@@ -3,7 +3,7 @@
   <div v-bind:class="{'mainmenu':true}">
     <div v-bind:class="{'menus':true}">
 
-      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'R')">
+      <div v-bind:class="{'menubox':true}" @click="openMenu('R')">
         <img class="menubox_icon_resource" src="../../assets/icons/white/folder.png">
       </div>
       <br>
@@ -21,11 +21,11 @@
       </div>
       <br> -->
 
-      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'C')">
+      <div v-bind:class="{'menubox':true}" @click="openMenu('C')">
         <img class="menubox_icon_cooperation" src="../../assets/icons/white/handshake.png">
       </div>
       <br>
-      <div v-bind:class="{'menubox':true}" @click="this.$store.commit('cngSideMenu', 'S')">
+      <div v-bind:class="{'menubox':true}" @click="openMenu('S')">
         <img class="menubox_icon_setting" src="../../assets/icons/white/gear.png">
       </div>
       <br>
@@ -43,6 +43,22 @@
     props:{
       main:Boolean
     },
+    methods : {
+      openMenu(val) {
+        this.$store.commit('sideMenuOn');
+        switch(val) {
+          case 'R' :
+            this.$store.commit('cngSideMenu', 'R');
+            break;
+          case 'C' :
+            this.$store.commit('cngSideMenu', 'C');
+            break;
+          case 'S' :
+            this.$store.commit('cngSideMenu', 'S');
+            break;
+        }
+      }
+    }
   }
 </script>
 
@@ -57,7 +73,7 @@
   text-align: center;
   overflow:auto;
   animation-name: menuOn;
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
 }
 .menus{
   display:table-cell;

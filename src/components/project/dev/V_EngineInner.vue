@@ -1,6 +1,4 @@
 <template>
-  <button @click="goToEditPjInfo()">정보 수정</button
-  ><button @click="goToInvitePj()">유저 초대</button>
   <div class="Venginebackground">
     <div class="VEngineCanvas">
       <EngineCanvas :plot="plot" :index="index" :scenario="scenario" @getCloudJSON="getCloudJSON"/>
@@ -49,10 +47,6 @@ export default {
   components: {
     EngineCanvas,
   },
-  props: {
-    isEditPj: Boolean,
-    isInvitePj: Boolean,
-  },
   created() {
     this.pjCode = this.$route.params.pjCode;
     this.getJson(this.pjCode);
@@ -97,13 +91,6 @@ export default {
       console.log(plot, index);
       this.plot = plot;
       this.index = index;
-    },
-    goToEditPjInfo: function () {
-      this.$emit("pjEdit", true);
-    },
-
-    goToInvitePj: function () {
-      this.$emit("pjInvite", true);
     },
     addPage(plot){
       console.log(plot+this.scenario.시작)

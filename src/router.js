@@ -9,7 +9,6 @@ import Login from './components/auth/Login.vue';
 // 프로젝트
 import createNewPj from './components/project/createPj/CreateNewPj.vue';
 import DevPage from './components/project/dev/DevPage.vue';
-import invitePj from './components/project/dev/InvitePj.vue';
 
 const routes = [
   {
@@ -23,12 +22,6 @@ const routes = [
   {
     path : "/createNewPj",
     component : createNewPj,
-    children : [
-      {
-        path : "invitePj",
-        component : invitePj
-      }
-    ],
     props:true
   },
   {
