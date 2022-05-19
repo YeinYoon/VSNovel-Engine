@@ -18,12 +18,10 @@
     메인화면 사이드
   </div>
 
-
-</div>
-
   <div class="sideBarButton" @click="sideBarClick()">
     <span>{{btnIcon}}</span>
   </div>
+</div>
 </template>
 
 <script>
@@ -75,7 +73,6 @@ export default {
   animation-name: sideBarMainOn;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
-  position: fixed;
 }
 
 .sideBarOffMain {
@@ -86,7 +83,6 @@ export default {
   animation-name: sideBarMainOff;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
-  position: fixed;
 }
 
 .sideBarOn {
@@ -98,7 +94,6 @@ export default {
   animation-name: sideBarOn;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
-  position: absolute;
 }
 
 .sideBarOff {
@@ -109,7 +104,6 @@ export default {
   animation-name: sideBarOff;
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
-  position: absolute;
 }
 
 .sideBarButton {
@@ -125,13 +119,13 @@ export default {
   cursor: pointer;
   z-index: 99;
 }
+
 .sideBarButton span{
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 
 
 @keyframes sideBarOn {

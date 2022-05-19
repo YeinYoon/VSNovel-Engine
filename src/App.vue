@@ -1,8 +1,8 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
-
-  <SideBar></SideBar>
+  <Opacity></Opacity>
+  <SideBar v-bind:class="{'SideBar':true}"></SideBar>
   <MainBar v-bind:class="{'MainBar':true}"></MainBar>
   <router-view></router-view>
 </template>
@@ -177,9 +177,11 @@ body{
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
 }
-/* 
+
 .SideBar {
-} */
+  position: fixed;
+  z-index: 3;
+}
 
 
 @keyframes routerRight {

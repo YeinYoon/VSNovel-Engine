@@ -1,6 +1,9 @@
 <template>
 <div v-if="FMModalState">
 
+    <div class="modal_opacity">
+    </div>
+
   <div v-bind:class="{[`FMmodal_frame`]:true}">
     <div class="FMnputModalTitle"><p>{{msg}}</p></div>
 

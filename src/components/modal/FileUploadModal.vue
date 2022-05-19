@@ -1,7 +1,7 @@
 <template>
 <div v-if="fModalState">
 
-    <div class="Fmodal_opacity">
+    <div class="modal_opacity">
     </div>
 
   <div v-bind:class="{[`Fmodal_frame`]:true}">
@@ -162,19 +162,6 @@ export default {
 </script>
 
 <style>
-
-.Fmodal_opacity{
-  background: black;
-  width: calc(100vw + 120px);
-  height: 100vh;
-  opacity: 0;
-  z-index: 4;
-  position: fixed;
-  animation-duration: 0.3s;
-  animation-name: backgrounding_on;
-  animation-fill-mode: forwards;
-  left: -120px;
-}
 
 .Fmodal_frame{
   position: fixed;
