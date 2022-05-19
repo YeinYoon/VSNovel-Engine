@@ -19,7 +19,8 @@ const store = createStore({
             sideBarState : "sideBarOff", // On, Off Class
             sideBarButtonState : "sideBarButtonOff", // On, Off Class
             sideBarFixed : "RouterViewLeft", // 사이드바 고정 Class
-            sideBarMove : "RouterMoveLeft",// move 애니메이션 Class
+            sideBarMove : "RouterMoveLeft",// move 애니메이션 Class,
+            sideAnimationState : true,
 
             sideMenuState : "M" //R : 리소스, C : 협업, S : 설정, M : 메인
         }
@@ -55,19 +56,29 @@ const store = createStore({
 
         //사이드바 열기, 닫기
         sideMenuOn(state) {
+            state.sideAnimationState = true;
             state.sideBar = true;
             state.sideBarState = "sideBarOn";
             state.sideBarMove = "RouterMoveRight";
             state.sideBarFixed = "RouterViewRight";
         },
         sideMenuOff(state) {
+            state.sideAnimationState = true;
             state.sideBar = false;
             state.sideBarState = "sideBarOff";
             state.sideBarMove = "RouterMoveLeft";
             state.sideBarFixed = "RouterViewLeft";
         },
 
-
+        sideAnimationFixed(state) {
+            console.log(state.sideAnimationState);
+            state.sideAnimationState = true;
+            setTimeout(function() {
+                state.sideAnimationState = !state.sideAnimationState;
+                console.log(state.sideAnimationState);
+                return true
+            }, 700);
+        },
     },
 })
 

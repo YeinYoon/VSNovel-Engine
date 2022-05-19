@@ -94,7 +94,6 @@ body{
   left: 0px;
   overflow: auto;
   top: 0px;
-  z-index: 3;
 }
 
 .RouterView {
@@ -123,7 +122,7 @@ body{
   z-index: 99;
 }
 
-/* .RouterMoveLeft {
+.RouterMoveLeft {
   animation-name: routerLeft; 
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
@@ -133,29 +132,23 @@ body{
   animation-name: routerRight; 
   animation-duration: 0.7s;
   animation-fill-mode: forwards;
-} */
+}
 
 .RouterViewLeft {
   position: fixed;
-  left: 135px;
-  width: calc(100vw - 135px);
+  left: 130px;
+  width: calc(100vw - 130px);
   height: 100vh;
-  
-  animation-name: routerLeft; 
-  animation-duration: 0.7s;
-  animation-fill-mode: forwards;
 }
 
 .RouterViewRight {
   position: fixed;
-  left: 400px;
-  width: calc(100vw - 400px);
+  left: 415px;
+  width: calc(100vw - 415px);
   height: 100vh;
-  
-  animation-name: routerRight; 
-  animation-duration: 0.7s;
-  animation-fill-mode: forwards;
 }
+
+
 .mainRouterViewLeft {
   position: fixed;
   left: 0px;
@@ -179,8 +172,7 @@ body{
 }
 
 .SideBar {
-  position: fixed;
-  z-index: 3;
+  position: absolute;
 }
 
 

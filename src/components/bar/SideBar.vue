@@ -49,9 +49,11 @@ export default {
     sideBarClick() {
       if(this.$store.state.sideBar == false) {
         this.$store.commit('sideMenuOn');
+        this.$store.commit('sideAnimationFixed');
         this.btnIcon = "▶"
       } else {
         this.$store.commit('sideMenuOff');
+        this.$store.commit('sideAnimationFixed');
         this.btnIcon = "◀"
       }
     }

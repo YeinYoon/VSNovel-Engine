@@ -24,7 +24,7 @@
   width: calc(100vw + 120px);
   height: 100vh;
   opacity: 0;
-  z-index: 4;
+  z-index: 5;
   position: fixed;
   animation-duration: 0.3s;
   animation-name: backgrounding_on;
@@ -112,6 +112,15 @@
   to {
     top:50%;
     opacity: 1;
+  }
+}
+
+@keyframes backgrounding_on {
+  from {
+  }
+
+  to {
+    opacity: 0.3;
   }
 }
 
