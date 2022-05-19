@@ -1,19 +1,16 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
-<Opacity :opacityState="$store.state.opacityState"></Opacity>
-
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
 
-  <SideBar v-bind:class="{'SideBar':true}" :main="mainBar" :side="sideBar" @cngSide="cngSide"></SideBar>
-  <MainBar v-bind:class="{'MainBar':true}" :main="mainBar" :side="sideBar"></MainBar>
-  <router-view :main="mainBar" :side="sideBar"></router-view>
+  <SideBar></SideBar>
+  <MainBar v-bind:class="{'MainBar':true}"></MainBar>
+  <router-view></router-view>
 </template>
 
 <script>
 import axios from './axios'
 import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
-import Opacity from './components/modal/Opacity.vue'
 import MainBar from './components/bar/MainBar.vue'
 import SideBar from './components/bar/SideBar.vue'
 
@@ -22,7 +19,6 @@ export default {
   components: {
     Spinner,
     GlobalModal,
-    Opacity,
     MainBar,
     SideBar,
   },
@@ -48,9 +44,6 @@ export default {
         console.error(err);
       })
     },
-    cngSide(value){
-      this.sideBar=value
-    }
   },
   watch:{
     $route(){

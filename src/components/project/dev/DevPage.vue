@@ -1,5 +1,5 @@
 <template>
-<div :class="{ [`${this.condition}`]:true}">
+<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
     <edit-pj-info v-if="isEditPj" :isEditPj="isEditPj" @pjEdit="pjEdit"></edit-pj-info>
     <invite-pj v-if="isInvitePj" :isInvitePj="isInvitePj" @pjInvite="pjInvite"></invite-pj>
     <div class="DevPageTemp">

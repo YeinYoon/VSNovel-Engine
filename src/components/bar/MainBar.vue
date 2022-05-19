@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!main"> <!-- 스토어 조건문 달아주셈 -->
+<div v-if="!main"> <!-- 스토어 조건문 달아주셈 -->
   <div v-bind:class="{'mainmenu':true}">
     <div v-bind:class="{'menus':true}">
 
@@ -34,7 +34,7 @@
       </div>
     </div>
   </div>
-  </div>
+</div>
 </template>
 
 <script>

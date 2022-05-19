@@ -1,6 +1,6 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
-<div  :class="{[`${this.condition}`]:true}"><!--[`${this.$store.state.sideBarMove}`]:true--> 
+<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
   
   <!-- <div>
     <input multiple ref="img" type="file" @change="onInputImage()">

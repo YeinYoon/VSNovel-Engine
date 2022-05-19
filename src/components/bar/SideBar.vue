@@ -1,6 +1,6 @@
 <template>
 <!--사이드바가 sideBarButton에 의해 true로 열리면 sideBarOn 으로 변경, false 땐 sideBarOff로 변경-->
-<div v-bind:class="{[`${this.condition}`]:true}"> 
+<div v-bind:class="{[`${this.$store.state.sideBarState}`]:true}"> 
 
   <div v-if="this.$store.state.sideMenuState == 'C'">
     <VsideCoop :pjCode="pjCode"></VsideCoop>
@@ -21,8 +21,8 @@
 
 </div>
 
-  <div v-bind:class="{[`${this.sideButtonCondition}`]:true}" @click="sideBarClick()">
-    <span class="sideBarButtonSpan">{{btnIcon}}</span>
+  <div class="sideBarButton" @click="sideBarClick()">
+    <span>{{btnIcon}}</span>
   </div>
 </template>
 
@@ -36,8 +36,6 @@ export default {
     return {
       pjCode  : null,
       btnIcon : "▶",//▶◀
-      condition : "sideBarOffMain",
-      sideButtonCondition : "sideBarButtonOff"
     }
   },
   components : {
@@ -51,14 +49,12 @@ export default {
   },
   methods : {
     sideBarClick() {
-      if(this.side) {
+      if(this.$store.state.sideBar == false) {
+        this.$store.commit('sideMenuOn');
         this.btnIcon = "▶"
-        this.$emit("cngSide",!this.side)
-        this.sideButtonCondition = "sideBarButtonOff"
       } else {
+        this.$store.commit('sideMenuOff');
         this.btnIcon = "◀"
-        this.$emit("cngSide",!this.side)
-        this.sideButtonCondition = "sideBarButtonOn"
       }
     }
   },
@@ -66,21 +62,6 @@ export default {
     $route() {
       this.pjCode = this.$route.params.pjCode;
     },
-
-    side(){
-      this.condition = ((this.side)?"sideBarOn":"sideBarOff")
-      if(this.main){
-        this.condition+="Main"
-        this.sideButtonCondition+="Main"
-      }
-    },
-    main(){
-      this.condition = ((this.side)?"sideBarOn":"sideBarOff")
-      if(this.main){
-        this.condition+="Main"
-        this.sideButtonCondition+="Main"
-      }
-    }
   }
 }
 </script>
@@ -131,10 +112,10 @@ export default {
   position: absolute;
 }
 
-
-.sideBarButtonOn {
+.sideBarButton {
   position: absolute;
   top: 50%;
+  left: 100%;
   transform: translate(-50%, -50%);
   width: 25px;
   height: 120px;
@@ -142,66 +123,15 @@ export default {
   background: #5e5e5e;
   border-radius: 10px;
   cursor: pointer;
-  z-index: 3;
-  animation-name: sideBarButtonOn;
-  animation-duration: 0.7s;
-  animation-fill-mode: forwards;
+  z-index: 99;
 }
-
-.sideBarButtonOff {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 25px;
-  height: 120px;
-  color: white;
-  background: #5e5e5e;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 3;
-  animation-name: sideBarButtonOff;
-  animation-duration: 0.7s;
-  animation-fill-mode: forwards;
-}
-
-.sideBarButtonOnMain {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 25px;
-  height: 120px;
-  color: white;
-  background: #5e5e5e;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 3;
-  animation-name: sideBarButtonOnMain;
-  animation-duration: 0.7s;
-  animation-fill-mode: forwards;
-}
-
-.sideBarButtonOffMain {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 25px;
-  height: 120px;
-  color: white;
-  background: #5e5e5e;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 3;
-  animation-name: sideBarButtonOffMain;
-  animation-duration: 0.7s;
-  animation-fill-mode: forwards;
-}
-
-.sideBarButtonSpan{
+.sideBarButton span{
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 
 
 @keyframes sideBarOn {

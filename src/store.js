@@ -9,10 +9,6 @@ const store = createStore({
             //로딩
             LoadingStatus: false,
 
-            // 메뉴 선택
-            selectMenu : 7,
-            menuStyle : "_active",
-
             //전역(Global) 모달
             gModalState : false,
             gModalMsg : "",
@@ -21,6 +17,7 @@ const store = createStore({
             // 사이드바
             sideBar : false, // 사이드바 버튼 클릭시 상태체크
             sideBarState : "sideBarOff", // On, Off Class
+            sideBarButtonState : "sideBarButtonOff", // On, Off Class
             sideBarFixed : "RouterViewLeft", // 사이드바 고정 Class
             sideBarMove : "RouterMoveLeft",// move 애니메이션 Class
 
@@ -42,8 +39,8 @@ const store = createStore({
         },
 
         //메뉴 선택
-        cngMenu(state, val){
-            state.selectMenu = val;
+        cngSideMenu(state, val){
+            state.sideMenuState = val;
         },
 
         //전역 모달
@@ -70,9 +67,7 @@ const store = createStore({
             state.sideBarFixed = "RouterViewLeft";
         },
 
-        cngSideMenu(state, val) {
-            state.sideMenuState = val;
-        }
+
     },
 })
 
