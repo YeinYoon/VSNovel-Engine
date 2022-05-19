@@ -14,7 +14,7 @@
       </div>
     </div>
     
-
+    <div class="VSResList">
     <div class="VSFolderList" v-if="clickFolder == false">
 
       <div class="VSResourceSubTitle"><span>{{folderPath}}</span></div>
@@ -90,7 +90,7 @@
       </div> 
 
     </div> 
-
+  </div>
     <!-- 파일리스트는 리스트방식, 갤러리방식 두가지로 제공하고싶으니 파일 정보 불러올때 염두해주셈!! 미리 변수값이 있으면 좋겠음!! -->
 
   </div>
@@ -309,18 +309,24 @@ export default {
 .VSBackgroundRes {
   width: 100%;
   height: 100vh;
-  overflow: auto;
   color: white;
   position: relative;
+}
+
+.VSResList {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 80px);
+  top: 80px;
+  overflow: auto;
 }
 
 .VSResourceTool {
   width: 100%;
   height: 80px;
-  position: relative;
+  position: absolute;
   background: #474747;
   border-radius: 0px 0px 10px 10px;
-  overflow: hidden;
 }
 
 .VSResourceTitle {
@@ -341,7 +347,7 @@ export default {
 .VSResourceButtons {
   position: relative;
   width: 100%;
-  top: 35px;
+  top: 32px;
   height: 40px;
   padding: 7px;
   text-align: center;
