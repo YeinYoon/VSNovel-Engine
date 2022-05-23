@@ -202,8 +202,7 @@ export default {
         var file = new File([data], fileName, properties); //새로운 파일 객체 생성
         console.log(file);
 
-        var result = await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
-        console.log(result);
+        await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
         },
         async getJSON() {
           var result = await storage.getJson(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴

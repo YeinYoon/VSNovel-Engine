@@ -62,11 +62,13 @@ import ConfirmModal from '../../modal/ConfirmModal.vue'
 import axios from '../../../axios'
 export default {
   name: 'V_side_setting',
+  props : {
+    pjCode : String
+  },
   components : {
     ConfirmModal
   },
   created() {
-    this.pjCode = this.$route.params.pjCode;
     this.getPjInfo(this.pjCode);
   },
   data() {
@@ -75,7 +77,6 @@ export default {
       menu1 : false,
       menu2 : false,
 
-      pjCode : "",
       status : "",
       title : "",
       synopsis : "",
