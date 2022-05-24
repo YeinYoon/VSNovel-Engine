@@ -10,7 +10,7 @@
   </SideBar>
   
   <MainBar v-bind:class="{'MainBar':true}" v-if="mainBar == true"></MainBar>
-  <router-view></router-view>
+  <router-view :data="data"></router-view>
 </template>
 
 <script>

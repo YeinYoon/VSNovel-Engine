@@ -4,20 +4,20 @@
     <div class="modal_opacity">
     </div>
 
-  <div v-bind:class="{[`Imodal_frame`]:true}">
+  <div v-bind:class="{[`Tmodal_frame`]:true}">
     <div class="InputModalTitle"><p>{{msg}}</p></div>
-    <div class="Imodal_save_button" @click="inputType('bg')">
-      <span class="Imodal_save_ok">배경</span>
+    <div class="Tmodal_save_button" @click="inputType('bg')">
+      <span class="Tmodal_save_ok">배경</span>
     </div>
-    <div class="Imodal_save_button" @click="inputType('img')">
-      <span class="Imodal_save_ok">이미지</span>
+    <div class="Tmodal_save_button" @click="inputType('img')">
+      <span class="Tmodal_save_ok">이미지</span>
     </div>
-    <div class="Imodal_save_button" @click="inputType('bgm')">
-      <span class="Imodal_save_ok">배경음악</span>
+    <div class="Tmodal_save_button" @click="inputType('bgm')">
+      <span class="Tmodal_save_ok">배경음악</span>
     </div>
 
-    <div class="Imodal_cancel_button" @click="modalClose()">
-      <span class="Imodal_cancel_ok">닫기</span>
+    <div class="Tmodal_cancel_button" @click="modalClose()">
+      <span class="Tmodal_cancel_ok">닫기</span>
     </div>
 
   </div>
