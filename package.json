@@ -16,6 +16,7 @@
     "aws-sdk": "^2.1117.0",
     "axios": "^0.26.0",
     "core-js": "^3.6.5",
+    "howler": "^2.2.3",
     "html2pdf.js": "^0.10.1",
     "vue": "^3.0.0",
     "vue-contenteditable": "^3.0.4",
