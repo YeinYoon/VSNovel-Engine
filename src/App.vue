@@ -4,11 +4,13 @@
   <!-- <Opacity></Opacity> -->
   <SideBar 
   v-bind:class="{'SideBar':true}"
-  :sideBarStatus="sideBarStatus">
+  :sideBarStatus="sideBarStatus"
+  @send="send"
+  >
   </SideBar>
   
   <MainBar v-bind:class="{'MainBar':true}" v-if="mainBar == true"></MainBar>
-  <router-view></router-view>
+  <router-view :data="data"></router-view>
 </template>
 
 <script>
@@ -32,7 +34,8 @@ export default {
   data(){
     return{
       sideBarStatus:'Main',
-      mainBar : false
+      mainBar : false,
+      data:null
     }
   },
   methods : {
@@ -51,6 +54,9 @@ export default {
         console.error(err);
       })
     },
+    send(data){
+      this.data=data
+    }
   },
   watch:{
     $route(){

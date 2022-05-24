@@ -304,6 +304,13 @@ export default {
         plot: function(newPlot){
           this.position.plot=newPlot
           this.loadData()
+        },
+        scenario:{
+          deep:true,
+          handler(){
+          console.log("change DATA")
+          this.loadData()
+          }
         }
     },
 }

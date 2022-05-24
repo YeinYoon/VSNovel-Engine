@@ -7,7 +7,7 @@
   </div>
 
   <div v-else-if="this.$store.state.sideMenuState == 'R'">
-    <VsideResource :pjCode="pjCode"></VsideResource>
+    <VsideResource :pjCode="pjCode" @send="send"></VsideResource>
   </div>
 
   <div v-else-if="this.$store.state.sideMenuState == 'S'">
@@ -73,6 +73,10 @@ export default {
 
       }
     },
+    send(data){
+      this.$emit('send',data)
+      console.log(data)
+    }
   },
   watch:{
     $route() {
