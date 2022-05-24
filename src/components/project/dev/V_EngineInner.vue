@@ -37,8 +37,8 @@
 
         <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
           <div class="VpcToolPosition">
-            <button>플롯추가</button>
-            <button>엔딩추가</button>
+            <button>플롯 추가</button>
+            <button>엔딩 추가</button>
           </div>
 
         </div> <!-- 플롯 추가등의 버튼 -->
@@ -63,35 +63,58 @@
               <!-- 일반 페이지는 단순 대화를 담고있음. -->
               <!-- 일반 페이지는 다음 페이지로의 이동만 함. (플롯간 이동X) -->
               <div class="VpcPageNormal">
-                123123
+                <span>123123</span>
               </div>
 
               <div class="VpcPageNormal">
-                123123
+                <span>123123</span>
               </div>
 
               <div class="VpcPageNormal">
-                112313213213
+                <span>112313213213</span>
               </div>
 
               <!-- 선택자 페이지 -->
               <!-- 플레이어가 선택하면, 다른 플롯으로의 이동이 발생함 -->
               <!-- 페이지에 선택지를 추가한 갯수만큼 반복문을 돌릴것. -->
               <div class="VpcPageSelect">
-                <div class="VpcPageSel">
-                  <div class="VpcPageSel">선택지1</div>
-                  <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
 
+                <div class="VpcPageSels">
+                  <div class="VpcPageSelTitle">선택지1</div>
+                  <div class="VpcPageSelectPath">
+                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
+                      <select disabled>
+                        <option>1</option> <!-- 이 플롯의 고유번호 -->
+                      </select>
+                    </div>
+                    <div class="VpcPageSelectArrow">></div>
+                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
+                      <select>
+                      </select>
+                    </div>
                   </div>
-                  <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
+                </div>
 
+                <div class="VpcPageSels">
+                  <div class="VpcPageSelTitle">선택지1</div>
+                  <div class="VpcPageSelectPath">
+                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
+                      <select disabled>
+                        <option>1</option> <!-- 이 플롯의 고유번호 -->
+                      </select>
+                    </div>
+                    <div class="VpcPageSelectArrow">></div>
+                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
+                      <select>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
               </div>
 
               <div class="VpcBlockControl">
-                <button>선택지 추가</button>
+                <button>플롯 삭제</button>
                 <button>페이지 추가</button>
               </div>
             </div><!-- 플롯 블록 이너 끝 -->
@@ -111,13 +134,29 @@
             </div>
             <div class="VpcBlockInner">
               <div class="VpcPageNormal">
-                엄준식
+                <span>엄준식</span>
               </div>
 
               <div class="VpcPageNormal">
-                엄 어엄 엄
+                <span>엄 어엄 엄</span>
               </div>
 
+              <div class="VpcPageNormal">
+                <span>고마웠어 엄준식</span>
+              </div>
+
+              <div class="VpcPageNormal">
+                <span>엔딩1 - 굿바이 엄준식</span>
+              </div>
+
+              <div class="VpcPageEnd">
+                <span>읽기종료</span>
+              </div>
+
+              <div class="VpcBlockControl">
+                <button>엔딩 삭제</button>
+                <button>페이지 추가</button>
+              </div>
             </div>
           </div>
 
@@ -253,6 +292,11 @@ export default {
   border: none;
   padding: 5px;
   margin: 2px;
+  transition: all ease 0.2s;
+}
+
+.VpcToolPosition button:hover{
+  background: #0084ff;
 }
 
 .VpcTool_addplot p {
@@ -331,28 +375,107 @@ export default {
   border-radius: 5px;
   padding: 5px;
   margin-bottom: 5px;
+  transition: all ease 0.2s;
 }
 
 .VpcPageNormal:hover {
-  background: #858585;
+  background: #818181;
   cursor: pointer;
 }
 
 .VpcPageSelect {
   width: 100%;
-  background: rgb(161, 161, 161);
+  background: #949494;
+  border-radius: 5px;
+  padding: 3px;
+  margin-bottom: 5px;
+  transition: all ease 0.2s;
+}
+
+.VpcPageSelect:hover {
+  background: #818181;
+  cursor: pointer;
+}
+
+.VpcPageSels {
+  width: 100%;
+  border-radius: 5px;
+  padding: 2px;
+  text-align: center;
+  
+}
+
+.VpcPageSelTitle {
+  display: inline-block;
+  width: 30%;
+  font-size: 0.9em;
+}
+
+.VpcPageSelectPath {
+  display: inline-block;
+  width: 65%;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.VpcPageSelectArrow {
+  display: inline-block;
+  width: 5%;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.5em;
+}
+
+.VpcPageSelOrigin {
+  display: inline-block;
+}
+
+.VpcPageSelOrigin select{
+  border: none;
+  width: 40px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+}
+
+.VpcPageSelChange {
+  display: inline-block;
+}
+
+.VpcPageSelChange select{
+  border: none;
+  width: 40px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+}
+
+.VpcPageEnd {
+  width: 100%;
+  background: #949494;
   border-radius: 5px;
   padding: 5px;
   margin-bottom: 5px;
+  transition: all ease 0.2s;
+}
+
+.VpcPageEnd:hover {
+  background: #585858;
+  cursor: pointer;
+}
+
+.VpcPageEnd span{
+  width: 100%;
 }
 
 .VpcBlockControl {
   width: 100%;
+  text-align: right;
 }
+
 
 .VpcBlockControl button {
   position: relative;
-  left: 34px;
   background: #2872f9;
   border: none;
   border-radius: 10px;
@@ -360,6 +483,7 @@ export default {
   font-size: 12px;
   padding: 5px;
   margin: 1px;
+  transition: all ease 0.2s;
 }
 
 .VpcBlockControl button:hover {

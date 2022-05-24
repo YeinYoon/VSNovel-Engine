@@ -218,6 +218,11 @@ export default {
   color: white;
   border: none;
   background: #2872f9;
+  transition: all ease 0.2s;
+}
+
+.VSSetButtons button:hover { 
+  background: #0084ff;
 }
 
 .VSSetList {

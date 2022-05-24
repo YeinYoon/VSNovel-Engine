@@ -32,13 +32,13 @@
         </div>
 
         
-        <div class="VSFolderMoveButton" @click="deleteFile(f.name, f.key)">
+        <!-- <div class="VSFolderMoveButton" @click="deleteFile(f.name, f.key)">
           <img src="@/assets/icons/white/redo.png">
-        </div>
+        </div> -->
 
-        <div class="VSFolderDetailButton" @click="editName(f.name, f.key)">
+        <!-- <div class="VSFolderDetailButton" @click="editName(f.name, f.key)">
           <img src="@/assets/icons/white/editing.png">
-        </div>
+        </div> -->
 
         <div class="VSFolderDelButton" @click="deleteFile(f.name, f.key)">
           <img src="@/assets/icons/white/trash_white.png">
@@ -372,6 +372,11 @@ export default {
   color: white;
   border: none;
   background: #2872f9;
+  transition: all ease 0.2s;
+}
+
+.VSResourceButtons button:hover {
+  background: #0084ff;
 }
 
 .VSFolderList {
