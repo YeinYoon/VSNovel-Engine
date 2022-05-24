@@ -127,6 +127,9 @@ import storage from "../../../aws";
 import axios from "../../../axios";
 export default {
   name: "V_EngineInner",
+  props:{
+    data:Object
+  },
   components: {
     EngineCanvas,
   },
@@ -137,10 +140,20 @@ export default {
   data() {
     return {
       pjCode: "",
-      index: "",
-      plot: "",
+      index: "0",
+      plot: "시작",
       scenario: {},
     };
+  },
+  watch:{
+    data(){
+      if(this.data!=undefined && this.data!=null){
+        let url = this.data.url
+        console.log(eval("this.scenario."+this.plot+"["+this.index+"]"))
+        eval("this.scenario."+this.plot+"["+this.index+"].img="+"'"+url+"'")
+        console.log(eval("this.scenario."+this.plot+"["+this.index+"]"))
+      }
+    }
   },
   methods: {
     getCloudJSON(json){

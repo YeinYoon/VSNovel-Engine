@@ -140,8 +140,8 @@ export default {
   },
     name : "VDevBoard",
     created() {
-        this.pjCode = this.$route.params.pjCode;
-        this.getPjInfo(this.pjCode);
+      this.pjCode = this.$route.params.pjCode;
+      this.getPjInfo(this.pjCode);
     },
     data() {
         return {
@@ -304,6 +304,13 @@ export default {
         plot: function(newPlot){
           this.position.plot=newPlot
           this.loadData()
+        },
+        scenario:{
+          deep:true,
+          handler(){
+          console.log("change DATA")
+          this.loadData()
+          }
         }
     },
 }

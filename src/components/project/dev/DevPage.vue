@@ -12,6 +12,7 @@
         </div> -->
         <div>
             <VEngineInner
+            :data="data"
             ></VEngineInner>
         </div>
     </div>
@@ -29,7 +30,8 @@ export default {
     },
     props:{
         side:Boolean,
-        main:Boolean
+        main:Boolean,
+        data:Object
     },
     watch : {
         $route() {
@@ -40,6 +42,9 @@ export default {
                 this.condition="RouterViewLeft"
             }
             else this.condition="RouterViewRight"
+        },
+        data(){
+            console.log(this.data)
         }
     },
     data(){

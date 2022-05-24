@@ -2,7 +2,7 @@
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <FileUploadModal ref="fileUploadModal" @uploadOk="uploadOk()"></FileUploadModal>
 <InputModal ref="inputModal" @inputFolderName="inputFolderName" @inputNewName="inputNewName"></InputModal>
-
+<TypeModal ref="typeModal"></TypeModal>
   <div class="VSBackgroundRes">
 
     <div class="VSResourceTool">
@@ -28,7 +28,7 @@
           <img src="@/assets/icons/white/folder.png">
         </div>
         <div class="VSFileThumnail" v-else>
-          <img :src="f.url">
+          <img :src="f.url" @click="send(f.url)">
         </div>
 
         
@@ -61,15 +61,15 @@
 
       <div class="VSFile" v-for="(f, i) in fileList" :key="i">
 
-        <div class="VSFileThumnail" v-if="f.ex == 'mp3'">
+        <div class="VSFileThumnail" v-if="f.ex == 'mp3'" @dlbclick="send(f)">
           <img src="@/assets/sample.png">
         </div>
         <div class="VSFolderThumnail" v-if="f.ex == 'dir'" @click="goToFolder(f.key)">
           <img src="@/assets/icons/white/folder.png">
         </div>
-        <div class="VSFileThumnail" v-else>
+        <div class="VSFileThumnail" v-else  @dblclick="send(f)">
           <img :src="f.url">
-        </div>
+        </div> 
 
         <div class="VSFileMoveButton" @click="deleteFile(f.name, f.key)">
           <img src="@/assets/icons/white/redo.png">
@@ -100,13 +100,15 @@
 import ConfirmModal from '../../modal/ConfirmModal.vue'
 import FileUploadModal from '../../modal/FileUploadModal.vue'
 import InputModal from '../../modal/InputModal.vue'
+import TypeModal from '../../modal/TypeModal.vue'
 import storage from '../../../aws'
 export default {
   name: 'V_side_resource',
   components : {
     ConfirmModal,
     FileUploadModal,
-    InputModal
+    InputModal,
+    TypeModal
   },
   props : {
     pjCode : String
@@ -299,6 +301,14 @@ export default {
         this.folderPath = this.preFolderPath[this.preFolderPath.length-1];
         this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
       }
+    },
+
+    send(data){
+      this.$refs.typeModal.show({
+        msg : "선택한 리소스를 어떤걸로 쓸건데?",
+        size : "normal"
+      })
+      this.$emit('send',{url:data.url, ex:data.ex})
     }
   },
   
