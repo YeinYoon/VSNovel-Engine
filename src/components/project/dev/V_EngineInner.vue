@@ -150,7 +150,7 @@
               </div>
 
               <div class="VpcPageEnd">
-                <span>읽기종료</span>
+                <span>읽기종료1232131231232</span>
               </div>
 
               <div class="VpcBlockControl">
@@ -376,6 +376,10 @@ export default {
   padding: 5px;
   margin-bottom: 5px;
   transition: all ease 0.2s;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break: break-all;
 }
 
 .VpcPageNormal:hover {
@@ -457,15 +461,15 @@ export default {
   padding: 5px;
   margin-bottom: 5px;
   transition: all ease 0.2s;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break: break-all;
 }
 
 .VpcPageEnd:hover {
   background: #585858;
   cursor: pointer;
-}
-
-.VpcPageEnd span{
-  width: 100%;
 }
 
 .VpcBlockControl {
