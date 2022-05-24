@@ -140,8 +140,8 @@ export default {
   },
     name : "VDevBoard",
     created() {
-        this.pjCode = this.$route.params.pjCode;
-        this.getPjInfo(this.pjCode);
+      this.pjCode = this.$route.params.pjCode;
+      this.getPjInfo(this.pjCode);
     },
     data() {
         return {
