@@ -6,51 +6,21 @@
     
     <div class="VPlotController"> <!-- 플롯 컨트롤러 -->
       <div class="VPCBackground"> <!-- 플롯 컨트롤러 백그라운드 -->
-        <!-- <div
-          v-for="(plot, i) in scenario"
-          :key="i">
-          {{ i }}<span @click="addPage(i)">추가</span>
-          <hr />
-          <div v-for="(page, j) in plot" :key="j">
-            <span @click="goToPlot(i, j)">{{ j }}</span>
-            <span v-if="page.select == undefined"
-              >-> {{ page.move.plot }},{{ page.move.index }}</span
-            >
-            <div v-else>
-              <p v-if="page.select.select1 != undefined">
-                ({{ page.select.select1.text }})선택 시->
-                {{ page.select.select1.plot }}, {{ page.select.select1.index }}
-              </p>
-              <p v-if="page.select.select2 != undefined">
-                ({{ page.select.select2.text }})선택 시->
-                {{ page.select.select2.plot }}, {{ page.select.select2.index }}
-              </p>
-              <p v-if="page.select.select3 != undefined">
-                ({{ page.select.select3.text }})선택 시->
-                {{ page.select.select3.plot }}, {{ page.select.select3.index }}
-              </p>
-            </div>
-            <hr />
-            
-          </div>
-        </div> -->
-
         <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
           <div class="VpcToolPosition">
             <button>플롯 추가</button>
             <button>엔딩 추가</button>
           </div>
 
-        </div> <!-- 플롯 추가등의 버튼 -->
-
-        <div class="VpcInner"> 
-          
-          <!-- 플롯리스트 -->
-          <!-- 플롯의 갯수만큼 반복 -->
-          <div class="VpcBlock"> <!-- 플롯 박스 -->
+        </div>
+      
+        <div class="VpcInner">
+          <div class="VpcBlock" v-for="(plot, i) in scenario"
+          :key="i"> <!-- 플롯 박스 -->
             <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
-              <div class="VpcBlock_Title"><p>플롯제목제목</p></div>
-              <div class="VpcBlock_Opener"><p>ㅜ</p></div>
+              <div class="VpcBlock_Title"><p>{{ i }}</p></div>
+              <button class="VpcBlock_Opener"><img src="@/assets/icons/white/editing.png"></button>
+              <button class="VpcBlock_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
             </div>
 
             <!-- 플롯 내부 조회 --> 
@@ -62,110 +32,93 @@
               <!-- 일반 페이지 -->
               <!-- 일반 페이지는 단순 대화를 담고있음. -->
               <!-- 일반 페이지는 다음 페이지로의 이동만 함. (플롯간 이동X) -->
-              <div class="VpcPageNormal">
-                <span>123123</span>
+              <div v-for="(page, j) in plot" :key="j">
+              <div class="VpcPageNormal" @click="goToPlot(i, j)" v-if="page.select == undefined">
+                <span>{{j}}</span>
               </div>
-
-              <div class="VpcPageNormal">
-                <span>123123</span>
-              </div>
-
-              <div class="VpcPageNormal">
-                <span>112313213213</span>
-              </div>
-
               <!-- 선택자 페이지 -->
               <!-- 플레이어가 선택하면, 다른 플롯으로의 이동이 발생함 -->
               <!-- 페이지에 선택지를 추가한 갯수만큼 반복문을 돌릴것. -->
-              <div class="VpcPageSelect">
-
-                <div class="VpcPageSels">
+              <div class="VpcPageSelect" v-else>
+              <span>{{j}}</span>
+                <div class="VpcPageSels" v-if="page.select.select1 != undefined">
                   <div class="VpcPageSelTitle">선택지1</div>
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
                       <select disabled>
-                        <option>1</option> <!-- 이 플롯의 고유번호 -->
+                        <option>{{page.select.select1.plot}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
+                        <option>
+                          {{page.select.select1.index }}
+                        </option>
                       </select>
                     </div>
                   </div>
                 </div>
 
-                <div class="VpcPageSels">
-                  <div class="VpcPageSelTitle">선택지1</div>
+                <div class="VpcPageSels" v-if="page.select.select2 != undefined">
+                  
+                  <div class="VpcPageSelTitle">선택지2</div>
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
                       <select disabled>
-                        <option>1</option> <!-- 이 플롯의 고유번호 -->
+                        <option>{{page.select.select2.plot}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
+                        <option>
+                          {{page.select.select2.index }}
+                        </option>
                       </select>
                     </div>
                   </div>
                 </div>
 
+                <div class="VpcPageSels" v-if="page.select.select3 != undefined">
+                  <div class="VpcPageSelTitle">선택지3</div>
+                  <div class="VpcPageSelectPath">
+                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
+                      <select disabled>
+                        <option>{{page.select.select3.plot}}</option> <!-- 이 플롯의 고유번호 -->
+                      </select>
+                    </div>
+                    <div class="VpcPageSelectArrow">></div>
+                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
+                      <select>
+                        <option>
+                          {{page.select.select3.index }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </div>
 
+              
+            </div><!-- 플롯 블록 이너 끝 -->
               <div class="VpcBlockControl">
                 <button>플롯 삭제</button>
-                <button>페이지 추가</button>
+                <button @click="addPage(i)">페이지 추가</button>
               </div>
-            </div><!-- 플롯 블록 이너 끝 -->
-
-          </div> <!-- 플롯 블록 끝 -->
-
-
-          <!-- 엔딩플롯 예시 -->
-          <!-- 엔딩플롯이란, 유저가 선택한 선택지를 통해 이동된 플롯중 하나임. -->
-          <!-- 엔딩플롯의 마지막 페이지에서는 비주얼노벨 종료 명령이 전달되도록 한다. -->
-          <!-- 즉 웹툰에서 마지막 페이지를 담당하는것임. -->
-          <!-- 플롯 반복문에서 가장 마지막에 반복되도록 만든다 -->
-          <div class="VpcBlock"> <!-- 플롯 박스 -->
-            <div class="VpcBlockLabel_end"> <!-- 플롯 라벨 및 열기버튼 -->
-              <div class="VpcBlock_Title"><p>엔딩1 - 123</p></div>
-              <div class="VpcBlock_Opener"><p>ㅜ</p></div>
-            </div>
-            <div class="VpcBlockInner">
-              <div class="VpcPageNormal">
-                <span>엄준식</span>
-              </div>
-
-              <div class="VpcPageNormal">
-                <span>엄 어엄 엄</span>
-              </div>
-
-              <div class="VpcPageNormal">
-                <span>고마웠어 엄준식</span>
-              </div>
-
-              <div class="VpcPageNormal">
-                <span>엔딩1 - 굿바이 엄준식</span>
-              </div>
-
-              <div class="VpcPageEnd">
-                <span>읽기종료1232131231232</span>
-              </div>
-
-              <div class="VpcBlockControl">
-                <button>엔딩 삭제</button>
-                <button>페이지 추가</button>
-              </div>
-            </div>
           </div>
-
-
+        
         </div> <!-- VpcInner 끝 -->
 
+
+          <!-- 플롯의 갯수만큼 반복 -->
+           <!-- 플롯 블록 끝 -->
+
+
+        </div>  
       </div> <!-- 플롯 컨트롤러 백그라운드 -->
-    </div> <!-- 플롯 컨트롤러 -->
-  </div>
+      </div> 
+    </div><!-- 플롯 컨트롤러 -->
 </template>
 
 <script>
@@ -346,23 +299,53 @@ export default {
   font-size: 0.9em;
 }
 
-.VpcBlock_Opener {
-  position: relative;
-  left: 90%;
+.VpcBlock_addPlotB {
+  position: absolute;
+  left: 80%;
   transform: translate(-50%, -50%);
+  background: #2872f9;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  width: 25px;
   height: 25px;
-  width: 50px;
-  background: #797979;
-  border-radius: 10px;
-  cursor: pointer;
+  transition: all ease 0.2s;
+  object-fit: cover;
 }
 
-.VpcBlock_Opener p {
+.VpcBlock_addPlotB:hover {
+  background: #0084ff;
+}
+
+.VpcBlock_addPlotB img {
+  position: relative;
+  top: -1px;
+  left: -1.3px;
+  width: 120%;
+}
+
+.VpcBlock_Opener {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50% ,-50%);
-  font-size: 0.9em;
+  left: 65%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: 25px;
+  background: #2872f9;
+  border-radius: 7px;
+  border: none;
+  transition: all ease 0.2s;
+  object-fit: cover;
+}
+
+.VpcBlock_Opener:hover {
+  background: #0084ff;
+}
+
+.VpcBlock_Opener img {
+  position: relative;
+  top: -1px;
+  left: 1px;
+  width: 100%; 
 }
 
 .VpcBlockInner {
