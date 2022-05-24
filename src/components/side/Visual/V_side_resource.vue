@@ -304,7 +304,7 @@ export default {
     },
 
     send(data){
-      this.$refs.tpyeModal.show({
+      this.$refs.typeModal.show({
         msg : "선택한 리소스를 어떤걸로 쓸건데?",
         size : "normal"
       })
