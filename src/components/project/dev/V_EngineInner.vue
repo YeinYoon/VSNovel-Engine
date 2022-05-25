@@ -1,7 +1,7 @@
 <template>
   <div class="Venginebackground">
     <div class="VEngineCanvas">
-      <EngineCanvas :plot="plot" :index="index" :scenario="scenario" @getCloudJSON="getCloudJSON"/>
+      <EngineCanvas :plot="plot" :index="index" :VS="VS" @getCloudVS="getCloudVS" @move="move"/>
     </div>
     
     <div class="VPlotController"> <!-- 플롯 컨트롤러 -->
@@ -10,12 +10,15 @@
           <div class="VpcToolPosition">
             <button>플롯 추가</button>
             <button>엔딩 추가</button>
+            <!-- <p>
+              {{VS}}
+            </p> -->
           </div>
 
         </div>
       
-        <div class="VpcInner">
-          <div class="VpcBlock" v-for="(plot, i) in scenario"
+        <div v-if="VS" class="VpcInner">
+          <div class="VpcBlock" v-for="(plot, i) in VS.scenario"
           :key="i"> <!-- 플롯 박스 -->
             <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
               <div class="VpcBlock_Title"><p>{{ i }}</p></div>
@@ -33,80 +36,80 @@
               <!-- 일반 페이지는 단순 대화를 담고있음. -->
               <!-- 일반 페이지는 다음 페이지로의 이동만 함. (플롯간 이동X) -->
               <div v-for="(page, j) in plot" :key="j">
-              <div class="VpcPageNormal" @click="goToPlot(i, j)" v-if="page.select == undefined">
+              <div class="VpcPageNormal" @click="move(i, j)" v-if="page.type!='s' && page.nextPlot==undefined">
+                <span v-if="i==this.plot && j==this.index">현재 여기</span>
                 <span>{{j}}</span>
               </div>
               <!-- 선택자 페이지 -->
               <!-- 플레이어가 선택하면, 다른 플롯으로의 이동이 발생함 -->
               <!-- 페이지에 선택지를 추가한 갯수만큼 반복문을 돌릴것. -->
-              <div class="VpcPageSelect" v-else>
-              <span>{{j}}</span>
-                <div class="VpcPageSels" v-if="page.select.select1 != undefined">
+              <div class="VpcPageSelect" v-if="page.type=='s' && page.nextPlot==undefined">
+                <span>{{j}}</span>
+                <div class="VpcPageSels">
                   <div class="VpcPageSelTitle">선택지1</div>
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
                       <select disabled>
-                        <option>{{page.select.select1.plot}}</option> <!-- 이 플롯의 고유번호 -->
+                        <option>{{page.select1.plot}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
                         <option>
-                          {{page.select.select1.index }}
+                          {{page.select1.index }}
                         </option>
                       </select>
                     </div>
                   </div>
                 </div>
 
-                <div class="VpcPageSels" v-if="page.select.select2 != undefined">
+                <div class="VpcPageSels">
                   
                   <div class="VpcPageSelTitle">선택지2</div>
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
                       <select disabled>
-                        <option>{{page.select.select2.plot}}</option> <!-- 이 플롯의 고유번호 -->
+                        <option>{{page.select2.plot}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
                         <option>
-                          {{page.select.select2.index }}
+                          {{page.select2.index }}
                         </option>
                       </select>
                     </div>
                   </div>
                 </div>
 
-                <div class="VpcPageSels" v-if="page.select.select3 != undefined">
+                <div class="VpcPageSels">
                   <div class="VpcPageSelTitle">선택지3</div>
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
                       <select disabled>
-                        <option>{{page.select.select3.plot}}</option> <!-- 이 플롯의 고유번호 -->
+                        <option>{{page.select3.plot}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
                         <option>
-                          {{page.select.select3.index }}
+                          {{page.select3.index }}
                         </option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
-
               
             </div><!-- 플롯 블록 이너 끝 -->
               <div class="VpcBlockControl">
                 <button>플롯 삭제</button>
                 <button @click="addPage(i)">페이지 추가</button>
               </div>
-          </div>
+            </div>
         
         </div> <!-- VpcInner 끝 -->
 
@@ -133,40 +136,45 @@ export default {
   components: {
     EngineCanvas,
   },
-  created() {
+  async created() {
+    console.log("ss")
     this.pjCode = this.$route.params.pjCode;
-    this.getJson(this.pjCode);
+    await this.getVS(this.pjCode);
   },
   data() {
     return {
       pjCode: "",
       index: "0",
       plot: "시작",
-      scenario: {},
+      VN: {},
+      startPlot:"",
     };
   },
   watch:{
     data(){
       if(this.data!=undefined && this.data!=null){
         let url = this.data.url
-        console.log(eval("this.scenario."+this.plot+"["+this.index+"]"))
-        eval("this.scenario."+this.plot+"["+this.index+"].img="+"'"+url+"'")
-        console.log(eval("this.scenario."+this.plot+"["+this.index+"]"))
+        console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"]"))
+        eval("this.VS.scenario."+this.plot+"["+this.index+"].img="+"'"+url+"'")
+        console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"]"))
       }
     }
   },
   methods: {
-    getCloudJSON(json){
-      this.scenario=json
+    getCloudVS(VS){
+      this.VS=VS
     },
-    async getJson(pjCode) {
-      var result = await storage.getJson(`Project/PJ${pjCode}/PJ${pjCode}.json`);
+    async getVS(pjCode) {
+      var result = await storage.getVS(`Project/PJ${pjCode}/PJ${pjCode}.json`);
       var uint8array = new TextEncoder("utf-8").encode(result);
-      var json = new TextDecoder().decode(uint8array);
-      if (Object.keys(json).length === 0) {
-        console.log("해당 프로젝트의 JSON이 비어있음");
+      var VS = new TextDecoder().decode(uint8array);
+      if (Object.keys(VS).length === 0) {
+        console.log("NULL JSON");
       } else {
-        this.scenario = JSON.parse(json);
+        this.VS = await JSON.parse(VS);
+        this.plot = JSON.parse(VS).startPlot;
+        this.index=1;
+        console.log(this.VS)
       }
     },
     deletePj() {
@@ -176,22 +184,22 @@ export default {
           if (result.data == "ok") {
             this.$router.push("/");
           } else {
-            console.log("프로젝트 삭제 에러");
+            console.log("Delete Project Error!");
           }
         })
         .catch((err) => {
           console.error(err);
         });
     },
-    goToPlot(plot, index) {
+    move(plot, index) {
       console.log(plot, index);
       this.plot = plot;
       this.index = index;
     },
     addPage(plot){
-      console.log(plot+this.scenario.시작)
-      eval("this.scenario."+plot+'.push({"bg": "","bgm": "","name": "이름","text": "대화","img": "","move": {"plot": "'+plot+'","index":0}})')
-      console.log(this.scenario);
+      console.log(plot+this.VS.scenario.시작)
+      eval("this.VS.scenario."+plot+'.push({"bg": "","bgm": "","name": "이름","text": "대화","img": "","move": {"plot": "'+plot+'","index":0}})')
+      console.log(this.VS.scenario);
     }
   },
 };

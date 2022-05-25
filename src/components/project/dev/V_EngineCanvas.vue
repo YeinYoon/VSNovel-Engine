@@ -4,7 +4,6 @@
     <!-- 내부 img태그의 src를 가공하여 사용, -->
     <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
     <div class="SceneBackground">
-      
       <img src="@/assets/background.jpg" />
     </div>
     <!-- 백그라운드 끝. -->
@@ -18,9 +17,9 @@
 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
-        <div class="SelectButton" v-if="s.task1.text.length!=0" @click="move(s.task1.plot, s.task1.index)"><span>{{s.task1.text}}</span></div>
-        <div class="SelectButton" v-if="s.task2.text.length!=0" @click="move(s.task2.plot, s.task2.index)"><span>{{s.task2.text}}</span></div>
-        <div class="SelectButton" v-if="s.task3.text.length!=0" @click="move(s.task3.plot, s.task3.index)"><span>{{s.task3.text}}</span></div>
+        <div class="SelectButton" v-if="s1.use" @click="select(s1.plot, s1.index)"><span>{{s1.text}}</span></div>
+        <div class="SelectButton" v-if="s2.use" @click="select(s2.plot, s2.index)"><span>{{s2.text}}</span></div>
+        <div class="SelectButton" v-if="s3.use" @click="select(s3.plot, s3.index)"><span>{{s3.text}}</span></div>
       </div>
     </div>
 
@@ -74,10 +73,10 @@
           <img src="@/assets/icons/white/checked.png" v-else @click="save()">
         </div>
         <div class="NavItems">
-          <img src="@/assets/icons/white/downcloud.png" @click="getJSON()">
+          <img src="@/assets/icons/white/downcloud.png" @click="getVS()">
         </div>
         <div class="NavItems">
-          <img src="@/assets/icons/white/upcloud.png" @click="uploadJSON()">
+          <img src="@/assets/icons/white/upcloud.png" @click="uploadVS()">
         </div>
       </div>
       <!-- 이미지 -->
@@ -136,183 +135,119 @@ export default {
   props:{
     index:Number,
     plot:String,
-    scenario:Object
+    VS:Object
   },
-    name : "VDevBoard",
-    created() {
-      this.pjCode = this.$route.params.pjCode;
-      this.getPjInfo(this.pjCode);
-    },
-    data() {
-        return {
-            pjType : "",
-            pjCode : "",
-            title : "",
-            retouchDate : "",
-            stat : "",
-
-            editMod : false,
-
-            Now: {
-                bg: "",
-                bgm: "",
-                name: "",
-                text: "",
-                img: "",
-                move: false
-            },
-            s:{
-                task1:{},
-                task2:{},
-                task3:{}
-            },
-            status: "play", // play, select, pause,
-            position: {
-                plot: "시작",
-                index: 0,
-            },
-        }
-    },
-    methods : {
-        //해당 프로젝트 정보 가져오기
-        getPjInfo() {
-          axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
-          .then((result)=>{
-            if(result.data == "err") {
-              this.$store.commit('gModalOn', "프로젝트 정보를 불러오는데 실패했습니다.", "normal");
-            } else {
-              this.title = result.data.PROJ_TITLE;
-              this.retouchDate = result.data.PROJ_RETOUCHDATE;
-              this.stat = result.data.PROJ_STATUS;
-              this.pjType = result.data.PROJ_TYPE;
-              this.loadData()
-            }
-          })
-          .catch((err)=>{
-            console.error(err);
-          })
-        },
-      
-        //현재 JSON 파일 업로드
-        async uploadJSON() {
-        var data = JSON.stringify(this.scenario);
-        var fileName = `PJ${this.pjCode}.json`
-        var properties = {type:'text/plain'};
-
-        var file = new File([data], fileName, properties); //새로운 파일 객체 생성
-        console.log(file);
-
-        await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
-        },
-        async getJSON() {
-          var result = await storage.getJson(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
-          var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
-          var string = new TextDecoder().decode(uint8array);
-          console.log(JSON.parse(string));
-          this.$emit('getCloudJSON',JSON.parse(string))
-        },
-
-        save() {
-          const plot=this.position.plot
-          const index=this.position.index
-          eval("this.scenario."+plot+"["+index+"].name = this.$refs.cngName.innerHTML;")
-          eval("this.scenario."+plot+"["+index+"].text = this.$refs.cngText.innerHTML;")
-          console.log(this.scenario);
-          this.editMod = false;
-          this.loadData()
-        },
-
-
-
-
-        loadData: function () {
-        console.log("load");
-        let thisScene;
-        eval(
-            "thisScene = this.scenario." +
-            this.position.plot +
-            "[" +
-            this.position.index +
-            "]"
-        );
-        this.Now.text = thisScene.text;
-        this.Now.bg = thisScene.bg;
-        this.Now.bgm = thisScene.bgm;
-        this.Now.name = thisScene.name;
-        this.Now.img = thisScene.img
-        },
-        nextScene: function () {
-        console.log("next");
-        let plot = this.position.plot;
-        let index = this.position.index;
-        let thisPosition;
-        eval("thisPosition = this.scenario." + plot + "[" + index + "]");
-        if (thisPosition.select == undefined) {
-            this.position = {
-            plot: thisPosition.move.plot,
-            index: thisPosition.move.index,
-            };
+  name : "VDevBoard",
+  created() {
+    this.pjCode = this.$route.params.pjCode;
+    this.getPjInfo(this.pjCode);
+  },
+  data() {
+    return {
+      pjType : "",
+      pjCode : "",
+      title : "",
+      retouchDate : "",
+      stat : "",
+      editMod : false,
+      Now: {},
+      s1:{},
+      s2:{},
+      s3:{},
+      status: "play", // play, select, pause,
+    }
+  },
+  methods : {
+    //해당 프로젝트 정보 가져오기
+    getPjInfo() {
+      axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
+      .then((result)=>{
+        if(result.data == "err") {
+          this.$store.commit('gModalOn', "프로젝트 정보를 불러오는데 실패했습니다.", "normal");
         } else {
-            this.s.task1.text=thisPosition.select.select1.text
-            this.s.task2.text=thisPosition.select.select2.text
-            this.s.task3.text=thisPosition.select.select3.text
-            
-            this.s.task1.plot=thisPosition.select.select1.plot
-            this.s.task2.plot=thisPosition.select.select2.plot
-            this.s.task3.plot=thisPosition.select.select3.plot
-            
-            this.s.task1.index=thisPosition.select.select1.index
-            this.s.task2.index=thisPosition.select.select2.index
-            this.s.task3.index=thisPosition.select.select3.index
+          this.title = result.data.PROJ_TITLE;
+          this.retouchDate = result.data.PROJ_RETOUCHDATE;            
+          this.stat = result.data.PROJ_STATUS;
+          this.pjType = result.data.PROJ_TYPE;
+          this.loadData()
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      })
+    },
+    //현재 JSON 파일 업로드
+    async uploadVS() {
+    var data = JSON.stringify(this.VS);
+    var fileName = `PJ${this.pjCode}.json`
+    var properties = {type:'text/plain'};
+    var file = new File([data], fileName, properties); //새로운 파일 객체 생성
+    console.log(file);
 
-            this.status = "select";
-        }
-        this.loadData();
-        },
-        selectScene: function (event) {
-        console.log("select");
-        let plot = event.target.getAttribute("plot");
-        let index = event.target.getAttribute("index");
-        console.log(plot + " " + index + " " + this.position);
-        this.position = {
-            plot,
-            index,
-        };
+    await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
+    },
+    async getVS() {
+      var result = await storage.getVS(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
+      var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
+      var string = new TextDecoder().decode(uint8array);
+      console.log(JSON.parse(string));
+      this.$emit('getCloudVS',JSON.parse(string))
+    },
+    save() {
+      eval("this.VS.scenario."+this.plot+"["+this.index+"].name = this.$refs.cngName.innerHTML;")
+      eval("this.VS.scenario."+this.plot+"["+this.index+"].text = this.$refs.cngText.innerHTML;")
+      this.editMod = false;          
+      this.loadData()
+    },
+    loadData: function () {
+      console.log("load");
+      eval("this.Now=this.VS.scenario."+this.plot+"["+this.index+"]")
+    },              
+    nextScene: function () {
+      console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='n'"));
+      if (eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='n'")) {
+        console.log('n')
+        this.move();
+      }else if(eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='e'")){
+        console.log('ending');
+      }else {
+        eval("this.s1=this.VS.scenario."+this.plot+"["+this.index+"].select1")
+        eval("this.s2=this.VS.scenario."+this.plot+"["+this.index+"].select2")
+        eval("this.s3=this.VS.scenario."+this.plot+"["+this.index+"].select3")
         this.status = "select";
-        console.log(this.position);
-        this.loadData();
-        },
-        selectEvent: function(event){
-        console.log(event.target);
-        },
-        move: function(plot, index){
-        this.position.plot=plot
-        this.position.index=index
-        this.status='play'
-        this.loadData()
-        }
+      }
+      this.loadData();
     },
-    
-    watch : {
-        $route() {
+    move: function(){
+      console.log(eval("this.VS.scenario."+this.plot+".length"))
+      if(eval("this.VS.scenario."+this.plot+".length=="+this.index))
+        this.$emit('move',{plot:eval("this.VS.scenario."+this.plot+"[0].nextPlot"),index:0})
+      else
+        this.$emit('move',{plot:this.plot,index:this.index+1})
+      this.loadData()
+    },
+    select:function(plot,index){
+      this.$emit('move',{plot,index})
+    }
+  },  
+  watch : {
+    $route() {
           this.getPjInfo(this.pjCode);
-        },
-        index: function(newIndex){
-          this.position.index=newIndex
-          this.loadData()
-        },
-        plot: function(newPlot){
-          this.position.plot=newPlot
-          this.loadData()
-        },
-        scenario:{
-          deep:true,
-          handler(){
-          console.log("change DATA")
-          this.loadData()
-          }
-        }
     },
+    index: function(){
+      this.loadData()
+    },
+    plot: function(){
+      this.loadData()
+    },
+    VS:{
+      deep:true,
+      handler(){
+        console.log("change DATA")
+        this.loadData()
+      }
+    }
+  },
 }
 </script>
 
