@@ -130,8 +130,10 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
                 }
                 
             });
-            
-            keyList.splice(0,1);
+
+            if(keyList[0] == filePath) {
+                keyList.splice(0,1);
+            }
             for(var i=0; i<urlList.length; i++) {
                 const params = {
                     Bucket: "vsnovel",

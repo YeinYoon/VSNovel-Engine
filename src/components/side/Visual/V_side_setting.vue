@@ -52,6 +52,12 @@
         </div>
       </div>
 
+      <div class="VSSetMenu"> <!-- 4 -->
+        <div class="VSSetMenuTitle" @click="deletePj()">
+          <p>프로젝트 삭제</p>
+        </div>
+      </div>
+
     </div>
 
   </div>

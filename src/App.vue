@@ -60,12 +60,11 @@ export default {
   },
   watch:{
     $route(){
-      if(this.$route.fullPath=='/' || this.$route.fullPath=='createNewPj') {
+      if(this.$route.fullPath=='/' || this.$route.fullPath=='/createNewPj') {
         this.mainBar = false;
         this.$store.commit('sideMenuOffMain');
         this.sideBarStatus = 'Main';
       } else {
-        console.log("Main이 아닌곳에 진입함");
         this.sideBarStatus = 'Another';
         this.$store.commit('sideMenuOff');
         this.mainBar = true;

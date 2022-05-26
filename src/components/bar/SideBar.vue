@@ -50,7 +50,6 @@ export default {
       if(this.$store.state.sideBar == false) {
 
         if(this.sideBarStatus == 'Main') {
-          console.log("Main 사이드 On")
           this.$store.commit('sideMenuOnMain');
           this.$store.commit('sideAnimationFixed');
         }
@@ -62,7 +61,6 @@ export default {
       } else {
 
         if(this.sideBarStatus == 'Main') {
-          console.log("Main 사이드 Off")
           this.$store.commit('sideMenuOffMain');
           this.$store.commit('sideAnimationFixed');
         }

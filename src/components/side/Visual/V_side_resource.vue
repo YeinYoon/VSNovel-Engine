@@ -14,83 +14,89 @@
       </div>
     </div>
     
-    <div class="VSResList">
-    <div class="VSFolderList" v-if="clickFolder == false">
+    <div :class="{[resListStatus]:true}"> <!-- mp3 파일 듣기를 시도하면 클래스명을 VSResListOnPlayer 로 변경 -->
 
-      <div class="VSResourceSubTitle"><span>{{folderPath}}</span></div>
+      <div class="VSFolderList" v-if="clickFolder == false">
 
-      <div class="VSFolder" v-for="(f, i) in rootList" :key="i">
+        <div class="VSResourceSubTitle"><span>{{folderPath}}</span></div>
 
-        <div class="VSFileThumnail" v-if="f.ex == 'mp3'">
-          <img src="@/assets/sample.png">
-        </div>
-        <div class="VSFolderThumnail" v-if="f.ex == 'dir'" @click="goToFolder(f.key)">
-          <img src="@/assets/icons/white/folder.png">
-        </div>
-        <div class="VSFileThumnail" v-else>
-          <img :src="f.url" @click="send(f.url)">
-        </div>
+        <div class="VSFolder" v-for="(f, i) in rootList" :key="i">
 
-        
-        <!-- <div class="VSFolderMoveButton" @click="deleteFile(f.name, f.key)">
-          <img src="@/assets/icons/white/redo.png">
-        </div> -->
+          <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg'">
+            <img :src="f.url" @click="send(f.url)">
+          </div>
+          <div class="VSFileThumnail" v-else-if="f.ex == 'mp3'">
+            <img src="@/assets/sample.png">
+          </div>
+          <div class="VSFolderThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
+            <img src="@/assets/icons/white/folder.png">
+          </div>
 
-        <!-- <div class="VSFolderDetailButton" @click="editName(f.name, f.key)">
-          <img src="@/assets/icons/white/editing.png">
-        </div> -->
+          <!-- <div class="VSFolderMoveButton" @click="deleteFile(f.name, f.key)">
+            <img src="@/assets/icons/white/redo.png">
+          </div> -->
 
-        <div class="VSFolderDelButton" @click="deleteFile(f.name, f.key)">
-          <img src="@/assets/icons/white/trash_white.png">
-        </div>
+          <!-- <div class="VSFolderDetailButton" @click="editName(f.name, f.key)">
+            <img src="@/assets/icons/white/editing.png">
+          </div> -->
+
+          <div class="VSFolderDelButton" @click="deleteFile(f.name, f.key)">
+            <img src="@/assets/icons/white/trash_white.png">
+          </div>
 
 
-        <div class="VSFolderName">
-          <p>{{f.name}}</p>
+          <div class="VSFolderName">
+            <p>{{f.name}}</p>
+          </div>
+
         </div>
 
       </div>
 
-    </div>
+      <div class="VSFileList" v-else>
+
+        <div class="VSFileLocation"><span>{{folderPath}}</span></div>
+        <div class="VSFileReturn" @click="back()"><span>뒤로가기</span></div>
+
+        <div class="VSFile" v-for="(f, i) in fileList" :key="i">
+
+          <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg'" @dblclick="send(f)">
+            <img :src="f.url">
+          </div> 
+          <div class="VSFileThumnail" v-else-if="f.ex == 'mp3'" @dblclick="send(f)" @click="playerOn(f)">
+            <img src="@/assets/sample.png">
+          </div>
+          <div class="VSFolderThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
+            <img src="@/assets/icons/white/folder.png">
+          </div>
 
 
-    <div class="VSFileList" v-else>
+          <div class="VSFileMoveButton" v-if="f.ex == 'mp3'" @click="deleteFile(f.name, f.key)">
+            <img src="@/assets/icons/white/redo.png">
+          </div>
 
-      <div class="VSFileLocation"><span>{{folderPath}}</span></div>
-      <div class="VSFileReturn" @click="back()"><span>뒤로가기</span></div>
+          <div class="VSFileDetailButton" @click="editName(f.name, f.key)">
+            <img src="@/assets/icons/white/editing.png">
+          </div>
 
-      <div class="VSFile" v-for="(f, i) in fileList" :key="i">
+          <div class="VSFileDelButton" @click="deleteFile(f.name, f.key)">
+            <img src="@/assets/icons/white/trash_white.png">
+          </div>
 
-        <div class="VSFileThumnail" v-if="f.ex == 'mp3'" @dlbclick="send(f)">
-          <img src="@/assets/sample.png">
-        </div>
-        <div class="VSFolderThumnail" v-if="f.ex == 'dir'" @click="goToFolder(f.key)">
-          <img src="@/assets/icons/white/folder.png">
-        </div>
-        <div class="VSFileThumnail" v-else  @dblclick="send(f)">
-          <img :src="f.url">
+          <div class="VSFileName">
+            <p>{{f.name}}</p>
+          </div>
+
         </div> 
 
-        <div class="VSFileMoveButton" @click="deleteFile(f.name, f.key)">
-          <img src="@/assets/icons/white/redo.png">
-        </div>
-
-        <div class="VSFileDetailButton" @click="editName(f.name, f.key)">
-          <img src="@/assets/icons/white/editing.png">
-        </div>
-
-        <div class="VSFileDelButton" @click="deleteFile(f.name, f.key)">
-          <img src="@/assets/icons/white/trash_white.png">
-        </div>
-
-        <div class="VSFileName">
-          <p>{{f.name}}</p>
-        </div>
-
       </div> 
+    </div>
 
-    </div> 
-  </div>
+    <div class="VSResPlayer" v-if="isPlayerOn == true">
+      <div class="VSRNowPlay"><span>{{playName}}</span></div>
+      <button class="VSRPlayerControl" @click="playerOff()">닫기</button>
+      <audio class="VSRPlayerAudio" :src="playList" autoplay controls></audio>
+    </div>
     <!-- 파일리스트는 리스트방식, 갤러리방식 두가지로 제공하고싶으니 파일 정보 불러올때 염두해주셈!! 미리 변수값이 있으면 좋겠음!! -->
 
   </div>
@@ -130,7 +136,13 @@ export default {
       fileList : [],
 
       //업로드 관련
-      files : []
+      files : [],
+
+      //미리듣기 플레이어
+      isPlayerOn : false,
+      resListStatus : "VSResList",
+      playList : "", //현재 재생중인 파일의 경로
+      playName : "" // 현재 재생중인 파일의 이름
     }
   },
   methods : {
@@ -303,6 +315,18 @@ export default {
       }
     },
 
+    // bgm 미리듣기
+    playerOn(f) {
+      this.isPlayerOn = true;
+      this.resListStatus = 'VSResListOnPlayer';
+      this.playName = f.name;
+      this.playList = f.url;
+    },
+    playerOff() {
+      this.isPlayerOn = false;
+      this.resListStatus = 'VSResList';
+    },
+
     send(data){
       this.$refs.typeModal.show({
         msg : "선택한 리소스를 어떤걸로 쓸건데?",
@@ -329,6 +353,36 @@ export default {
   height: calc(100% - 80px);
   top: 80px;
   overflow: auto;
+}
+
+.VSResListOnPlayer {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 180px);
+  top: 80px;
+  overflow: auto;
+}
+
+.VSResPlayer {
+  position: relative;
+  width: calc(100% - 5px);
+  top: 80px;
+  height: 100px;
+  background: #4f4f4f;
+  border-radius: 25px;
+}
+
+.VSRPlayerControl {
+  float: right;
+  width: 40px;
+  border-radius: 10px;
+  background: #2872f9;
+  border: none;
+  color:white;
+}
+
+.VSRNowPlay {
+  float:left
 }
 
 .VSResourceTool {

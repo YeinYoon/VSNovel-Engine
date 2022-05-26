@@ -13,6 +13,7 @@
           </div>
           <div class="create_button_frame">
             <div class="create_button" @click="createPj()"><span>생성</span></div>
+            <button @click="$router.push('/')">취소</button>
           </div> <!-- 논 애니메이션 여기까지 -->
         </div> <!--여기까지-->
       </div>
@@ -41,7 +42,10 @@ export default {
       axios.post('/engine/pj/createNewPj', newProject)
       .then(async (result)=>{
         if(result.data!="err") {
-          var data = JSON.stringify({});
+          var data = JSON.stringify({ // 프로젝트 기본 구조
+            "startPlot":"",
+            "scenario":{}
+          });
           var fileName = `PJ${result.data.pjCode}.json`
           var properties = {type:'text/plain'};
           var file = new File([data], fileName, properties); //새로운 파일 객체 생성

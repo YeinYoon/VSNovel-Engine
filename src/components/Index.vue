@@ -1,19 +1,6 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
-<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
-
-  <!-- <div>
-    <input multiple ref="img" type="file" @change="onInputImage()">
-    <button @click="upload()">업로드</button>
-    {{percent}}
-    <button @click="getImg()">가져오기</button>
-    <img :src="imgUrl" alt="테스트이미지">
-    <button @click="delFile()">삭제</button>
-    <audio :src="mp3" controls></audio>
-    <button @click="getMp3()">오디오 가져오기</button>
-    <button @click="getFile()">파일가져와 읽기</button>
-    <input type="text" v-model="text">
-  </div> -->
+<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
 
   <!-- <div>
     타이핑 테스트
@@ -132,18 +119,8 @@
 
 </template>
 <script>
-const AWS = require('aws-sdk');
-const s3 = new AWS.S3({
-    region : "ap-northeast-2",
-    //추후 .env로 보안관리 할것
-    accessKeyId: 'AKIARKU2Y4IXVCR266PO', // 사용자의 AccessKey
-    secretAccessKey: 'YJDi8K4VSP5bPhdNcC6hB/xreuKH2885200KS+LB' // 사용자의 secretAccessKey
-});
-
 import ConfirmModal from './modal/ConfirmModal.vue'
 import axios from '../axios'
-// 서버 스토리지
-import storage from '../aws'
 export default {
   name: 'Index',
   created() {
@@ -178,13 +155,6 @@ export default {
       alramStatus : false,
       existNotice : "off",
       condition : "mainRouterViewLeft",
-
-      // 서버스토리지 파일 테스트용
-      img : "",
-      imgUrl : "",
-      mp3 : "",
-      text : "",
-      percent : "",
 
       //타이핑 애니메이션 테스트용
       content : "Hello, I'm Sample Text",
@@ -222,54 +192,6 @@ export default {
       this.txt = "";
       this.content = "is next Text!";
     },
-
-    // 서버스토리지 테스트
-    onInputImage() {
-      this.img = this.$refs.img.files[0];
-      console.log(this.img.name);
-    },
-    async upload() {
-      const params = {
-        Bucket: "vsnovel",
-        Key : '/' + this.img.name, // 저장되는 파일의 경로 및 이름
-        Body : this.img // 파일
-      }
-
-      s3.upload(params)
-      .on("httpUploadProgress", evt => {
-        this.percent = parseInt((evt.loaded * 100) / evt.total) + "%";
-      })
-      .send((err, data)=>{
-          if(err) {
-              console.log("파일 업로드 실패");
-              console.error(err);
-              return "err"
-          } else {
-              console.log("파일 업로드 성공", data);
-              return "ok"
-          }
-      })
-    },
-    async getImg() {
-      var result = await storage.getUrlList("test/");
-      console.log(result);
-      // this.imgUrl = result;
-    },
-    async getMp3() {
-      var result = await storage.getUrl('test/~~.mp3');
-      this.mp3 = result;
-    },
-    async delFile() {
-      await storage.deleteFile("test/프로젝트 관련.txt");
-    },
-    async getFile() {
-      var result = await storage.getJson("test/테스트.json");
-      var json = String.fromCharCode.apply(null, result);
-      console.log(json);
-      this.text = json;
-    },
-
-
 
     //로그아웃
     logout(){
