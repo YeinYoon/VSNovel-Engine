@@ -46,6 +46,10 @@
               <!-- 페이지에 선택지를 추가한 갯수만큼 반복문을 돌릴것. -->
               <div class="VpcPageSelect" v-if="page.type=='s' && page.nextPlot==undefined">
                 <span>{{j}}</span>
+                <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
+                  <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
+                  <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
+                </div>
                 <div class="VpcPageSels">
                   <div class="VpcPageSelTitle">선택지1</div>
                   <div class="VpcPageSelectPath">
