@@ -92,10 +92,6 @@
 
         <!-- 화자 -->
         
-        <div class="NavItems">
-          <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
-          <img src="@/assets/icons/white/checked.png" v-else @click="save()">
-        </div>
           <label for="name">
           <div v-if="editMod" class="SceneSpeakerName" contenteditable="true">
             <span id="name" ref="cngName">{{ Now.name }}</span>

@@ -54,8 +54,8 @@
                   <div class="VpcPageSelTitle">선택지1</div>
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select disabled>
-                        <option>{{page.select1.plot}}</option> <!-- 이 플롯의 고유번호 -->
+                      <select @change="selectOption($event)">
+                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">></div>
@@ -74,15 +74,15 @@
                   <div class="VpcPageSelTitle">선택지2</div>
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select disabled>
-                        <option>{{page.select2.plot}}</option> <!-- 이 플롯의 고유번호 -->
+                      <select @change="selectOption($event)">
+                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
-                        <option>
-                          {{page.select2.index }}
+                        <option v-for="(opt2, l) in k" :key="l">
+                          {{l }}
                         </option>
                       </select>
                     </div>
@@ -93,8 +93,8 @@
                   <div class="VpcPageSelTitle">선택지3</div>
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select disabled>
-                        <option>{{page.select3.plot}}</option> <!-- 이 플롯의 고유번호 -->
+                      <select @change="selectOption($event)">
+                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">></div>
@@ -211,6 +211,10 @@ export default {
       console.log(plot, 
       event.path[2].children[0].children[0])
       event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
+    },
+    selectOption(event){
+      console.log(event.target.value)
+      console.log(event.path[2].children[2])
     }
   },
 };
