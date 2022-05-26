@@ -10,9 +10,6 @@
           <div class="VpcToolPosition">
             <button>플롯 추가</button>
             <button>엔딩 추가</button>
-            <!-- <p>
-              {{VS}}
-            </p> -->
           </div>
 
         </div>
@@ -22,7 +19,7 @@
           :key="i"> <!-- 플롯 박스 -->
             <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
               <div class="VpcBlock_Title"><p>{{ i }}</p></div>
-              <button class="VpcBlock_Opener"><img src="@/assets/icons/white/editing.png"></button>
+              <button class="VpcBlock_Opener" @click="changePlotName($event, i)"><img src="@/assets/icons/white/editing.png"></button>
               <button class="VpcBlock_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
             </div>
 
@@ -36,7 +33,7 @@
               <!-- 일반 페이지는 단순 대화를 담고있음. -->
               <!-- 일반 페이지는 다음 페이지로의 이동만 함. (플롯간 이동X) -->
               <div v-for="(page, j) in plot" :key="j">
-              <div class="VpcPageNormal" @click="move(i, j)" v-if="page.type!='s' && page.nextPlot==undefined">
+              <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s' && page.nextPlot==undefined">
                 <span v-if="i==this.plot && j==this.index">현재 여기</span>
                 <span>{{j}}</span>
               </div>
@@ -191,15 +188,21 @@ export default {
           console.error(err);
         });
     },
-    move(plot, index) {
-      console.log(plot, index);
-      this.plot = plot;
-      this.index = index;
+    move(data) {
+      console.log(this.plot, this.index);
+      this.plot = data.plot;
+      this.index = data.index;
+      console.log(this.plot, this.index)
     },
     addPage(plot){
       console.log(plot+this.VS.scenario.시작)
       eval("this.VS.scenario."+plot+'.push({"bg": "","bgm": "","name": "이름","text": "대화","img": "","move": {"plot": "'+plot+'","index":0}})')
       console.log(this.VS.scenario);
+    },
+    changePlotName(event, plot){
+      console.log(plot, 
+      event.path[2].children[0].children[0])
+      event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
     }
   },
 };

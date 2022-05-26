@@ -200,7 +200,9 @@ export default {
       this.loadData()
     },
     loadData: function () {
-      console.log("load");
+      console.log(this.plot,this.index);
+      console.log(this.VS.scenario.시작[1])
+      console.log("this.VS.scenario."+this.plot+"["+this.index+"]")
       eval("this.Now=this.VS.scenario."+this.plot+"["+this.index+"]")
     },              
     nextScene: function () {
@@ -216,15 +218,17 @@ export default {
         eval("this.s3=this.VS.scenario."+this.plot+"["+this.index+"].select3")
         this.status = "select";
       }
-      this.loadData();
     },
     move: function(){
-      console.log(eval("this.VS.scenario."+this.plot+".length"))
-      if(eval("this.VS.scenario."+this.plot+".length=="+this.index))
-        this.$emit('move',{plot:eval("this.VS.scenario."+this.plot+"[0].nextPlot"),index:0})
-      else
+      console.log(eval("this.VS.scenario."+this.plot+".length-1=="+this.index))
+      if(eval("this.VS.scenario."+this.plot+".length-1=="+this.index)){
+        console.log(eval("this.VS.scenario."+this.plot+"[0].nextPlot"))
+        this.$emit('move',{plot:eval("this.VS.scenario."+this.plot+"[0].nextPlot"),index:1})
+      }
+      else{
+        console.log(this.plot, this.index+1)
         this.$emit('move',{plot:this.plot,index:this.index+1})
-      this.loadData()
+      }
     },
     select:function(plot,index){
       this.$emit('move',{plot,index})
@@ -235,9 +239,11 @@ export default {
           this.getPjInfo(this.pjCode);
     },
     index: function(){
+      console.log(this.index)
       this.loadData()
     },
     plot: function(){
+      console.log(this.plot)
       this.loadData()
     },
     VS:{
