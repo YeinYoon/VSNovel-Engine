@@ -34,8 +34,12 @@
               <!-- 일반 페이지는 다음 페이지로의 이동만 함. (플롯간 이동X) -->
               <div v-for="(page, j) in plot" :key="j">
               <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s' && page.nextPlot==undefined">
-                <span v-if="i==this.plot && j==this.index">현재 여기</span>
                 <span>{{j}}</span>
+                <div class="VpcPageTitle"><span>12312321412423</span></div>
+                <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
+                  <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
+                  <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
+                </div>
               </div>
               <!-- 선택자 페이지 -->
               <!-- 플레이어가 선택하면, 다른 플롯으로의 이동이 발생함 -->
@@ -477,6 +481,74 @@ export default {
 .VpcPageEnd:hover {
   background: #585858;
   cursor: pointer;
+}
+
+.VpcPageTitle {
+  position: absolute;
+  transform: translate(0%, -100%);
+  width: 70px;
+  margin-left: 20px;
+  /* background: white; */
+  /* height: 100%; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+  white-space: nowrap;
+}
+
+.VpcPageTitle span {
+  width: 100%;
+}
+
+.VpcPage_addPlotB {
+  display: inline;
+  position: absolute;
+  left: 80%;
+  transform: translate(-50%, -97%);
+  background: #6b6b6b;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  width: 25px;
+  height: 25px;
+  transition: all ease 0.2s;
+  object-fit: cover;
+}
+
+.VpcPage_addPlotB:hover {
+  background: #0084ff;
+}
+
+.VpcPage_addPlotB img {
+  position: relative;
+  top: -1px;
+  left: -1.3px;
+  width: 120%;
+}
+
+.VpcPage_Opener {
+  position: absolute;
+  display: inline;
+  left: 65%;
+  transform: translate(-50%, -97%);
+  width: 25px;
+  height: 25px;
+  background: #6b6b6b;
+  border-radius: 7px;
+  border: none;
+  transition: all ease 0.2s;
+  object-fit: cover;
+}
+
+.VpcPage_Opener:hover {
+  background: #0084ff;
+}
+
+.VpcPage_Opener img {
+  position: relative;
+  top: -1px;
+  left: 1px;
+  width: 100%; 
 }
 
 .VpcBlockControl {

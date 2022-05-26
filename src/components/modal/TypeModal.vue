@@ -5,17 +5,23 @@
     </div>
 
   <div v-bind:class="{[`Tmodal_frame`]:true}">
-    <div class="InputModalTitle"><p>{{msg}}</p></div>
-    <div class="Tmodal_type1_button" @click="inputType('bg')">
-      <span class="Tmodal_type_ok">배경</span>
-    </div>
-    <div class="Tmodal_type2_button" @click="inputType('img')">
-      <span class="Tmodal_type_ok">이미지</span>
+    <div class="Tmodal_inner">
+      <div class="TmodalTitle"><p>{{msg}}</p></div>
+      <div class="Tmodal_ButtonPosition">
+        <div class="Tmodal_type_button" @click="inputType('bg')">
+          <span class="Tmodal_type_ok">배경</span>
+        </div>
+        <div class="Tmodal_type_button" @click="inputType('img')">
+          <span class="Tmodal_type_ok">이미지</span>
+        </div>
+      </div>
+
+
+      <div class="Tmodal_cancel_button" @click="modalClose()">
+        <span class="Tmodal_cancel_ok">닫기</span>
+      </div>
     </div>
 
-    <div class="Tmodal_cancel_button" @click="modalClose()">
-      <span class="Tmodal_cancel_ok">닫기</span>
-    </div>
 
   </div>
 
@@ -72,26 +78,22 @@ export default {
   position: fixed;
   top: 45%;
   left: 50%;
-  width: 500px;
-  height: 170px;
+  width: 100%;
+  height: 200px;
   transform: translate(-50%, -50%);
 }
 
-.Tmodal_inputTag {
-  position: absolute;
+.TmodalTitle {
   left: 50%;
-  top: 55%;
-  transform: translate(-50%, -50%);
-}
-
-.TnputModalTitle {
-  left: 50%;
-  top: 50px;
+  top: 90px;
+  width: 100%;
   position: absolute;
   transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 .TnputModalTitle p{
+  width: 100%;
   color: white;
 }
 
@@ -103,37 +105,48 @@ export default {
 
 }
 
+.Tmodal_ButtonPosition {
+  width: 100%;
+  height: 60px;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  text-align: center;
+}
+
 .Tmodal_type_button{
-  width: 25%;
-  height: 20%;
+  position: relative;
+  width: 100px;
+  height: 40px;
   background: #2872f9;
   border-radius: 20px;
   z-index: 2;
-  display: table;
-  position: fixed;
-  top: 82%;
-  left: 35%;
-  transform: translate(-50%, -50%);
+  display: inline-block;
   cursor: pointer;
+  margin: 7px;
 }
+
 .Tmodal_cancel_button{
-  width: 25%;
-  height: 20%;
+  width: 15%;
+  height: 13%;
   background: #ff4c4c;
   border-radius: 20px;
   z-index: 2;
   display: table;
   position: fixed;
-  top: 82%;
-  left: 65%;
+  top: 18%;
+  left: 88%;
   transform: translate(-50%, -50%);
   cursor: pointer;
 }
-.Tmodal_save_ok{
-  display: table-cell;
-  vertical-align: middle;
+.Tmodal_type_ok{
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  color: white;
 }
 .Tmodal_cancel_ok{
   display: table-cell;
