@@ -34,8 +34,9 @@
               <!-- 일반 페이지는 다음 페이지로의 이동만 함. (플롯간 이동X) -->
               <div v-for="(page, j) in plot" :key="j">
               <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s' && page.nextPlot==undefined">
-                <span>{{j}}</span>
-                <div class="VpcPageTitle"><span>12312321412423</span></div>
+                <div class="VpcPageNormalIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
+                <div class="VpcPageNormalIndex" v-else><span>{{j}}</span></div>
+                <div class="VpcPageTitle"><span>1232131232132132132</span></div>
                 <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
                   <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
                   <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
@@ -44,8 +45,10 @@
               <!-- 선택자 페이지 -->
               <!-- 플레이어가 선택하면, 다른 플롯으로의 이동이 발생함 -->
               <!-- 페이지에 선택지를 추가한 갯수만큼 반복문을 돌릴것. -->
-              <div class="VpcPageSelect" v-if="page.type=='s' && page.nextPlot==undefined">
-                <span>{{j}}</span>
+              <div class="VpcPageSelect" v-if="page.type=='s' && page.nextPlot==undefined" @click="move({plot:i, index:j})">
+                <div class="VpcPageSelectIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
+                <div class="VpcPageSelectIndex" v-else><span>{{j}}</span></div>
+                <div class="VpcPageSelectTitle"><span>12312321412423</span></div>
                 <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
                   <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
                   <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
@@ -397,6 +400,38 @@ export default {
   word-break: break-all;
 }
 
+.VpcPageNormalIndex {
+  position: relative;
+  border-radius: 5px;
+  background: #838383;
+  width: 18px;
+  height: 23px;
+}
+
+.VpcPageNormalIndexSelected {
+  position: relative;
+  border-radius: 5px;
+  background: #2872f9;
+  width: 18px;
+  height: 23px;
+}
+
+.VpcPageNormalIndexSelected span {
+  position: absolute;
+  left: 47%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9em;
+}
+
+.VpcPageNormalIndex span {
+  position: absolute;
+  left: 47%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9em;
+}
+
 .VpcPageNormal:hover {
   background: #818181;
   cursor: pointer;
@@ -419,9 +454,60 @@ export default {
 .VpcPageSels {
   width: 100%;
   border-radius: 5px;
+  margin-top: 2px;
   padding: 2px;
   text-align: center;
   
+}
+
+.VpcPageSelectIndex {
+  position: relative;
+  top: 1px;
+  left: 2px;
+  border-radius: 5px;
+  background: #838383;
+  width: 18px;
+  height: 23px;
+}
+
+.VpcPageSelectIndex span {
+  position: absolute;
+  left: 47%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9em;
+}
+
+.VpcPageSelectIndexSelected {
+  position: relative;
+  top: 1px;
+  left: 2px;
+  border-radius: 5px;
+  background: #2872f9;
+  width: 18px;
+  height: 23px;
+}
+
+.VpcPageSelectIndexSelected span {
+  position: absolute;
+  left: 47%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9em;
+}
+
+.VpcPageSelectTitle {
+  position: absolute;
+  transform: translate(4%, -104%);
+  width: 70px;
+  margin-left: 20px;
+  /* background: white; */
+  /* height: 100%; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+  white-space: nowrap;
+  font-size: 0.9em;
 }
 
 .VpcPageSelTitle {
@@ -489,7 +575,7 @@ export default {
 
 .VpcPageTitle {
   position: absolute;
-  transform: translate(0%, -100%);
+  transform: translate(2%, -110%);
   width: 70px;
   margin-left: 20px;
   /* background: white; */
@@ -498,11 +584,12 @@ export default {
   overflow: hidden;
   word-break: break-all;
   white-space: nowrap;
+  font-size: 0.9em;
 }
 
-.VpcPageTitle span {
+/* .VpcPageTitle span {
   width: 100%;
-}
+} */
 
 .VpcPage_addPlotB {
   display: inline;

@@ -8,7 +8,7 @@
     </div>
     <!-- 백그라운드 끝. -->
 
-    <!-- 선택지 -->
+    <!-- 선택지 --> 
 
     <!-- 필요한곳에 주석을 해제하고 사용. -->
     <!-- SceneSelectBackground는 선택문이 화면상에 출력되었을때 뒤에 검은 배경을 깔아줌. -->
@@ -17,10 +17,29 @@
 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
-        <div class="SelectButton" v-if="s1.use" @click="select(s1.plot, s1.index)"><span>{{s1.text}}</span></div>
-        <div class="SelectButton" v-if="s2.use" @click="select(s2.plot, s2.index)"><span>{{s2.text}}</span></div>
-        <div class="SelectButton" v-if="s3.use" @click="select(s3.plot, s3.index)"><span>{{s3.text}}</span></div>
+
+        <div class="SelectButton" v-if="s1.use" @click="select(s1.plot, s1.index)">
+          <span>{{s1.text}}</span>
+        </div>
+        <div class="SelectVisibleButton"><img src="@/assets/icons/white/checked.png"></div>
+
+        <div class="SelectButton" v-if="s2.use" @click="select(s2.plot, s2.index)">
+          <span>{{s2.text}}12312312321323</span>
+        </div>
+        <div class="SelectVisibleButton"><img src="@/assets/icons/white/checked.png"></div>
+
+        <div class="SelectButton" v-if="s3.use" @click="select(s3.plot, s3.index)">
+          <span>{{s3.text}}12312313111111111111111111213213123213123</span>
+        </div>
+        <div class="SelectVisibleButtonDisable"><img src="@/assets/icons/white/close.png"></div>
+
+        <div class="SelectEditingButton">
+          <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
+          <img src="@/assets/icons/white/checked.png" v-else @click="save()">
+        </div>
       </div>
+
+
     </div>
 
     <!-- 선택지 끝. -->
@@ -66,7 +85,6 @@
     <!-- 저장 슬롯 메뉴 끝. -->
 
     <!-- 좌측 상단 햄버거메뉴 -->
-    <!-- 모바일 환경에서만 나올건지". PC에서도 반응형으로 제공할지는 선택 -->
       <div class="ViewerNav">
         <div class="NavItems">
           <img src="@/assets/icons/white/downcloud.png" @click="getVS()">
@@ -91,11 +109,11 @@
         <!-- 대사창 툴바 -->
 
         <!-- 화자 -->
-        
-        <div class="NavItems">
-          <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
-          <img src="@/assets/icons/white/checked.png" v-else @click="save()">
-        </div>
+          <div class="ScriptEditingButton">
+            <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
+            <img src="@/assets/icons/white/checked.png" v-else @click="save()">
+          </div>
+
           <label for="name">
           <div v-if="editMod" class="SceneSpeakerName" contenteditable="true">
             <span id="name" ref="cngName">{{ Now.name }}</span>
@@ -413,6 +431,7 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
   width: 50%;
   z-index: 10;
 }
@@ -420,23 +439,22 @@ export default {
 .SelectButton {
   position: relative;
   display: inline-block;
-  width: 100%;
+  width: 80%;
   height: 100px;
   background: #2872f9;
   box-shadow: 0px 0px 10px #252525;
   border-radius: 50px;
-  margin: 15px 0px 15px 0px;
+  margin: 10px 0px 10px 0px;
   cursor: pointer;
-  display: table;
+  overflow: hidden;
 }
 
 .SelectButton span {
-  position: relative;
-  display: table-cell;
-  vertical-align: middle;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
   color: white;
-  word-break: break-all;
 }
 
 .ViewerNav {
@@ -456,6 +474,7 @@ export default {
   margin: 2px;
   display: table;
   transition: background-color 0.3s ease-out 100ms;
+  cursor: pointer;
 }
 
 .NavItems:hover {
@@ -497,6 +516,114 @@ export default {
   height: 50%;
   z-index: 2;
 }
+
+.ScriptEditingButton {
+  position: absolute;
+  left: calc(100% - 50px);
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 10px;
+  background: #2872f9;
+  transition: all ease 0.2s;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.ScriptEditingButton:hover {
+  background: #0084ff;
+  opacity: 1;
+}
+
+.ScriptEditingButton img {
+  position: absolute;
+  width: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-44%, -50%);
+}
+
+.SelectEditingButton {
+  position: absolute;
+  left: calc(50% - 55px);
+  width: 100px;
+  height: 50px;
+  border-radius: 10px;
+  margin: 10px;
+  background: #868686;
+  transition: all ease 0.2s;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.SelectEditingButton:hover {
+  background: #0084ff;
+  opacity: 1;
+}
+
+.SelectEditingButton img {
+  position: absolute;
+  width: 30%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-44%, -50%);
+}
+
+.SelectVisibleButton {
+  position: absolute;
+  left: calc(0% - 35px);
+  transform: translate(0%, -300%);
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 10px;
+  background: #0084ff;
+  transition: all ease 0.2s;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.SelectVisibleButton:hover {
+  background: #868686;
+  opacity: 1;
+}
+
+.SelectVisibleButton img {
+  position: absolute;
+  width: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.SelectVisibleButtonDisable {
+  position: absolute;
+  left: calc(0% - 35px);
+  transform: translate(0%, -300%);
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 10px;
+  background: #ff4c4c;
+  transition: all ease 0.2s;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.SelectVisibleButtonDisable:hover {
+  background: #868686;
+  opacity: 1;
+}
+
+.SelectVisibleButtonDisable img {
+  position: absolute;
+  width: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 
 .ScriptToolBar {
   position: absolute;
