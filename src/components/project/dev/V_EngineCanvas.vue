@@ -69,10 +69,6 @@
     <!-- 모바일 환경에서만 나올건지". PC에서도 반응형으로 제공할지는 선택 -->
       <div class="ViewerNav">
         <div class="NavItems">
-          <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
-          <img src="@/assets/icons/white/checked.png" v-else @click="save()">
-        </div>
-        <div class="NavItems">
           <img src="@/assets/icons/white/downcloud.png" @click="getVS()">
         </div>
         <div class="NavItems">
@@ -96,6 +92,10 @@
 
         <!-- 화자 -->
         
+        <div class="NavItems">
+          <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
+          <img src="@/assets/icons/white/checked.png" v-else @click="save()">
+        </div>
           <label for="name">
           <div v-if="editMod" class="SceneSpeakerName" contenteditable="true">
             <span id="name" ref="cngName">{{ Now.name }}</span>
