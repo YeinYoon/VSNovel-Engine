@@ -29,7 +29,7 @@
         <div class="SelectVisibleButton"><img src="@/assets/icons/white/checked.png"></div>
 
         <div class="SelectButton" v-if="s3.use" @click="select(s3.plot, s3.index)">
-          <span>{{s3.text}}12312313111111111111111111213213123213123</span>
+          <span>{{s3.text}}나는 야자를 하기싫다고 임덕성에게 말하고 싶다</span>
         </div>
         <div class="SelectVisibleButtonDisable"><img src="@/assets/icons/white/close.png"></div>
 
@@ -455,6 +455,8 @@ export default {
   transform: translate(-50%, -50%);
   text-align: center;
   color: white;
+  white-space: normal;
+  word-break: keep-all;
 }
 
 .ViewerNav {
@@ -593,7 +595,7 @@ export default {
   width: 50%;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-47%, -50%);
 }
 
 .SelectVisibleButtonDisable {
