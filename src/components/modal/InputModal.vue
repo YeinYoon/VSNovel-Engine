@@ -37,7 +37,9 @@ export default {
       type : "",
 
       //이름 변경 관련
-      key : ""
+      key : "",
+      preName : "",
+      ex : "",
     }
   },
   methods : {
@@ -54,7 +56,9 @@ export default {
       switch(this.type) { // 타입에 따른 행동 코드
 
         case "rename" :
-          this.input = option.preName;
+          this.preName = option.preName.split('.');
+          this.ex = this.preName[1];
+          this.input = this.preName[0];
           this.key = option.key;
           break
 
@@ -75,7 +79,7 @@ export default {
             break;
 
           case "rename" :
-            this.$emit('inputNewName', {newName : this.input, key : this.key});
+            this.$emit('inputNewName', {newName : this.input + '.' + this.ex, key : this.key});
             this.modalClose();
             break;
 

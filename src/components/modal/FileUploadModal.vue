@@ -48,12 +48,23 @@
       
 
     </div>
-      
-    <div class="Fmodal_save_button" @click="fileUpload()">
+    
+
+    <div class="Fmodal_save_button" v-if="files.length == 0">
+      <span class="Fmodal_save_ok">파일을 추가해주세요</span>
+    </div>
+    <div class="Fmodal_save_button" @click="fileUpload()" v-else-if="uploading == false">
       <span class="Fmodal_save_ok">업로드</span>
     </div>
 
-    <div class="Fmodal_cancel_button" @click="modalClose()">
+    <div class="Fmodal_save_button" v-else-if="uploading == true">
+      <span class="Fmodal_save_ok">업로드 중...</span>
+    </div>
+    <div class="Fmodal_save_button" @click="modalClose()" v-else-if="uploading == 'ok'">
+      <span class="Fmodal_save_ok">닫기</span>
+    </div>
+
+    <div class="Fmodal_cancel_button" @click="modalClose()" v-if="uploading == false">
       <span class="Fmodal_cancel_ok">취소</span>
     </div>
 
@@ -82,6 +93,7 @@ export default {
 
       currentUpload : "",
       progress : "",
+      uploading : false,
 
       files : []
     }
@@ -94,6 +106,9 @@ export default {
       this.progress = '-'
     },
     show(option = {}) {
+      if(this.uploading == "ok") {
+        this.uploading = false;
+      }
       this.fModalState = true;
       this.fModalSize = option.size;
       this.path = option.path;
@@ -141,6 +156,7 @@ export default {
         s3.upload(params)
         .on("httpUploadProgress", evt => {
           this.progress = parseInt((evt.loaded * 100) / evt.total) + "%";
+          this.uploading = true;
         })
         .send((err, data)=>{
           if(err) {
@@ -150,12 +166,13 @@ export default {
           } else {
             console.log("파일 업로드 성공", data);
             this.$emit('uploadOk');
+            this.uploading = "ok";
           }
         })
-        
-        this.progress = 0;
+        this.progress = 0; 
       }
 
+      
     }
   },
 }
