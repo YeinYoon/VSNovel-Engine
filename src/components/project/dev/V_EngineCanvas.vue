@@ -526,7 +526,7 @@ export default {
   height: 30px;
   border-radius: 10px;
   margin: 10px;
-  background: #2872f9;
+  background: #4b4b4b;
   transition: all ease 0.2s;
   cursor: pointer;
   opacity: 0.8;
