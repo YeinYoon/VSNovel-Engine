@@ -47,28 +47,31 @@ export default {
   },
   methods : {
     sideBarClick() {
-      if(this.$store.state.sideBar == false) {
+      if(this.$store.state.sideMenuState != 'N') {
 
-        if(this.sideBarStatus == 'Main') {
-          this.$store.commit('sideMenuOnMain');
-          this.$store.commit('sideAnimationFixed');
-        }
-        else {
-          this.$store.commit('sideMenuOn');
-          this.$store.commit('sideAnimationFixed');
-        }
+        if(this.$store.state.sideBar == false) {
 
-      } else {
+          if(this.sideBarStatus == 'Main') {
+            this.$store.commit('sideMenuOnMain');
+            this.$store.commit('sideAnimationFixed');
+          }
+          else {
+            this.$store.commit('sideMenuOn');
+            this.$store.commit('sideAnimationFixed');
+          }
 
-        if(this.sideBarStatus == 'Main') {
-          this.$store.commit('sideMenuOffMain');
-          this.$store.commit('sideAnimationFixed');
-        }
-        else {
-          this.$store.commit('sideMenuOff');
-          this.$store.commit('sideAnimationFixed');
-        }
+        } else {
 
+          if(this.sideBarStatus == 'Main') {
+            this.$store.commit('sideMenuOffMain');
+            this.$store.commit('sideAnimationFixed');
+          }
+          else {
+            this.$store.commit('sideMenuOff');
+            this.$store.commit('sideAnimationFixed');
+          }
+
+        }
       }
     },
     send(data){
