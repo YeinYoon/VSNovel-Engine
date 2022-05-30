@@ -1,4 +1,5 @@
 <template>
+<ConfirmModal ref="confirmModal"></ConfirmModal>
     <div class="SBackgroundMain">
         <!-- 유저정보 헤더 -->
         <div class="UserInfo">
@@ -64,6 +65,9 @@ import ConfirmModal from '../../modal/ConfirmModal.vue'
 import axios from '../../../axios'
 export default {
     name:'Side_MainScreen',
+    created() {
+        this.getNoticeList();
+    },
     data() {
         return{
             noticeList : [],
