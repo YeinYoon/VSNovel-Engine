@@ -25,6 +25,7 @@ import VEngineInner from './V_EngineInner.vue';
 export default {
     name : "devPage",
     created() {
+        this.$store.commit('cngSideMenu', 'N');
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
     },

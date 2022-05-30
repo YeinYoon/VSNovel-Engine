@@ -25,7 +25,7 @@
           <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg'">
             <img :src="f.url" @click="send(f.url)">
           </div>
-          <div class="VSFileThumnail" v-else-if="f.ex == 'mp3'">
+          <div class="VSFileThumnail" v-else-if="f.ex == 'mp3'" @dblclick="send(f)" @click="playerOn(f)">
             <img src="@/assets/sample.png">
           </div>
           <div class="VSFolderThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
