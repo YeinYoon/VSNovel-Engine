@@ -15,7 +15,7 @@
   </div>
 
   <div v-else>
-    메인화면 사이드
+    <SideMainScreen></SideMainScreen>
   </div>
 
   <div class="sideBarButton" @click="sideBarClick()">
@@ -28,6 +28,7 @@
 import VsideCoop from '../side/Visual/V_side_coop.vue'
 import VsideResource from '../side/Visual/V_side_resource.vue'
 import VsideSetting from '../side/Visual/V_side_setting.vue'
+import SideMainScreen from '../side/index/side_mainscreen.vue'
 export default {
   name : "SideBar",
   data() {
@@ -38,7 +39,8 @@ export default {
   components : {
     VsideCoop,
     VsideResource,
-    VsideSetting
+    VsideSetting,
+    SideMainScreen,
   },
   props:{
     main: Boolean,
