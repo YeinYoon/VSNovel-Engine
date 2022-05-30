@@ -9,7 +9,7 @@
         <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
           <div class="VpcToolPosition">
             <button>플롯 추가</button>
-            <button>엔딩 추가</button>
+            <button>시작 플롯</button>
           </div>
 
         </div>
@@ -61,7 +61,6 @@
                         <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
-                    <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
                         <option>
@@ -81,7 +80,6 @@
                         <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
-                    <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
                         <option v-for="(opt2, l) in k" :key="l">
@@ -100,7 +98,6 @@
                         <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
                       </select>
                     </div>
-                    <div class="VpcPageSelectArrow">></div>
                     <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
                       <select>
                         <option>
@@ -213,7 +210,7 @@ export default {
     changePlotName(event, plot){
       console.log(plot, 
       event.path[2].children[0].children[0])
-      event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
+      event.path[2].children[0].children[0].innerHTML=`<input type='text' class="BlockTitleCngInput" value=${event.path[2].children[0].children[0].innerText}>`
     },
     selectOption(event){
       console.log(event.target.value)
@@ -459,6 +456,7 @@ export default {
   width: 100%;
   border-radius: 5px;
   margin-top: 2px;
+  margin-left: 2px;
   padding: 2px;
   text-align: center;
   
@@ -522,9 +520,9 @@ export default {
 
 .VpcPageSelectPath {
   display: inline-block;
-  width: 65%;
+  width: 70%;
   text-align: center;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .VpcPageSelectArrow {
@@ -537,14 +535,25 @@ export default {
 
 .VpcPageSelOrigin {
   display: inline-block;
+
 }
 
 .VpcPageSelOrigin select{
   border: none;
-  width: 40px;
+  width: 45px;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
+  appearance: none;
+  text-align-last:center;
+  padding-right: 5px;
+}
+
+.VpcPageSelOrigin select option{
+   text-align-last: center;
+   text-align: center;
+   -ms-text-align-last: center;
+   -moz-text-align-last: center;
 }
 
 .VpcPageSelChange {
@@ -553,7 +562,7 @@ export default {
 
 .VpcPageSelChange select{
   border: none;
-  width: 40px;
+  width: 45px;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -667,4 +676,19 @@ export default {
 .VpcBlockControl button:hover {
   background: #0084ff;
 }
+
+.BlockTitleCngInput {
+  position: relative;
+  top: -2px;
+  border: none;
+  border-radius: 5px;
+  width: 90%;
+  background: #6b6b6b;
+  color: white;
+  border: 1px #2872f9 solid;
+  font-size: 0.9em;
+  /* font-weight: 600; */
+
+}
+
 </style>

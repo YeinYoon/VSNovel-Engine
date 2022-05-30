@@ -9,55 +9,11 @@
   </div> -->
 
   <div v-bind:class="{'enginebackground':true}">
-    <div class="UserHeader"> <!-- 유저정보 헤더 -->
-      <div class="UserProfileFrame">
-        <div class="UserProfileImg">
-          <img src="@/assets/icons/vsn_engine.png">
-        </div>
-        <div class="UserProfileInfo">
-          {{this.$store.state.userNickname}}
-        </div>
-        <div class="UserProfileDeco">
-        </div>
-      </div>
-      <div class="UserSignFrame">
-        <router-link to="/signin" v-if="$store.state.userNickname == null"><button>로그인</button></router-link>
-        <button v-else @click="logout()">로그아웃</button>
-      </div>
-    </div>
 
-    <div class="header"> <!--타이틀과 로고-->
+    <div class="header">
       <img class="header_icon" src="..\assets\icons/vsn_engine.png"><span class="header_title">VSN Engine</span>
     </div>
-    <div class="invite_center">
-      <div @click="alramCenterToggle()" class="invite_box">
-        <img class="invite_icon" src="../assets/icons/white/notification.png">
-      </div>
-      <div v-bind:class="{[`invite_counter_${existNotice}`]:true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
-        <span>{{noticeList.length}}</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
-      </div>
-      <div v-if="alramStatus">
-        <div v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
-          <!-- invite messeage를 포문 돌릴것 -->
 
-          <div v-if="noticeList.length > 0">
-
-            <div v-for="n in noticeList" :key="n.SCHE_CODE">
-              <div class="invite_message">
-                {{n.SCHE_STDATE}}
-                <div>{{n.SCHE_CONTENT}}</div>
-                <button class="invite_button" @click="PjAccept(n.PROJ_CODE)">승인</button>
-                <button class="invite_button" @click="PjRefuse(n.PROJ_CODE)">거절</button>
-              </div>
-              <hr>
-            </div>
-
-          </div>
-          <div v-else>새로운 알림이 없습니다.</div>
-
-        </div>
-      </div>
-    </div>
     <div class="section"> <!--뉴프로젝트와 로드프로젝트-->
       <div class="newpj_part">
         <div class="newpj_icon">
@@ -227,75 +183,6 @@ export default {
           console.error(err);
       })
     },
-
-    // 도착한 알림 목록 가져오기
-    getNoticeList() {
-      axios.get('/engine/team/getNoticeList')
-      .then((result)=>{
-        if(result.data == "err") {
-          console.log("ERR : 알림 불러오기 실패")
-        } else {
-          this.noticeList = result.data;
-          if(result.data.length > 0) {
-            this.existNotice = "on";
-          } else {
-            this.existNotice = "off";
-          }
-        }
-      })
-      .catch((err)=>{
-        console.error(err);
-      });
-    },
-
-    // 프로젝트 초대 수락
-    async PjAccept(pjCode) {
-      var accept = await this.$refs.confirmModal.show({
-        msg : "초대를 수락하시겠습니까?",
-        size : "normal",
-        btn1 : "수락",
-        btn2 : "취소"
-      });
-      if(accept) { 
-        axios.post('/engine/team/PjAccept', {pjCode : pjCode})
-        .then((result)=>{
-          if(result.data == "ok") {
-            this.getPjList();
-            this.getNoticeList();
-          } else {
-            this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
-          }
-        })
-        console.log("초대 수락");
-      } else {
-        console.log("초대 보류");
-      }
-    },
-    // 프로젝트 초대 거절
-    async PjRefuse(pjCode) {
-      var refuse = await this.$refs.confirmModal.show({
-        msg : "초대를 거절하시겠습니까?",
-        size : "normal",
-        btn1 : "수락",
-        btn2 : "취소"
-      });
-      if(refuse) { 
-        axios.post('/engine/team/PjRefuse', {pjCode : pjCode})
-        .then((result)=>{
-          if(result.data == "err") {
-            this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});
-          } else {
-            this.getNoticeList();
-          }
-        })
-      } else {
-        console.log("거절 보류");
-      }
-    },
-
-    alramCenterToggle() {
-      this.alramStatus = !this.alramStatus;
-    }
   },
   components : {
     ConfirmModal
@@ -313,6 +200,7 @@ export default {
   background:#353535;
   overflow: hidden;
   color: white;
+  padding: 60px;
 }
 .UserHeader {
   position: relative;
@@ -321,152 +209,10 @@ export default {
   background: #424242;
 }
 
-.UserProfileFrame {
-  position: absolute;
-  width: 250px;
-  height: 60px;
-  border-radius: 15px;
-  top: 7.5px;
-  left: 10px;
-  padding: 10px;
-  background: #505050;
-}
-.UserProfileImg {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-}
-.UserProfileImg img{
-  width: 100%;
-  object-fit: cover;
-}
-
-.UserProfileInfo {
-  position: relative;
-  left: 50px;
-  font-size: 1.1em;
-}
-.UserProfileDeco {
-  position: absolute;
-  width: 170px;
-  height: 10px;
-  background: #2872f9;
-  border-radius: 10px;
-  left: 60px;
-}
-
-.UserSignFrame {
-  float: right;
-  position: relative;
-  top: 20px;
-  right: 20px ;
-}
-.UserSignFrame button{
-  background: #2872f9;
-  border: none;
-  border-radius: 15px;
-  width: 100px;
-  height: 35px;
-  color: white;
-}
-
-.invite_center{
-  float: right;
-  position: relative;
-  top: -122px;
-  left: -160px;
-  z-index: 11; 
-}
-.invite_box{
-  position: relative;
-  width: 50px;
-  height: 50px;
-  background: #2872f9;
-  border-radius: 15px;
-  z-index: 12;
-  cursor: pointer;
-}
-.invite_box:hover{
-  opacity: 0.9;
-}
-
-.invite_icon{
-  position: relative;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 30px;
-  height: 30px;
-}
-.invite_counter_on{
-  position: absolute;
-  top: -10%;
-  left: 80%;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #ff4c4c;
-  z-index: 12 ;
-}
-.invite_counter_on span{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.95em;
-}
-.invite_counter_off{
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #ff4c4c;
-  visibility: hidden;
-}
-.invite_counter_off span{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  visibility: hidden;
-}
-.invite_modal_on{
-  position: absolute;
-  left: -320%;
-  top: 40px;
-  padding: 10px;
-  border-radius: 15px;
-  width: 220px;
-  max-height: 300px;
-  overflow-y: auto;
-  background: #797979;
-  z-index: 11;
-}
-.invite_modal_off{
-  position: absolute;
-  left: -260%;
-  top: 40px;
-  padding: 10px;
-  border-radius: 15px;
-  width: 170px;
-  height: 120px;
-  overflow: auto;
-  background: #424242;
-  z-index: 11;
-  visibility: hidden;
-}
-.invite_button {
-  border:none;
-  background: #2872f9;
-  color: white;
-  border-radius: 5px;
-  margin: 2px;
-}
 .header{
   position: relative;
-  left: 130px;
-  top: 30px;
+  /* left: 130px;
+  top: 60px; */
   display: table;
 }
 .header_icon{
@@ -483,10 +229,9 @@ export default {
 }
 .section{
   position: relative;
-  top: 80px;
-  left: 130px;
+  top: 50px;
   width: calc(100%);
-  height: calc(100vh - 100px);
+  height: calc(100vh - 110px);
   /* background: white; */
 }
 /*새 프로젝트*/
@@ -520,7 +265,7 @@ export default {
   position: relative;
   top: 55px;
   left: 45px;
-  width: calc(100% - 25%);
+  width: calc(100%);
   min-height: 60px;
   height: auto;
   border-radius: 20px;
@@ -569,7 +314,7 @@ export default {
   position: relative;
   top: 20px;
   left: 45px;
-  width: calc(100% - 25%);
+  width: calc(100%);
   height: calc(100% - 280px);
   border-radius: 20px;
   background: #2a2a2a;
