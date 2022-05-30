@@ -92,4 +92,23 @@ router.post('/PjRefuse', async (req,res)=>{
     }
 })
 
+//현 프로젝트에 참여중인 멤버 목록
+router.post('/memberList', async (req, res)=>{
+    var memberList = await db.execute(`SELECT * FROM tbl_cooperation
+    WHERE proj_code=${req.body.pjCode}`);
+    if(memberList == "err") {
+        res.send("err");
+    } else {
+        var list = [];
+        memberList.rows.forEach((item)=>{
+            if(item.USER_ID == `${req.user.USER_ID}`) {
+                list.unshift(item);
+            } else {
+                list.push(item)
+            }
+        })
+        res.send(list);
+    }
+})
+
 module.exports = router;
