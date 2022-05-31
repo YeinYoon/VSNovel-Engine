@@ -24,17 +24,17 @@
         <!--알림센터-->
         <div class="AlertCenter"> 
             <div class="invite_center">
+
                 <div @click="alramCenterToggle()" class="invite_box">
                     <img class="invite_icon" src="@/assets/icons/white/notification.png">
+                    <div v-bind:class="{[`invite_counter_${existNotice}`]:true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
+                        <span>{{noticeList.length}}</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
+                    </div>
                 </div>
-                <div v-bind:class="{[`invite_counter_${existNotice}`]:true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
-                    <span>{{noticeList.length}}</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
-                </div>
-                    <div v-if="alramStatus" v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
-                    <!-- invite messeage를 포문 돌릴것 -->
+
+                <div v-if="alramStatus" v-bind:class="{'invite_modal_on':true}">
 
                     <div v-if="noticeList.length > 0">
-
                         <div v-for="n in noticeList" :key="n.SCHE_CODE">
                         <div class="invite_message">
                             {{n.SCHE_STDATE}}
@@ -44,10 +44,12 @@
                         </div>
                         <hr>
                         </div>
-
                     </div>
+
                     <div v-else>새로운 알림이 없습니다.</div>
-                    <div class="">ㅁㄴㄹ</div>
+
+                    <div class="" @click="AlarmHistory()" v-if="AlarmTap == true">지난 알림 보기</div>
+                    <div class="" @click="AlarmHistory()" v-if="AlarmTap == false">돌아가기</div>
                     </div>
 
             </div>
@@ -80,6 +82,7 @@ export default {
             alramStatus : false,
             existNotice : "off",
             CalendarStatus : false,
+            AlarmTap : true,
         }
     },
     methods: {
@@ -165,11 +168,15 @@ export default {
         },
 
         alramCenterToggle() {
-        this.alramStatus = !this.alramStatus;
+            this.alramStatus = !this.alramStatus;
         },
 
         CalendarToggle() {
-        this.CalendarStatus = !this.CalendarStatus;
+            this.CalendarStatus = !this.CalendarStatus;
+        },
+
+        AlarmHistory() {
+            this.AlarmTap = !this.AlarmTap;
         }
     },
 
@@ -286,10 +293,13 @@ export default {
 }
 
 .invite_counter_on{
-  position: relative;
+  position: absolute;
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  left: 60%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   background: #ff4c4c;
 }
 
