@@ -38,14 +38,14 @@
                 <div class="VpcPageNormalIndex" v-else><span>{{j}}</span></div>
                 <div class="VpcPageTitle"><span>1232131232132132132</span></div>
                 <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
-                  <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
+                  <button class="VpcPage_Opener" @click="edit"><img src="@/assets/icons/white/editing.png"></button>
                   <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
                 </div>
               </div>
               <!-- 선택자 페이지 -->
               <!-- 플레이어가 선택하면, 다른 플롯으로의 이동이 발생함 -->
               <!-- 페이지에 선택지를 추가한 갯수만큼 반복문을 돌릴것. -->
-              <div class="VpcPageSelect" v-if="page.type=='s' && page.nextPlot==undefined" @click="move({plot:i, index:j})">
+              <div class="VpcPageSelect" v-if="page.type=='s'" @click="move({plot:i, index:j})">
                 <div class="VpcPageSelectIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
                 <div class="VpcPageSelectIndex" v-else><span>{{j}}</span></div>
                 <div class="VpcPageSelectTitle"><span>12312321412423</span></div>
@@ -53,65 +53,25 @@
                   <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
                   <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
                 </div>
-                <div class="VpcPageSels">
-                  <div class="VpcPageSelTitle">선택지1</div>
+                <div class="VpcPageSels" v-for="(select,k) in page.select" :key="k">
+                  <div class="VpcPageSelTitle">선택지{{k+1}}</div>
                   <div class="VpcPageSelectPath">
-                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select @change="selectOption($event)">
-                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
+                    <div class="VpcPageSelOrigin">
+                      <select @change="selectOptionPlot($event,i,j,k)">
+                        <option v-for="(sPlot, l) in VS.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
                       </select>
                     </div>
-                    <div class="VpcPageSelectArrow">></div>
-                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
-                      <select>
-                        <option>
-                          {{page.select1.index }}
+                    <div class="VpcPageSelectArrow">,</div>
+                    <div class="VpcPageSelChange">
+                      <select @change="selectOptionIndex($event,i,j,k)">
+                        <option v-for="(num,l) in returnIndex(select.plot)" :key="l" :selected="select.index==l+1">
+                          {{l+1}}
                         </option>
                       </select>
                     </div>
                   </div>
                 </div>
-
-                <div class="VpcPageSels">
-                  
-                  <div class="VpcPageSelTitle">선택지2</div>
-                  <div class="VpcPageSelectPath">
-                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select @change="selectOption($event)">
-                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
-                      </select>
-                    </div>
-                    <div class="VpcPageSelectArrow">></div>
-                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
-                      <select>
-                        <option v-for="(opt2, l) in k" :key="l">
-                          {{l }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="VpcPageSels">
-                  <div class="VpcPageSelTitle">선택지3</div>
-                  <div class="VpcPageSelectPath">
-                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select @change="selectOption($event)">
-                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
-                      </select>
-                    </div>
-                    <div class="VpcPageSelectArrow">></div>
-                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
-                      <select>
-                        <option>
-                          {{page.select3.index }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
+             </div>              
             </div><!-- 플롯 블록 이너 끝 -->
               <div class="VpcBlockControl">
                 <button>플롯 삭제</button>
@@ -166,7 +126,7 @@ export default {
         eval("this.VS.scenario."+this.plot+"["+this.index+"].img="+"'"+url+"'")
         console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"]"))
       }
-    }
+    },
   },
   methods: {
     getCloudVS(VS){
@@ -182,7 +142,7 @@ export default {
         this.VS = await JSON.parse(VS);
         this.plot = JSON.parse(VS).startPlot;
         this.index=1;
-        console.log(this.VS)
+        console.log(this.VS.scenario)
       }
     },
     deletePj() {
@@ -215,9 +175,26 @@ export default {
       event.path[2].children[0].children[0])
       event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
     },
-    selectOption(event){
-      console.log(event.target.value)
-      console.log(event.path[2].children[2])
+    selectOptionPlot(event,plot,index,number){
+      console.log(event.target.value, plot, index, number)
+      this.VS.scenario[plot][index].select[number].plot=event.target.value
+      event.path[2].children[2].children[0].length = 0;
+      for(let i=1;i<this.VS.scenario[event.target.value].length;i++){
+        var opt = document.createElement("option")
+        opt.value = opt.innerHTML = i;
+        event.path[2].children[2].children[0].appendChild(opt)
+      }      
+    },
+    selectOptionIndex(event,plot,index,number){
+      console.log(event.path[2].children[0].children[0].value, event.target.value)
+      this.VS.scenario[plot][index].select[number].index=event.target.value
+      console.log(this.VS.scenario[plot][index].select[number].index)
+    },
+    returnIndex(plot){
+      const result = this.VS.scenario[plot].length-1//new Function("this.VS.scenario.'"+plot+"'.length")
+      console.log(plot);
+      console.log(result);
+      return result
     }
   },
 };
