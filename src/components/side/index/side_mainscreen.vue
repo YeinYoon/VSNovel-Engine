@@ -4,18 +4,19 @@
         <div class="UserInfo">
             <div class="UserProfileFrame">
                 <div class="UserProfileImg">
-                <img src="@/assets/icons/vsn_engine.png">
+                    <img src="@/assets/icons/vsn_engine.png">
                 </div>
                 <div class="UserProfileInfo">
-                {{this.$store.state.userNickname}}
+                    {{this.$store.state.userNickname}}
                 </div>
                 <div class="UserProfileDeco">
                 </div>
+                <div class="UserSignFrame">
+                    <router-link to="/signin" v-if="$store.state.userNickname == null"><button>로그인</button></router-link>
+                    <button v-else @click="logout()">로그아웃</button>
+                </div>
             </div>
-            <div class="UserSignFrame">
-                <router-link to="/signin" v-if="$store.state.userNickname == null"><button>로그인</button></router-link>
-                <button v-else @click="logout()">로그아웃</button>
-            </div>
+
         </div>
         <!--유저정보 헤더 끝 -->
 
@@ -28,8 +29,7 @@
                 <div v-bind:class="{[`invite_counter_${existNotice}`]:true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
                     <span>{{noticeList.length}}</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
                 </div>
-                <div v-if="alramStatus">
-                    <div v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
+                    <div v-if="alramStatus" v-bind:class="{'invite_modal_on':true}"><!-- 초대가 없다면 modal_off 로 변경 -->
                     <!-- invite messeage를 포문 돌릴것 -->
 
                     <div v-if="noticeList.length > 0">
@@ -46,14 +46,20 @@
 
                     </div>
                     <div v-else>새로운 알림이 없습니다.</div>
-
+                    <div class="">ㅁㄴㄹ</div>
                     </div>
-                </div>
+
             </div>
         </div>
         <!-- 알림센터 끝 -->
 
-        <div class="Calendar">
+        <div class="CalendarCenter">
+            <div class="CalendarInner">
+                <div class="CalendarBtn" @click="CalendarToggle()"><img src="@/assets/icons/white/notification.png"></div>
+                <div class="CalendarModal" v-if="CalendarStatus">
+                    <div>123</div>
+                </div>              
+            </div>
 
         </div>
     </div>
@@ -69,6 +75,7 @@ export default {
             noticeList : [],
             alramStatus : false,
             existNotice : "off",
+            CalendarStatus : false,
         }
     },
     methods: {
@@ -155,6 +162,10 @@ export default {
 
         alramCenterToggle() {
         this.alramStatus = !this.alramStatus;
+        },
+
+        CalendarToggle() {
+        this.CalendarStatus = !this.CalendarStatus;
         }
     },
 
@@ -167,46 +178,55 @@ export default {
 
 <style>
 .SBackgroundMain {
+    position: relative;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     padding: 10px;
     overflow: auto;
 }
+
 .UserInfo {
     position: relative;
-    color: white;
+
 }
+
 .AlertCenter {
     position: relative;
+    margin-top: 10px;
 }
-.Calendar {
+
+.CalendarCenter {
     position: relative;
+    margin-top: 10px;
 }
 
 .UserProfileFrame {
   position: relative;
   width: 100%;
-  height: 120px;
+  height: 100px;
   border-radius: 15px;
   padding: 10px;
   background: #505050;
 }
+
 .UserProfileImg {
   position: absolute;
   width: 40px;
   height: 40px;
   border-radius: 10px;
 }
+
 .UserProfileImg img{
   width: 100%;
-  object-fit: cover;
 }
 
 .UserProfileInfo {
   position: relative;
   left: 50px;
   font-size: 1.1em;
+  color: white;
 }
+
 .UserProfileDeco {
   position: absolute;
   width: 170px;
@@ -218,7 +238,9 @@ export default {
 
 .UserSignFrame {
   position: relative;
+  top: 20px;
 }
+
 .UserSignFrame button{
   background: #2872f9;
   border: none;
@@ -230,20 +252,24 @@ export default {
 
 
 .invite_center{
-  position: relative;
+  background: #797979;
+  border-radius: 20px;
+  
 }
 
 .invite_box{
   position: relative;
-  width: 50px;
+  width: 100%;
   height: 50px;
   background: #2872f9;
-  border-radius: 15px;
-  z-index: 12;
   cursor: pointer;
+  z-index: 6;
+  transition: all ease 0.2s;
+  border-radius: 15px;
 }
+
 .invite_box:hover{
-  opacity: 0.9;
+  background: #0084ff;
 }
 
 .invite_icon{
@@ -254,16 +280,15 @@ export default {
   width: 30px;
   height: 30px;
 }
+
 .invite_counter_on{
-  position: absolute;
-  top: -10%;
-  left: 80%;
+  position: relative;
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background: #ff4c4c;
-  z-index: 12 ;
 }
+
 .invite_counter_on span{
   position: absolute;
   left: 50%;
@@ -271,6 +296,7 @@ export default {
   transform: translate(-50%, -50%);
   font-size: 0.95em;
 }
+
 .invite_counter_off{
   position: absolute;
   width: 20px;
@@ -279,6 +305,7 @@ export default {
   background: #ff4c4c;
   visibility: hidden;
 }
+
 .invite_counter_off span{
   position: absolute;
   left: 50%;
@@ -286,35 +313,57 @@ export default {
   transform: translate(-50%, -50%);
   visibility: hidden;
 }
+
 .invite_modal_on{
-  position: absolute;
-  top: 40px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 15px;
   padding: 10px;
-  border-radius: 15px;
-  width: 220px;
-  max-height: 300px;
-  overflow-y: auto;
-  background: #797979;
-  z-index: 11;
+  color: white;
 }
-.invite_modal_off{
-  position: absolute;
-  left: -260%;
-  top: 40px;
-  padding: 10px;
-  border-radius: 15px;
-  width: 170px;
-  height: 120px;
-  overflow: auto;
-  background: #424242;
-  z-index: 11;
-  visibility: hidden;
-}
+
 .invite_button {
   border:none;
   background: #2872f9;
   color: white;
   border-radius: 5px;
   margin: 2px;
+}
+
+.CalendarBtn {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  background: #2872f9;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all ease 0.2s;
+  z-index: 6;
+}
+
+.CalendarBtn:hover {
+  background: #0084ff;
+}
+
+.CalendarBtn img {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+}
+
+.CalendarModal {
+  position: relative;
+  padding: 30px;
+  border-radius: 15px;
+  width: 100%;
+  overflow-y: auto;
+  background: #797979;
+  color: white;
+  z-index: 5;
+  height: 100%;
 }
 </style>

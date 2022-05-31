@@ -386,8 +386,8 @@ export default {
   position: absolute;
   font-size: 1.3em;
   width: 500px;
-  left: 320px;
-  transform: translate(-50%, -150%);
+  left: 280px;
+  transform: translate(-50%, -140%);
 }
 
 .loadpj_list_tr_status{
