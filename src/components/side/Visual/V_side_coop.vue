@@ -55,7 +55,9 @@
         </div>
 
         <div class="VSCoopMenuInner" v-if="menu1 == true">
-          내용
+          <div v-for="(m, i) in memberList" :key="i">
+            {{m.USER_ID}}
+          </div>
         </div>
 
       </div> <!-- 1 -->
@@ -83,6 +85,7 @@ export default {
   created() {
     this.pjCode = this.$route.params.pjCode;
     console.log(this.pjCode);
+    this.coopList();
   },
   data() {
     return {
@@ -96,7 +99,9 @@ export default {
       searchKeyword : "",
       searchType : "I",
       userList : [],
-      isInvite : ""
+      isInvite : "",
+
+      memberList : []
     }
   },
   methods: {
@@ -148,7 +153,22 @@ export default {
           this.$store.commit('gModalOn', {msg : "ERR : 유저 초대 실패", size : "small"});
         }
       })
-    },    
+    },   
+    
+    //현재 프로젝트에 참여중인 유저 목록
+    coopList() {
+      axios.post('/engine/team/memberList', {pjCode : this.pjCode})
+      .then((result)=>{
+        if(result.data == "err") {
+          this.memberList = "멤버없음";
+        } else {
+          this.memberList = result.data;
+        }
+      })
+      .catch((err)=>{
+        console.error(err);
+      })
+    }
   }
 }
 </script>

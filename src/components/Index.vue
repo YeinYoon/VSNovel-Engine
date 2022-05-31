@@ -1,5 +1,4 @@
 <template>
-<ConfirmModal ref="confirmModal"></ConfirmModal>
 <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
 
   <!-- <div>
@@ -75,7 +74,6 @@
 
 </template>
 <script>
-import ConfirmModal from './modal/ConfirmModal.vue'
 import axios from '../axios'
 export default {
   name: 'Index',
@@ -91,7 +89,6 @@ export default {
         this.$store.commit('userLogin', result.data.USER_NICKNAME);
         console.log(`currentUser : ${this.$store.state.userNickname}`);
         await this.getPjList();
-        await this.getNoticeList();
       } else {
         this.$router.push('/signin');
       }
@@ -184,9 +181,6 @@ export default {
       })
     },
   },
-  components : {
-    ConfirmModal
-  }
 }
   
 </script>
