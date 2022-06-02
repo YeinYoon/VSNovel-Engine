@@ -1,4 +1,4 @@
-<template>
+<template v-if="!!data">
     <div class="ViewerBackground">
     <!-- 백그라운드 -->
     <!-- 내부 img태그의 src를 가공하여 사용, -->
@@ -17,22 +17,24 @@
 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
-
-        <div class="SelectButton" v-if="s1.use" @click="select(s1.plot, s1.index)">
-          <span>{{s1}}{{s1.text}}</span>
+        <div class="SelectButton" @click="select(s1.plot, s1.index)">
+          <span v-if="selectEdit" contenteditable="true" id="s1" ref="cngS1">{{s1.text}}</span>
+          <span v-else>{{s1}}{{s1.text}}</span>
         </div>
-        <div class="SelectVisibleButton">
-          <img src="@/assets/icons/white/checked.png">
+        <div class="SelectVisibleButton" v-if="s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/checked.png"></div>
+        <div class="SelectVisibleButtonDisable" v-if="!s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/close.png"></div>
+        <div class="SelectButton" @click="select(s2.plot, s2.index)">
+          <span v-if="selectEdit" contenteditable="true" id="s2" ref="cngS2">변경해주세요{{s1.text}}</span>
+          <span v-else>{{s2}}{{s2.text}}</span>
         </div>
-        <div class="SelectButton" v-if="s2.use" @click="select(s2.plot, s2.index)">
-          <span>{{s2}}{{s2.text}}</span>
+        <div class="SelectVisibleButton" v-if="s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/checked.png"></div>
+        <div class="SelectVisibleButtonDisable" v-if="!s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/close.png"></div>
+        <div class="SelectButton" @click="select(s3.plot, s3.index)">
+          <span v-if="selectEdit" contenteditable="true" id="s3" ref="cngS3">{{s1.text}}</span>
+          <span v-else>{{s3}}{{s3.text}}</span>
         </div>
-        <div class="SelectVisibleButton"><img src="@/assets/icons/white/checked.png"></div>
-
-        <div class="SelectButton" v-if="s3.use" @click="select(s3.plot, s3.index)">
-          <span>{{s3}}{{s3.text}}</span>
-        </div>
-        <div class="SelectVisibleButtonDisable"><img src="@/assets/icons/white/close.png"></div>
+        <div class="SelectVisibleButton" v-if="s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/checked.png"></div>
+        <div class="SelectVisibleButtonDisable" v-if="!s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/close.png"></div>
 
         <div class="SelectEditingButton">
           <img src="@/assets/icons/white/editing.png" v-if="selectEdit == false" @click="this.selectEdit = true;">
@@ -116,7 +118,7 @@
           </div>
 
           <label for="name">
-          <div v-if="editMod" class="SceneSpeakerName" contenteditable="true">
+          <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true">
             <span id="name" ref="cngName">{{ Now.name }}</span>
           </div>
           <div v-else class="SceneSpeakerName">
@@ -128,7 +130,7 @@
         <!-- 대사 -->
         
         <label for="text">
-        <div v-if="editMod" class="SceneScript" contenteditable="true">
+        <div v-if="textEdit" class="SceneScript" contenteditable="true">
           <span id="text" ref="cngText">{{ Now.text }}</span>
         </div>
         <div v-else class="SceneScript">
@@ -218,8 +220,16 @@ export default {
       temp.scenario[this.plot][this.index].name=this.$refs.cngName.innerHTML
       temp.scenario[this.plot][this.index].text=this.$refs.cngText.innerHTML
       this.$emit('changeVN',temp)
-      this.editMod = false;          
+      this.textEdit = false;          
       this.loadData()
+    },
+    saveSelect(){
+      let temp = this.VN
+      temp.scenario[this.plot][this.index].select[0].text = this.$refs.cngS1.innerHTML
+      temp.scenario[this.plot][this.index].select[1].text = this.$refs.cngS2.innerHTML
+      temp.scenario[this.plot][this.index].select[2].text = this.$refs.cngS3.innerHTML
+      this.$emit('changeVN',temp)
+      this.selectEdit = false;
     },
     loadData: function () {
       this.Now=this.VN.scenario[this.plot][this.index]
@@ -250,8 +260,10 @@ export default {
       }
     },
     select:function(plot,index){
-      this.$emit('changeStatus','play')
-      this.$emit('move',{plot,index})
+      if(!this.selectEdit){
+        this.$emit('changeStatus','play')
+        this.$emit('move',{plot,index})
+      }
     }
   },  
   watch : {

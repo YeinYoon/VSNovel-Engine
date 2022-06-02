@@ -1,4 +1,4 @@
-<template>
+<template v-if="!!data">
   <div class="Venginebackground">
     <div class="VEngineCanvas">
       <EngineCanvas :plot="plot" :index="index" :VN="VN" :status="status" @changeVN="changeVN" @move="move" @changeStatus="changeStatus"/>
@@ -55,16 +55,16 @@
                 </div>
                 <div class="VpcPageSels" v-for="(select,k) in page.select" :key="k">
                   <div class="VpcPageSelTitle">선택지{{k+1}}</div>
-                  <div class="VpcPageSelectPath">
+                  <div class="VpcPageSelectPath" @change="changeDiv($event)">
                     <div class="VpcPageSelOrigin">
-                      <select @change="selectOptionPlot($event,i,j,k)">
+                      <select id="plot" @change="selectOptionPlot($event,i,j,k)">
                         <option v-for="(sPlot, l) in VN.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">,</div>
                     <div class="VpcPageSelChange">
-                      <select @change="selectOptionIndex($event,i,j,k)">
-                        <option v-for="(num,l) in returnIndex(select.plot)" :key="l" :selected="select.index==l+1">
+                      <select id="index" @change="selectOptionIndex($event,i,j,k)">
+                        <option v-for="(num,l) in returnIndex(select.plot,i,j,k)" :key="l" :selected="select.index==l+1">
                           {{l+1}}
                         </option>
                       </select>
@@ -74,8 +74,9 @@
              </div>              
             </div><!-- 플롯 블록 이너 끝 -->
               <div class="VpcBlockControl">
-                <button>플롯 삭제</button>
-                <button @click="addPage(i)">페이지 추가</button>
+                <button @click="addPage(i, 'n')">일반</button>
+                <button @click="addPage(i, 's')">선택</button>
+                <button @click="addPage(i, 'e')">엔딩</button>
               </div>
             </div>
         
@@ -105,7 +106,6 @@ export default {
     EngineCanvas,
   },
   async created() {
-    console.log("ss")
     this.pjCode = this.$route.params.pjCode;
     await this.getVN(this.pjCode);
   },
@@ -147,7 +147,6 @@ export default {
         this.VN = await JSON.parse(VN);
         this.plot = JSON.parse(VN).startPlot;
         this.index=1;
-        console.log(this.VN.scenario)
       }
     },
     deletePj() {
@@ -165,46 +164,56 @@ export default {
         });
     },
     move(data) {
-      console.log(this.plot, this.index);
       this.plot = data.plot;
       this.index = data.index;
       this.status = 'play'
-      console.log(this.plot, this.index)
     },
-    addPage(plot){
-      console.log(plot+this.VN.scenario.시작)
-      this.VN.scenario[plot].push({"type": "n","bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""}],})
-      console.log(this.VN.scenario);
+    addPage(plot, type){
+      this.VN.scenario[plot].push({"type": type,"bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""}],})
     },
     changePlotName(event, plot){
-      console.log(plot, 
-      event.path[2].children[0].children[0])
+      console.log("chngPlotName"+plot)
       event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
     },
     selectOptionPlot(event,plot,index,number){
-      console.log(event.target.value, plot, index, number)
       this.VN.scenario[plot][index].select[number].plot=event.target.value
-      event.path[2].children[2].children[0].length = 0;
+      function removeAllchild(element) {
+        while (element.hasChildNodes()) {
+          element.removeChild(element.firstChild);
+        }
+      }
+      removeAllchild(event.path[2].children[2].children[0])
+      console.log(this.VN.scenario[event.target.value].length)
       for(let i=1;i<this.VN.scenario[event.target.value].length;i++){
         let opt = document.createElement("option")
         opt.value = opt.innerHTML = i;
         event.path[2].children[2].children[0].appendChild(opt)
+        console.log("append" + i)
       }
       this.VN.scenario[plot][index].select[number].index=1
+      this.returnIndex(event.target.value)
     },
     selectOptionIndex(event,plot,index,number){
-      console.log(event.path[2].children[0].children[0].value, event.target.value)
-      this.VN.scenario[plot][index].select[number].index=event.target.value
-      console.log(event.target.path)
+      this.VN.scenario[plot][index].select[number].index=parseInt(event.target.value)
     },
-    returnIndex(plot){
-      const result = this.VN.scenario[plot].length-1
-      console.log(plot);
-      console.log(result);
-      return result
+    returnIndex(sPlot,plot,index,number){
+      if(sPlot == '' || sPlot == undefined || sPlot == null){
+        this.VN.scenario[plot][index].select[number].plot=Object.keys(this.VN.scenario)[0]
+        this.VN.scenario[plot][index].select[number].index=1
+        const result=this.VN.scenario[Object.keys(this.VN.scenario)[0]].length-1
+        return result
+      }
+      else{
+        const result = this.VN.scenario[sPlot].length-1
+        console.log("return Index : "+result);
+        return result
+      }
     },
     changeStatus(status){
       this.status=status
+    },
+    changeDiv(event){
+      console.log(event.target.id)
     }
   },
 };
@@ -645,10 +654,13 @@ export default {
   border: none;
   border-radius: 10px;
   color: white;
-  font-size: 12px;
   padding: 5px;
-  margin: 1px;
+  width: 38px;
+  height: 28px;
+  display: inline-block;
   transition: all ease 0.2s;
+  margin-left: 5px;
+  font-size: 0.8em;
 }
 
 .VpcBlockControl button:hover {
