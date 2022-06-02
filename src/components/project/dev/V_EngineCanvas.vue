@@ -19,23 +19,24 @@
       <div class="SceneSelectFrame">
 
         <div class="SelectButton" v-if="s1.use" @click="select(s1.plot, s1.index)">
-          <span>{{s1.text}}</span>
+          <span>{{s1}}{{s1.text}}</span>
         </div>
-        <div class="SelectVisibleButton"><img src="@/assets/icons/white/checked.png"></div>
-
+        <div class="SelectVisibleButton">
+          <img src="@/assets/icons/white/checked.png">
+        </div>
         <div class="SelectButton" v-if="s2.use" @click="select(s2.plot, s2.index)">
-          <span>{{s2.text}}12312312321323</span>
+          <span>{{s2}}{{s2.text}}</span>
         </div>
         <div class="SelectVisibleButton"><img src="@/assets/icons/white/checked.png"></div>
 
         <div class="SelectButton" v-if="s3.use" @click="select(s3.plot, s3.index)">
-          <span>{{s3.text}}나는 야자를 하기싫다고 임덕성에게 말하고 싶다</span>
+          <span>{{s3}}{{s3.text}}</span>
         </div>
         <div class="SelectVisibleButtonDisable"><img src="@/assets/icons/white/close.png"></div>
 
         <div class="SelectEditingButton">
-          <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
-          <img src="@/assets/icons/white/checked.png" v-else @click="save()">
+          <img src="@/assets/icons/white/editing.png" v-if="selectEdit == false" @click="this.selectEdit = true;">
+          <img src="@/assets/icons/white/checked.png" v-else @click="saveSelect()">
         </div>
       </div>
 
@@ -87,10 +88,10 @@
     <!-- 좌측 상단 햄버거메뉴 -->
       <div class="ViewerNav">
         <div class="NavItems">
-          <img src="@/assets/icons/white/downcloud.png" @click="getVS()">
+          <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
         </div>
         <div class="NavItems">
-          <img src="@/assets/icons/white/upcloud.png" @click="uploadVS()">
+          <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
         </div>
       </div>
       <!-- 이미지 -->
@@ -110,8 +111,8 @@
 
         <!-- 화자 -->
           <div class="ScriptEditingButton">
-            <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
-            <img src="@/assets/icons/white/checked.png" v-else @click="save()">
+            <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="this.textEdit = true;">
+            <img src="@/assets/icons/white/checked.png" v-else @click="saveText()">
           </div>
 
           <label for="name">
@@ -153,7 +154,8 @@ export default {
   props:{
     index:Number,
     plot:String,
-    VS:Object
+    VN:Object,
+    status:String
   },
   name : "VDevBoard",
   created() {
@@ -167,12 +169,12 @@ export default {
       title : "",
       retouchDate : "",
       stat : "",
-      editMod : false,
+      textEdit : false,
+      selectEdit : false,
       Now: {},
       s1:{},
       s2:{},
       s3:{},
-      status: "play", // play, select, pause,
     }
   },
   methods : {
@@ -195,53 +197,52 @@ export default {
       })
     },
     //현재 JSON 파일 업로드
-    async uploadVS() {
-    var data = JSON.stringify(this.VS);
-    var fileName = `PJ${this.pjCode}.json`
-    var properties = {type:'text/plain'};
-    var file = new File([data], fileName, properties); //새로운 파일 객체 생성
-    console.log(file);
+    async uploadVN() {
+      var data = JSON.stringify(this.VN);
+      var fileName = `PJ${this.pjCode}.json`
+      var properties = {type:'text/plain'};
+      var file = new File([data], fileName, properties); //새로운 파일 객체 생성
+      console.log(file);
 
-    await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
+      await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
     },
-    async getVS() {
-      var result = await storage.getVS(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
+    async getVN() {
+      var result = await storage.getVN(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
       var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
       var string = new TextDecoder().decode(uint8array);
       console.log(JSON.parse(string));
-      this.$emit('getCloudVS',JSON.parse(string))
+      this.$emit('changeVN',JSON.parse(string))
     },
-    save() {
-      eval("this.VS.scenario."+this.plot+"["+this.index+"].name = this.$refs.cngName.innerHTML;")
-      eval("this.VS.scenario."+this.plot+"["+this.index+"].text = this.$refs.cngText.innerHTML;")
+    saveText() {
+      let temp = this.VN
+      temp.scenario[this.plot][this.index].name=this.$refs.cngName.innerHTML
+      temp.scenario[this.plot][this.index].text=this.$refs.cngText.innerHTML
+      this.$emit('changeVN',temp)
       this.editMod = false;          
       this.loadData()
     },
     loadData: function () {
-      console.log(this.plot,this.index);
-      console.log(this.VS.scenario.시작[1])
-      console.log("this.VS.scenario."+this.plot+"["+this.index+"]")
-      eval("this.Now=this.VS.scenario."+this.plot+"["+this.index+"]")
+      this.Now=this.VN.scenario[this.plot][this.index]
     },              
     nextScene: function () {
-      console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='n'"));
-      if (eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='n'")) {
+      console.log(eval("this.VN.scenario."+this.plot+"["+this.index+"].type=='n'"));
+      if (eval("this.VN.scenario."+this.plot+"["+this.index+"].type=='n'")) {
         console.log('n')
         this.move();
-      }else if(eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='e'")){
+      }else if(eval("this.VN.scenario."+this.plot+"["+this.index+"].type=='e'")){
         console.log('ending');
       }else {
-        eval("this.s1=this.VS.scenario."+this.plot+"["+this.index+"].select1")
-        eval("this.s2=this.VS.scenario."+this.plot+"["+this.index+"].select2")
-        eval("this.s3=this.VS.scenario."+this.plot+"["+this.index+"].select3")
-        this.status = "select";
+        this.s1=this.VN.scenario[this.plot][this.index].select[0];
+        this.s2=this.VN.scenario[this.plot][this.index].select[1];
+        this.s3=this.VN.scenario[this.plot][this.index].select[2];
+        this.$emit("changeStatus","select")
       }
     },
     move: function(){
-      console.log(eval("this.VS.scenario."+this.plot+".length-1=="+this.index))
-      if(eval("this.VS.scenario."+this.plot+".length-1=="+this.index)){
-        console.log(eval("this.VS.scenario."+this.plot+"[0].nextPlot"))
-        this.$emit('move',{plot:eval("this.VS.scenario."+this.plot+"[0].nextPlot"),index:1})
+      console.log(eval("this.VN.scenario."+this.plot+".length-1=="+this.index))
+      if(eval("this.VN.scenario."+this.plot+".length-1=="+this.index)){
+        console.log(eval("this.VN.scenario."+this.plot+"[0].nextPlot"))
+        this.$emit('move',{plot:eval("this.VN.scenario."+this.plot+"[0].nextPlot"),index:1})
       }
       else{
         console.log(this.plot, this.index+1)
@@ -249,6 +250,7 @@ export default {
       }
     },
     select:function(plot,index){
+      this.$emit('changeStatus','play')
       this.$emit('move',{plot,index})
     }
   },  
@@ -264,7 +266,7 @@ export default {
       console.log(this.plot)
       this.loadData()
     },
-    VS:{
+    VN:{
       deep:true,
       handler(){
         console.log("change DATA")
