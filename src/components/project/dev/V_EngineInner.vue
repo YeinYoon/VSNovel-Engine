@@ -1,7 +1,7 @@
 <template>
   <div class="Venginebackground">
     <div class="VEngineCanvas">
-      <EngineCanvas :plot="plot" :index="index" :VS="VS" @getCloudVS="getCloudVS" @move="move"/>
+      <EngineCanvas :plot="plot" :index="index" :VN="VN" :status="status" @changeVN="changeVN" @move="move" @changeStatus="changeStatus"/>
     </div>
     
     <div class="VPlotController"> <!-- 플롯 컨트롤러 -->
@@ -14,8 +14,8 @@
 
         </div>
       
-        <div v-if="VS" class="VpcInner">
-          <div class="VpcBlock" v-for="(plot, i) in VS.scenario"
+        <div v-if="VN" class="VpcInner">
+          <div class="VpcBlock" v-for="(plot, i) in VN.scenario"
           :key="i"> <!-- 플롯 박스 -->
             <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
               <div class="VpcBlock_Title"><p>{{ i }}</p></div>
@@ -58,7 +58,7 @@
                   <div class="VpcPageSelectPath">
                     <div class="VpcPageSelOrigin">
                       <select @change="selectOptionPlot($event,i,j,k)">
-                        <option v-for="(sPlot, l) in VS.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
+                        <option v-for="(sPlot, l) in VN.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">,</div>
@@ -107,7 +107,7 @@ export default {
   async created() {
     console.log("ss")
     this.pjCode = this.$route.params.pjCode;
-    await this.getVS(this.pjCode);
+    await this.getVN(this.pjCode);
   },
   data() {
     return {
@@ -116,33 +116,38 @@ export default {
       plot: "시작",
       VN: {},
       startPlot:"",
+      status:'play'
     };
   },
   watch:{
     data(){
       if(this.data!=undefined && this.data!=null){
         let url = this.data.url
-        console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"]"))
-        eval("this.VS.scenario."+this.plot+"["+this.index+"].img="+"'"+url+"'")
-        console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"]"))
+        this.VN.scenario[this.plot][this.index].img=url
       }
     },
+    VN:{
+      deep:true,
+      handler(VN){
+        this.VN=VN
+      }
+    }
   },
   methods: {
-    getCloudVS(VS){
-      this.VS=VS
+    changeVN(VN){
+      this.VN=VN
     },
-    async getVS(pjCode) {
-      var result = await storage.getVS(`Project/PJ${pjCode}/PJ${pjCode}.json`);
+    async getVN(pjCode) {
+      var result = await storage.getVN(`Project/PJ${pjCode}/PJ${pjCode}.json`);
       var uint8array = new TextEncoder("utf-8").encode(result);
-      var VS = new TextDecoder().decode(uint8array);
-      if (Object.keys(VS).length === 0) {
+      var VN = new TextDecoder().decode(uint8array);
+      if (Object.keys(VN).length === 0) {
         console.log("NULL JSON");
       } else {
-        this.VS = await JSON.parse(VS);
-        this.plot = JSON.parse(VS).startPlot;
+        this.VN = await JSON.parse(VN);
+        this.plot = JSON.parse(VN).startPlot;
         this.index=1;
-        console.log(this.VS.scenario)
+        console.log(this.VN.scenario)
       }
     },
     deletePj() {
@@ -163,12 +168,13 @@ export default {
       console.log(this.plot, this.index);
       this.plot = data.plot;
       this.index = data.index;
+      this.status = 'play'
       console.log(this.plot, this.index)
     },
     addPage(plot){
-      console.log(plot+this.VS.scenario.시작)
-      eval("this.VS.scenario."+plot+'.push({"bg": "","bgm": "","name": "이름","text": "대화","img": "","move": {"plot": "'+plot+'","index":0}})')
-      console.log(this.VS.scenario);
+      console.log(plot+this.VN.scenario.시작)
+      this.VN.scenario[plot].push({"type": "n","bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""}],})
+      console.log(this.VN.scenario);
     },
     changePlotName(event, plot){
       console.log(plot, 
@@ -177,24 +183,28 @@ export default {
     },
     selectOptionPlot(event,plot,index,number){
       console.log(event.target.value, plot, index, number)
-      this.VS.scenario[plot][index].select[number].plot=event.target.value
+      this.VN.scenario[plot][index].select[number].plot=event.target.value
       event.path[2].children[2].children[0].length = 0;
-      for(let i=1;i<this.VS.scenario[event.target.value].length;i++){
-        var opt = document.createElement("option")
+      for(let i=1;i<this.VN.scenario[event.target.value].length;i++){
+        let opt = document.createElement("option")
         opt.value = opt.innerHTML = i;
         event.path[2].children[2].children[0].appendChild(opt)
-      }      
+      }
+      this.VN.scenario[plot][index].select[number].index=1
     },
     selectOptionIndex(event,plot,index,number){
       console.log(event.path[2].children[0].children[0].value, event.target.value)
-      this.VS.scenario[plot][index].select[number].index=event.target.value
-      console.log(this.VS.scenario[plot][index].select[number].index)
+      this.VN.scenario[plot][index].select[number].index=event.target.value
+      console.log(event.target.path)
     },
     returnIndex(plot){
-      const result = this.VS.scenario[plot].length-1//new Function("this.VS.scenario.'"+plot+"'.length")
+      const result = this.VN.scenario[plot].length-1
       console.log(plot);
       console.log(result);
       return result
+    },
+    changeStatus(status){
+      this.status=status
     }
   },
 };
