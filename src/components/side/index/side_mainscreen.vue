@@ -124,47 +124,47 @@ export default {
 
         // 프로젝트 초대 수락
         async PjAccept(pjCode) {
-        var accept = await this.$refs.confirmModal.show({
-            msg : "초대를 수락하시겠습니까?",
-            size : "normal",
-            btn1 : "수락",
-            btn2 : "취소"
-        });
-        if(accept) { 
-            axios.post('/engine/team/PjAccept', {pjCode : pjCode})
-            .then((result)=>{
-            if(result.data == "ok") {
-                this.getPjList();
-                this.getNoticeList();
+            var accept = await this.$refs.confirmModal.show({
+                msg : "초대를 수락하시겠습니까?",
+                size : "normal",
+                btn1 : "수락",
+                btn2 : "취소"
+            });
+            if(accept) { 
+                axios.post('/engine/team/PjAccept', {pjCode : pjCode})
+                .then((result)=>{
+                if(result.data == "ok") {
+                    this.getPjList();
+                    this.getNoticeList();
+                } else {
+                    this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
+                }
+                })
+                console.log("초대 수락");
             } else {
-                this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
+                console.log("초대 보류");
             }
-            })
-            console.log("초대 수락");
-        } else {
-            console.log("초대 보류");
-        }
         },
         // 프로젝트 초대 거절
         async PjRefuse(pjCode) {
-        var refuse = await this.$refs.confirmModal.show({
-            msg : "초대를 거절하시겠습니까?",
-            size : "normal",
-            btn1 : "수락",
-            btn2 : "취소"
-        });
-        if(refuse) { 
-            axios.post('/engine/team/PjRefuse', {pjCode : pjCode})
-            .then((result)=>{
-            if(result.data == "err") {
-                this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});
+            var refuse = await this.$refs.confirmModal.show({
+                msg : "초대를 거절하시겠습니까?",
+                size : "normal",
+                btn1 : "확인",
+                btn2 : "취소"
+            });
+            if(refuse) { 
+                axios.post('/engine/team/PjRefuse', {pjCode : pjCode})
+                .then((result)=>{
+                if(result.data == "err") {
+                    this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});
+                } else {
+                    this.getNoticeList();
+                }
+                })
             } else {
-                this.getNoticeList();
+                console.log("거절 보류");
             }
-            })
-        } else {
-            console.log("거절 보류");
-        }
         },
 
         alramCenterToggle() {
