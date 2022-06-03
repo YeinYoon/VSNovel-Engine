@@ -142,7 +142,7 @@ export default {
       var uint8array = new TextEncoder("utf-8").encode(result);
       var VN = new TextDecoder().decode(uint8array);
       if (Object.keys(VN).length === 0) {
-        console.log("NULL JSON");
+        console.log("GetVN : Null JSON");
       } else {
         this.VN = await JSON.parse(VN);
         this.plot = JSON.parse(VN).startPlot;
@@ -156,11 +156,11 @@ export default {
           if (result.data == "ok") {
             this.$router.push("/");
           } else {
-            console.log("Delete Project Error!");
+            console.log("DeletePj : Not Good");
           }
         })
         .catch((err) => {
-          console.error(err);
+          console.error("DeletePj : Error Content\n" + err);
         });
     },
     move(data) {
@@ -172,7 +172,7 @@ export default {
       this.VN.scenario[plot].push({"type": type,"bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""}],})
     },
     changePlotName(event, plot){
-      console.log("chngPlotName"+plot)
+      console.log(plot)
       event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
     },
     selectOptionPlot(event,plot,index,number){
@@ -183,12 +183,10 @@ export default {
         }
       }
       removeAllchild(event.path[2].children[2].children[0])
-      console.log(this.VN.scenario[event.target.value].length)
       for(let i=1;i<this.VN.scenario[event.target.value].length;i++){
         let opt = document.createElement("option")
         opt.value = opt.innerHTML = i;
         event.path[2].children[2].children[0].appendChild(opt)
-        console.log("append" + i)
       }
       this.VN.scenario[plot][index].select[number].index=1
       this.returnIndex(event.target.value)
@@ -205,16 +203,12 @@ export default {
       }
       else{
         const result = this.VN.scenario[sPlot].length-1
-        console.log("return Index : "+result);
         return result
       }
     },
     changeStatus(status){
       this.status=status
     },
-    changeDiv(event){
-      console.log(event.target.id)
-    }
   },
 };
 </script>

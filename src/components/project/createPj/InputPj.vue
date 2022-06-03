@@ -49,7 +49,6 @@ export default {
           var fileName = `PJ${result.data.pjCode}.json`
           var properties = {type:'text/plain'};
           var file = new File([data], fileName, properties); //새로운 파일 객체 생성
-          console.log(file);
 
           var upload = await storage.uploadFile(`Project/PJ${result.data.pjCode}/`, file);
           console.log(upload);

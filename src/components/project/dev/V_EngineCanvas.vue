@@ -89,10 +89,10 @@
 
     <!-- 좌측 상단 햄버거메뉴 -->
       <div class="ViewerNav">
-        <div class="NavItems">
+        <div class="NavItems" title="서버 비주얼 노벨 다운로드">
           <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
         </div>
-        <div class="NavItems">
+        <div class="NavItems" title="저장">
           <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
         </div>
       </div>
@@ -139,8 +139,11 @@
         </label>
 
         <!-- 다음 대사 버튼 -->
-        <div class="NextScriptButton" @click="nextScene">
+        <div class="NextScriptButton" v-if="status!='end'" @click="nextScene">
           <button>▶</button>
+        </div>
+        <div v-else class="NextScriptButton">
+          <button>End</button>
         </div>
       </div>
       <!-- 대사 끝 -->
@@ -195,7 +198,7 @@ export default {
         }
       })
       .catch((err)=>{
-        console.error(err);
+        console.error("GetPjInfo : Error\n"+err);
       })
     },
     //현재 JSON 파일 업로드
@@ -204,15 +207,12 @@ export default {
       var fileName = `PJ${this.pjCode}.json`
       var properties = {type:'text/plain'};
       var file = new File([data], fileName, properties); //새로운 파일 객체 생성
-      console.log(file);
-
       await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
     },
     async getVN() {
       var result = await storage.getVN(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
       var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
       var string = new TextDecoder().decode(uint8array);
-      console.log(JSON.parse(string));
       this.$emit('changeVN',JSON.parse(string))
     },
     saveText() {
@@ -235,12 +235,10 @@ export default {
       this.Now=this.VN.scenario[this.plot][this.index]
     },              
     nextScene: function () {
-      console.log(eval("this.VN.scenario."+this.plot+"["+this.index+"].type=='n'"));
-      if (eval("this.VN.scenario."+this.plot+"["+this.index+"].type=='n'")) {
-        console.log('n')
+      if(this.VN.scenario[this.plot][this.index].type=='n') {
         this.move();
-      }else if(eval("this.VN.scenario."+this.plot+"["+this.index+"].type=='e'")){
-        console.log('ending');
+      }else if(this.VN.scenario[this.plot][this.index].type=='e'){
+        this.$emit('changeStatus',"end")
       }else {
         this.s1=this.VN.scenario[this.plot][this.index].select[0];
         this.s2=this.VN.scenario[this.plot][this.index].select[1];
@@ -249,15 +247,8 @@ export default {
       }
     },
     move: function(){
-      console.log(eval("this.VN.scenario."+this.plot+".length-1=="+this.index))
-      if(eval("this.VN.scenario."+this.plot+".length-1=="+this.index)){
-        console.log(eval("this.VN.scenario."+this.plot+"[0].nextPlot"))
-        this.$emit('move',{plot:eval("this.VN.scenario."+this.plot+"[0].nextPlot"),index:1})
-      }
-      else{
-        console.log(this.plot, this.index+1)
-        this.$emit('move',{plot:this.plot,index:this.index+1})
-      }
+      if(this.VN.scenario[this.plot].length==this.index) this.$emit('move',{plot:this.VN.scenario[this.plot][0].nextPlot,index:1})
+      else this.$emit('move',{plot:this.plot,index:this.index+1})
     },
     select:function(plot,index){
       if(!this.selectEdit){
@@ -271,17 +262,14 @@ export default {
           this.getPjInfo(this.pjCode);
     },
     index: function(){
-      console.log(this.index)
       this.loadData()
     },
     plot: function(){
-      console.log(this.plot)
       this.loadData()
     },
     VN:{
       deep:true,
       handler(){
-        console.log("change DATA")
         this.loadData()
       }
     }

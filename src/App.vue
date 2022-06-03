@@ -46,12 +46,11 @@ export default {
           this.$store.commit('userLogin', null);
           this.$router.push('/');
         } else {
-          console.log(result);
           alert(result.data);
         }
       })
       .catch((err)=>{
-        console.error(err);
+        console.error("Logout : Error\n"+err);
       })
     },
     send(data){
