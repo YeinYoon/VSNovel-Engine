@@ -1,7 +1,7 @@
 <template>
     <div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:true }">
-      <div class="create_pj_page_frame"> <!--여기서부터-->
-        <span class="pj_info_type">프로젝트 정보를 입력하세요.</span> <!--논 애니메이션 여기부터-->
+      <div class="create_pj_page_frame">
+        <span class="pj_info_type">프로젝트 정보를 입력하세요.</span>
         <div class="create_pj_frame"> 
           <div class="title_input_frame">
             <span class="label_center">제목</span>
@@ -14,8 +14,8 @@
           <div class="create_button_frame">
             <div class="create_button" @click="createPj()"><span>생성</span></div>
             <button @click="$router.push('/')">취소</button>
-          </div> <!-- 논 애니메이션 여기까지 -->
-        </div> <!--여기까지-->
+          </div>
+        </div>
       </div>
     </div>
 </template>
@@ -49,19 +49,15 @@ export default {
           var fileName = `PJ${result.data.pjCode}.json`
           var properties = {type:'text/plain'};
           var file = new File([data], fileName, properties); //새로운 파일 객체 생성
-
-          var upload = await storage.uploadFile(`Project/PJ${result.data.pjCode}/`, file);
-          console.log(upload);
-
+          await storage.uploadFile(`Project/PJ${result.data.pjCode}/`, file);
           this.$store.commit('gModalOn', {msg : "새로운 프로젝트가 생성됐습니다.", size : "normal"});
           this.$router.push('/');
         } else {
-          console.log(result);
           this.$store.commit('gModalOn', {msg : result.data, size : "normal"});
         }
       })
       .catch((err)=>{
-        console.log(err);
+        console.log("CreatePj : Error\n"+err);
       })
     }    
   },
