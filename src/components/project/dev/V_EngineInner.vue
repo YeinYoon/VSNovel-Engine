@@ -81,11 +81,10 @@
                 <button @click="addPage(i, 'e')">엔딩</button>
               </div>
               <div class="VpcBlockEndPoint">
-                <p>이 플롯은..</p>
+                <p>다음 플롯 : </p>
                   <select>
-
+                    <option></option>
                   </select>
-                <p>로 연결</p>
               </div>
             </div>
         
@@ -274,6 +273,7 @@ export default {
 }
 
 .VpcToolPosition button{
+  position: relative;
   background: #2872f9;
   border-radius: 10px;
   font-size: 0.9em;
@@ -291,16 +291,19 @@ export default {
 }
 
 .VpcToolPosition select{
-  display: inline-block;
-  border: none;
-  width: 55px;
-  height: 30px;
-  margin-left: 2px;
-  margin-right: 2px;
+  position: relative;
+  background: #2872f9;
   border-radius: 10px;
-  appearance: none;
-  text-align-last:center;
-  padding-right: 5px;  
+  font-size: 0.9em;
+  width: 63px;
+  height: 31px;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  border: none;
+  padding: 5px;
+  margin: 2px;
+  transition: all ease 0.2s;
 }
 
 .VpcTool_addplot p {
@@ -555,7 +558,7 @@ export default {
 
 .VpcPageSelOrigin select{
   border: none;
-  width: 45px;
+  width: 46px;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -707,9 +710,9 @@ export default {
 
 .VpcBlockEndPoint {
   position: relative;
-  margin-top: 10px;
+  margin-top: 5px;
   width: 100%;
-  text-align: center;
+  text-align: right;
 }
 
 .VpcBlockEndPoint p {
