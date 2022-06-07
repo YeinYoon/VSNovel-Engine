@@ -6,7 +6,7 @@ const s3 = new AWS.S3({
     secretAccessKey: 'YJDi8K4VSP5bPhdNcC6hB/xreuKH2885200KS+LB' // 사용자의 secretAccessKey
 });
 
-exports.getVS = async (filePath) => { //단일 JSON 파일 가져오기
+exports.getVN = async (filePath) => { //단일 JSON 파일 가져오기
     const params = {
         Bucket: "vsnovel",
         Key : filePath,

@@ -12,7 +12,7 @@
         </div> -->
         <div>
             <VEngineInner
-            :data="data"
+            :resource="resource"
             ></VEngineInner>
         </div>
     </div>
@@ -32,7 +32,7 @@ export default {
     props:{
         side:Boolean,
         main:Boolean,
-        data:Object
+        resource:Object
     },
     watch : {
         $route() {
@@ -44,8 +44,8 @@ export default {
             }
             else this.condition="RouterViewRight"
         },
-        data(){
-            console.log(this.data)
+        resource(){
+            console.log(this.resource)
         }
     },
     data(){

@@ -1,15 +1,14 @@
-<template>
+<template v-if="!!data">
     <div class="ViewerBackground">
     <!-- 백그라운드 -->
     <!-- 내부 img태그의 src를 가공하여 사용, -->
     <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
     <div class="SceneBackground">
-      <img src="@/assets/background.jpg" />
+      <img v-if="Now.bg!=''" :src="Now.bg"/>
     </div>
     <!-- 백그라운드 끝. -->
 
     <!-- 선택지 --> 
-
     <!-- 필요한곳에 주석을 해제하고 사용. -->
     <!-- SceneSelectBackground는 선택문이 화면상에 출력되었을때 뒤에 검은 배경을 깔아줌. -->
     <!-- SceneSelectBFrame은 중앙 위치를 잡는 용도. -->
@@ -17,25 +16,40 @@
 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
-
-        <div class="SelectButton" v-if="s1.use" @click="select(s1.plot, s1.index)">
-          <span>{{s1.text}}</span>
+        <label for="s1">
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
+          <span id="s1" ref="cngs1">{{s1.text}}</span>
         </div>
-        <div class="SelectVisibleButton"><img src="@/assets/icons/white/checked.png"></div>
-
-        <div class="SelectButton" v-if="s2.use" @click="select(s2.plot, s2.index)">
-          <span>{{s2.text}}12312312321323</span>
+        <div v-else class="SelectButton" @click="select(s1.plot, s1.index)">
+          <span id="s1">{{s1.text}}</span>
         </div>
-        <div class="SelectVisibleButton"><img src="@/assets/icons/white/checked.png"></div>
-
-        <div class="SelectButton" v-if="s3.use" @click="select(s3.plot, s3.index)">
-          <span>{{s3.text}}나는 야자를 하기싫다고 임덕성에게 말하고 싶다</span>
+        </label>
+        <div class="SelectVisibleButton" v-if="s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/checked.png"></div>
+        <div class="SelectVisibleButtonDisable" v-if="!s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/close.png"></div>
+        <label for="s2">
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
+          <span id="s2" ref="cngs2">{{s2.text}}</span>
         </div>
-        <div class="SelectVisibleButtonDisable"><img src="@/assets/icons/white/close.png"></div>
+        <div v-else class="SelectButton" @click="select(s2.plot, s2.index)">
+          <span id="s2">{{s2.text}}</span>
+        </div>
+        </label>
+        <div class="SelectVisibleButton" v-if="s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/checked.png"></div>
+        <div class="SelectVisibleButtonDisable" v-if="!s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/close.png"></div>
+        <label for="s3">
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
+          <span id="s3" ref="cngs3">{{s3.text}}</span>
+        </div>
+        <div v-else class="SelectButton" @click="select(s3.plot, s3.index)">
+          <span id="s3">{{s3.text}}</span>
+        </div>
+        </label>
+        <div class="SelectVisibleButton" v-if="s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/checked.png"></div>
+        <div class="SelectVisibleButtonDisable" v-if="!s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/close.png"></div>
 
         <div class="SelectEditingButton">
-          <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
-          <img src="@/assets/icons/white/checked.png" v-else @click="save()">
+          <img src="@/assets/icons/white/editing.png" v-if="selectEdit == false" @click="this.selectEdit = true;">
+          <img src="@/assets/icons/white/checked.png" v-else @click="saveSelect()">
         </div>
       </div>
 
@@ -86,11 +100,11 @@
 
     <!-- 좌측 상단 햄버거메뉴 -->
       <div class="ViewerNav">
-        <div class="NavItems">
-          <img src="@/assets/icons/white/downcloud.png" @click="getVS()">
+        <div class="NavItems" title="서버 비주얼 노벨 다운로드">
+          <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
         </div>
-        <div class="NavItems">
-          <img src="@/assets/icons/white/upcloud.png" @click="uploadVS()">
+        <div class="NavItems" title="저장">
+          <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
         </div>
       </div>
       <!-- 이미지 -->
@@ -110,12 +124,12 @@
 
         <!-- 화자 -->
           <div class="ScriptEditingButton">
-            <img src="@/assets/icons/white/editing.png" v-if="editMod == false" @click="this.editMod = true;">
-            <img src="@/assets/icons/white/checked.png" v-else @click="save()">
+            <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="this.textEdit = true;">
+            <img src="@/assets/icons/white/checked.png" v-else @click="saveText()">
           </div>
 
           <label for="name">
-          <div v-if="editMod" class="SceneSpeakerName" contenteditable="true">
+          <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true">
             <span id="name" ref="cngName">{{ Now.name }}</span>
           </div>
           <div v-else class="SceneSpeakerName">
@@ -127,7 +141,7 @@
         <!-- 대사 -->
         
         <label for="text">
-        <div v-if="editMod" class="SceneScript" contenteditable="true">
+        <div v-if="textEdit" class="SceneScript" contenteditable="true">
           <span id="text" ref="cngText">{{ Now.text }}</span>
         </div>
         <div v-else class="SceneScript">
@@ -136,8 +150,11 @@
         </label>
 
         <!-- 다음 대사 버튼 -->
-        <div class="NextScriptButton" @click="nextScene">
+        <div class="NextScriptButton" v-if="status!='end'" @click="nextScene">
           <button>▶</button>
+        </div>
+        <div v-else class="NextScriptButton">
+          <button>End</button>
         </div>
       </div>
       <!-- 대사 끝 -->
@@ -153,7 +170,8 @@ export default {
   props:{
     index:Number,
     plot:String,
-    VS:Object
+    VN:Object,
+    status:String
   },
   name : "VDevBoard",
   created() {
@@ -167,12 +185,12 @@ export default {
       title : "",
       retouchDate : "",
       stat : "",
-      editMod : false,
+      textEdit : false,
+      selectEdit : false,
       Now: {},
       s1:{},
       s2:{},
       s3:{},
-      status: "play", // play, select, pause,
     }
   },
   methods : {
@@ -191,65 +209,65 @@ export default {
         }
       })
       .catch((err)=>{
-        console.error(err);
+        console.error("GetPjInfo : Error\n"+err);
       })
     },
     //현재 JSON 파일 업로드
-    async uploadVS() {
-    var data = JSON.stringify(this.VS);
-    var fileName = `PJ${this.pjCode}.json`
-    var properties = {type:'text/plain'};
-    var file = new File([data], fileName, properties); //새로운 파일 객체 생성
-    console.log(file);
-
-    await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
+    async uploadVN() {
+      var data = JSON.stringify(this.VN);
+      var fileName = `PJ${this.pjCode}.json`
+      var properties = {type:'text/plain'};
+      var file = new File([data], fileName, properties); //새로운 파일 객체 생성
+      await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
     },
-    async getVS() {
-      var result = await storage.getVS(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
+    async getVN() {
+      var result = await storage.getVN(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
       var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
       var string = new TextDecoder().decode(uint8array);
-      console.log(JSON.parse(string));
-      this.$emit('getCloudVS',JSON.parse(string))
+      this.$emit('changeVN',JSON.parse(string))
     },
-    save() {
-      eval("this.VS.scenario."+this.plot+"["+this.index+"].name = this.$refs.cngName.innerHTML;")
-      eval("this.VS.scenario."+this.plot+"["+this.index+"].text = this.$refs.cngText.innerHTML;")
-      this.editMod = false;          
+    saveText() {
+      let temp = this.VN
+      temp.scenario[this.plot][this.index].name=this.$refs.cngName.innerHTML
+      temp.scenario[this.plot][this.index].text=this.$refs.cngText.innerHTML
+      this.$emit('changeVN',temp)
+      this.textEdit = false;          
       this.loadData()
     },
+    saveSelect(){
+      let temp = this.VN
+      console.log(this.$refs.cngs1.innerHTML)
+      temp.scenario[this.plot][this.index].select[0].text = this.$refs.cngs1.innerHTML
+      temp.scenario[this.plot][this.index].select[1].text = this.$refs.cngs2.innerHTML
+      temp.scenario[this.plot][this.index].select[2].text = this.$refs.cngs3.innerHTML
+      console.log(temp.scenario[this.plot][this.index].select)
+      this.$emit('changeVN',temp)
+      this.selectEdit = false;
+    },
     loadData: function () {
-      console.log(this.plot,this.index);
-      console.log(this.VS.scenario.시작[1])
-      console.log("this.VS.scenario."+this.plot+"["+this.index+"]")
-      eval("this.Now=this.VS.scenario."+this.plot+"["+this.index+"]")
+      this.Now=this.VN.scenario[this.plot][this.index]
     },              
     nextScene: function () {
-      console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='n'"));
-      if (eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='n'")) {
-        console.log('n')
+      if(this.VN.scenario[this.plot][this.index].type=='n') {
         this.move();
-      }else if(eval("this.VS.scenario."+this.plot+"["+this.index+"].type=='e'")){
-        console.log('ending');
+      }else if(this.VN.scenario[this.plot][this.index].type=='e'){
+        this.$emit('changeStatus',"end")
       }else {
-        eval("this.s1=this.VS.scenario."+this.plot+"["+this.index+"].select1")
-        eval("this.s2=this.VS.scenario."+this.plot+"["+this.index+"].select2")
-        eval("this.s3=this.VS.scenario."+this.plot+"["+this.index+"].select3")
-        this.status = "select";
+        this.s1=this.VN.scenario[this.plot][this.index].select[0];
+        this.s2=this.VN.scenario[this.plot][this.index].select[1];
+        this.s3=this.VN.scenario[this.plot][this.index].select[2];
+        this.$emit("changeStatus","select")
       }
     },
     move: function(){
-      console.log(eval("this.VS.scenario."+this.plot+".length-1=="+this.index))
-      if(eval("this.VS.scenario."+this.plot+".length-1=="+this.index)){
-        console.log(eval("this.VS.scenario."+this.plot+"[0].nextPlot"))
-        this.$emit('move',{plot:eval("this.VS.scenario."+this.plot+"[0].nextPlot"),index:1})
-      }
-      else{
-        console.log(this.plot, this.index+1)
-        this.$emit('move',{plot:this.plot,index:this.index+1})
-      }
+      if(this.VN.scenario[this.plot].length-1==this.index) this.$emit('move',{plot:this.VN.scenario[this.plot][0].nextPlot,index:1})
+      else this.$emit('move',{plot:this.plot,index:this.index+1})
     },
     select:function(plot,index){
-      this.$emit('move',{plot,index})
+      if(!this.selectEdit){
+        this.$emit('changeStatus','play')
+        this.$emit('move',{plot,index})
+      }
     }
   },  
   watch : {
@@ -257,17 +275,14 @@ export default {
           this.getPjInfo(this.pjCode);
     },
     index: function(){
-      console.log(this.index)
       this.loadData()
     },
     plot: function(){
-      console.log(this.plot)
       this.loadData()
     },
-    VS:{
+    VN:{
       deep:true,
       handler(){
-        console.log("change DATA")
         this.loadData()
       }
     }
@@ -276,7 +291,9 @@ export default {
 </script>
 
 <style>
-
+label {
+  display: block;
+}
 .ViewerBackground {
   background: #5e5e5e;
   width: 100%;
@@ -435,7 +452,6 @@ export default {
   width: 50%;
   z-index: 10;
 }
-
 .SelectButton {
   position: relative;
   display: inline-block;

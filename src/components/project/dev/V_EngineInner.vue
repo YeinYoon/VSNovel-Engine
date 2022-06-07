@@ -1,7 +1,7 @@
-<template>
+<template v-if="!!data">
   <div class="Venginebackground">
     <div class="VEngineCanvas">
-      <EngineCanvas :plot="plot" :index="index" :VS="VS" @getCloudVS="getCloudVS" @move="move"/>
+      <EngineCanvas :plot="plot" :index="index" :VN="VN" :status="status" @changeVN="changeVN" @move="move" @changeStatus="changeStatus"/>
     </div>
     
     <div class="VPlotController"> <!-- 플롯 컨트롤러 -->
@@ -9,18 +9,20 @@
         <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
           <div class="VpcToolPosition">
             <button>플롯 추가</button>
-            <button>시작 플롯</button>
+            <select @change="changeStart($event)">
+              <option v-for="(plot, i) in VN.scenario" :key="i" :selected="VN.startPlot==i">{{i}}</option>
+            </select>
           </div>
 
         </div>
       
-        <div v-if="VS" class="VpcInner">
-          <div class="VpcBlock" v-for="(plot, i) in VS.scenario"
+        <div v-if="VN" class="VpcInner">
+          <div class="VpcBlock" v-for="(plot, i) in VN.scenario"
           :key="i"> <!-- 플롯 박스 -->
             <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
               <div class="VpcBlock_Title"><p>{{ i }}</p></div>
               <button class="VpcBlock_Opener" @click="changePlotName($event, i)"><img src="@/assets/icons/white/editing.png"></button>
-              <button class="VpcBlock_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
+              <button class="VpcBlock_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
             </div>
 
             <!-- 플롯 내부 조회 --> 
@@ -38,81 +40,51 @@
                 <div class="VpcPageNormalIndex" v-else><span>{{j}}</span></div>
                 <div class="VpcPageTitle"><span>1232131232132132132</span></div>
                 <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
-                  <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
-                  <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
+                  <button class="VpcPage_Opener" @click="edit"><img src="@/assets/icons/white/editing.png"></button>
+                  <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
                 </div>
               </div>
               <!-- 선택자 페이지 -->
               <!-- 플레이어가 선택하면, 다른 플롯으로의 이동이 발생함 -->
               <!-- 페이지에 선택지를 추가한 갯수만큼 반복문을 돌릴것. -->
-              <div class="VpcPageSelect" v-if="page.type=='s' && page.nextPlot==undefined" @click="move({plot:i, index:j})">
+              <div class="VpcPageSelect" v-if="page.type=='s'" @click="move({plot:i, index:j})">
                 <div class="VpcPageSelectIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
                 <div class="VpcPageSelectIndex" v-else><span>{{j}}</span></div>
                 <div class="VpcPageSelectTitle"><span>12312321412423</span></div>
                 <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
                   <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
-                  <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
+                  <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
                 </div>
-                <div class="VpcPageSels">
-                  <div class="VpcPageSelTitle">선택지1</div>
-                  <div class="VpcPageSelectPath">
-                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select @change="selectOption($event)">
-                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
+                <div class="VpcPageSels" v-for="(select,k) in page.select" :key="k">
+                  <div class="VpcPageSelTitle">선택지{{k+1}}</div>
+                  <div class="VpcPageSelectPath" @change="changeDiv($event)">
+                    <div class="VpcPageSelOrigin">
+                      <select id="plot" @change="selectOptionPlot($event,i,j,k)">
+                        <option v-for="(sPlot, l) in VN.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
                       </select>
                     </div>
-                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
-                      <select>
-                        <option>
-                          {{page.select1.index }}
+                    <div class="VpcPageSelectArrow">,</div>
+                    <div class="VpcPageSelChange">
+                      <select id="index" @change="selectOptionIndex($event,i,j,k)">
+                        <option v-for="(num,l) in returnIndex(select.plot,i,j,k)" :key="l" :selected="select.index==l+1">
+                          {{l+1}}
                         </option>
                       </select>
                     </div>
                   </div>
                 </div>
-
-                <div class="VpcPageSels">
-                  
-                  <div class="VpcPageSelTitle">선택지2</div>
-                  <div class="VpcPageSelectPath">
-                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select @change="selectOption($event)">
-                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
-                      </select>
-                    </div>
-                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
-                      <select>
-                        <option v-for="(opt2, l) in k" :key="l">
-                          {{l }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="VpcPageSels">
-                  <div class="VpcPageSelTitle">선택지3</div>
-                  <div class="VpcPageSelectPath">
-                    <div class="VpcPageSelOrigin"> <!-- 선택지이름 -->
-                      <select @change="selectOption($event)">
-                        <option v-for="(opt1, k) in VS.scenario" :key="k" :value="k">{{k}}</option> <!-- 이 플롯의 고유번호 -->
-                      </select>
-                    </div>
-                    <div class="VpcPageSelChange"> <!-- 선택 이후의 플롯인덱스 -->
-                      <select>
-                        <option>
-                          {{page.select3.index }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
+             </div>              
             </div><!-- 플롯 블록 이너 끝 -->
               <div class="VpcBlockControl">
-                <button>플롯 삭제</button>
-                <button @click="addPage(i)">페이지 추가</button>
+                <button @click="addPage(i, 'n')">일반</button>
+                <button @click="addPage(i, 's')">선택</button>
+                <button @click="addPage(i, 'e')">엔딩</button>
+              </div>
+              <div class="VpcBlockEndPoint">
+                <p>다음 플롯 : </p>
+                  <select @change="changeNext($event, i)">
+                    <option v-for="(nextPlot, j) in VN.scenario" :key="j" :selected="VN.scenario[i][0].nextPlot==j">{{j}}</option>
+                  </select>
               </div>
             </div>
         
@@ -135,16 +107,14 @@ import storage from "../../../aws";
 import axios from "../../../axios";
 export default {
   name: "V_EngineInner",
-  props:{
-    data:Object
-  },
+  props:['resource']
+  ,
   components: {
     EngineCanvas,
   },
   async created() {
-    console.log("ss")
     this.pjCode = this.$route.params.pjCode;
-    await this.getVS(this.pjCode);
+    await this.getVN(this.pjCode);
   },
   data() {
     return {
@@ -153,34 +123,44 @@ export default {
       plot: "시작",
       VN: {},
       startPlot:"",
+      status:'play'
     };
   },
   watch:{
-    data(){
-      if(this.data!=undefined && this.data!=null){
-        let url = this.data.url
-        console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"]"))
-        eval("this.VS.scenario."+this.plot+"["+this.index+"].img="+"'"+url+"'")
-        console.log(eval("this.VS.scenario."+this.plot+"["+this.index+"]"))
+    resource:{
+      deep:true,
+      handler(resource){
+        if(resource!=undefined && resource!=null){
+          let url = resource.url
+          this.VN.scenario[this.plot][this.index][resource.type]=url
+          console.log(this.VN.scenario[this.plot][this.index])
+          console.log(this.VN.scenario[this.plot][this.index][resource.type])
+        }
+      }
+    },
+    VN:{
+      deep:true,
+      handler(VN){
+        this.VN=VN
       }
     }
   },
   methods: {
-    getCloudVS(VS){
-      this.VS=VS
+    changeVN(VN){
+      this.VN=VN
     },
-    async getVS(pjCode) {
-      var result = await storage.getVS(`Project/PJ${pjCode}/PJ${pjCode}.json`);
+    async getVN(pjCode) {
+      var result = await storage.getVN(`Project/PJ${pjCode}/PJ${pjCode}.json`);
       var uint8array = new TextEncoder("utf-8").encode(result);
-      var VS = new TextDecoder().decode(uint8array);
-      if (Object.keys(VS).length === 0) {
-        console.log("NULL JSON");
+      var VN = new TextDecoder().decode(uint8array);
+      if (Object.keys(VN).length === 0) {
+        console.log("GetVN : Null JSON");
       } else {
-        this.VS = await JSON.parse(VS);
-        this.plot = JSON.parse(VS).startPlot;
+        this.VN = await JSON.parse(VN);
+        this.plot = JSON.parse(VN).startPlot;
         this.index=1;
-        console.log(this.VS)
       }
+      console.log(this.VN)
     },
     deletePj() {
       axios
@@ -189,32 +169,64 @@ export default {
           if (result.data == "ok") {
             this.$router.push("/");
           } else {
-            console.log("Delete Project Error!");
+            console.log("DeletePj : Not Good");
           }
         })
         .catch((err) => {
-          console.error(err);
+          console.error("DeletePj : Error Content\n" + err);
         });
     },
     move(data) {
-      console.log(this.plot, this.index);
       this.plot = data.plot;
       this.index = data.index;
-      console.log(this.plot, this.index)
+      this.status = 'play'
     },
-    addPage(plot){
-      console.log(plot+this.VS.scenario.시작)
-      eval("this.VS.scenario."+plot+'.push({"bg": "","bgm": "","name": "이름","text": "대화","img": "","move": {"plot": "'+plot+'","index":0}})')
-      console.log(this.VS.scenario);
+    addPage(plot, type){
+      this.VN.scenario[plot].push({"type": type,"bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""}],})
     },
     changePlotName(event, plot){
-      console.log(plot, 
-      event.path[2].children[0].children[0])
-      event.path[2].children[0].children[0].innerHTML=`<input type='text' class="BlockTitleCngInput" value=${event.path[2].children[0].children[0].innerText}>`
+      console.log(plot)
+      event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
     },
-    selectOption(event){
-      console.log(event.target.value)
-      console.log(event.path[2].children[2])
+    selectOptionPlot(event,plot,index,number){
+      this.VN.scenario[plot][index].select[number].plot=event.target.value
+      function removeAllchild(element) {
+        while (element.hasChildNodes()) {
+          element.removeChild(element.firstChild);
+        }
+      }
+      removeAllchild(event.path[2].children[2].children[0])
+      for(let i=1;i<this.VN.scenario[event.target.value].length;i++){
+        let opt = document.createElement("option")
+        opt.value = opt.innerHTML = i;
+        event.path[2].children[2].children[0].appendChild(opt)
+      }
+      this.VN.scenario[plot][index].select[number].index=1
+      this.returnIndex(event.target.value)
+    },
+    selectOptionIndex(event,plot,index,number){
+      this.VN.scenario[plot][index].select[number].index=parseInt(event.target.value)
+    },
+    returnIndex(sPlot,plot,index,number){
+      if(sPlot == '' || sPlot == undefined || sPlot == null){
+        this.VN.scenario[plot][index].select[number].plot=Object.keys(this.VN.scenario)[0]
+        this.VN.scenario[plot][index].select[number].index=1
+        const result=this.VN.scenario[Object.keys(this.VN.scenario)[0]].length-1
+        return result
+      }
+      else{
+        const result = this.VN.scenario[sPlot].length-1
+        return result
+      }
+    },
+    changeStatus(status){
+      this.status=status
+    },
+    changeStart(event){
+      this.VN.startPlot=event.target.value;
+    },
+    changeNext(event, plot){
+      this.VN.scenario[plot][0].nextPlot=event.target.value
     }
   },
 };
@@ -270,8 +282,8 @@ export default {
   text-align: center;
 
 }
-
 .VpcToolPosition button{
+  position: relative;
   background: #2872f9;
   border-radius: 10px;
   font-size: 0.9em;
@@ -286,6 +298,29 @@ export default {
 
 .VpcToolPosition button:hover{
   background: #0084ff;
+}
+
+.VpcToolPosition select{
+  position: relative;
+  background: #2872f9;
+  border-radius: 10px;
+  font-size: 0.9em;
+  width: 63px;
+  height: 31px;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  border: none;
+  padding: 5px;
+  margin: 2px;
+  transition: all ease 0.2s;
+}
+
+.VpcToolPosition select option{
+   text-align-last: center;
+   text-align: center;
+   -ms-text-align-last: center;
+   -moz-text-align-last: center;
 }
 
 .VpcTool_addplot p {
@@ -335,7 +370,7 @@ export default {
   font-size: 0.9em;
 }
 
-.VpcBlock_addPlotB {
+.VpcBlock_DeletePage {
   position: absolute;
   left: 80%;
   transform: translate(-50%, -50%);
@@ -349,11 +384,11 @@ export default {
   object-fit: cover;
 }
 
-.VpcBlock_addPlotB:hover {
+.VpcBlock_DeletePage:hover {
   background: #0084ff;
 }
 
-.VpcBlock_addPlotB img {
+.VpcBlock_DeletePage img {
   position: relative;
   top: -1px;
   left: -1.3px;
@@ -540,7 +575,8 @@ export default {
 
 .VpcPageSelOrigin select{
   border: none;
-  width: 45px;
+  width: 46px;
+  height: 19.19px;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -566,6 +602,16 @@ export default {
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
+  appearance: none;
+  text-align-last:center;
+  padding-right: 5px;
+}
+
+.VpcPageSelChange select option{
+   text-align-last: center;
+   text-align: center;
+   -ms-text-align-last: center;
+   -moz-text-align-last: center;
 }
 
 .VpcPageEnd {
@@ -604,7 +650,7 @@ export default {
   width: 100%;
 } */
 
-.VpcPage_addPlotB {
+.VpcPage_DeletePage {
   display: inline;
   position: absolute;
   left: 80%;
@@ -619,11 +665,11 @@ export default {
   object-fit: cover;
 }
 
-.VpcPage_addPlotB:hover {
+.VpcPage_DeletePage:hover {
   background: #0084ff;
 }
 
-.VpcPage_addPlotB img {
+.VpcPage_DeletePage img {
   position: relative;
   top: -1px;
   left: -1.3px;
@@ -667,14 +713,41 @@ export default {
   border: none;
   border-radius: 10px;
   color: white;
-  font-size: 12px;
   padding: 5px;
-  margin: 1px;
+  width: 38px;
+  height: 28px;
+  display: inline-block;
   transition: all ease 0.2s;
+  margin-left: 5px;
+  font-size: 0.8em;
 }
 
 .VpcBlockControl button:hover {
   background: #0084ff;
+}
+
+.VpcBlockEndPoint {
+  position: relative;
+  margin-top: 5px;
+  width: 100%;
+  text-align: right;
+}
+
+.VpcBlockEndPoint p {
+  display: inline-block;
+  margin: 0px 5px 0px 5px;
+  font-size: 0.8em;
+}
+
+.VpcBlockEndPoint select {
+  border: none;
+  width: 45px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+  appearance: none;
+  text-align-last:center;
+  padding-right: 5px;  
 }
 
 .BlockTitleCngInput {
@@ -687,8 +760,6 @@ export default {
   color: white;
   border: 1px #2872f9 solid;
   font-size: 0.9em;
-  /* font-weight: 600; */
-
 }
 
 </style>

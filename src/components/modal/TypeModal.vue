@@ -8,11 +8,11 @@
     <div class="Tmodal_inner">
       <div class="TmodalTitle"><p>{{msg}}</p></div>
       <div class="Tmodal_ButtonPosition">
-        <div class="Tmodal_type_button" @click="inputType('bg')">
-          <span class="Tmodal_type_ok">배경</span>
+        <div class="Tmodal_type_button" @click="inputType(option[Object.keys(option)[0]])">
+          <span class="Tmodal_type_ok">{{Object.keys(option)[0]}}</span>
         </div>
-        <div class="Tmodal_type_button" @click="inputType('img')">
-          <span class="Tmodal_type_ok">이미지</span>
+        <div class="Tmodal_type_button" @click="inputType(option[Object.keys(option)[1]])">
+          <span class="Tmodal_type_ok">{{Object.keys(option)[1]}}</span>
         </div>
       </div>
 
@@ -36,7 +36,9 @@ export default {
       // 모달 데이터
       tModalState : false,
       tModalSize : "",
-      msg : ""
+      msg : "",
+      option : {},
+      data : {}
     }
   },
   methods : {
@@ -48,9 +50,12 @@ export default {
       this.tModalState = true;
       this.tModalSize = option.size;
       this.msg = option.msg;
+      this.option = option.option;
+      this.data = option.data
     },
     inputType(type) {
-      console.log(type)
+      this.$emit("inputResource",this. data, type)
+      this.tModalState = false;
     },
   },
 }

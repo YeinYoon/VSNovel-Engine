@@ -2,7 +2,7 @@
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <FileUploadModal ref="fileUploadModal" @uploadOk="uploadOk()"></FileUploadModal>
 <InputModal ref="inputModal" @inputFolderName="inputFolderName" @inputNewName="inputNewName"></InputModal>
-<TypeModal ref="typeModal"></TypeModal>
+<TypeModal ref="typeModal" @inputResource="inputResource"></TypeModal>
   <div class="VSBackgroundRes">
 
     <div class="VSResourceTool">
@@ -328,11 +328,29 @@ export default {
     },
 
     send(data){
-      this.$refs.typeModal.show({
-        msg : "선택한 리소스를 어떤걸로 쓸건데?",
-        size : "normal"
-      })
-      this.$emit('send',{url:data.url, ex:data.ex})
+      if(data.ex=='mp3'){
+        this.$refs.typeModal.show({
+          msg : "선택한 리소스를 어떤걸로 쓸건데?",
+          size : "normal",
+          data : data,
+          option : {"효과음":'effect',
+                    "배경음악":'bgm'}
+        })
+      }
+      else{
+        this.$refs.typeModal.show({
+          msg : "선택한 리소스를 어떤걸로 쓸건데?",
+          size : "normal",
+          data : data,
+          option : {"배경":'bg',
+                    "이미지":'img'}
+        })
+      }
+      
+    },
+    inputResource(data, type){
+      this.$emit('send',{url:data.url, ex:data.ex, type:type})
+      console.log(data , type)
     }
   },
   

@@ -2,16 +2,10 @@
 <div v-if="gModalState">
     <div class="modal_opacity">
     </div>
-  <!-- 모달창이 나올떄 뒷 배경을 흐리게 만드는 녀석
-  이걸 안쓰고 싶을땐 단순히 modal_opacity만을 주석처리하면 된다.-->
-  <!-- 모달창의 크기를 결정하는 modal_frame-->
   <div v-bind:class="{[`Gmodal_frame_${this.$store.state.gModalSize}`]:true}">
-    <!--모달 내 메세지 및 컨텐츠인 modal_inner, 여기에 단순히 메세지만을 표시할수도 
-    작은 컴포넌트를 삽입할수도 있따.-->
     <div class="Gmodal_inner">
-      <span>{{this.$store.state.gModalMsg}}</span> <!--메세지를 출력-->
+      <span>{{this.$store.state.gModalMsg}}</span>
     </div>
-      <!--모달을 닫는 버튼과 버튼내 메세지(확인, 취소 등등)-->
     <div class="Gmodal_close_button">
       <span class="Gmodal_close_ok" @click="modalClose()">확인</span>
     </div>
@@ -123,10 +117,6 @@
     opacity: 0.3;
   }
 }
-
-  /*배경을 만드는 backgrounding_on*/
-
-
 </style>
 <script>
 export default {

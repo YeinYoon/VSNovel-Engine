@@ -130,13 +130,11 @@ export default {
       for(var i=0; i<event.dataTransfer.files.length; i++) {
         this.files.push(event.dataTransfer.files[i]);
       }
-      console.log(this.files);
     },
     onFileChange(event) {
       for(var i=0; i< event.target.files.length; i++) {
         this.files.push(event.target.files[i]);
       }
-      console.log(this.files);
     },
 
     fileUpload() {
@@ -158,13 +156,11 @@ export default {
           this.progress = parseInt((evt.loaded * 100) / evt.total) + "%";
           this.uploading = true;
         })
-        .send((err, data)=>{
+        .send((err)=>{ // data
           if(err) {
-            console.log("파일 업로드 실패");
-            console.error(err);
+            console.log("FileUpload : Error\n"+err);
             return "err"
           } else {
-            console.log("파일 업로드 성공", data);
             this.$emit('uploadOk');
             this.uploading = "ok";
           }
