@@ -10,7 +10,7 @@
   </SideBar>
   
   <MainBar v-bind:class="{'MainBar':true}" v-if="mainBar == true"></MainBar>
-  <router-view :data="data"></router-view>
+  <router-view :resource="resource"></router-view>
 </template>
 
 <script>
@@ -35,7 +35,7 @@ export default {
     return{
       sideBarStatus:'Main',
       mainBar : false,
-      data:null
+      resource: undefined
     }
   },
   methods : {
@@ -53,8 +53,9 @@ export default {
         console.error("Logout : Error\n"+err);
       })
     },
-    send(data){
-      this.data=data
+    send(resource){
+      this.resource=resource
+      console.log(resource)
     }
   },
   watch:{

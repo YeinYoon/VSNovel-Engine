@@ -77,8 +77,9 @@ export default {
       }
     },
     send(data){
-      this.$emit('send',data)
+      
       console.log(data)
+      this.$emit('send',data)
     }
   },
   watch:{
@@ -143,7 +144,7 @@ export default {
   width: 25px;
   height: 100px;
   color: white;
-  background: #5e5e5e;
+  background: #353535;
   border-radius: 10px;
   cursor: pointer;
   z-index: 99;

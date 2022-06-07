@@ -4,12 +4,11 @@
     <!-- 내부 img태그의 src를 가공하여 사용, -->
     <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
     <div class="SceneBackground">
-      <img src="@/assets/background.jpg" />
+      <img v-if="Now.bg!=''" :src="Now.bg"/>
     </div>
     <!-- 백그라운드 끝. -->
 
     <!-- 선택지 --> 
-
     <!-- 필요한곳에 주석을 해제하고 사용. -->
     <!-- SceneSelectBackground는 선택문이 화면상에 출력되었을때 뒤에 검은 배경을 깔아줌. -->
     <!-- SceneSelectBFrame은 중앙 위치를 잡는 용도. -->
@@ -17,22 +16,34 @@
 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
-        <div class="SelectButton" @click="select(s1.plot, s1.index)">
-          <span v-if="selectEdit" contenteditable="true" id="s1" ref="cngS1">{{s1.text}}</span>
-          <span v-else>{{s1}}{{s1.text}}</span>
+        <label for="s1">
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
+          <span id="s1" ref="cngs1">{{s1.text}}</span>
         </div>
+        <div v-else class="SelectButton" @click="select(s1.plot, s1.index)">
+          <span id="s1">{{s1.text}}</span>
+        </div>
+        </label>
         <div class="SelectVisibleButton" v-if="s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/checked.png"></div>
         <div class="SelectVisibleButtonDisable" v-if="!s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/close.png"></div>
-        <div class="SelectButton" @click="select(s2.plot, s2.index)">
-          <span v-if="selectEdit" contenteditable="true" id="s2" ref="cngS2">변경해주세요{{s1.text}}</span>
-          <span v-else>{{s2}}{{s2.text}}</span>
+        <label for="s2">
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
+          <span id="s2" ref="cngs2">{{s2.text}}</span>
         </div>
+        <div v-else class="SelectButton" @click="select(s2.plot, s2.index)">
+          <span id="s2">{{s2.text}}</span>
+        </div>
+        </label>
         <div class="SelectVisibleButton" v-if="s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/checked.png"></div>
         <div class="SelectVisibleButtonDisable" v-if="!s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/close.png"></div>
-        <div class="SelectButton" @click="select(s3.plot, s3.index)">
-          <span v-if="selectEdit" contenteditable="true" id="s3" ref="cngS3">{{s1.text}}</span>
-          <span v-else>{{s3}}{{s3.text}}</span>
+        <label for="s3">
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
+          <span id="s3" ref="cngs3">{{s3.text}}</span>
         </div>
+        <div v-else class="SelectButton" @click="select(s3.plot, s3.index)">
+          <span id="s3">{{s3.text}}</span>
+        </div>
+        </label>
         <div class="SelectVisibleButton" v-if="s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/checked.png"></div>
         <div class="SelectVisibleButtonDisable" v-if="!s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/close.png"></div>
 
@@ -225,9 +236,11 @@ export default {
     },
     saveSelect(){
       let temp = this.VN
-      temp.scenario[this.plot][this.index].select[0].text = this.$refs.cngS1.innerHTML
-      temp.scenario[this.plot][this.index].select[1].text = this.$refs.cngS2.innerHTML
-      temp.scenario[this.plot][this.index].select[2].text = this.$refs.cngS3.innerHTML
+      console.log(this.$refs.cngs1.innerHTML)
+      temp.scenario[this.plot][this.index].select[0].text = this.$refs.cngs1.innerHTML
+      temp.scenario[this.plot][this.index].select[1].text = this.$refs.cngs2.innerHTML
+      temp.scenario[this.plot][this.index].select[2].text = this.$refs.cngs3.innerHTML
+      console.log(temp.scenario[this.plot][this.index].select)
       this.$emit('changeVN',temp)
       this.selectEdit = false;
     },
@@ -247,7 +260,7 @@ export default {
       }
     },
     move: function(){
-      if(this.VN.scenario[this.plot].length==this.index) this.$emit('move',{plot:this.VN.scenario[this.plot][0].nextPlot,index:1})
+      if(this.VN.scenario[this.plot].length-1==this.index) this.$emit('move',{plot:this.VN.scenario[this.plot][0].nextPlot,index:1})
       else this.$emit('move',{plot:this.plot,index:this.index+1})
     },
     select:function(plot,index){
@@ -278,7 +291,9 @@ export default {
 </script>
 
 <style>
-
+label {
+  display: block;
+}
 .ViewerBackground {
   background: #5e5e5e;
   width: 100%;
@@ -437,7 +452,6 @@ export default {
   width: 50%;
   z-index: 10;
 }
-
 .SelectButton {
   position: relative;
   display: inline-block;

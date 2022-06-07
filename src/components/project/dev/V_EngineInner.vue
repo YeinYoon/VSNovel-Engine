@@ -9,8 +9,8 @@
         <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
           <div class="VpcToolPosition">
             <button>플롯 추가</button>
-            <select>
-              <option></option>
+            <select @change="changeStart($event)">
+              <option v-for="(plot, i) in VN.scenario" :key="i" :selected="VN.startPlot==i">{{i}}</option>
             </select>
           </div>
 
@@ -22,7 +22,7 @@
             <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
               <div class="VpcBlock_Title"><p>{{ i }}</p></div>
               <button class="VpcBlock_Opener" @click="changePlotName($event, i)"><img src="@/assets/icons/white/editing.png"></button>
-              <button class="VpcBlock_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
+              <button class="VpcBlock_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
             </div>
 
             <!-- 플롯 내부 조회 --> 
@@ -41,7 +41,7 @@
                 <div class="VpcPageTitle"><span>1232131232132132132</span></div>
                 <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
                   <button class="VpcPage_Opener" @click="edit"><img src="@/assets/icons/white/editing.png"></button>
-                  <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
+                  <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
                 </div>
               </div>
               <!-- 선택자 페이지 -->
@@ -53,7 +53,7 @@
                 <div class="VpcPageSelectTitle"><span>12312321412423</span></div>
                 <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
                   <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
-                  <button class="VpcPage_addPlotB"><img src="@/assets/icons/white/trash_white.png"></button>
+                  <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
                 </div>
                 <div class="VpcPageSels" v-for="(select,k) in page.select" :key="k">
                   <div class="VpcPageSelTitle">선택지{{k+1}}</div>
@@ -82,8 +82,8 @@
               </div>
               <div class="VpcBlockEndPoint">
                 <p>다음 플롯 : </p>
-                  <select>
-                    <option></option>
+                  <select @change="changeNext($event, i)">
+                    <option v-for="(nextPlot, j) in VN.scenario" :key="j" :selected="VN.scenario[i][0].nextPlot==j">{{j}}</option>
                   </select>
               </div>
             </div>
@@ -107,9 +107,8 @@ import storage from "../../../aws";
 import axios from "../../../axios";
 export default {
   name: "V_EngineInner",
-  props:{
-    data:Object
-  },
+  props:['resource']
+  ,
   components: {
     EngineCanvas,
   },
@@ -128,10 +127,15 @@ export default {
     };
   },
   watch:{
-    data(){
-      if(this.data!=undefined && this.data!=null){
-        let url = this.data.url
-        this.VN.scenario[this.plot][this.index].img=url
+    resource:{
+      deep:true,
+      handler(resource){
+        if(resource!=undefined && resource!=null){
+          let url = resource.url
+          this.VN.scenario[this.plot][this.index][resource.type]=url
+          console.log(this.VN.scenario[this.plot][this.index])
+          console.log(this.VN.scenario[this.plot][this.index][resource.type])
+        }
       }
     },
     VN:{
@@ -156,6 +160,7 @@ export default {
         this.plot = JSON.parse(VN).startPlot;
         this.index=1;
       }
+      console.log(this.VN)
     },
     deletePj() {
       axios
@@ -217,6 +222,12 @@ export default {
     changeStatus(status){
       this.status=status
     },
+    changeStart(event){
+      this.VN.startPlot=event.target.value;
+    },
+    changeNext(event, plot){
+      this.VN.scenario[plot][0].nextPlot=event.target.value
+    }
   },
 };
 </script>
@@ -271,7 +282,6 @@ export default {
   text-align: center;
 
 }
-
 .VpcToolPosition button{
   position: relative;
   background: #2872f9;
@@ -304,6 +314,13 @@ export default {
   padding: 5px;
   margin: 2px;
   transition: all ease 0.2s;
+}
+
+.VpcToolPosition select option{
+   text-align-last: center;
+   text-align: center;
+   -ms-text-align-last: center;
+   -moz-text-align-last: center;
 }
 
 .VpcTool_addplot p {
@@ -353,7 +370,7 @@ export default {
   font-size: 0.9em;
 }
 
-.VpcBlock_addPlotB {
+.VpcBlock_DeletePage {
   position: absolute;
   left: 80%;
   transform: translate(-50%, -50%);
@@ -367,11 +384,11 @@ export default {
   object-fit: cover;
 }
 
-.VpcBlock_addPlotB:hover {
+.VpcBlock_DeletePage:hover {
   background: #0084ff;
 }
 
-.VpcBlock_addPlotB img {
+.VpcBlock_DeletePage img {
   position: relative;
   top: -1px;
   left: -1.3px;
@@ -559,6 +576,7 @@ export default {
 .VpcPageSelOrigin select{
   border: none;
   width: 46px;
+  height: 19.19px;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -632,7 +650,7 @@ export default {
   width: 100%;
 } */
 
-.VpcPage_addPlotB {
+.VpcPage_DeletePage {
   display: inline;
   position: absolute;
   left: 80%;
@@ -647,11 +665,11 @@ export default {
   object-fit: cover;
 }
 
-.VpcPage_addPlotB:hover {
+.VpcPage_DeletePage:hover {
   background: #0084ff;
 }
 
-.VpcPage_addPlotB img {
+.VpcPage_DeletePage img {
   position: relative;
   top: -1px;
   left: -1.3px;
