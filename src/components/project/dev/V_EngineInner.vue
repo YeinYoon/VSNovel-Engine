@@ -9,7 +9,9 @@
         <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
           <div class="VpcToolPosition">
             <button>플롯 추가</button>
-            <button>시작 플롯</button>
+            <select>
+              <option></option>
+            </select>
           </div>
 
         </div>
@@ -77,6 +79,13 @@
                 <button @click="addPage(i, 'n')">일반</button>
                 <button @click="addPage(i, 's')">선택</button>
                 <button @click="addPage(i, 'e')">엔딩</button>
+              </div>
+              <div class="VpcBlockEndPoint">
+                <p>이 플롯은..</p>
+                  <select>
+
+                  </select>
+                <p>로 연결</p>
               </div>
             </div>
         
@@ -279,6 +288,19 @@ export default {
 
 .VpcToolPosition button:hover{
   background: #0084ff;
+}
+
+.VpcToolPosition select{
+  display: inline-block;
+  border: none;
+  width: 55px;
+  height: 30px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 10px;
+  appearance: none;
+  text-align-last:center;
+  padding-right: 5px;  
 }
 
 .VpcTool_addplot p {
@@ -559,6 +581,16 @@ export default {
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
+  appearance: none;
+  text-align-last:center;
+  padding-right: 5px;
+}
+
+.VpcPageSelChange select option{
+   text-align-last: center;
+   text-align: center;
+   -ms-text-align-last: center;
+   -moz-text-align-last: center;
 }
 
 .VpcPageEnd {
@@ -671,6 +703,30 @@ export default {
 
 .VpcBlockControl button:hover {
   background: #0084ff;
+}
+
+.VpcBlockEndPoint {
+  position: relative;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.VpcBlockEndPoint p {
+  display: inline-block;
+  margin: 0px 5px 0px 5px;
+  font-size: 0.8em;
+}
+
+.VpcBlockEndPoint select {
+  border: none;
+  width: 45px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+  appearance: none;
+  text-align-last:center;
+  padding-right: 5px;  
 }
 
 .BlockTitleCngInput {
