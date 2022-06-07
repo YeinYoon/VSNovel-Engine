@@ -74,8 +74,9 @@
              </div>              
             </div><!-- 플롯 블록 이너 끝 -->
               <div class="VpcBlockControl">
-                <button>플롯 삭제</button>
-                <button @click="addPage(i)">페이지 추가</button>
+                <button></button>
+                <button></button>
+                <button @click="addPage(i)"><img src="@/assets/icons/white/editing.png"></button>
               </div>
             </div>
         
@@ -657,10 +658,12 @@ export default {
   border: none;
   border-radius: 10px;
   color: white;
-  font-size: 12px;
   padding: 5px;
-  margin: 1px;
+  width: 28px;
+  height: 28px;
+  display: inline-block;
   transition: all ease 0.2s;
+  margin-left: 5px;
 }
 
 .VpcBlockControl button:hover {
@@ -677,8 +680,6 @@ export default {
   color: white;
   border: 1px #2872f9 solid;
   font-size: 0.9em;
-  /* font-weight: 600; */
-
 }
 
 </style>
