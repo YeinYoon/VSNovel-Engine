@@ -1,4 +1,4 @@
-<template>
+<template v-if="!!data">
   <div class="Venginebackground">
     <div class="VEngineCanvas">
       <EngineCanvas :plot="plot" :index="index" :VN="VN" :status="status" @changeVN="changeVN" @move="move" @changeStatus="changeStatus"/>
@@ -55,16 +55,16 @@
                 </div>
                 <div class="VpcPageSels" v-for="(select,k) in page.select" :key="k">
                   <div class="VpcPageSelTitle">선택지{{k+1}}</div>
-                  <div class="VpcPageSelectPath">
+                  <div class="VpcPageSelectPath" @change="changeDiv($event)">
                     <div class="VpcPageSelOrigin">
-                      <select @change="selectOptionPlot($event,i,j,k)">
+                      <select id="plot" @change="selectOptionPlot($event,i,j,k)">
                         <option v-for="(sPlot, l) in VN.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
                       </select>
                     </div>
                     <div class="VpcPageSelectArrow">,</div>
                     <div class="VpcPageSelChange">
-                      <select @change="selectOptionIndex($event,i,j,k)">
-                        <option v-for="(num,l) in returnIndex(select.plot)" :key="l" :selected="select.index==l+1">
+                      <select id="index" @change="selectOptionIndex($event,i,j,k)">
+                        <option v-for="(num,l) in returnIndex(select.plot,i,j,k)" :key="l" :selected="select.index==l+1">
                           {{l+1}}
                         </option>
                       </select>
@@ -74,9 +74,9 @@
              </div>              
             </div><!-- 플롯 블록 이너 끝 -->
               <div class="VpcBlockControl">
-                <button></button>
-                <button></button>
-                <button @click="addPage(i)"><img src="@/assets/icons/white/editing.png"></button>
+                <button @click="addPage(i, 'n')">일반</button>
+                <button @click="addPage(i, 's')">선택</button>
+                <button @click="addPage(i, 'e')">엔딩</button>
               </div>
             </div>
         
@@ -106,7 +106,6 @@ export default {
     EngineCanvas,
   },
   async created() {
-    console.log("ss")
     this.pjCode = this.$route.params.pjCode;
     await this.getVN(this.pjCode);
   },
@@ -143,12 +142,11 @@ export default {
       var uint8array = new TextEncoder("utf-8").encode(result);
       var VN = new TextDecoder().decode(uint8array);
       if (Object.keys(VN).length === 0) {
-        console.log("NULL JSON");
+        console.log("GetVN : Null JSON");
       } else {
         this.VN = await JSON.parse(VN);
         this.plot = JSON.parse(VN).startPlot;
         this.index=1;
-        console.log(this.VN.scenario)
       }
     },
     deletePj() {
@@ -158,55 +156,59 @@ export default {
           if (result.data == "ok") {
             this.$router.push("/");
           } else {
-            console.log("Delete Project Error!");
+            console.log("DeletePj : Not Good");
           }
         })
         .catch((err) => {
-          console.error(err);
+          console.error("DeletePj : Error Content\n" + err);
         });
     },
     move(data) {
-      console.log(this.plot, this.index);
       this.plot = data.plot;
       this.index = data.index;
       this.status = 'play'
-      console.log(this.plot, this.index)
     },
-    addPage(plot){
-      console.log(plot+this.VN.scenario.시작)
-      this.VN.scenario[plot].push({"type": "n","bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""}],})
-      console.log(this.VN.scenario);
+    addPage(plot, type){
+      this.VN.scenario[plot].push({"type": type,"bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""}],})
     },
     changePlotName(event, plot){
-      console.log(plot, 
-      event.path[2].children[0].children[0])
-      event.path[2].children[0].children[0].innerHTML=`<input type='text' class="BlockTitleCngInput" value=${event.path[2].children[0].children[0].innerText}>`
+      console.log(plot)
+      event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
     },
     selectOptionPlot(event,plot,index,number){
-      console.log(event.target.value, plot, index, number)
       this.VN.scenario[plot][index].select[number].plot=event.target.value
-      event.path[2].children[2].children[0].length = 0;
+      function removeAllchild(element) {
+        while (element.hasChildNodes()) {
+          element.removeChild(element.firstChild);
+        }
+      }
+      removeAllchild(event.path[2].children[2].children[0])
       for(let i=1;i<this.VN.scenario[event.target.value].length;i++){
         let opt = document.createElement("option")
         opt.value = opt.innerHTML = i;
         event.path[2].children[2].children[0].appendChild(opt)
       }
       this.VN.scenario[plot][index].select[number].index=1
+      this.returnIndex(event.target.value)
     },
     selectOptionIndex(event,plot,index,number){
-      console.log(event.path[2].children[0].children[0].value, event.target.value)
-      this.VN.scenario[plot][index].select[number].index=event.target.value
-      console.log(event.target.path)
+      this.VN.scenario[plot][index].select[number].index=parseInt(event.target.value)
     },
-    returnIndex(plot){
-      const result = this.VN.scenario[plot].length-1
-      console.log(plot);
-      console.log(result);
-      return result
+    returnIndex(sPlot,plot,index,number){
+      if(sPlot == '' || sPlot == undefined || sPlot == null){
+        this.VN.scenario[plot][index].select[number].plot=Object.keys(this.VN.scenario)[0]
+        this.VN.scenario[plot][index].select[number].index=1
+        const result=this.VN.scenario[Object.keys(this.VN.scenario)[0]].length-1
+        return result
+      }
+      else{
+        const result = this.VN.scenario[sPlot].length-1
+        return result
+      }
     },
     changeStatus(status){
       this.status=status
-    }
+    },
   },
 };
 </script>
@@ -659,11 +661,12 @@ export default {
   border-radius: 10px;
   color: white;
   padding: 5px;
-  width: 28px;
+  width: 38px;
   height: 28px;
   display: inline-block;
   transition: all ease 0.2s;
   margin-left: 5px;
+  font-size: 0.8em;
 }
 
 .VpcBlockControl button:hover {

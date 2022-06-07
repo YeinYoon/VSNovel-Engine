@@ -68,7 +68,7 @@ export default {
 
     inputVal() {
       if(this.input == "") {
-        console.log("내용이 비어있음");
+        console.log("InputVal : Null");
       } else {
 
         switch(this.type) {
