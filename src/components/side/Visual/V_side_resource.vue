@@ -22,7 +22,7 @@
         <div class="VSFolder" v-for="(f, i) in rootList" :key="i">
 
           <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg'">
-            <img :src="f.url" @click="send(f.url)">
+            <img :src="f.url" @click="send(f.key)">
           </div>
           <div class="VSFileThumnail" v-else-if="f.ex == 'mp3'" @dblclick="send(f)" @click="playerOn(f)">
             <img src="@/assets/sample.png">
@@ -67,11 +67,6 @@
           </div>
           <div class="VSFolderThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
             <img src="@/assets/icons/white/folder.png">
-          </div>
-
-
-          <div class="VSFileMoveButton" v-if="f.ex == 'mp3'" @click="deleteFile(f.name, f.key)">
-            <img src="@/assets/icons/white/redo.png">
           </div>
 
           <div class="VSFileDetailButton" @click="editName(f.name, f.key)">
@@ -348,7 +343,7 @@ export default {
       
     },
     inputResource(data, type){
-      this.$emit('send',{url:data.url, ex:data.ex, type:type})
+      this.$emit('send',{key:data.key, ex:data.ex, type:type})
       console.log(data , type)
     }
   },

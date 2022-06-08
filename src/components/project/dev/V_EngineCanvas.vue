@@ -1,10 +1,10 @@
-<template v-if="!!data">
+<template v-if="!!Now">
     <div class="ViewerBackground">
     <!-- 백그라운드 -->
     <!-- 내부 img태그의 src를 가공하여 사용, -->
     <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
     <div class="SceneBackground">
-      <img v-if="Now.bg!=''" :src="Now.bg"/>
+      <img v-if="Now.bg!='' && Now.bg != undefined" :src="this.currentBg"/>
     </div>
     <!-- 백그라운드 끝. -->
 
@@ -120,7 +120,7 @@
       <!-- 내부 img태그의 src를 가공하여 사용, -->
       <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
       <div class="SceneImg"> <!--이새끼 문제-->
-        <img :src="Now.img" v-if="Now.img!=''"/>
+        <img :src="currentImg" v-if="Now.img!=''"/>
       </div>
 
       <!-- 이미지 끝. -->
@@ -186,7 +186,6 @@ export default {
   created() {
     this.pjCode = this.$route.params.pjCode;
     this.getPjInfo(this.pjCode);
-    console.log(this.Now);
   },
   data() {
     return {
@@ -204,7 +203,9 @@ export default {
 
       bgmState : false,
       currentBgm : "",
-      bgmId : ""
+      bgmId : "",
+      currentImg : "",
+      currentBg : "",
     }
   },
   methods : {
@@ -258,8 +259,11 @@ export default {
       this.$emit('changeVN',temp)
       this.selectEdit = false;
     },
-    loadData: function () {
-      this.Now=this.VN.scenario[this.plot][this.index]
+    loadData: async function () {
+      this.Now=this.VN.scenario[this.plot][this.index];
+      if(this.Now.bgm != '') {
+        this.currentBgm = await storage.getUrl(this.Now.bgm);
+      }
     },              
     nextScene: function () {
       if(this.VN.scenario[this.plot][this.index].type=='n') {
@@ -284,7 +288,6 @@ export default {
       }
     },
 
-
     //BGM 관련
     bgmOn() {
       this.bgmState = true;
@@ -299,11 +302,12 @@ export default {
     bgmOff() {
       this.bgmState = false;
       Howler.stop(this.bgmId);
-    }
+    },
   },  
   watch : {
     $route() {
       this.getPjInfo(this.pjCode);
+      Howler.stop(this.bgmId);
     },
     index: function(){
       this.loadData()
@@ -318,13 +322,44 @@ export default {
       }
     },
 
-    Now() {
-      if(this.Now.bgm != '' && this.bgmState == true) {
-        this.bgmOff();
-        this.currentBgm = this.Now.bgm;
-        this.bgmOn();
+    Now : {
+      deep:true,
+      async handler(){
+        var checkArr = [{bg : this.Now.bg}, {img : this.Now.img}, {bgm : this.Now.bgm}];
+        var existKey = checkArr.filter(item => item.bg != '' && item.img != '' && item.bgm != '');
+        if(existKey.length == 0) {
+          this.currentBg = ''
+          this.currentImg = ''
+          this.currentBgm = ''
+        } else {
+
+          for(var i=0; i<existKey.length; i++) {
+            var x = Object.keys(existKey[i]);
+            switch(x[0]) {
+              case 'bg' :
+                this.currentBg = await storage.getUrl(this.Now.bg);
+                break;
+              case 'bgm' :
+                if(this.bgmState == true) {
+                  this.bgmOff();
+                  this.currentBgm = await storage.getUrl(this.Now.bgm);
+                  this.bgmOn();
+                } else {
+                  this.currentBgm = await storage.getUrl(this.Now.bgm);
+                }
+                break;
+              case 'img' :
+                this.currentImg = await storage.getUrl(this.Now.img);
+                break;
+            }
+
+          }
+        }
       }
-    }
+    },
+    // currentBgm(cng, pre) {
+    //   console.log(pre + " -> ", cng);
+    // }
   },
 }
 </script>

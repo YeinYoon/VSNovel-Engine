@@ -32,8 +32,15 @@ exports.getUrl = async (filePath) => { // 특정 경로의 파일 URL 가져오�
     const params = {
         Bucket: "vsnovel",
         Key : filePath,
+        Expires: 604800
     }
-    var url = await s3.getSignedUrl("getObject", params);
+
+    var url = new Promise((resolve, reject) => {
+        s3.getSignedUrl("getObject", params, function(err, url) {
+         if (err) return reject(err);
+         resolve(url);
+        });
+    });
     return url;
 }
 
@@ -81,7 +88,7 @@ exports.getDirList = async(filepath) => { // 해당 프로젝트 내부의 폴�
 exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스트 가져오기
     const params = {
         Bucket: "vsnovel",
-        Prefix : filePath
+        Prefix : filePath,
     }
 
     let keyList = [];
@@ -138,6 +145,7 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
                 const params = {
                     Bucket: "vsnovel",
                     Key : keyList[i],
+                    Expires: 604800 // URL 발급 유효기간 7일
                 }
                 var url = await s3.getSignedUrl("getObject", params);
                 urlList[i].url = url;

@@ -77,7 +77,6 @@ export default {
       }
     },
     send(data){
-      
       console.log(data)
       this.$emit('send',data)
     }

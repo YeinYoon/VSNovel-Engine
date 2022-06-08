@@ -131,8 +131,8 @@ export default {
       deep:true,
       handler(resource){
         if(resource!=undefined && resource!=null){
-          let url = resource.url
-          this.VN.scenario[this.plot][this.index][resource.type]=url
+          let key = resource.key
+          this.VN.scenario[this.plot][this.index][resource.type]=key
           console.log(this.VN.scenario[this.plot][this.index])
           console.log(this.VN.scenario[this.plot][this.index][resource.type])
         }
