@@ -74,7 +74,9 @@ import axios from '../../../axios'
 export default {
     name:'Side_MainScreen',
     created() {
-        this.getNoticeList();
+        if(this.$store.userNickname != null) {
+            this.getNoticeList();
+        }
     },
     data() {
         return{

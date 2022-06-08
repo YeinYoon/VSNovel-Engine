@@ -106,6 +106,14 @@
         <div class="NavItems" title="저장">
           <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
         </div>
+
+        <div v-if="bgmState == false && Now.bgm != ''">
+          <button @click="bgmOn()">BGM On</button>
+        </div>
+        <div v-else-if="bgmState == true && Now.bgm != ''">
+          <button @click="bgmOff()">BGM Off</button>
+        </div>
+        
       </div>
       <!-- 이미지 -->
 
@@ -164,6 +172,7 @@
 </template>
 
 <script>
+import {Howl, Howler} from 'howler';
 import storage from '../../../aws'
 import axios from '../../../axios'
 export default {
@@ -177,6 +186,7 @@ export default {
   created() {
     this.pjCode = this.$route.params.pjCode;
     this.getPjInfo(this.pjCode);
+    console.log(this.Now);
   },
   data() {
     return {
@@ -191,6 +201,10 @@ export default {
       s1:{},
       s2:{},
       s3:{},
+
+      bgmState : false,
+      currentBgm : "",
+      bgmId : ""
     }
   },
   methods : {
@@ -268,11 +282,28 @@ export default {
         this.$emit('changeStatus','play')
         this.$emit('move',{plot,index})
       }
+    },
+
+
+    //BGM 관련
+    bgmOn() {
+      this.bgmState = true;
+      var sound = new Howl({
+        src: [this.currentBgm],
+        volume: 1.0,
+        loop : true
+      });
+      sound.play();
+      this.bgmId = sound;
+    },
+    bgmOff() {
+      this.bgmState = false;
+      Howler.stop(this.bgmId);
     }
   },  
   watch : {
     $route() {
-          this.getPjInfo(this.pjCode);
+      this.getPjInfo(this.pjCode);
     },
     index: function(){
       this.loadData()
@@ -284,6 +315,14 @@ export default {
       deep:true,
       handler(){
         this.loadData()
+      }
+    },
+
+    Now() {
+      if(this.Now.bgm != '' && this.bgmState == true) {
+        this.bgmOff();
+        this.currentBgm = this.Now.bgm;
+        this.bgmOn();
       }
     }
   },

@@ -10,7 +10,6 @@
       <div class="VSResourceButtons">
         <button @click="fileManagerOpen(this.folderPath)">업로드</button> <!-- 업로드 -->
         <button @click="createDir()">폴더추가</button> <!-- 폴더추가 -->
-        <button>기능?</button> <!-- 폴더이동 -->
       </div>
     </div>
     
