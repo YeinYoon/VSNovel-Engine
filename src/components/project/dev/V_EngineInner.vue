@@ -35,7 +35,7 @@
               <!-- 일반 페이지는 단순 대화를 담고있음. -->
               <!-- 일반 페이지는 다음 페이지로의 이동만 함. (플롯간 이동X) -->
               <div v-for="(page, j) in plot" :key="j">
-              <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s' && page.nextPlot==undefined">
+              <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s' && j!=0">
                 <div class="VpcPageNormalIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
                 <div class="VpcPageNormalIndex" v-else><span>{{j}}</span></div>
                 <div class="VpcPageTitle"><span>1232131232132132132</span></div>
