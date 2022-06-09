@@ -102,15 +102,17 @@
 </template>
 
 <script>
+import { defineComponent } from "@vue/runtime-core"
+import { VueDraggableNext } from 'vue-draggable-next'
 import EngineCanvas from "./V_EngineCanvas.vue";
 import storage from "../../../aws";
 import axios from "../../../axios";
-export default {
+export default defineComponent({
   name: "V_EngineInner",
-  props:['resource']
-  ,
+  props:['resource'],
   components: {
     EngineCanvas,
+    Draggable : VueDraggableNext
   },
   async created() {
     this.pjCode = this.$route.params.pjCode;
@@ -229,7 +231,7 @@ export default {
       this.VN.scenario[plot][0].nextPlot=event.target.value
     }
   },
-};
+});
 </script>
 
 <style>
