@@ -6,99 +6,109 @@
     
     <div class="VPlotController"> <!-- 플롯 컨트롤러 -->
       <div class="VPCBackground"> <!-- 플롯 컨트롤러 백그라운드 -->
-        <div class="VpcTopToolbar"> <!-- 플롯 추가등의 버튼 -->
+
+        <!-- 플롯 컨트롤러 툴바 -->
+        <div class="VpcTopToolbar"> 
           <div class="VpcToolPosition">
             <button>플롯 추가</button>
             <select @change="changeStart($event)">
               <option v-for="(plot, i) in VN.scenario" :key="i" :selected="VN.startPlot==i">{{i}}</option>
             </select>
           </div>
+        </div> 
 
-        </div>
-      
+        <!-- 플롯리스트 이너 -->
         <div v-if="VN" class="VpcInner">
-          <div class="VpcBlock" v-for="(plot, i) in VN.scenario"
-          :key="i"> <!-- 플롯 박스 -->
-            <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
-              <div class="VpcBlock_Title"><p>{{ i }}</p></div>
-              <button class="VpcBlock_Opener" @click="changePlotName($event, i)"><img src="@/assets/icons/white/editing.png"></button>
-              <button class="VpcBlock_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
-            </div>
 
-            <!-- 플롯 내부 조회 --> 
-            <!-- 이 플롯이 가진 페이지만큼 반복 -->
-            <!-- 반복문 실행중 일반 페이지는 VpcPageNormal 클래스를 붙일것. -->
-            <!-- 반복문 실행중 선택자 페이지는 VpcPageSelect 클래스를 붙일것. -->
-            <div class="VpcBlockInner"> 
-              
-              <!-- 일반 페이지 -->
-              <!-- 일반 페이지는 단순 대화를 담고있음. -->
-              <!-- 일반 페이지는 다음 페이지로의 이동만 함. (플롯간 이동X) -->
-              <div v-for="(page, j) in plot" :key="j">
-              <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s' && j!=0">
-                <div class="VpcPageNormalIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
-                <div class="VpcPageNormalIndex" v-else><span>{{j}}</span></div>
-                <div class="VpcPageTitle"><span>1232131232132132132</span></div>
-                <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
-                  <button class="VpcPage_Opener" @click="edit"><img src="@/assets/icons/white/editing.png"></button>
-                  <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
-                </div>
+          <!-- 플롯 반복문 -->
+          <Draggable :list="this.VN.scenario" @change="dragCngLog">
+            <div class="VpcBlock" v-for="(plot, i) in VN.scenario"
+            :key="i">
+
+              <!-- 플롯 정보 --> 
+              <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
+                <div class="VpcBlock_Title"><p>{{ i }}</p></div>
+                <button class="VpcBlock_Opener" @click="changePlotName($event, i)"><img src="@/assets/icons/white/editing.png"></button>
+                <button class="VpcBlock_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
               </div>
-              <!-- 선택자 페이지 -->
-              <!-- 플레이어가 선택하면, 다른 플롯으로의 이동이 발생함 -->
-              <!-- 페이지에 선택지를 추가한 갯수만큼 반복문을 돌릴것. -->
-              <div class="VpcPageSelect" v-if="page.type=='s'" @click="move({plot:i, index:j})">
-                <div class="VpcPageSelectIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
-                <div class="VpcPageSelectIndex" v-else><span>{{j}}</span></div>
-                <div class="VpcPageSelectTitle"><span>12312321412423</span></div>
-                <div v-if="i==this.plot && j==this.index"> <!-- if문 걸어서 활성화중일때만 나오게 수정좀 > < -->
-                  <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
-                  <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
-                </div>
-                <div class="VpcPageSels" v-for="(select,k) in page.select" :key="k">
-                  <div class="VpcPageSelTitle">선택지{{k+1}}</div>
-                  <div class="VpcPageSelectPath" @change="changeDiv($event)">
-                    <div class="VpcPageSelOrigin">
-                      <select id="plot" @change="selectOptionPlot($event,i,j,k)">
-                        <option v-for="(sPlot, l) in VN.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
-                      </select>
-                    </div>
-                    <div class="VpcPageSelectArrow">,</div>
-                    <div class="VpcPageSelChange">
-                      <select id="index" @change="selectOptionIndex($event,i,j,k)">
-                        <option v-for="(num,l) in returnIndex(select.plot,i,j,k)" :key="l" :selected="select.index==l+1">
-                          {{l+1}}
-                        </option>
-                      </select>
+
+
+              <!-- 플롯 내부 -->
+              <div class="VpcBlockInner"> 
+                <div v-for="(page, j) in plot" :key="j">
+                  
+                  <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s' && j!=0">
+                    <div class="VpcPageNormalIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
+                    <div class="VpcPageNormalIndex" v-else><span>{{j}}</span></div>
+                    <div class="VpcPageTitle"><span>1232131232132132132</span></div>
+                    <div v-if="i==this.plot && j==this.index">
+                      <button class="VpcPage_Opener" @click="edit"><img src="@/assets/icons/white/editing.png"></button>
+                      <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
                     </div>
                   </div>
-                </div>
-             </div>              
-            </div><!-- 플롯 블록 이너 끝 -->
-              <div class="VpcBlockControl">
-                <button @click="addPage(i, 'n')">일반</button>
-                <button @click="addPage(i, 's')">선택</button>
-                <button @click="addPage(i, 'e')">엔딩</button>
-              </div>
-              <div class="VpcBlockEndPoint">
-                <p>다음 플롯 : </p>
-                  <select @change="changeNext($event, i)">
-                    <option v-for="(nextPlot, j) in VN.scenario" :key="j" :selected="VN.scenario[i][0].nextPlot==j">{{j}}</option>
-                  </select>
-              </div>
-            </div>
+
+                  <!-- 선택자 페이지 -->
+                  <div class="VpcPageSelect" v-if="page.type=='s'" @click="move({plot:i, index:j})">
+                  
+                    <div class="VpcPageSelectIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
+                    <div class="VpcPageSelectIndex" v-else><span>{{j}}</span></div>
+                    <div class="VpcPageSelectTitle"><span>12312321412423</span></div>
+                    <div v-if="i==this.plot && j==this.index">
+                      <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
+                      <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
+                    </div>
+
+                    <!-- 선택지들 -->
+                    <div class="VpcPageSels" v-for="(select,k) in page.select" :key="k">
+                      <div class="VpcPageSelTitle">선택지{{k+1}}</div>
+
+                      <!-- 선택지 설정 -->
+                      <div class="VpcPageSelectPath" @change="changeDiv($event)">
+                        <div class="VpcPageSelOrigin">
+                          <select id="plot" @change="selectOptionPlot($event,i,j,k)">
+                            <option v-for="(sPlot, l) in VN.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
+                          </select>
+                        </div>
+                        <div class="VpcPageSelectArrow">,</div>
+                        <div class="VpcPageSelChange">
+                          <select id="index" @change="selectOptionIndex($event,i,j,k)">
+                            <option v-for="(num,l) in returnIndex(select.plot,i,j,k)" :key="l" :selected="select.index==l+1">
+                              {{l+1}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>    
+                    </div> 
+                  </div> 
+                </div> 
+    
         
-        </div> <!-- VpcInner 끝 -->
+                <!-- 플롯의 페이지추가 및 설정 -->
+                <div class="VpcBlockControl">
+                  <button @click="addPage(i, 'n')">일반</button>
+                  <button @click="addPage(i, 's')">선택</button>
+                  <button @click="addPage(i, 'e')">엔딩</button>
+                </div>
 
+                <div class="VpcBlockEndPoint">
+                  <p>다음 플롯 : </p>
+                    <select @change="changeNext($event, i)">
+                      <option v-for="(nextPlot, j) in VN.scenario" :key="j" :selected="VN.scenario[i][0].nextPlot==j">{{j}}</option>
+                    </select>
+                </div>
 
-          <!-- 플롯의 갯수만큼 반복 -->
-           <!-- 플롯 블록 끝 -->
+              </div> 
 
+            </div>
+          </Draggable> 
+          
 
-        </div>  
-      </div> <!-- 플롯 컨트롤러 백그라운드 -->
+        </div>
+        
+
       </div> 
-    </div><!-- 플롯 컨트롤러 -->
+    </div>
+  </div>
 </template>
 
 <script>
@@ -229,6 +239,11 @@ export default defineComponent({
     },
     changeNext(event, plot){
       this.VN.scenario[plot][0].nextPlot=event.target.value
+    },
+
+    dragCngLog(evt) {
+      console.log(evt);
+      console.log(this.VN.scenario);
     }
   },
 });
