@@ -10,10 +10,8 @@
         <!-- 플롯 컨트롤러 툴바 -->
         <div class="VpcTopToolbar"> 
           <div class="VpcToolPosition">
-            <button>플롯 추가</button>
-            <select @change="changeStart($event)">
-              <option v-for="(plot, i) in VN.scenario" :key="i" :selected="VN.startPlot==i">{{i}}</option>
-            </select>
+            <button @click="addPlotModal">플롯 추가</button>
+            
           </div>
         </div> 
 
@@ -21,38 +19,39 @@
         <div v-if="VN" class="VpcInner">
 
           <!-- 플롯 반복문 -->
-          <Draggable :list="this.VN.scenario" @change="dragCngLog">
-            <div class="VpcBlock" v-for="(plot, i) in VN.scenario"
+          <Draggable :list="VN.plotList" @change="dragCngLog">
+            <div class="VpcBlock" v-for="(plot, i) in VN.plotList"
             :key="i">
 
               <!-- 플롯 정보 --> 
               <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
-                <div class="VpcBlock_Title"><p>{{ i }}</p></div>
-                <button class="VpcBlock_Opener" @click="changePlotName($event, i)"><img src="@/assets/icons/white/editing.png"></button>
-                <button class="VpcBlock_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
+                <div class="VpcBlock_Title"><p>{{ plot.plotName }}</p></div>
+                <button class="VpcBlock_Opener" @click="changePlotName(i , plot.plotName)"><img src="@/assets/icons/white/editing.png"></button>
+                <button class="VpcBlock_DeletePage" @click="deletePlot(i)"><img src="@/assets/icons/white/trash_white.png"></button>
               </div>
 
 
               <!-- 플롯 내부 -->
-              <div class="VpcBlockInner"> 
-                <div v-for="(page, j) in plot" :key="j">
+              <div class="VpcBlockInner">
+                <Draggable :list="VN.plotList[i].pages" @change="dragCngLog">
+                <div v-for="(page, j) in plot.pages" :key="j">
                   
-                  <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s' && j!=0">
-                    <div class="VpcPageNormalIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
-                    <div class="VpcPageNormalIndex" v-else><span>{{j}}</span></div>
-                    <div class="VpcPageTitle"><span>1232131232132132132</span></div>
+                  <div class="VpcPageNormal" @click="move({plot:i, index:j})" v-if="page.type!='s'">
+                    <div class="VpcPageNormalIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j+1}}</span></div>
+                    <div class="VpcPageNormalIndex" v-else><span>{{j+1}}</span></div>
+                    <div class="VpcPageTitle"><span>{{page.pageName}}</span></div>
                     <div v-if="i==this.plot && j==this.index">
                       <button class="VpcPage_Opener" @click="edit"><img src="@/assets/icons/white/editing.png"></button>
-                      <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
+                      <button class="VpcPage_DeletePage" @click="deletePage(i,j)"><img src="@/assets/icons/white/trash_white.png"></button>
                     </div>
                   </div>
 
                   <!-- 선택자 페이지 -->
                   <div class="VpcPageSelect" v-if="page.type=='s'" @click="move({plot:i, index:j})">
                   
-                    <div class="VpcPageSelectIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j}}</span></div>
-                    <div class="VpcPageSelectIndex" v-else><span>{{j}}</span></div>
-                    <div class="VpcPageSelectTitle"><span>12312321412423</span></div>
+                    <div class="VpcPageSelectIndexSelected" v-if="i==this.plot && j==this.index"><span>{{j+1}}</span></div>
+                    <div class="VpcPageSelectIndex" v-else><span>{{j+1}}</span></div>
+                    <div class="VpcPageSelectTitle"><span>{{page.pageName}}</span></div>
                     <div v-if="i==this.plot && j==this.index">
                       <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
                       <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
@@ -63,16 +62,16 @@
                       <div class="VpcPageSelTitle">선택지{{k+1}}</div>
 
                       <!-- 선택지 설정 -->
-                      <div class="VpcPageSelectPath" @change="changeDiv($event)">
+                      <div class="VpcPageSelectPath">
                         <div class="VpcPageSelOrigin">
                           <select id="plot" @change="selectOptionPlot($event,i,j,k)">
-                            <option v-for="(sPlot, l) in VN.scenario" :key="l" :value="l" :selected="select.plot==l">{{l}}</option>
+                            <option v-for="(sPlot, l) in VN.plotList" :key="l" :value="l" :selected="select.plot==l">{{VN.plotList[l].plotName}}</option>
                           </select>
                         </div>
                         <div class="VpcPageSelectArrow">,</div>
                         <div class="VpcPageSelChange">
                           <select id="index" @change="selectOptionIndex($event,i,j,k)">
-                            <option v-for="(num,l) in returnIndex(select.plot,i,j,k)" :key="l" :selected="select.index==l+1">
+                            <option v-for="(num,l) in returnIndex(VN.plotList[select.plot],i,j,k)" :key="l" :selected="select.index==l+1" :value="l">
                               {{l+1}}
                             </option>
                           </select>
@@ -80,7 +79,8 @@
                       </div>    
                     </div> 
                   </div> 
-                </div> 
+                </div>
+                </Draggable>
     
         
                 <!-- 플롯의 페이지추가 및 설정 -->
@@ -93,7 +93,7 @@
                 <div class="VpcBlockEndPoint">
                   <p>다음 플롯 : </p>
                     <select @change="changeNext($event, i)">
-                      <option v-for="(nextPlot, j) in VN.scenario" :key="j" :selected="VN.scenario[i][0].nextPlot==j">{{j}}</option>
+                      <option v-for="(nextPlot, j) in VN.plotList" :key="j" :selected="VN.plotList[i].nextPlot==j" :value="j">{{nextPlot.plotName}}</option>
                     </select>
                 </div>
 
@@ -114,7 +114,7 @@
 <script>
 import { defineComponent } from "@vue/runtime-core"
 import { VueDraggableNext } from 'vue-draggable-next'
-import EngineCanvas from "./V_EngineCanvas.vue";
+import EngineCanvas from "./V_EngineCanvas.vue"
 import storage from "../../../aws";
 import axios from "../../../axios";
 export default defineComponent({
@@ -131,8 +131,8 @@ export default defineComponent({
   data() {
     return {
       pjCode: "",
-      index: "0",
-      plot: "시작",
+      index: 0,
+      plot: 0,
       VN: {},
       startPlot:"",
       status:'play'
@@ -144,9 +144,7 @@ export default defineComponent({
       handler(resource){
         if(resource!=undefined && resource!=null){
           let key = resource.key
-          this.VN.scenario[this.plot][this.index][resource.type]=key
-          console.log(this.VN.scenario[this.plot][this.index])
-          console.log(this.VN.scenario[this.plot][this.index][resource.type])
+          this.VN.plotList[this.plot].pages[this.index][resource.type]=key
         }
       }
     },
@@ -162,17 +160,19 @@ export default defineComponent({
       this.VN=VN
     },
     async getVN(pjCode) {
-      var result = await storage.getVN(`Project/PJ${pjCode}/PJ${pjCode}.json`);
-      var uint8array = new TextEncoder("utf-8").encode(result);
-      var VN = new TextDecoder().decode(uint8array);
+      var result = await storage.getVN(`Project/PJ${pjCode}/PJ${pjCode}.json`)
+      var uint8array = new TextEncoder("utf-8").encode(result)
+      var VN = new TextDecoder().decode(uint8array)
       if (Object.keys(VN).length === 0) {
-        console.log("GetVN : Null JSON");
+        console.log("GetVN : Null JSON")
       } else {
-        this.VN = await JSON.parse(VN);
-        this.plot = JSON.parse(VN).startPlot;
-        this.index=1;
+        this.VN = await JSON.parse(VN)
+        this.VN.id = pjCode
+        this.VN.title = "Title" // hardCoding
+        this.VN.ep = 1 // hardCoding
+        this.plot=this.index=0
+        console.log(this.VN)
       }
-      console.log(this.VN)
     },
     deletePj() {
       axios
@@ -194,56 +194,63 @@ export default defineComponent({
       this.status = 'play'
     },
     addPage(plot, type){
-      this.VN.scenario[plot].push({"type": type,"bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""},{"use":true,"text":"","plot":"","index":""}],})
+      const name = { n:"일반 페이지", e:"종료 페이지", s:"선택 페이지"}
+      console.log("addpage"+plot)
+      this.VN.plotList[plot].pages.push({"pageName":name[type],"type": type,"bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":0,"index":0},{"use":true,"text":"","plot":0,"index":0},{"use":true,"text":"","plot":0,"index":0}],})
     },
-    changePlotName(event, plot){
-      console.log(plot)
-      event.path[2].children[0].children[0].innerHTML=`<input type='text' value=${event.path[2].children[0].children[0].innerText}>`
+    changePlotName(plot, plotName){
+      const input = prompt(`${plotName}을 변경할 텍스트 :`,'플롯 이름')
+      this.VN.plotList[plot].plotName = input;
     },
     selectOptionPlot(event,plot,index,number){
-      this.VN.scenario[plot][index].select[number].plot=event.target.value
-      function removeAllchild(element) {
-        while (element.hasChildNodes()) {
-          element.removeChild(element.firstChild);
-        }
-      }
-      removeAllchild(event.path[2].children[2].children[0])
-      for(let i=1;i<this.VN.scenario[event.target.value].length;i++){
-        let opt = document.createElement("option")
-        opt.value = opt.innerHTML = i;
-        event.path[2].children[2].children[0].appendChild(opt)
-      }
-      this.VN.scenario[plot][index].select[number].index=1
-      this.returnIndex(event.target.value)
+      console.log(event.target.value)
+      console.log(plot+","+index+" : "+number)
+      this.VN.plotList[plot].pages[index].select[number].plot=event.target.value
+      this.VN.plotList[plot].pages[index].select[number].index=0
     },
     selectOptionIndex(event,plot,index,number){
-      this.VN.scenario[plot][index].select[number].index=parseInt(event.target.value)
+      console.log(event.target.value)
+      this.VN.plotList[plot].pages[index].select[number].index=parseInt(event.target.value)
     },
     returnIndex(sPlot,plot,index,number){
-      if(sPlot == '' || sPlot == undefined || sPlot == null){
-        this.VN.scenario[plot][index].select[number].plot=Object.keys(this.VN.scenario)[0]
-        this.VN.scenario[plot][index].select[number].index=1
-        const result=this.VN.scenario[Object.keys(this.VN.scenario)[0]].length-1
-        return result
-      }
-      else{
-        const result = this.VN.scenario[sPlot].length-1
-        return result
-      }
+      console.log(sPlot.pages.length)
+      console.log(plot)
+      console.log(index)
+      console.log(number)
+      return sPlot.pages.length;
+
     },
     changeStatus(status){
       this.status=status
     },
     changeStart(event){
-      this.VN.startPlot=event.target.value;
+      console.log(event)
     },
     changeNext(event, plot){
-      this.VN.scenario[plot][0].nextPlot=event.target.value
+      this.VN.plotList[plot].nextPlot=event.target.value
     },
 
     dragCngLog(evt) {
       console.log(evt);
-      console.log(this.VN.scenario);
+    },
+
+    addPlotModal(){
+      let input = prompt('플롯 이름 : ','Input Plot Name')
+      for(let i=0; i<this.VN.plotList.length; i++){
+        if(input==this.VN.plotList[i].plotName){
+          this.addPlotModal()
+        }
+      }
+      this.VN.plotList.push({plotName:input,nextPlot:0,pages:[]})
+      console.log(this.VN.plotList)
+    },
+    deletePlot(plot){
+      console.log(this.VN.plotList)
+      this.VN.plotList.splice(plot, 1)
+      console.log(this.VN.plotList)
+    },
+    deletePage(plot, index){
+      delete this.VN.plotList[plot].pages[index]
     }
   },
 });

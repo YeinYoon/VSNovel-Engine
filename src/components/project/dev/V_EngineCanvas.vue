@@ -17,31 +17,31 @@
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
         <label for="s1">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
-          <span id="s1" ref="cngs1">{{s1.text}}</span>
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s1" ref="cngs1">
+          {{s1.text}}
         </div>
-        <div v-else class="SelectButton" @click="select(s1.plot, s1.index)">
-          <span id="s1">{{s1.text}}</span>
+        <div v-else class="SelectButton" @click="select(s1.plot, s1.index)" id="s1">
+          {{s1.text}}
         </div>
         </label>
         <div class="SelectVisibleButton" v-if="s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/checked.png"></div>
         <div class="SelectVisibleButtonDisable" v-if="!s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/close.png"></div>
         <label for="s2">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
-          <span id="s2" ref="cngs2">{{s2.text}}</span>
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s2" ref="cngs2">
+          {{s2.text}}
         </div>
-        <div v-else class="SelectButton" @click="select(s2.plot, s2.index)">
-          <span id="s2">{{s2.text}}</span>
+        <div v-else class="SelectButton" @click="select(s2.plot, s2.index)" id="s2">
+          {{s2.text}}
         </div>
         </label>
         <div class="SelectVisibleButton" v-if="s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/checked.png"></div>
         <div class="SelectVisibleButtonDisable" v-if="!s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/close.png"></div>
         <label for="s3">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true">
-          <span id="s3" ref="cngs3">{{s3.text}}</span>
+        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s3" ref="cngs3">
+          {{s3.text}}
         </div>
-        <div v-else class="SelectButton" @click="select(s3.plot, s3.index)">
-          <span id="s3">{{s3.text}}</span>
+        <div v-else class="SelectButton" @click="select(s3.plot, s3.index)" id="s3">
+          {{s3.text}}
         </div>
         </label>
         <div class="SelectVisibleButton" v-if="s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/checked.png"></div>
@@ -132,7 +132,7 @@
 
         <!-- 화자 -->
           <div class="ScriptEditingButton">
-            <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="this.textEdit = true;">
+            <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="textEdit = true;">
             <img src="@/assets/icons/white/checked.png" v-else @click="saveText()">
           </div>
 
@@ -243,8 +243,8 @@ export default {
     },
     saveText() {
       let temp = this.VN
-      temp.scenario[this.plot][this.index].name=this.$refs.cngName.innerHTML
-      temp.scenario[this.plot][this.index].text=this.$refs.cngText.innerHTML
+      temp.plotList[this.plot].pages[this.index].name=this.$refs.cngName.innerHTML
+      temp.plotList[this.plot].pages[this.index].text=this.$refs.cngText.innerHTML
       this.$emit('changeVN',temp)
       this.textEdit = false;          
       this.loadData()
@@ -252,33 +252,38 @@ export default {
     saveSelect(){
       let temp = this.VN
       console.log(this.$refs.cngs1.innerHTML)
-      temp.scenario[this.plot][this.index].select[0].text = this.$refs.cngs1.innerHTML
-      temp.scenario[this.plot][this.index].select[1].text = this.$refs.cngs2.innerHTML
-      temp.scenario[this.plot][this.index].select[2].text = this.$refs.cngs3.innerHTML
-      console.log(temp.scenario[this.plot][this.index].select)
+      temp.plotList[this.plot].pages[this.index].select[0].text = this.$refs.cngs1.innerHTML
+      temp.plotList[this.plot].pages[this.index].select[1].text = this.$refs.cngs2.innerHTML
+      temp.plotList[this.plot].pages[this.index].select[2].text = this.$refs.cngs3.innerHTML
       this.$emit('changeVN',temp)
       this.selectEdit = false;
     },
     loadData: async function () {
-      this.Now=this.VN.scenario[this.plot][this.index];
-      if(this.Now.bgm != '') {
-        this.currentBgm = await storage.getUrl(this.Now.bgm);
+      console.log(this.VN.plotList[0])
+      console.log(this.plot, this.index)
+      if(this.VN.plotList[this.plot].pages[this.index] != undefined){
+        this.Now=this.VN.plotList[this.plot].pages[this.index];
+        console.log(this.Now)
+        if(this.Now.bgm != '' || this.currentBgm == storage.getUrl(this.Now.bgm)) {
+          this.currentBgm = await storage.getUrl(this.Now.bgm);
+        }
       }
     },              
     nextScene: function () {
-      if(this.VN.scenario[this.plot][this.index].type=='n') {
+      if(this.VN.plotList[this.plot].pages[this.index].type=='n') {
         this.move();
-      }else if(this.VN.scenario[this.plot][this.index].type=='e'){
+      }else if(this.VN.plotList[this.plot].pages[this.index].type=='e'){
         this.$emit('changeStatus',"end")
       }else {
-        this.s1=this.VN.scenario[this.plot][this.index].select[0];
-        this.s2=this.VN.scenario[this.plot][this.index].select[1];
-        this.s3=this.VN.scenario[this.plot][this.index].select[2];
+        console.log(this.VN.plotList[this.plot].pages[this.index])
+        this.s1=this.VN.plotList[this.plot].pages[this.index].select[0];
+        this.s2=this.VN.plotList[this.plot].pages[this.index].select[1];
+        this.s3=this.VN.plotList[this.plot].pages[this.index].select[2];
         this.$emit("changeStatus","select")
       }
     },
     move: function(){
-      if(this.VN.scenario[this.plot].length-1==this.index) this.$emit('move',{plot:this.VN.scenario[this.plot][0].nextPlot,index:1})
+      if(this.VN.plotList[this.plot].pages.length==this.index+1) this.$emit('move',{plot:this.VN.plotList[this.plot].nextPlot,index:0})
       else this.$emit('move',{plot:this.plot,index:this.index+1})
     },
     select:function(plot,index){
