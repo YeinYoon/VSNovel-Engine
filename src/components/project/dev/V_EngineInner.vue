@@ -11,7 +11,7 @@
         <div class="VpcTopToolbar"> 
           <div class="VpcToolPosition">
             <button @click="addPlotModal">플롯 추가</button>
-            
+            <button @click="addPlotModal">테마 변경</button>
           </div>
         </div> 
 

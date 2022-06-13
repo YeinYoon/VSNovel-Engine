@@ -14,7 +14,7 @@
 
       <div class="VSCoopMenu"> <!-- 0 -->
         <div class="VSCoopMenuTitle" @click="menuClick(0)">
-          <p>유저초대</p>
+          <p>유저 초대</p>
         </div>
 
         <div class="VSCoopMenuInner" v-if="menu0 == true">
@@ -51,7 +51,7 @@
 
       <div class="VSCoopMenu"> <!-- 1 -->
         <div class="VSCoopMenuTitle" @click="menuClick(1)">
-          <p>멤버목록</p>
+          <p>멤버 관리</p>
         </div>
 
         <div class="VSCoopMenuInner" v-if="menu1 == true">
@@ -64,7 +64,7 @@
 
       <div class="VSCoopMenu"> <!-- 2 -->
         <div class="VSCoopMenuTitle" @click="menuClick(2)">
-          <p>히스토리</p>
+          <p>일정 관리</p>
         </div>
 
         <div class="VSCoopMenuInner" v-if="menu2 == true">

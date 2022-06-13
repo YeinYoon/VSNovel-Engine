@@ -107,8 +107,23 @@
       <div class="NavItems" v-else-if="bgmState == true" @click="bgmOff()">
         <img src="@/assets/icons/white/speaker-disable_white.png">
       </div>
+      <div class="NavItems">
+        <img src="@/assets/icons/white/trash_white.png" @click="resCtrl = !resCtrl">
+      </div>
     </div>
-    <!-- 우측 상단 햄버거메뉴 -->   
+    <!-- 우측 상단 햄버거메뉴 --> 
+
+
+    <!-- 리소스 관리 메뉴 -->
+    <div class="ResControl" v-if="resCtrl">
+      <div class="ResControl_item">123</div>
+      <div class="ResControl_item">123</div>
+      <div class="ResControl_item">123</div>
+      <div class="ResControl_item">123</div>
+    </div>
+    <!-- 리소스 관리 메뉴 -->
+
+
 
     <!-- 이미지 -->
     <div class="SceneImg">
@@ -192,6 +207,7 @@ export default {
       s1:{},
       s2:{},
       s3:{},
+      resCtrl: false,
 
       bgmState : false,
       currentBgm : "",
@@ -596,6 +612,37 @@ label {
   left: calc(100% - 65px);
   top: 10px;
   z-index: 89;
+}
+
+.ResControl {
+  position: absolute;
+  left: calc(100% - 243px);
+  top: 120px;
+  z-index: 89;
+  width: 230px;
+  height: 250px;
+  background: #4b4b4b;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.ResControl_item {
+  display: inline-block;
+  width: 100%;
+  height: 55px;
+  background: #6e6e6e;
+}
+
+.ResControl_item_thum {
+
+}
+
+.ResControl_item_title {
+
+}
+
+.ResControl_item button {
+
 }
 
 .SceneImg {
