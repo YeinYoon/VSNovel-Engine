@@ -304,15 +304,19 @@ export default {
       let bgm = new Howl({
         src: [this.currentBgm],
         volume: 1.0,
-        loop : true
+        loop : true,
+        preload : true,
+        onend: ()=>{console.log("BGM END")}
       });
       let effect = new Howl({
         src: [this.currentEffect],
         volume : 1.0,
-        loop : false
+        loop : false,
+        preload : true,
+        onend: ()=>{console.log("EFFECT END")}
       })
-      bgm.play();
       effect.play();
+      bgm.play();
       this.bgmId = bgm;
       this.effectId = effect;
     },
