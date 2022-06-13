@@ -308,9 +308,11 @@ export default {
         loop : true
       });
       bgm.play();
-      this.bgmId = bgm;
+      this.bgmId = bgm.play();
+      console.log(this.bgmId);
     },
     bgmOff() {
+      console.log("종료 : "+ this.bgmId);
       this.bgmState = false;
       Howler.stop(this.bgmId);
     },
@@ -325,9 +327,11 @@ export default {
         loop : false
       })
       effect.play();
-      this.effectId = effect;
+      this.effectId = effect.play();
+      console.log(this.effectId);
     },
     effectOff() {
+      console.log("종료 : "+ this.effectId);
       this.bgmState = false;
       Howler.stop(this.effectId);
     }

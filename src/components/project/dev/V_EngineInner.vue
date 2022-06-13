@@ -196,7 +196,7 @@ export default defineComponent({
     addPage(plot, type){
       const name = { n:"일반 페이지", e:"종료 페이지", s:"선택 페이지"}
       console.log("addpage"+plot)
-      this.VN.plotList[plot].pages.push({"pageName":name[type],"type": type,"bg": "","bgm": "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":0,"index":0},{"use":true,"text":"","plot":0,"index":0},{"use":true,"text":"","plot":0,"index":0}],})
+      this.VN.plotList[plot].pages.push({"pageName":name[type],"type": type,"bg": "","bgm": "", "effect" : "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":0,"index":0},{"use":true,"text":"","plot":0,"index":0},{"use":true,"text":"","plot":0,"index":0}],})
     },
     changePlotName(plot, plotName){
       const input = prompt(`${plotName}을 변경할 텍스트 :`,'플롯 이름')
