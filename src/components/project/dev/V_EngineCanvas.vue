@@ -207,7 +207,7 @@
 </template>
 
 <script>
-import {Howl, Howler} from 'howler';
+import {Howl} from 'howler';
 import storage from '../../../aws'
 import axios from '../../../axios'
 export default {
@@ -237,6 +237,8 @@ export default {
       s3:{},
       resCtrl: false,
 
+
+
       bgmState : false,
       currentBgm : "",
       currentEffect : "",
@@ -244,6 +246,9 @@ export default {
       effectId : "",
       currentImg : "",
       currentBg : "",
+
+      bgmController : null,
+      effectController : null
     }
   },
   methods : {
@@ -338,45 +343,43 @@ export default {
     bgmOn() {
       console.log('BGM : ' + this.currentBgm);
       this.bgmState = true;
-      let bgm = new Howl({
+      this.bgmController = new Howl({
         src: [this.currentBgm],
         volume: 1.0,
         loop : true,
         preload : true,
         onend: ()=>{console.log("BGM END")}
       });
-      bgm.play();
-      this.bgmId = bgm;
+      this.bgmController.play();
     },
     bgmOff() {
       this.bgmState = false;
-      Howler.stop(this.bgmId);
+      this.bgmController.stop();
     },
 
     //효과음 관련
     effectOn() {
       console.log('effect : ' + this.currentEffect);
       this.bgmState = true;
-      let effect = new Howl({
+      this.effectController = new Howl({
         src: [this.currentEffect],
         volume : 1.0,
         loop : false,
         preload : true,
         onend: ()=>{console.log("EFFECT END")}
       })
-      effect.play();
-      this.effectId = effect;
+      this.effectController.play();
     },
     effectOff() {
       this.bgmState = false;
-      Howler.stop(this.effectId);
+      this.effectController.stop();
     }
   },  
   watch : {
     $route() {
       this.getPjInfo(this.pjCode);
-      Howler.stop(this.bgmId);
-      Howler.stop(this.effectId);
+      this.bgmController.stop();
+      this.effectController.stop();
     },
     index: function(){
       this.loadData()
