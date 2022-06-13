@@ -21,10 +21,10 @@
 
         <div class="VSFolder" v-for="(f, i) in rootList" :key="i">
 
-          <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg'">
+          <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg' || f.ex == 'PNG' || f.ex == 'JPG' || f.ex == 'GIF' || f.ex == 'FPEG'">
             <img :src="f.url" @click="send(f.key)">
           </div>
-          <div class="VSFileThumnail" v-else-if="f.ex == 'mp3'" @dblclick="send(f)" @click="playerOn(f)">
+          <div class="VSFileThumnail" v-else-if="f.ex == 'mp3' || f.ex == 'MP3'" @dblclick="send(f)" @click="playerOn(f)">
             <img src="@/assets/sample.png">
           </div>
           <div class="VSFolderThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
@@ -59,10 +59,10 @@
 
         <div class="VSFile" v-for="(f, i) in fileList" :key="i">
 
-          <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg'" @dblclick="send(f)">
+          <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg' || f.ex == 'PNG' || f.ex == 'JPG' || f.ex == 'GIF' || f.ex == 'JPEG'" @dblclick="send(f)">
             <img :src="f.url">
           </div> 
-          <div class="VSFileThumnail" v-else-if="f.ex == 'mp3'" @dblclick="send(f)" @click="playerOn(f)">
+          <div class="VSFileThumnail" v-else-if="f.ex == 'mp3' || f.ex == 'MP3'" @dblclick="send(f)" @click="playerOn(f)">
             <img src="@/assets/sample.png">
           </div>
           <div class="VSFolderThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
@@ -322,7 +322,7 @@ export default {
     },
 
     send(data){
-      if(data.ex=='mp3'){
+      if(data.ex=='mp3' || data.ex=='MP3'){
         this.$refs.typeModal.show({
           msg : "선택한 리소스를 어떤걸로 쓸건데?",
           size : "normal",
