@@ -107,10 +107,10 @@
           <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
         </div>
 
-        <div v-if="bgmState == false && Now.bgm != ''">
+        <div v-if="bgmState == false">
           <button @click="bgmOn()">BGM On</button>
         </div>
-        <div v-else-if="bgmState == true && Now.bgm != ''">
+        <div v-else-if="bgmState == true">
           <button @click="bgmOff()">BGM Off</button>
         </div>
         
@@ -203,7 +203,9 @@ export default {
 
       bgmState : false,
       currentBgm : "",
+      currentEffect : "",
       bgmId : "",
+      effectId : "",
       currentImg : "",
       currentBg : "",
     }
@@ -264,8 +266,11 @@ export default {
       if(this.VN.plotList[this.plot].pages[this.index] != undefined){
         this.Now=this.VN.plotList[this.plot].pages[this.index];
         console.log(this.Now)
-        if(this.Now.bgm != '' || this.currentBgm == storage.getUrl(this.Now.bgm)) {
-          this.currentBgm = await storage.getUrl(this.Now.bgm);
+        if(this.Now.bgm != '') {
+          if(this.currentBgm == storage.getUrl(this.Now.bgm)) this.currentBgm = await storage.getUrl(this.Now.bgm);
+        }
+        if(this.Now.effect != '') {
+          if(this.currentEffect == storage.getUrl(this.Now.effect)) this.currentEffect = await storage.getUrl(this.Now.effect);
         }
       }
     },              
@@ -296,17 +301,25 @@ export default {
     //BGM 관련
     bgmOn() {
       this.bgmState = true;
-      var sound = new Howl({
+      let bgm = new Howl({
         src: [this.currentBgm],
         volume: 1.0,
         loop : true
       });
-      sound.play();
-      this.bgmId = sound;
+      let effect = new Howl({
+        src: [this.currentEffect],
+        volume : 1.0,
+        loop : false
+      })
+      bgm.play();
+      effect.play();
+      this.bgmId = bgm;
+      this.effectId = effect;
     },
     bgmOff() {
       this.bgmState = false;
       Howler.stop(this.bgmId);
+      Howler.stop(this.effectId)
     },
   },  
   watch : {
@@ -330,12 +343,13 @@ export default {
     Now : {
       deep:true,
       async handler(){
-        var checkArr = [{bg : this.Now.bg}, {img : this.Now.img}, {bgm : this.Now.bgm}];
-        var existKey = checkArr.filter(item => item.bg != '' && item.img != '' && item.bgm != '');
+        var checkArr = [{bg : this.Now.bg}, {img : this.Now.img}, {bgm : this.Now.bgm}, {effect : this.Now.effect}];
+        var existKey = checkArr.filter(item => item.bg != '' && item.img != '' && item.bgm != '' && item.effect);
         if(existKey.length == 0) {
           this.currentBg = ''
           this.currentImg = ''
           this.currentBgm = ''
+          this.currentEffect = ''
         } else {
 
           for(var i=0; i<existKey.length; i++) {
@@ -355,6 +369,9 @@ export default {
                 break;
               case 'img' :
                 this.currentImg = await storage.getUrl(this.Now.img);
+                break;
+              case 'effect' :
+                this.currentEffect = await storage.getUrl(this.Now.effect);
                 break;
             }
 
