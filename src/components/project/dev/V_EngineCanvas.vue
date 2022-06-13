@@ -1,19 +1,14 @@
 <template v-if="!!Now">
-    <div class="ViewerBackground">
+  <div class="ViewerBackground">
+
     <!-- 백그라운드 -->
-    <!-- 내부 img태그의 src를 가공하여 사용, -->
-    <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
     <div class="SceneBackground">
       <img v-if="Now.bg!='' && Now.bg != undefined" :src="this.currentBg"/>
     </div>
     <!-- 백그라운드 끝. -->
 
-    <!-- 선택지 --> 
-    <!-- 필요한곳에 주석을 해제하고 사용. -->
-    <!-- SceneSelectBackground는 선택문이 화면상에 출력되었을때 뒤에 검은 배경을 깔아줌. -->
-    <!-- SceneSelectBFrame은 중앙 위치를 잡는 용도. -->
-    <!-- SelectButton을 추가할수록 더 많은 선택지를 자동으로 배치함. 3개 이상의 선택문 추가 가능.-->
 
+    <!-- 선택지 --> 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
         <label for="s1">
@@ -52,14 +47,10 @@
           <img src="@/assets/icons/white/checked.png" v-else @click="saveSelect()">
         </div>
       </div>
-
-
     </div>
-
     <!-- 선택지 끝. -->
 
     <!-- 일시정지(PAUSE) 메뉴 -->
-
     <div class="ScenePauseBackground" v-if="status == 'pause'">
       <div class="VisualNovelLabel">
         <div class="VisualNovelIcon"><img src="@/assets/sample.png"></div>
@@ -82,11 +73,10 @@
         </div>
       </div>
     </div>
-
     <!-- 일시정지(PAUSE) 메뉴 끝. -->
 
-    <!-- 저장 슬롯 메뉴 -->
 
+    <!-- 저장 슬롯 메뉴 -->
     <div class="SceneSaveBackground" v-if="status == 'save'">
       <span>저장</span>
       <div class="SaveSlotsFrame">
@@ -95,80 +85,82 @@
         <div class="SaveSlot"></div>
       </div>
     </div>
-
     <!-- 저장 슬롯 메뉴 끝. -->
 
+
     <!-- 좌측 상단 햄버거메뉴 -->
-      <div class="ViewerNav">
-        <div class="NavItems" title="서버 비주얼 노벨 다운로드">
-          <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
-        </div>
-        <div class="NavItems" title="저장">
-          <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
-        </div>
+    <div class="ViewerNav">
+      <div class="NavItems" title="서버 비주얼 노벨 다운로드">
+        <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
+      </div>
+      <div class="NavItems" title="저장">
+        <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
+      </div>
+    </div>
+    <!-- 좌측 상단 햄버거메뉴 -->
 
-        <div v-if="bgmState == false">
-          <button @click="bgmOn()">BGM On</button>
-        </div>
-        <div v-else-if="bgmState == true">
-          <button @click="bgmOff()">BGM Off</button>
-        </div>
+    <!-- 우측 상단 햄버거메뉴 -->
+    <div class="ViewerNavRight">
+      <div class="NavItems" v-if="bgmState == false" @click="bgmOn()">
+        <img src="@/assets/icons/white/speaker_white.png">
+      </div>
+      <div class="NavItems" v-else-if="bgmState == true" @click="bgmOff()">
+        <img src="@/assets/icons/white/speaker-disable_white.png">
+      </div>
+    </div>
+    <!-- 우측 상단 햄버거메뉴 -->   
+
+    <!-- 이미지 -->
+    <div class="SceneImg">
+      <img :src="currentImg" v-if="Now.img!=''"/>
+    </div>
+    <!-- 이미지 끝. -->
+
+    <!-- 대사 -->
+    <div class="SceneScriptFrame">
+      
+      <!-- 대사창 배경-->
+      <div class="ScriptBackground"></div>
+
+      <!-- 화자 -->
+      <div class="ScriptEditingButton">
+        <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="textEdit = true;">
+        <img src="@/assets/icons/white/checked.png" v-else @click="saveText()">
+      </div>
+
+      <label for="name">
         
-      </div>
-      <!-- 이미지 -->
-
-      <!-- 내부 img태그의 src를 가공하여 사용, -->
-      <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
-      <div class="SceneImg"> <!--이새끼 문제-->
-        <img :src="currentImg" v-if="Now.img!=''"/>
-      </div>
-
-      <!-- 이미지 끝. -->
-      <!-- 대사 -->
-      <div class="SceneScriptFrame"> <!-- 이새끼도 문제 -->
-        <!-- 대사창 배경-->
-        <div class="ScriptBackground"></div>
-        <!-- 대사창 툴바 -->
-
-        <!-- 화자 -->
-          <div class="ScriptEditingButton">
-            <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="textEdit = true;">
-            <img src="@/assets/icons/white/checked.png" v-else @click="saveText()">
-          </div>
-
-          <label for="name">
-          <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true">
-            <span id="name" ref="cngName">{{ Now.name }}</span>
-          </div>
-          <div v-else class="SceneSpeakerName">
-            <span id="name">{{Now.name}}</span>
-          </div>
+        <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true">
+          <span id="name" ref="cngName">{{ Now.name }}</span>
+        </div>
+        <div v-else class="SceneSpeakerName">
+          <span id="name">{{Now.name}}</span>
+        </div>
           
-          </label>
+      </label>
 
-        <!-- 대사 -->
-        
-        <label for="text">
+      <!-- 대사 -->  
+      <label for="text">
         <div v-if="textEdit" class="SceneScript" contenteditable="true">
           <span id="text" ref="cngText">{{ Now.text }}</span>
         </div>
         <div v-else class="SceneScript">
           <span id="text">{{ Now.text }}</span>
         </div>
-        </label>
+      </label>
 
-        <!-- 다음 대사 버튼 -->
-        <div class="NextScriptButton" v-if="status!='end'" @click="nextScene">
-          <button>▶</button>
-        </div>
-        <div v-else class="NextScriptButton">
-          <button>End</button>
-        </div>
+      <!-- 다음 대사 버튼 -->
+      <div class="NextScriptButton" v-if="status!='end'" @click="nextScene">
+        <button>▶</button>
       </div>
-      <!-- 대사 끝 -->
+      <div v-else class="NextScriptButton">
+        <button>End</button>
+      </div>
+
     </div>
-    <!-- <button @click="nextScene">click</button> -->
-  <!-- 전체 끝 -->
+    <!-- 대사 끝 -->
+
+  </div>
 </template>
 
 <script>
@@ -576,14 +568,12 @@ label {
   left: 10px;
   top: 10px;
   z-index: 89;
-
-  /* 다해놨어 정인쨩 > <  */
 }
 
 .NavItems{
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   margin: 2px;
   display: table;
@@ -598,7 +588,14 @@ label {
 
 .NavItems img{
   margin: 10px;
-  height: 20px;
+  height: 30px;
+}
+
+.ViewerNavRight {
+  position: absolute;
+  left: calc(100% - 65px);
+  top: 10px;
+  z-index: 89;
 }
 
 .SceneImg {
@@ -633,9 +630,9 @@ label {
 
 .ScriptEditingButton {
   position: absolute;
-  left: calc(100% - 50px);
-  width: 30px;
-  height: 30px;
+  left: calc(100% - 60px);
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   margin: 10px;
   background: #4b4b4b;
@@ -788,7 +785,7 @@ label {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  font-size: 1em;
+  font-size: 1.3em;
   color: white;
 }
 
@@ -809,7 +806,7 @@ label {
   color: white;
   text-align: left;
   overflow: hidden;
-  font-size: 1.2em;
+  font-size: 1.5em;
 }
 
 /* 반응형 레이아웃 for 모바일 */
