@@ -107,8 +107,8 @@
       <div class="NavItems" v-else-if="bgmState == true" @click="bgmOff()">
         <img src="@/assets/icons/white/speaker-disable_white.png">
       </div>
-      <div class="NavItems">
-        <img src="@/assets/icons/white/trash_white.png" @click="resCtrl = !resCtrl">
+      <div class="NavItems" @click="resCtrl = !resCtrl">
+        <img src="@/assets/icons/white/trash_white.png">
       </div>
     </div>
     <!-- 우측 상단 햄버거메뉴 --> 
@@ -116,10 +116,38 @@
 
     <!-- 리소스 관리 메뉴 -->
     <div class="ResControl" v-if="resCtrl">
-      <div class="ResControl_item">123</div>
-      <div class="ResControl_item">123</div>
-      <div class="ResControl_item">123</div>
-      <div class="ResControl_item">123</div>
+      <div class="ResControl_img">
+        <div class="ResControl_img_thum"><img src="@/assets/imgs/adver.png"></div>
+        <div class="ResControl_img_title">배경화면</div>
+        <div class="ResControl_btn">
+          <button><img src="@/assets/icons/white/trash_white.png"></button>
+          <button><img src="@/assets/icons/white/trash_white.png"></button>
+        </div>
+      </div>
+      <div class="ResControl_img">
+        <div class="ResControl_img_thum"><img src="@/assets/imgs/adver.png"></div>
+        <div class="ResControl_img_title">이미지</div>
+        <div class="ResControl_btn">
+          <button><img src="@/assets/icons/white/trash_white.png"></button>
+          <button><img src="@/assets/icons/white/trash_white.png"></button>
+        </div>
+      </div>
+      <div class="ResControl_mu">
+        <div class="ResControl_mu_thum"><img src="@/assets/imgs/adver.png"></div>
+        <div class="ResControl_mu_title">배경음악</div>
+        <div class="ResControl_btn_mu">
+          <button><img src="@/assets/icons/white/trash_white.png"></button>
+          <button><img src="@/assets/icons/white/trash_white.png"></button>
+        </div>
+      </div>
+      <div class="ResControl_mu">
+        <div class="ResControl_mu_thum"><img src="@/assets/imgs/adver.png"></div>
+        <div class="ResControl_mu_title">효과음</div>
+        <div class="ResControl_btn_mu">
+          <button><img src="@/assets/icons/white/trash_white.png"></button>
+          <button><img src="@/assets/icons/white/trash_white.png"></button>
+        </div>
+      </div>
     </div>
     <!-- 리소스 관리 메뉴 -->
 
@@ -624,30 +652,135 @@ label {
   top: 120px;
   z-index: 89;
   width: 230px;
-  height: 250px;
+  height: 270px;
   background: #4b4b4b;
   border-radius: 10px;
   padding: 15px;
+  /* text-align: center; */
+
 }
 
-.ResControl_item {
+.ResControl_img {
   display: inline-block;
   width: 100%;
-  height: 55px;
-  background: #6e6e6e;
+  height: 70px;
+  background: #818181;
+  padding-left: 15px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.ResControl_item_thum {
-
+.ResControl_img_thum {
+  display: inline-block;
+  position: relative;
+  top: 8px;
+  left: -5px;
+  width: 50px;
+  background: #0084ff;
+  object-fit: cover;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.ResControl_item_title {
-
+.ResControl_img_thum img{
+  width: 50px;
 }
 
-.ResControl_item button {
-
+.ResControl_img_title {
+  display: inline-block;
+  position: relative;
+  top: -35px;
+  left: 52px;
+  width: 73px;
+  font-size: 0.8em;
+  text-align: right;
 }
+
+.ResControl_mu {
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  background: #818181;
+  overflow: hidden;
+  padding-left: 15px;
+  border-radius: 10px;
+}
+
+.ResControl_mu_thum {
+  display: inline-block;
+  position: relative;
+  top: 7px;
+  left: -5px;
+  width: 25px;
+  background: #0084ff;
+  object-fit: cover;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ResControl_mu_thum img{
+  width: 25px;
+}
+
+.ResControl_mu_title {
+  display: inline-block;
+  position: relative;
+  top: -3px;
+  left: 2px;
+  width: 73px;
+  font-size: 0.8em;
+  text-align: left;
+}
+
+.ResControl_btn {
+  position: relative;
+  top: -25px;
+  left: 115px;
+}
+
+.ResControl_btn button {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  background: #2872f9;
+  color: white;
+  width: 29px;
+  height: 29px;
+  object-fit: cover;
+  margin-left: 2px;
+}
+.ResControl_btn button img {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  width: 15px;
+}
+
+.ResControl_btn_mu {
+  position: relative;
+  top: -27px;
+  left: 115px;
+}
+
+.ResControl_btn_mu button {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  background: #2872f9;
+  color: white;
+  width: 29px;
+  height: 29px;
+  object-fit: cover;
+  margin-left: 2px;
+}
+.ResControl_btn_mu button img {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  width: 15px;
+}
+
+
 
 .SceneImg {
   position: absolute;
