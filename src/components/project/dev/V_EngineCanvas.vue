@@ -108,10 +108,10 @@
         </div>
 
         <div v-if="bgmState == false">
-          <button @click="bgmOn()">BGM On</button>
+          <button @click="bgmOn(); effectOn();">BGM On</button>
         </div>
         <div v-else-if="bgmState == true">
-          <button @click="bgmOff()">BGM Off</button>
+          <button @click="bgmOff(); effectOff();">BGM Off</button>
         </div>
         
       </div>
@@ -267,10 +267,10 @@ export default {
         this.Now=this.VN.plotList[this.plot].pages[this.index];
         console.log(this.Now)
         if(this.Now.bgm != '') {
-          if(this.currentBgm == storage.getUrl(this.Now.bgm)) this.currentBgm = await storage.getUrl(this.Now.bgm);
+          this.currentBgm = await storage.getUrl(this.Now.bgm);
         }
         if(this.Now.effect != '') {
-          if(this.currentEffect == storage.getUrl(this.Now.effect)) this.currentEffect = await storage.getUrl(this.Now.effect);
+          this.currentEffect = await storage.getUrl(this.Now.effect);
         }
       }
     },              
@@ -300,6 +300,7 @@ export default {
 
     //BGM 관련
     bgmOn() {
+      console.log('BGM : ' + this.currentBgm);
       this.bgmState = true;
       let bgm = new Howl({
         src: [this.currentBgm],
@@ -308,6 +309,18 @@ export default {
         preload : true,
         onend: ()=>{console.log("BGM END")}
       });
+      bgm.play();
+      this.bgmId = bgm;
+    },
+    bgmOff() {
+      this.bgmState = false;
+      Howler.stop(this.bgmId);
+    },
+
+    //효과음 관련
+    effectOn() {
+      console.log('effect : ' + this.currentEffect);
+      this.bgmState = true;
       let effect = new Howl({
         src: [this.currentEffect],
         volume : 1.0,
@@ -316,20 +329,18 @@ export default {
         onend: ()=>{console.log("EFFECT END")}
       })
       effect.play();
-      bgm.play();
-      this.bgmId = bgm;
       this.effectId = effect;
     },
-    bgmOff() {
+    effectOff() {
       this.bgmState = false;
-      Howler.stop(this.bgmId);
-      Howler.stop(this.effectId)
-    },
+      Howler.stop(this.effectId);
+    }
   },  
   watch : {
     $route() {
       this.getPjInfo(this.pjCode);
       Howler.stop(this.bgmId);
+      Howler.stop(this.effectId);
     },
     index: function(){
       this.loadData()
@@ -348,7 +359,7 @@ export default {
       deep:true,
       async handler(){
         var checkArr = [{bg : this.Now.bg}, {img : this.Now.img}, {bgm : this.Now.bgm}, {effect : this.Now.effect}];
-        var existKey = checkArr.filter(item => item.bg != '' && item.img != '' && item.bgm != '' && item.effect);
+        var existKey = checkArr.filter(item => item.bg != '' && item.img != '' && item.bgm != '' && item.effect != '');
         if(existKey.length == 0) {
           this.currentBg = ''
           this.currentImg = ''
@@ -358,16 +369,19 @@ export default {
 
           for(var i=0; i<existKey.length; i++) {
             var x = Object.keys(existKey[i]);
+            console.log(x);
             switch(x[0]) {
               case 'bg' :
                 this.currentBg = await storage.getUrl(this.Now.bg);
                 break;
               case 'bgm' :
                 if(this.bgmState == true) {
+                  console.log(this.Now.bgm);
                   this.bgmOff();
                   this.currentBgm = await storage.getUrl(this.Now.bgm);
                   this.bgmOn();
                 } else {
+                  console.log(this.Now.bgm);
                   this.currentBgm = await storage.getUrl(this.Now.bgm);
                 }
                 break;
@@ -375,7 +389,14 @@ export default {
                 this.currentImg = await storage.getUrl(this.Now.img);
                 break;
               case 'effect' :
-                this.currentEffect = await storage.getUrl(this.Now.effect);
+                if(this.bgmState == true) {
+                  this.effectOff();
+                  this.currentEffect = await storage.getUrl(this.Now.effect);
+                  this.effectOn();
+                } else {
+                  console.log(this.Now.effect);
+                  this.currentEffect = await storage.getUrl(this.Now.effect);
+                }
                 break;
             }
 
