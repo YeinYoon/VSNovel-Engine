@@ -102,10 +102,10 @@
     <!-- 우측 상단 햄버거메뉴 -->
     <div class="ViewerNavRight">
       <div class="NavItems" v-if="bgmState == false" @click="bgmOn(),effectOn()">
-        <img src="@/assets/icons/white/speaker_white.png">
+        <img src="@/assets/icons/white/speaker-disable_white.png">
       </div>
       <div class="NavItems" v-else-if="bgmState == true" @click="bgmOff(),effectOff()">
-        <img src="@/assets/icons/white/speaker-disable_white.png">
+        <img src="@/assets/icons/white/speaker_white.png">
       </div>
       <div class="NavItems" @click="resCtrl = !resCtrl">
         <img src="@/assets/icons/white/trash_white.png">
@@ -117,35 +117,32 @@
     <!-- 리소스 관리 메뉴 -->
     <div class="ResControl" v-if="resCtrl">
       <div class="ResControl_img">
-        <div class="ResControl_img_thum"><img src="@/assets/imgs/adver.png"></div>
+        <div class="ResControl_img_thum"><img v-if="currentBg" :src="currentBg"><img v-else src="@/assets/imgs/e_no_image.png"></div>
         <div class="ResControl_img_title">배경화면</div>
         <div class="ResControl_btn">
-          <button><img src="@/assets/icons/white/trash_white.png"></button>
-          <button><img src="@/assets/icons/white/trash_white.png"></button>
+          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
         </div>
       </div>
       <div class="ResControl_img">
-        <div class="ResControl_img_thum"><img src="@/assets/imgs/adver.png"></div>
+        <div class="ResControl_img_thum"><img v-if="currentImage" :src="currentImg"><img v-else src="@/assets/imgs/e_no_image.png"></div>
         <div class="ResControl_img_title">이미지</div>
         <div class="ResControl_btn">
-          <button><img src="@/assets/icons/white/trash_white.png"></button>
-          <button><img src="@/assets/icons/white/trash_white.png"></button>
+          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
         </div>
       </div>
       <div class="ResControl_mu">
-        <div class="ResControl_mu_thum"><img src="@/assets/imgs/adver.png"></div>
+        <div class="ResControl_mu_thum"><img src="@/assets/icons/music.png"></div>
         <div class="ResControl_mu_title">배경음악</div>
         <div class="ResControl_btn_mu">
-          <button><img src="@/assets/icons/white/trash_white.png"></button>
-          <button><img src="@/assets/icons/white/trash_white.png"></button>
+          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
+          <button @click="setResource('none','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
         </div>
       </div>
       <div class="ResControl_mu">
-        <div class="ResControl_mu_thum"><img src="@/assets/imgs/adver.png"></div>
+        <div class="ResControl_mu_thum"><img src="@/assets/icons/music.png"></div>
         <div class="ResControl_mu_title">효과음</div>
         <div class="ResControl_btn_mu">
-          <button><img src="@/assets/icons/white/trash_white.png"></button>
-          <button><img src="@/assets/icons/white/trash_white.png"></button>
+          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
         </div>
       </div>
     </div>
@@ -236,9 +233,6 @@ export default {
       s2:{},
       s3:{},
       resCtrl: false,
-
-
-
       bgmState : false,
       currentBgm : "",
       currentEffect : "",
@@ -302,13 +296,14 @@ export default {
       this.selectEdit = false;
     },
     loadData: async function () {
-      console.log(this.VN.plotList[0])
-      console.log(this.plot, this.index)
       if(this.VN.plotList[this.plot].pages[this.index] != undefined){
         this.Now=this.VN.plotList[this.plot].pages[this.index];
         console.log(this.Now)
         if(this.Now.bgm != '') {
           this.currentBgm = await storage.getUrl(this.Now.bgm);
+        }
+        else if(this.Now.bgm=='none'){
+          this.bgmController.stop()
         }
         if(this.Now.effect != '') {
           this.currentEffect = await storage.getUrl(this.Now.effect);
@@ -338,7 +333,9 @@ export default {
         this.$emit('move',{plot,index})
       }
     },
-
+    noImage(event){
+      event.target.src="@/assets/imgs/e_no_image.png"
+    },
     //BGM 관련
     bgmOn() {
       console.log('BGM : ' + this.currentBgm);
@@ -373,6 +370,11 @@ export default {
     effectOff() {
       this.bgmState = false;
       this.effectController.stop();
+    },
+    setResource(value, attr){
+      let temp = this.VN
+      temp.plotList[this.plot].pages[this.index][attr]=value
+      this.$emit("changeVN",temp)
     }
   },  
   watch : {
@@ -393,7 +395,6 @@ export default {
         this.loadData()
       }
     },
-
     Now : {
       deep:true,
       async handler(){

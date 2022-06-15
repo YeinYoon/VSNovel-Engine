@@ -25,9 +25,9 @@
 
               <!-- 플롯 정보 --> 
               <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
-                <div class="VpcBlock_Title"><p>{{ plot.plotName }}</p></div>
-                <button class="VpcBlock_Opener" @click="changePlotName(i , plot.plotName)"><img src="@/assets/icons/white/editing.png"></button>
-                <button class="VpcBlock_DeletePage" @click="deletePlot(i)"><img src="@/assets/icons/white/trash_white.png"></button>
+                <div class="VpcBlock_Title" @click="move({plot:i, index:0})"><p>{{ plot.plotName }}</p></div>
+                <button class="VpcBlock_Opener" v-if="i==this.plot" @click="changePlotName(i , plot.plotName)"><img src="@/assets/icons/white/editing.png"></button>
+                <button class="VpcBlock_DeletePage" v-if="i==this.plot" @click="deletePlot(i)"><img src="@/assets/icons/white/trash_white.png"></button>
               </div>
 
 
@@ -41,7 +41,7 @@
                     <div class="VpcPageNormalIndex" v-else><span>{{j+1}}</span></div>
                     <div class="VpcPageTitle"><span>{{page.pageName}}</span></div>
                     <div v-if="i==this.plot && j==this.index">
-                      <button class="VpcPage_Opener" @click="edit"><img src="@/assets/icons/white/editing.png"></button>
+                      <button class="VpcPage_Opener" @click="changePageName(i,j)"><img src="@/assets/icons/white/editing.png"></button>
                       <button class="VpcPage_DeletePage" @click="deletePage(i,j)"><img src="@/assets/icons/white/trash_white.png"></button>
                     </div>
                   </div>
@@ -204,6 +204,10 @@ export default defineComponent({
       const input = prompt(`${plotName}을 변경할 텍스트 :`,'플롯 이름')
       this.VN.plotList[plot].plotName = input;
     },
+    changePageName(plot, index){
+      const input = prompt("페이지 제목 변경","페이지 제목")
+      this.VN.plotList[plot].pages[index].pageName = input
+    },
     selectOptionPlot(event,plot,index,number){
       console.log(event.target.value)
       console.log(plot+","+index+" : "+number)
@@ -252,7 +256,7 @@ export default defineComponent({
       console.log(this.VN.plotList)
     },
     deletePage(plot, index){
-      delete this.VN.plotList[plot].pages[index]
+      this.VN.plotList[plot].pages.splice(index, 1)
     }
   },
 });
