@@ -56,7 +56,7 @@
         </div>
         <!-- 알림센터 끝 -->
 
-        <div class="CalendarCenter">
+        <!-- <div class="CalendarCenter">
             <div class="CalendarInner">
                 <div class="CalendarBtn" @click="CalendarToggle()"><img src="@/assets/icons/white/notification.png"></div>
                 <div class="CalendarModal" v-if="CalendarStatus">
@@ -64,7 +64,7 @@
                 </div>              
             </div>
 
-        </div>
+        </div> -->
     </div>
 </template>
 

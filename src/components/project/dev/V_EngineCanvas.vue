@@ -338,8 +338,12 @@ export default {
   watch : {
     $route() {
       this.getPjInfo(this.pjCode);
-      this.bgmController.stop();
-      this.effectController.stop();
+      if(this.bgmController != null) {
+        this.bgmController.stop();
+      }
+      if(this.effectController != null) {
+        this.effectController.stop();
+      }
     },
     index: function(){
       this.loadData()
