@@ -154,6 +154,7 @@ export default defineComponent({
       deep:true,
       handler(VN){
         this.VN=VN
+        console.log(VN)
       }
     }
   },
