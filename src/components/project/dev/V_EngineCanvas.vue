@@ -1,19 +1,14 @@
 <template v-if="!!Now">
-    <div class="ViewerBackground">
+  <div class="ViewerBackground">
+
     <!-- 백그라운드 -->
-    <!-- 내부 img태그의 src를 가공하여 사용, -->
-    <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
     <div class="SceneBackground">
       <img v-if="Now.bg!='' && Now.bg != undefined" :src="this.currentBg"/>
     </div>
     <!-- 백그라운드 끝. -->
 
-    <!-- 선택지 --> 
-    <!-- 필요한곳에 주석을 해제하고 사용. -->
-    <!-- SceneSelectBackground는 선택문이 화면상에 출력되었을때 뒤에 검은 배경을 깔아줌. -->
-    <!-- SceneSelectBFrame은 중앙 위치를 잡는 용도. -->
-    <!-- SelectButton을 추가할수록 더 많은 선택지를 자동으로 배치함. 3개 이상의 선택문 추가 가능.-->
 
+    <!-- 선택지 --> 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
         <label for="s1">
@@ -52,14 +47,10 @@
           <img src="@/assets/icons/white/checked.png" v-else @click="saveSelect()">
         </div>
       </div>
-
-
     </div>
-
     <!-- 선택지 끝. -->
 
     <!-- 일시정지(PAUSE) 메뉴 -->
-
     <div class="ScenePauseBackground" v-if="status == 'pause'">
       <div class="VisualNovelLabel">
         <div class="VisualNovelIcon"><img src="@/assets/sample.png"></div>
@@ -82,11 +73,10 @@
         </div>
       </div>
     </div>
-
     <!-- 일시정지(PAUSE) 메뉴 끝. -->
 
-    <!-- 저장 슬롯 메뉴 -->
 
+    <!-- 저장 슬롯 메뉴 -->
     <div class="SceneSaveBackground" v-if="status == 'save'">
       <span>저장</span>
       <div class="SaveSlotsFrame">
@@ -95,80 +85,122 @@
         <div class="SaveSlot"></div>
       </div>
     </div>
-
     <!-- 저장 슬롯 메뉴 끝. -->
 
+
     <!-- 좌측 상단 햄버거메뉴 -->
-      <div class="ViewerNav">
-        <div class="NavItems" title="서버 비주얼 노벨 다운로드">
-          <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
-        </div>
-        <div class="NavItems" title="저장">
-          <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
-        </div>
+    <div class="ViewerNav">
+      <div class="NavItems" title="서버 비주얼 노벨 다운로드">
+        <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
+      </div>
+      <div class="NavItems" title="저장">
+        <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
+      </div>
+    </div>
+    <!-- 좌측 상단 햄버거메뉴 -->
 
-        <div v-if="bgmState == false">
-          <button @click="bgmOn(); effectOn();">BGM On</button>
+    <!-- 우측 상단 햄버거메뉴 -->
+    <div class="ViewerNavRight">
+      <div class="NavItems" v-if="bgmState == false" @click="bgmOn(),effectOn()">
+        <img src="@/assets/icons/white/speaker-disable_white.png">
+      </div>
+      <div class="NavItems" v-else-if="bgmState == true" @click="bgmOff(),effectOff()">
+        <img src="@/assets/icons/white/speaker_white.png">
+      </div>
+      <div class="NavItems" @click="resCtrl = !resCtrl">
+        <img src="@/assets/icons/white/trash_white.png">
+      </div>
+    </div>
+    <!-- 우측 상단 햄버거메뉴 --> 
+
+
+    <!-- 리소스 관리 메뉴 -->
+    <div class="ResControl" v-if="resCtrl">
+      <div class="ResControl_img">
+        <div class="ResControl_img_thum"><img v-if="currentBg" :src="currentBg"><img v-else src="@/assets/imgs/e_no_image.png"></div>
+        <div class="ResControl_img_title">배경화면</div>
+        <div class="ResControl_btn">
+          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
         </div>
-        <div v-else-if="bgmState == true">
-          <button @click="bgmOff(); effectOff();">BGM Off</button>
+      </div>
+      <div class="ResControl_img">
+        <div class="ResControl_img_thum"><img v-if="currentImage" :src="currentImg"><img v-else src="@/assets/imgs/e_no_image.png"></div>
+        <div class="ResControl_img_title">이미지</div>
+        <div class="ResControl_btn">
+          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
         </div>
+      </div>
+      <div class="ResControl_mu">
+        <div class="ResControl_mu_thum"><img src="@/assets/icons/music.png"></div>
+        <div class="ResControl_mu_title">배경음악</div>
+        <div class="ResControl_btn_mu">
+          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
+          <button @click="setResource('none','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
+        </div>
+      </div>
+      <div class="ResControl_mu">
+        <div class="ResControl_mu_thum"><img src="@/assets/icons/music.png"></div>
+        <div class="ResControl_mu_title">효과음</div>
+        <div class="ResControl_btn_mu">
+          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
+        </div>
+      </div>
+    </div>
+    <!-- 리소스 관리 메뉴 -->
+
+
+
+    <!-- 이미지 -->
+    <div class="SceneImg">
+      <img :src="currentImg" v-if="Now.img!=''"/>
+    </div>
+    <!-- 이미지 끝. -->
+
+    <!-- 대사 -->
+    <div class="SceneScriptFrame">
+      
+      <!-- 대사창 배경-->
+      <div class="ScriptBackground"></div>
+
+      <!-- 화자 -->
+      <div class="ScriptEditingButton">
+        <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="textEdit = true;">
+        <img src="@/assets/icons/white/checked.png" v-else @click="saveText()">
+      </div>
+
+      <label for="name">
         
-      </div>
-      <!-- 이미지 -->
-
-      <!-- 내부 img태그의 src를 가공하여 사용, -->
-      <!-- 자동으로 늘어나고 줄어듦. 화면 스케일에 맞게 조정 -->
-      <div class="SceneImg"> <!--이새끼 문제-->
-        <img :src="currentImg" v-if="Now.img!=''"/>
-      </div>
-
-      <!-- 이미지 끝. -->
-      <!-- 대사 -->
-      <div class="SceneScriptFrame"> <!-- 이새끼도 문제 -->
-        <!-- 대사창 배경-->
-        <div class="ScriptBackground"></div>
-        <!-- 대사창 툴바 -->
-
-        <!-- 화자 -->
-          <div class="ScriptEditingButton">
-            <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="textEdit = true;">
-            <img src="@/assets/icons/white/checked.png" v-else @click="saveText()">
-          </div>
-
-          <label for="name">
-          <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true">
-            <span id="name" ref="cngName">{{ Now.name }}</span>
-          </div>
-          <div v-else class="SceneSpeakerName">
-            <span id="name">{{Now.name}}</span>
-          </div>
+        <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true">
+          <span id="name" ref="cngName">{{ Now.name }}</span>
+        </div>
+        <div v-else class="SceneSpeakerName">
+          <span id="name">{{Now.name}}</span>
+        </div>
           
-          </label>
+      </label>
 
-        <!-- 대사 -->
-        
-        <label for="text">
+      <!-- 대사 -->  
+      <label for="text">
         <div v-if="textEdit" class="SceneScript" contenteditable="true">
           <span id="text" ref="cngText">{{ Now.text }}</span>
         </div>
         <div v-else class="SceneScript">
           <span id="text">{{ Now.text }}</span>
         </div>
-        </label>
+      </label>
 
-        <!-- 다음 대사 버튼 -->
-        <div class="NextScriptButton" v-if="status!='end'" @click="nextScene">
-          <button>▶</button>
-        </div>
-        <div v-else class="NextScriptButton">
-          <button>End</button>
-        </div>
+      <!-- 다음 대사 버튼 -->
+      <div class="NextScriptButton" v-if="status!='end'" @click="nextScene">
+        <button>▶</button>
       </div>
-      <!-- 대사 끝 -->
+      <div v-else class="NextScriptButton">
+        <button>End</button>
+      </div>
+
     </div>
-    <!-- <button @click="nextScene">click</button> -->
-  <!-- 전체 끝 -->
+    <!-- 대사 끝 -->
+
+  </div>
 </template>
 
 <script>
@@ -200,9 +232,7 @@ export default {
       s1:{},
       s2:{},
       s3:{},
-
-
-
+      resCtrl: false,
       bgmState : false,
       currentBgm : "",
       currentEffect : "",
@@ -266,13 +296,14 @@ export default {
       this.selectEdit = false;
     },
     loadData: async function () {
-      console.log(this.VN.plotList[0])
-      console.log(this.plot, this.index)
       if(this.VN.plotList[this.plot].pages[this.index] != undefined){
         this.Now=this.VN.plotList[this.plot].pages[this.index];
         console.log(this.Now)
         if(this.Now.bgm != '') {
           this.currentBgm = await storage.getUrl(this.Now.bgm);
+        }
+        else if(this.Now.bgm=='none'){
+          this.bgmController.stop()
         }
         if(this.Now.effect != '') {
           this.currentEffect = await storage.getUrl(this.Now.effect);
@@ -302,7 +333,9 @@ export default {
         this.$emit('move',{plot,index})
       }
     },
-
+    noImage(event){
+      event.target.src="@/assets/imgs/e_no_image.png"
+    },
     //BGM 관련
     bgmOn() {
       console.log('BGM : ' + this.currentBgm);
@@ -310,7 +343,9 @@ export default {
       this.bgmController = new Howl({
         src: [this.currentBgm],
         volume: 1.0,
-        loop : true
+        loop : true,
+        preload : true,
+        onend: ()=>{console.log("BGM END")}
       });
       this.bgmController.play();
     },
@@ -326,13 +361,20 @@ export default {
       this.effectController = new Howl({
         src: [this.currentEffect],
         volume : 1.0,
-        loop : false
+        loop : false,
+        preload : true,
+        onend: ()=>{console.log("EFFECT END")}
       })
       this.effectController.play();
     },
     effectOff() {
       this.bgmState = false;
       this.effectController.stop();
+    },
+    setResource(value, attr){
+      let temp = this.VN
+      temp.plotList[this.plot].pages[this.index][attr]=value
+      this.$emit("changeVN",temp)
     }
   },  
   watch : {
@@ -357,7 +399,6 @@ export default {
         this.loadData()
       }
     },
-
     Now : {
       deep:true,
       async handler(){
@@ -604,14 +645,12 @@ label {
   left: 10px;
   top: 10px;
   z-index: 89;
-
-  /* 다해놨어 정인쨩 > <  */
 }
 
 .NavItems{
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   margin: 2px;
   display: table;
@@ -626,8 +665,151 @@ label {
 
 .NavItems img{
   margin: 10px;
-  height: 20px;
+  height: 30px;
 }
+
+.ViewerNavRight {
+  position: absolute;
+  left: calc(100% - 65px);
+  top: 10px;
+  z-index: 89;
+}
+
+.ResControl {
+  position: absolute;
+  left: calc(100% - 243px);
+  top: 120px;
+  z-index: 89;
+  width: 230px;
+  height: 270px;
+  background: #4b4b4b;
+  border-radius: 10px;
+  padding: 15px;
+  /* text-align: center; */
+
+}
+
+.ResControl_img {
+  display: inline-block;
+  width: 100%;
+  height: 70px;
+  background: #818181;
+  padding-left: 15px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ResControl_img_thum {
+  display: inline-block;
+  position: relative;
+  top: 8px;
+  left: -5px;
+  width: 50px;
+  background: #0084ff;
+  object-fit: cover;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ResControl_img_thum img{
+  width: 50px;
+}
+
+.ResControl_img_title {
+  display: inline-block;
+  position: relative;
+  top: -35px;
+  left: 52px;
+  width: 73px;
+  font-size: 0.8em;
+  text-align: right;
+}
+
+.ResControl_mu {
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  background: #818181;
+  overflow: hidden;
+  padding-left: 15px;
+  border-radius: 10px;
+}
+
+.ResControl_mu_thum {
+  display: inline-block;
+  position: relative;
+  top: 7px;
+  left: -5px;
+  width: 25px;
+  background: #0084ff;
+  object-fit: cover;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ResControl_mu_thum img{
+  width: 25px;
+}
+
+.ResControl_mu_title {
+  display: inline-block;
+  position: relative;
+  top: -3px;
+  left: 2px;
+  width: 73px;
+  font-size: 0.8em;
+  text-align: left;
+}
+
+.ResControl_btn {
+  position: relative;
+  top: -25px;
+  left: 115px;
+}
+
+.ResControl_btn button {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  background: #2872f9;
+  color: white;
+  width: 29px;
+  height: 29px;
+  object-fit: cover;
+  margin-left: 2px;
+}
+.ResControl_btn button img {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  width: 15px;
+}
+
+.ResControl_btn_mu {
+  position: relative;
+  top: -27px;
+  left: 115px;
+}
+
+.ResControl_btn_mu button {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  background: #2872f9;
+  color: white;
+  width: 29px;
+  height: 29px;
+  object-fit: cover;
+  margin-left: 2px;
+}
+.ResControl_btn_mu button img {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  width: 15px;
+}
+
+
 
 .SceneImg {
   position: absolute;
@@ -661,9 +843,9 @@ label {
 
 .ScriptEditingButton {
   position: absolute;
-  left: calc(100% - 50px);
-  width: 30px;
-  height: 30px;
+  left: calc(100% - 60px);
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   margin: 10px;
   background: #4b4b4b;
@@ -816,7 +998,7 @@ label {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  font-size: 1em;
+  font-size: 1.3em;
   color: white;
 }
 
@@ -837,7 +1019,7 @@ label {
   color: white;
   text-align: left;
   overflow: hidden;
-  font-size: 1.2em;
+  font-size: 1.5em;
 }
 
 /* 반응형 레이아웃 for 모바일 */

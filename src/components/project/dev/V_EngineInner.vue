@@ -11,7 +11,7 @@
         <div class="VpcTopToolbar"> 
           <div class="VpcToolPosition">
             <button @click="addPlotModal">플롯 추가</button>
-            
+            <button @click="addPlotModal">테마 변경</button>
           </div>
         </div> 
 
@@ -25,9 +25,9 @@
 
               <!-- 플롯 정보 --> 
               <div class="VpcBlockLabel"> <!-- 플롯 라벨 및 열기버튼 -->
-                <div class="VpcBlock_Title"><p>{{ plot.plotName }}</p></div>
-                <button class="VpcBlock_Opener" @click="changePlotName(i , plot.plotName)"><img src="@/assets/icons/white/editing.png"></button>
-                <button class="VpcBlock_DeletePage" @click="deletePlot(i)"><img src="@/assets/icons/white/trash_white.png"></button>
+                <div class="VpcBlock_Title" @click="move({plot:i, index:0})"><p>{{ plot.plotName }}</p></div>
+                <button class="VpcBlock_Opener" v-if="i==this.plot" @click="changePlotName(i , plot.plotName)"><img src="@/assets/icons/white/editing.png"></button>
+                <button class="VpcBlock_DeletePage" v-if="i==this.plot" @click="deletePlot(i)"><img src="@/assets/icons/white/trash_white.png"></button>
               </div>
 
 
@@ -41,7 +41,7 @@
                     <div class="VpcPageNormalIndex" v-else><span>{{j+1}}</span></div>
                     <div class="VpcPageTitle"><span>{{page.pageName}}</span></div>
                     <div v-if="i==this.plot && j==this.index">
-                      <button class="VpcPage_Opener" @click="edit"><img src="@/assets/icons/white/editing.png"></button>
+                      <button class="VpcPage_Opener" @click="changePageName(i,j)"><img src="@/assets/icons/white/editing.png"></button>
                       <button class="VpcPage_DeletePage" @click="deletePage(i,j)"><img src="@/assets/icons/white/trash_white.png"></button>
                     </div>
                   </div>
@@ -59,7 +59,9 @@
 
                     <!-- 선택지들 -->
                     <div class="VpcPageSels" v-for="(select,k) in page.select" :key="k">
-                      <div class="VpcPageSelTitle">선택지{{k+1}}</div>
+                      <div class="VpcPageSelTitle">
+                        <span class="VpcPageSelTitle_Number">{{k+1}}</span>
+                      </div>
 
                       <!-- 선택지 설정 -->
                       <div class="VpcPageSelectPath">
@@ -68,7 +70,7 @@
                             <option v-for="(sPlot, l) in VN.plotList" :key="l" :value="l" :selected="select.plot==l">{{VN.plotList[l].plotName}}</option>
                           </select>
                         </div>
-                        <div class="VpcPageSelectArrow">,</div>
+                        <div class="VpcPageSelectArrow">/</div>
                         <div class="VpcPageSelChange">
                           <select id="index" @change="selectOptionIndex($event,i,j,k)">
                             <option v-for="(num,l) in returnIndex(VN.plotList[select.plot],i,j,k)" :key="l" :selected="select.index==l+1" :value="l">
@@ -152,6 +154,7 @@ export default defineComponent({
       deep:true,
       handler(VN){
         this.VN=VN
+        console.log(VN)
       }
     }
   },
@@ -202,6 +205,10 @@ export default defineComponent({
       const input = prompt(`${plotName}을 변경할 텍스트 :`,'플롯 이름')
       this.VN.plotList[plot].plotName = input;
     },
+    changePageName(plot, index){
+      const input = prompt("페이지 제목 변경","페이지 제목")
+      this.VN.plotList[plot].pages[index].pageName = input
+    },
     selectOptionPlot(event,plot,index,number){
       console.log(event.target.value)
       console.log(plot+","+index+" : "+number)
@@ -250,7 +257,7 @@ export default defineComponent({
       console.log(this.VN.plotList)
     },
     deletePage(plot, index){
-      delete this.VN.plotList[plot].pages[index]
+      this.VN.plotList[plot].pages.splice(index, 1)
     }
   },
 });
@@ -515,10 +522,8 @@ export default defineComponent({
   width: 100%;
   border-radius: 5px;
   margin-top: 2px;
-  margin-left: 2px;
   padding: 2px;
-  text-align: center;
-  
+  text-align: right;
 }
 
 .VpcPageSelectIndex {
@@ -573,13 +578,22 @@ export default defineComponent({
 
 .VpcPageSelTitle {
   display: inline-block;
-  width: 30%;
+  width: 20px;
   font-size: 0.9em;
+  background: #838383;
+  border-radius: 100px;
+  text-align: center;
+}
+
+.VpcPageSelTitle_Number {
+  position: relative;
+  left: -0.5px;
+  top: -0.5px;
 }
 
 .VpcPageSelectPath {
   display: inline-block;
-  width: 70%;
+  width: 110px;
   text-align: center;
   font-size: 0.8em;
 }
@@ -588,8 +602,7 @@ export default defineComponent({
   display: inline-block;
   width: 5%;
   text-align: center;
-  vertical-align: middle;
-  font-size: 0.5em;
+  font-size: 1em;
 }
 
 .VpcPageSelOrigin {
@@ -599,7 +612,7 @@ export default defineComponent({
 
 .VpcPageSelOrigin select{
   border: none;
-  width: 46px;
+  width: 60px;
   height: 19.19px;
   margin-left: 2px;
   margin-right: 2px;
@@ -622,7 +635,7 @@ export default defineComponent({
 
 .VpcPageSelChange select{
   border: none;
-  width: 45px;
+  width: 35px;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -640,7 +653,7 @@ export default defineComponent({
 
 .VpcPageEnd {
   width: 100%;
-  background: #949494;
+  background: #2061d8;
   border-radius: 5px;
   padding: 5px;
   margin-bottom: 5px;
@@ -652,7 +665,7 @@ export default defineComponent({
 }
 
 .VpcPageEnd:hover {
-  background: #585858;
+  background: #0d52bb;
   cursor: pointer;
 }
 
@@ -765,7 +778,7 @@ export default defineComponent({
 
 .VpcBlockEndPoint select {
   border: none;
-  width: 45px;
+  width: 90px;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;

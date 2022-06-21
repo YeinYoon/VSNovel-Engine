@@ -13,7 +13,7 @@
           </div>
           <div class="create_button_frame">
             <div class="create_button" @click="createPj()"><span>생성</span></div>
-            <button @click="$router.push('/')">취소</button>
+            <div class="cancel_button" @click="$router.push('/')"><span>취소</span></div>
           </div>
         </div>
       </div>
@@ -43,7 +43,6 @@ export default {
       .then(async (result)=>{
         if(result.data!="err") {
           var data = JSON.stringify({ // 프로젝트 기본 구조
-            "startPlot":"",
             "scenario":{}
           });
           var fileName = `PJ${result.data.pjCode}.json`
@@ -168,10 +167,26 @@ export default {
   display: table;
   cursor: pointer;
 }
+.cancel_button {
+  width: 200px;
+  height: 50px;
+  flex: 10;
+  background: #2872f9;
+  border-radius: 20px;
+  text-align: center;
+  display: table;
+  cursor: pointer;
+}
 .create_button:hover{
   opacity: 0.9;
 }
 .create_button span{
+  position: relative;
+  top: 13px;
+  font-size: 1.2em;
+  color: white  ;
+}
+.cancel_button span{
   position: relative;
   top: 13px;
   font-size: 1.2em;
