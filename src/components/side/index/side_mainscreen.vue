@@ -74,9 +74,7 @@ import axios from '../../../axios'
 export default {
     name:'Side_MainScreen',
     created() {
-        if(this.$store.userNickname != null) {
-            this.getNoticeList();
-        }
+        this.getNoticeList();
     },
     data() {
         return{
@@ -111,12 +109,13 @@ export default {
             if(result.data == "err") {
             console.log("ERR : 알림 불러오기 실패")
             } else {
-            this.noticeList = result.data;
-            if(result.data.length > 0) {
-                this.existNotice = "on";
-            } else {
-                this.existNotice = "off";
-            }
+                this.noticeList = result.data;
+                if(result.data.length > 0) {
+                    this.existNotice = "on";
+                } else {
+                    this.existNotice = "off";
+                }
+                console.log(this.noticeList);
             }
         })
         .catch((err)=>{
