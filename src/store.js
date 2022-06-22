@@ -4,6 +4,7 @@ const store = createStore({
     state() {
         return {
             //유저 로그인
+            userId : null,
             userNickname : null,
 
             //로딩
@@ -27,8 +28,9 @@ const store = createStore({
     },
     mutations : {
         //유저 로그인(닉네임)
-        userLogin(state, name) {
-            state.userNickname = name;
+        userLogin(state, data) {
+            state.userId = data.userId;
+            state.userNickname = data.nickName;
         },
 
         //로딩

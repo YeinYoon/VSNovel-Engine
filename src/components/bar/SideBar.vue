@@ -3,7 +3,7 @@
 <div v-bind:class="{[`${this.$store.state.sideBarState}`]:true}"> 
 
   <div v-if="this.$store.state.sideMenuState == 'M'">
-    <SideMainScreen></SideMainScreen>
+    <SideMainScreen :userId="$store.state.userId"></SideMainScreen>
   </div>
 
   <div v-else-if="this.$store.state.sideMenuState == 'C'">
