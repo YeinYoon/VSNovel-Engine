@@ -319,12 +319,12 @@ export default {
       })      
     },
     async getVN() {
-      this.isDownload = true;
       var result = await storage.getVN(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
       if(result != "err") {
         var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
         var string = new TextDecoder().decode(uint8array);
         this.$emit('changeVN',JSON.parse(string));
+        this.isDownload = true;
       }
     },
     saveText() {
