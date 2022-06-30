@@ -11,6 +11,14 @@ exports.createProjectDir = async(pjCode) => {
     const params = [
         {
             Bucket:"vsnovel",
+            Key : `Project/PJ${pjCode}/dev`
+        },
+        {
+            Bucket:"vsnovel",
+            Key : `Project/PJ${pjCode}/store`
+        },
+        {
+            Bucket:"vsnovel",
             Key : `Project/PJ${pjCode}/resource/bg/`
         },
         {

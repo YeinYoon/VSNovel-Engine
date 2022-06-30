@@ -3,15 +3,17 @@
   <div v-bind:class="{'mainmenu':true}">
     <div v-bind:class="{'menus':true}">
 
+
+      <div v-bind:class="{'menubox':true}" @click="openMenu('E')">
+        <img class="menubox_icon_text" src="../../assets/icons/white/comment_two.png">
+      </div>
+
       <div v-bind:class="{'menubox':true}" @click="openMenu('R')">
         <img class="menubox_icon_resource" src="../../assets/icons/white/folder.png">
       </div>
       <br>
 
-      <!-- <div v-bind:class="{'menubox':true}">
-        <img class="menubox_icon_text" src="../../assets/icons/white/comment_two.png">
-      </div>
-      <br>
+      <!-- <br>
       <div v-bind:class="{'menubox':true}">
         <img class="menubox_icon_event" src="../../assets/icons/white/clapperboard.png">
       </div>
@@ -55,6 +57,9 @@
             break;
           case 'S' :
             this.$store.commit('cngSideMenu', 'S');
+            break;
+          case 'E' :
+            this.$store.commit('cngSideMenu', 'E');
             break;
         }
       }

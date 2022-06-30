@@ -6,6 +6,10 @@
     <SideMainScreen :userId="$store.state.userId"></SideMainScreen>
   </div>
 
+  <div v-else-if="this.$store.state.sideMenuState == 'E'">
+    <VsideEpisode :pjCode="pjCode"></VsideEpisode>
+  </div>
+
   <div v-else-if="this.$store.state.sideMenuState == 'C'">
     <VsideCoop :pjCode="pjCode"></VsideCoop>
   </div>
@@ -29,6 +33,7 @@ import VsideCoop from '../side/Visual/V_side_coop.vue'
 import VsideResource from '../side/Visual/V_side_resource.vue'
 import VsideSetting from '../side/Visual/V_side_setting.vue'
 import SideMainScreen from '../side/index/side_mainscreen.vue'
+import VsideEpisode from '../side/Visual/V_side_episode.vue'
 export default {
   name : "SideBar",
   data() {
@@ -40,6 +45,7 @@ export default {
     VsideCoop,
     VsideResource,
     VsideSetting,
+    VsideEpisode,
     SideMainScreen,
   },
   props:{

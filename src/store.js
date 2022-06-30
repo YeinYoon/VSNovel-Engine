@@ -23,7 +23,7 @@ const store = createStore({
             sideBarMove : "RouterMoveLeft",// move 애니메이션 Class,
             sideAnimationState : false,
 
-            sideMenuState : "N" // N : 선택하지 않음, R : 리소스, C : 협업, S : 설정, M : 메인화면(인덱스)
+            sideMenuState : "N" // N : 선택하지 않음, R : 리소스, C : 협업, S : 설정, E : 회차관리, M : 메인화면(인덱스)
         }
     },
     mutations : {
