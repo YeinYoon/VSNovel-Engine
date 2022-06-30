@@ -1,24 +1,15 @@
 <template>
-<div v-if="FMModalState">
+<div v-if="EPModalState">
 
-    <div class="modal_opacity">
-    </div>
+  <div class="modal_opacity">
+  </div>
 
-  <div v-bind:class="{[`FMmodal_frame`]:true}">
-    <div class="FMnputModalTitle"><p>{{msg}}</p></div>
+  <div class="EPmodal_save_button" @click="inputVal()">
+    <span class="EPmodal_save_ok">확인</span>
+  </div>
 
-    <div class="FMmodal_inner">
-      <div class="FMmodal_inputTag"><input v-model="input"></div>
-    </div>
-
-    <div class="FMmodal_save_button" @click="inputVal()">
-      <span class="FMmodal_save_ok">확인</span>
-    </div>
-
-    <div class="FMmodal_cancel_button" @click="modalClose()">
-      <span class="FMmodal_cancel_ok">취소</span>
-    </div>
-
+  <div class="EPmodal_cancel_button" @click="modalClose()">
+    <span class="EPmodal_cancel_ok">취소</span>
   </div>
 
 </div> 
@@ -30,19 +21,19 @@ export default {
   data() {
     return {
       // 모달 데이터
-      FMModalState : false,
-      fModalSize : "",
+      EPModalState : false,
+      modalSize : "",
 
 
     }
   },
   methods : {
     modalClose() {
-      this.FMModalState = false;
+      this.EPModalState = false;
     },
     show(option = {}) {
-      this.FMModalState = true;
-      this.fModalSize = option.size;
+      this.EPModalState = true;
+      this.modalSize = option.size;
     },
 
   },
@@ -51,7 +42,7 @@ export default {
 
 <style>
 
-.FMmodal_frame{
+.EPmodal_frame{
   position: fixed;
   top: 50%;
   left: 50%;
@@ -66,7 +57,7 @@ export default {
   opacity: 1;
 }
 
-.FMmodal_inner{
+.EPmodal_inner{
   color: white;
   position: fixed;
   top: 45%;
@@ -76,25 +67,25 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.FMmodal_inputTag {
+.EPmodal_inputTag {
   position: absolute;
   left: 50%;
   top: 55%;
   transform: translate(-50%, -50%);
 }
 
-.FMnputModalTitle {
+.EPnputModalTitle {
   left: 50%;
   top: 50px;
   position: absolute;
   transform: translate(-50%, -50%);
 }
 
-.FMnputModalTitle p{
+.EPnputModalTitle p{
   color: white;
 }
 
-.FMmodal_inputTag input {
+.EPmodal_inputTag input {
   width: 300px;
   height: 40px;
   border-radius: 10px;
@@ -102,7 +93,7 @@ export default {
 
 }
 
-.FMmodal_save_button{
+.EPmodal_save_button{
   width: 25%;
   height: 20%;
   background: #2872f9;
@@ -114,7 +105,7 @@ export default {
   left: 35%;
   transform: translate(-50%, -50%);
 }
-.FMmodal_cancel_button{
+.EPmodal_cancel_button{
   width: 25%;
   height: 20%;
   background: #ff4c4c;
@@ -126,13 +117,13 @@ export default {
   left: 65%;
   transform: translate(-50%, -50%);
 }
-.FMmodal_save_ok{
+.EPmodal_save_ok{
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   color: white;
 }
-.FMmodal_cancel_ok{
+.EPmodal_cancel_ok{
   display: table-cell;
   vertical-align: middle;
   text-align: center;

@@ -90,8 +90,11 @@
 
     <!-- 좌측 상단 햄버거메뉴 -->
     <div class="ViewerNav">
-      <div class="NavItems" title="서버 비주얼 노벨 다운로드">
+      <div class="NavItems" title="서버 비주얼 노벨 다운로드" v-if="isDownload == false">
         <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
+      </div>
+      <div class="NavItems" v-else-if="isDownload == true">
+        <img src="@/assets/icons/file_ok.png">
       </div>
 
       <div class="NavItems" title="저장" v-if="isUpload == false">
@@ -259,6 +262,7 @@ export default {
       effectController : null,
 
       isUpload : false,
+      isDownload : false,
       percent : 0,
     }
   },
@@ -316,9 +320,12 @@ export default {
     },
     async getVN() {
       var result = await storage.getVN(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
-      var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
-      var string = new TextDecoder().decode(uint8array);
-      this.$emit('changeVN',JSON.parse(string));
+      if(result != "err") {
+        var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
+        var string = new TextDecoder().decode(uint8array);
+        this.$emit('changeVN',JSON.parse(string));
+        this.isDownload = true;
+      }
     },
     saveText() {
       let temp = this.VN
@@ -434,6 +441,12 @@ export default {
         setTimeout(() => this.isUpload = false, 3000);
       }
     },
+    isDownload(cng) {
+      if(cng == true) {
+        setTimeout(() => this.isDownload = false, 3000);
+      }
+    },
+
     index: function(){
       this.loadData()
     },

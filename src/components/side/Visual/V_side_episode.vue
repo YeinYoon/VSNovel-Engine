@@ -1,13 +1,13 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
+<EpisodeModal ref="episodeModal"></EpisodeModal>
   <div class="VSBackgroundEpic">
 
     <div class="VSCoopTool">
       <div class="VSCoopTitle"><span>에피소드 목록</span></div>
       <div class="VSCoopButtons">
         <button>추가</button>
-        <button @click="this.delmode = !this.delmode">모드변경</button>
-        <!-- <button>기능3</button> -->
+        <button @click="this.delMode = !this.delMode">삭제</button>
       </div>
     </div>
 
@@ -25,52 +25,18 @@
           <p>지각이다</p>
         </div>
 
-        <!-- 체크박스 -->
-
-
         <!-- 에피소드에 마지막으로 접근한 시간 -->
         <div class="VSEpic_RecentDate">
           <p>2022-01-01 01:00:00</p>
         </div>
 
         <!-- 해당 에피소드의 상태 -->
-        <div class="VSEpic_destroy" v-if="delmode == true">
+        <div class="VSEpic_destroy" v-if="delMode == true">
           <p>삭제</p>
         </div>
 
-        <div class="VSEpic_Status" v-if="delmode == false">
-          <p>기능</p>
-        </div>
-      </div>
-      <!-- 여기까지 반복 -->
-
-      <!-- 반복, 에피소드 하나 -->
-      <div class="VSEpic_el"> 
-        <!-- 에피소드 회차 -->
-        <div class="VSEpic_Index">
-          <p>1</p>
-        </div>
-
-        <!-- 에피소드 명 -->
-        <div class="VSEpic_Title"> 
-          <p>지각이다</p>
-        </div>
-
-        <!-- 체크박스 -->
-
-
-        <!-- 에피소드에 마지막으로 접근한 시간 -->
-        <div class="VSEpic_RecentDate">
-          <p>2022-01-01 01:00:00</p>
-        </div>
-
-        <!-- 해당 에피소드의 상태 -->
-        <div class="VSEpic_destroy" v-if="delmode == true">
-          <p>삭제</p>
-        </div>
-
-        <div class="VSEpic_Status" v-if="delmode == false">
-          <p>기능</p>
+        <div class="VSEpic_Status" v-if="delMode == false" @click="epModalOn()">
+          <p>출품</p>
         </div>
       </div>
       <!-- 여기까지 반복 -->
@@ -82,6 +48,7 @@
 </template>
 
 <script>
+import EpisodeModal from '../../modal/EpisodeModal.vue'
 import ConfirmModal from '../../modal/ConfirmModal.vue'
 // import axios from '../../../axios'
 export default {
@@ -90,18 +57,21 @@ export default {
     pjCode : String
   },
   components : {
-    ConfirmModal
+    ConfirmModal,
+    EpisodeModal
   },
   created() {
-    this.delmode = false;
+    this.delMode = false;
   },
   data() {
     return {
-      delmode : false,
+      delMode : false,
     }
   },
   methods: {
-
+    epModalOn() {
+      this.$refs.episodeModal.show();
+    }
   }
 }
 </script>
