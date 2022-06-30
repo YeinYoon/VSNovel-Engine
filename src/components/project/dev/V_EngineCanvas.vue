@@ -93,8 +93,15 @@
       <div class="NavItems" title="서버 비주얼 노벨 다운로드">
         <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
       </div>
-      <div class="NavItems" title="저장">
+
+      <div class="NavItems" title="저장" v-if="isUpload == false">
         <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
+      </div>
+      <div class="NavItems" v-else-if="isUpload == true && percent == '100%'">
+        <img src="@/assets/icons/file_ok.png">
+      </div>
+      <div v-else>
+        {{percent}}%
       </div>
     </div>
     <!-- 좌측 상단 햄버거메뉴 -->
@@ -204,6 +211,13 @@
 </template>
 
 <script>
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3({
+  region : "ap-northeast-2",
+  //추후 .env로 보안관리 할것
+  accessKeyId: 'AKIARKU2Y4IXVCR266PO', // 사용자의 AccessKey
+  secretAccessKey: 'YJDi8K4VSP5bPhdNcC6hB/xreuKH2885200KS+LB' // 사용자의 secretAccessKey
+});
 import {Howl} from 'howler';
 import storage from '../../../aws'
 import axios from '../../../axios'
@@ -242,7 +256,10 @@ export default {
       currentBg : "",
 
       bgmController : null,
-      effectController : null
+      effectController : null,
+
+      isUpload : false,
+      percent : 0,
     }
   },
   methods : {
@@ -266,17 +283,42 @@ export default {
     },
     //현재 JSON 파일 업로드
     async uploadVN() {
+      this.isUpload = true;
+
       var data = JSON.stringify(this.VN);
       var fileName = `PJ${this.pjCode}.json`
       var properties = {type:'text/plain'};
       var file = new File([data], fileName, properties); //새로운 파일 객체 생성
-      await storage.uploadFile(`Project/PJ${this.pjCode}/`, file);
+
+      const params = {
+        Bucket: "vsnovel",
+        Key : `Project/PJ${this.pjCode}/` + file.name, // 저장되는 파일의 경로 및 이름
+        Body : file // 파일
+      }
+      s3.upload(params)
+      .on("httpUploadProgress", evt => {
+        this.percent = parseInt((evt.loaded * 100) / evt.total) + "%";
+        if(this.percent == '100%') {
+          setTimeout(() => this.percent = 0, 3000);
+        }
+        return parseInt((evt.loaded * 100) / evt.total) + "%";
+      })
+      .send((err, data)=>{
+        if(err) {
+          console.log("파일 업로드 실패");
+          console.error(err);
+          return "err"
+        } else {
+          console.log("파일 업로드 성공", data);
+          return "ok"
+        }
+      })      
     },
     async getVN() {
       var result = await storage.getVN(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
       var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
       var string = new TextDecoder().decode(uint8array);
-      this.$emit('changeVN',JSON.parse(string))
+      this.$emit('changeVN',JSON.parse(string));
     },
     saveText() {
       let temp = this.VN
@@ -385,6 +427,11 @@ export default {
       }
       if(this.effectController != null) {
         this.effectController.stop();
+      }
+    },
+    percent(cng) {
+      if(cng == '100%') {
+        setTimeout(() => this.isUpload = false, 3000);
       }
     },
     index: function(){
