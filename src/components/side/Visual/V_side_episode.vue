@@ -12,8 +12,9 @@
     </div>
 
     <div class="VSEpicList">
-      <div class="VSEpic_el">
 
+      <!-- 반복, 에피소드 하나 -->
+      <div class="VSEpic_el"> 
         <!-- 에피소드 회차 -->
         <div class="VSEpic_Index">
           <p>1</p>
@@ -40,10 +41,40 @@
         <div class="VSEpic_Status" v-if="delmode == false">
           <p>기능</p>
         </div>
-
-        
-
       </div>
+      <!-- 여기까지 반복 -->
+
+      <!-- 반복, 에피소드 하나 -->
+      <div class="VSEpic_el"> 
+        <!-- 에피소드 회차 -->
+        <div class="VSEpic_Index">
+          <p>1</p>
+        </div>
+
+        <!-- 에피소드 명 -->
+        <div class="VSEpic_Title"> 
+          <p>지각이다</p>
+        </div>
+
+        <!-- 체크박스 -->
+
+
+        <!-- 에피소드에 마지막으로 접근한 시간 -->
+        <div class="VSEpic_RecentDate">
+          <p>2022-01-01 01:00:00</p>
+        </div>
+
+        <!-- 해당 에피소드의 상태 -->
+        <div class="VSEpic_destroy" v-if="delmode == true">
+          <p>삭제</p>
+        </div>
+
+        <div class="VSEpic_Status" v-if="delmode == false">
+          <p>기능</p>
+        </div>
+      </div>
+      <!-- 여기까지 반복 -->
+
     </div>
     
 
@@ -100,6 +131,7 @@ export default {
   height: 60px;
   border-radius: 20px;
   background: #585858;
+  margin-bottom: 15px;
   padding: 10px;
   color: white;
 }
