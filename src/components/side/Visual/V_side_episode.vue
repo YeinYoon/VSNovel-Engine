@@ -7,7 +7,7 @@
       <div class="VSCoopTitle"><span>에피소드 목록</span></div>
       <div class="VSCoopButtons">
         <button>추가</button>
-        <button @click="this.delMode = !this.delMode">삭제</button>
+        <button>정렬변경</button>
       </div>
     </div>
 
@@ -40,6 +40,7 @@
         </div>
       </div>
       <!-- 여기까지 반복 -->
+
 
     </div>
     

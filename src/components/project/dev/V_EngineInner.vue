@@ -1,5 +1,7 @@
 <template v-if="!!data">
+<ThemeModal ref="themeModal"></ThemeModal>
   <div class="Venginebackground">
+
     <div class="VEngineCanvas">
       <EngineCanvas :plot="plot" :index="index" :VN="VN" :status="status" @changeVN="changeVN" @move="move" @changeStatus="changeStatus"/>
     </div>
@@ -11,7 +13,7 @@
         <div class="VpcTopToolbar"> 
           <div class="VpcToolPosition">
             <button @click="addPlotModal">플롯 추가</button>
-            <button @click="addPlotModal">테마 변경</button>
+            <button @click="tmModalOn()">테마 변경</button>
           </div>
         </div> 
 
@@ -258,6 +260,9 @@ export default defineComponent({
     },
     deletePage(plot, index){
       this.VN.plotList[plot].pages.splice(index, 1)
+    },
+    tmModalOn() {
+      this.$refs.themeModal.show();
     }
   },
 });
