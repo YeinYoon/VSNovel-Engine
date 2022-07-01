@@ -36,7 +36,7 @@
         </div>
 
         <div class="VSEpic_Status" v-if="delMode == false" @click="epModalOn()">
-          <p>출품</p>
+          <p>설정</p>
         </div>
       </div>
       <!-- 여기까지 반복 -->
