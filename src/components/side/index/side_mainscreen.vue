@@ -50,7 +50,7 @@
 
                     <div class="" @click="AlarmHistory()" v-if="AlarmTap == true">지난 알림 보기</div>
                     <div class="" @click="AlarmHistory()" v-if="AlarmTap == false">돌아가기</div>
-                    </div>
+                </div>
 
             </div>
         </div>

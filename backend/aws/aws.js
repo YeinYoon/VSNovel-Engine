@@ -11,11 +11,11 @@ exports.createProjectDir = async(pjCode) => {
     const params = [
         {
             Bucket:"vsnovel",
-            Key : `Project/PJ${pjCode}/dev`
+            Key : `Project/PJ${pjCode}/dev/`
         },
         {
             Bucket:"vsnovel",
-            Key : `Project/PJ${pjCode}/store`
+            Key : `Project/PJ${pjCode}/episode/`
         },
         {
             Bucket:"vsnovel",
