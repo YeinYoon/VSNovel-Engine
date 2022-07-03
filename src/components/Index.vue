@@ -85,8 +85,7 @@ export default {
     axios.get('/engine/auth/loginCheck')
     .then(async (result)=>{
       if(result.data!="") {
-        console.log(result.data)
-        this.$store.commit('userLogin', result.data.USER_NICKNAME);
+        this.$store.commit('userLogin', {userId : result.data.USER_ID, nickName : result.data.USER_NICKNAME});
         console.log(`currentUser : ${this.$store.state.userNickname}`);
         await this.getPjList();
       } else {

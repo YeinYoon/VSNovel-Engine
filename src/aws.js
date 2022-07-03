@@ -20,7 +20,8 @@ exports.getVN = async (filePath) => { //단일 JSON 파일 가져오기
                 return data.Body
             })
         } catch (err) {
-          console.log(err);
+            console.log(err);
+            return "err"
         }
         return data
     })();

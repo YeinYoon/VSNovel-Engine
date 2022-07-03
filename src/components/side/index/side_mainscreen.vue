@@ -50,7 +50,7 @@
 
                     <div class="" @click="AlarmHistory()" v-if="AlarmTap == true">지난 알림 보기</div>
                     <div class="" @click="AlarmHistory()" v-if="AlarmTap == false">돌아가기</div>
-                    </div>
+                </div>
 
             </div>
         </div>
@@ -73,10 +73,15 @@ import ConfirmModal from '../../modal/ConfirmModal.vue'
 import axios from '../../../axios'
 export default {
     name:'Side_MainScreen',
-    created() {
-        if(this.$store.userNickname != null) {
-            this.getNoticeList();
+    watch : {
+        userId() {
+            if(this.userId != null) {
+                this.getNoticeList();
+            }
         }
+    },
+    props : {
+        userId : String
     },
     data() {
         return{
@@ -89,39 +94,40 @@ export default {
     },
     methods: {
         logout(){
-        axios.get('/engine/auth/logout')
-        .then((result)=>{
-            if(result.data=='ok') {
-            this.$store.commit('userLogin', null);
-            this.$router.push('/signin');
-            } else {
-            console.log(result);
-            alert(result.data);
-            }
-        })
-        .catch((err)=>{
-            console.error(err);
-        })
+            axios.get('/engine/auth/logout')
+            .then((result)=>{
+                if(result.data=='ok') {
+                this.$store.commit('userLogin', {userId : null, nickName : null});
+                this.$router.push('/signin');
+                } else {
+                console.log(result);
+                alert(result.data);
+                }
+            })
+            .catch((err)=>{
+                console.error(err);
+            })
         },
 
         // 도착한 알림 목록 가져오기
         getNoticeList() {
-        axios.get('/engine/team/getNoticeList')
-        .then((result)=>{
-            if(result.data == "err") {
-            console.log("ERR : 알림 불러오기 실패")
-            } else {
-            this.noticeList = result.data;
-            if(result.data.length > 0) {
-                this.existNotice = "on";
-            } else {
-                this.existNotice = "off";
-            }
-            }
-        })
-        .catch((err)=>{
-            console.error(err);
-        });
+            axios.get('/engine/team/getNoticeList')
+            .then((result)=>{
+                if(result.data == "err") {
+                console.log("ERR : 알림 불러오기 실패")
+                } else {
+                    this.noticeList = result.data;
+                    if(result.data.length > 0) {
+                        this.existNotice = "on";
+                    } else {
+                        this.existNotice = "off";
+                    }
+                    console.log(this.noticeList);
+                }
+            })
+            .catch((err)=>{
+                console.error(err);
+            });
         },
 
         // 프로젝트 초대 수락
@@ -136,8 +142,7 @@ export default {
                 axios.post('/engine/team/PjAccept', {pjCode : pjCode})
                 .then((result)=>{
                 if(result.data == "ok") {
-                    this.getPjList();
-                    this.getNoticeList();
+                    this.$router.go();
                 } else {
                     this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
                 }
