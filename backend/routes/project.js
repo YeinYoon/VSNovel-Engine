@@ -132,6 +132,11 @@ router.post('/deletePj', async (req,res)=>{
         res.send("ok");
     }
 })
-
+router.post('/epUp', async (req, res)=>{
+    var returnEp = await db.execute(`SELECT proj_nextep FROM tbl_project WHERE proj_code = ${req.body.pjCode}`)
+    var epValue = await db.execute(`UPDATE tbl_project SET proj_nextep = proj_nextep+1 WHERE proj_code = ${req.body.pjCode}`)
+    console.log(epValue)
+    res.send(returnEp)
+})
 
 module.exports = router;

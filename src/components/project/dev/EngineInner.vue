@@ -1,7 +1,7 @@
 <template v-if="!!data">
   <div class="Venginebackground">
     <div class="VEngineCanvas">
-      <EngineCanvas :plot="plot" :index="index" :VN="VN" :status="status" @changeVN="changeVN" @move="move" @changeStatus="changeStatus"/>
+      <EngineCanvas :plot="plot" :index="index" :VN="VN" :status="status" :ep="ep" @changeVN="changeVN" @move="move" @changeStatus="changeStatus"/>
     </div>
     
     <div class="VPlotController"> <!-- 플롯 컨트롤러 -->
@@ -108,7 +108,7 @@
         </div>
         
 
-      </div> 
+      </div>
     </div>
   </div>
 </template>
@@ -116,19 +116,22 @@
 <script>
 import { defineComponent } from "@vue/runtime-core"
 import { VueDraggableNext } from 'vue-draggable-next'
-import EngineCanvas from "./V_EngineCanvas.vue"
+import EngineCanvas from "./EngineCanvas.vue"
 import storage from "../../../aws";
 import axios from "../../../axios";
 export default defineComponent({
   name: "V_EngineInner",
-  props:['resource'],
+  props:{
+    resource:Object,
+    ep:Number
+  },
   components: {
     EngineCanvas,
     Draggable : VueDraggableNext
   },
   async created() {
     this.pjCode = this.$route.params.pjCode;
-    await this.getVN(this.pjCode);
+    await this.getVN(this.pjCode, this.ep);
   },
   data() {
     return {
@@ -141,6 +144,13 @@ export default defineComponent({
     };
   },
   watch:{
+    ep:{
+      handler(){
+        this.index=0;
+        this.plot=0;
+        this.getVN(this.pjCode,this.ep)
+      }
+    },
     resource:{
       deep:true,
       handler(resource){
@@ -162,17 +172,15 @@ export default defineComponent({
     changeVN(VN){
       this.VN=VN
     },
-    async getVN(pjCode) {
-      var result = await storage.getVN(`Project/PJ${pjCode}/PJ${pjCode}.json`)
+    async getVN(pjCode, ep) {
+      console.log(ep)
+      var result = await storage.getVN(`Project/PJ${pjCode}/dev/ep${ep}.json`)
       var uint8array = new TextEncoder("utf-8").encode(result)
       var VN = new TextDecoder().decode(uint8array)
       if (Object.keys(VN).length === 0) {
         console.log("GetVN : Null JSON")
       } else {
         this.VN = await JSON.parse(VN)
-        this.VN.id = pjCode
-        this.VN.title = "Title" // hardCoding
-        this.VN.ep = 1 // hardCoding
         this.plot=this.index=0
         console.log(this.VN)
       }

@@ -229,7 +229,8 @@ export default {
     index:Number,
     plot:String,
     VN:Object,
-    status:String
+    status:String,
+    ep:Number
   },
   name : "VDevBoard",
   created() {
@@ -290,13 +291,13 @@ export default {
       this.isUpload = true;
 
       var data = JSON.stringify(this.VN);
-      var fileName = `PJ${this.pjCode}.json`
+      var fileName = `ep${this.ep}.json`
       var properties = {type:'text/plain'};
       var file = new File([data], fileName, properties); //새로운 파일 객체 생성
 
       const params = {
         Bucket: "vsnovel",
-        Key : `Project/PJ${this.pjCode}/` + file.name, // 저장되는 파일의 경로 및 이름
+        Key : `Project/PJ${this.pjCode}/dev/` + file.name, // 저장되는 파일의 경로 및 이름
         Body : file // 파일
       }
       s3.upload(params)
@@ -319,7 +320,7 @@ export default {
       })      
     },
     async getVN() {
-      var result = await storage.getVN(`Project/PJ${this.pjCode}/PJ${this.pjCode}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
+      var result = await storage.getVN(`Project/PJ${this.pjCode}/dev/ep${this.ep}.json`); // unit8array(utf16) 형식으로 데이터를 읽어옴
       if(result != "err") {
         var uint8array = new TextEncoder("utf-8").encode(result); // utf8 형식으로 변환
         var string = new TextDecoder().decode(uint8array);

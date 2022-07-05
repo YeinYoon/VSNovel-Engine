@@ -43,13 +43,13 @@ export default {
       .then(async (result)=>{
         if(result.data!="err") {
           var data = JSON.stringify({ // 프로젝트 기본 구조
-            "id":"","title":"","ep":"",
+            "id":result.data.pjCode,"title":"1화","ep":1,
             "plotList":[{"plotName":"시작 플롯","nextPlot":0,"pages":[{"pageName":"일반 페이지","type":"n","bg":"","bgm":"","effect":"","name":"이름","text":"대화 및 내용","img":"","select":[{"use":true,"text":"1번 선택지","plot":0,"index":0},{"use":true,"text":"2번 선택지","plot":0,"index":0},{"use":true,"text":"3번 선택지","plot":0,"index":0}]}]}]
           });
-          var fileName = `PJ${result.data.pjCode}.json`
+          var fileName = "ep1.json"
           var properties = {type:'text/plain'};
           var file = new File([data], fileName, properties); //새로운 파일 객체 생성
-          await storage.uploadFile(`Project/PJ${result.data.pjCode}/`, file);
+          await storage.uploadFile(`Project/PJ${result.data.pjCode}/dev/`, file);
           this.$store.commit('gModalOn', {msg : "새로운 프로젝트가 생성됐습니다.", size : "normal"});
           this.$router.push('/');
         } else {
