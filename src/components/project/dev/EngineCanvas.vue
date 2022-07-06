@@ -201,7 +201,7 @@
 
       <!-- 다음 대사 버튼 -->
       <div class="NextScriptButton" v-if="status!='end'" @click="nextScene">
-        <button>▶</button>
+        <button><span>▶</span></button>
       </div>
       <div v-else class="NextScriptButton">
         <button>End</button>
@@ -1178,27 +1178,33 @@ label {
 
 .NextScriptButton {
   position: absolute;
-  left: calc(100% - 90px);
-  top: 35%;
-  width: 60px;
-  height: 40px;
+  left: calc(100% - 70px);
+  top: 48%;
+  width: 150px;
+  height: 90px;
   transform: translate(-50%, -50%);
   animation-name: NextScriptButtonMove;
   animation-iteration-count: infinite;
   animation-direction: alternate;
-  animation-duration: 1s;
+  animation-duration: 0.8s;
+  cursor: pointer;
 }
 
 .NextScriptButton button {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
   background: rgba(44, 44, 44, 0.4);
   text-align: center;
   border: none;
   border-radius: 20px;
   color: white;
   font-size: 1.1em;
-  box-shadow: 0px 0px 20px rgb(85, 85, 85);
+  text-shadow: 0px 0px 8px #ffffff;
+  box-shadow: 0 0 15px 6px #2b2b2b;
 }
 
 @keyframes NextScriptButtonMove {
@@ -1206,7 +1212,8 @@ label {
   }
 
   100% {
-    top: 37%;
+    /* top: 50%; */
+    left: calc(100% - 65px);
   }
 }
 </style>

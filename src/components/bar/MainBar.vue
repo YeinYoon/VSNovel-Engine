@@ -116,10 +116,10 @@
 }
 .menubox_icon_episode {
   position: relative;
-  top: 12px;
+  top: 6.5px;
   left: 1px;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
 }
 .menubox_icon_event {
   position: relative;

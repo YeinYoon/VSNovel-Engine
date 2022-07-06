@@ -7,7 +7,8 @@
             :ep="ep"
             ></EngineInner>
         </div>
-        <div v-else> ep를 설정해주세요</div>
+        <div v-else class="NotFoundEP"><span>에피소드를 선택하세요</span></div>
+        <div v-if="this.$store.state.sideBar != true" class="NotFoundEPArrow"> <span>❮</span> </div>
     </div>
 </div>
 </template>
@@ -96,5 +97,51 @@ export default {
     background: #5e5e5e;
     width: 100%;
     height: 100%;
+}
+
+.NotFoundEP {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 130px;
+    background: #353535;
+    color: white;
+    border-radius: 25px;
+    font-size: 1em;
+}
+
+.NotFoundEP span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);   
+}
+
+.NotFoundEPArrow {
+    font-size: 2em;
+    font-weight: 900;
+    color: white;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 25px;
+    animation-name: NotFoundEPArrowMove;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-duration: 0.8s;
+    transition: 0.2s all ease;
+    text-shadow: 0px 0px 6px #ffffff;
+}
+
+@keyframes NotFoundEPArrowMove {
+  0% {
+  }
+
+  100% {
+    left: 35px;
+    text-shadow: 0px 0px 15px #ffffff;
+  }
 }
 </style>
