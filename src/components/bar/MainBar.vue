@@ -5,7 +5,7 @@
 
 
       <div v-bind:class="{'menubox':true}" @click="openMenu('E')">
-        <img class="menubox_icon_text" src="../../assets/icons/white/comment_two.png">
+        <img class="menubox_icon_episode" src="../../assets/icons/white/book.png">
       </div>
 
       <div v-bind:class="{'menubox':true}" @click="openMenu('R')">
@@ -114,9 +114,9 @@
   width: 50px;
   height: 50px;
 }
-.menubox_icon_text {
+.menubox_icon_episode {
   position: relative;
-  top: 13px;
+  top: 12px;
   left: 1px;
   width: 50px;
   height: 50px;

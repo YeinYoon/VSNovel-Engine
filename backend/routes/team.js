@@ -95,13 +95,13 @@ router.post('/PjRefuse', async (req,res)=>{
 
 //현 프로젝트에 참여중인 멤버 목록
 router.post('/memberList', async (req, res)=>{
-    var memberList = await db.execute(`SELECT c.*, u.user_nickname FROM tbl_cooperation c, tbl_user u
-    WHERE c.proj_code = ${req.body.pjCode} AND c.user_id = u.user_id`);
+    var memberList = await db.execute(`SELECT user_id, (SELECT user_nickname FROM tbl_user WHERE tbl_user.user_id = tbl_cooperation.user_id) as user_nickname, proj_code, coop_stake FROM tbl_cooperation
+    WHERE proj_code=${req.body.pjCode}`);
     if(memberList == "err") {
         res.send("err");
     } else {
-        var list = [];
-        memberList.rows.forEach((item)=>{
+        let list = [];
+        await memberList.rows.forEach(async (item)=>{
             if(item.USER_ID == `${req.user.USER_ID}`) {
                 list.unshift(item);
             } else {
@@ -112,4 +112,13 @@ router.post('/memberList', async (req, res)=>{
     }
 })
 
+router.post('/uploadMemberList', async (req, res)=>{
+    for(let i=0;i<req.body.list.length;i++){
+        var update = await db.execute(`UPDATE tbl_cooperation SET coop_stake = ${req.body.list[i].COOP_STAKE} WHERE user_id = '${req.body.list[i].USER_ID}' AND proj_code = '${req.body.list[i].PROJ_CODE}'`)
+        if(update == "err"){
+            res.send("err")
+        }
+    }
+    res.send("ok")
+})
 module.exports = router;
