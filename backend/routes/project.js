@@ -11,43 +11,17 @@ router.post('/createNewPj', async (req, res)=>{
     var newDate = await timestamp.getTimestamp();
     console.log(newDate);
 
-    var insertNewPj = await db.execute(`INSERT INTO tbl_project(proj_code, proj_type, proj_title, proj_synopsis, proj_entirestake, proj_retouchdate, proj_cooperation)
-    VALUES(tbl_project_seq.NEXTVAL,'${req.body.type}', '${req.body.title}', '${req.body.synopsis}', 0, '${newDate}', 'N')`);
+    var insertNewPj = await db.execute(`INSERT INTO tbl_project(proj_code, proj_title, proj_synopsis, proj_entirestake, proj_retouchdate)
+    VALUES(tbl_project_seq.NEXTVAL, '${req.body.title}', '${req.body.synopsis}', 0, '${newDate}')`);
     if(insertNewPj == "err") {
         console.log("DB쿼리 실패");
     } else {
         var getThisPjCode = await db.execute(`SELECT proj_code FROM tbl_project WHERE proj_title = '${req.body.title}'`);
         getThisPjCode = getThisPjCode.rows[0].PROJ_CODE;
 
-        //프로젝트 변경점 시퀀스 생성
-        var createChangeSeq = await db.execute(`CREATE SEQUENCE tbl_change_${getThisPjCode}_seq
-        MINVALUE      1
-        MAXVALUE      9999999999
-        INCREMENT BY  1
-        START WITH    1
-        NOCACHE
-        NOORDER
-        NOCYCLE`);
-        if(createChangeSeq == "err") {
-            console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 변경점 시퀀스 생성 실패`);
-        }
-
-        // 프로젝트 스케쥴 시퀀스 생성
-        var createScheSeq = await db.execute(`CREATE SEQUENCE tbl_schedule_${getThisPjCode}_seq
-        MINVALUE      1
-        MAXVALUE      9999999999
-        INCREMENT BY  1
-        START WITH    1
-        NOCACHE
-        NOORDER
-        NOCYCLE`);
-        if(createScheSeq == "err") {
-            console.log(`프로젝트 코드 : ${getThisPjCode}에 대한 스케쥴 시퀀스 생성 실패`);
-        }
-
         // 프로젝트 팀(협업) 설정
-        var result = await db.execute(`INSERT INTO tbl_cooperation(user_id, proj_code, coop_role)
-        VALUES('${req.user.USER_ID}', '${getThisPjCode}', 'Admin')`);
+        var result = await db.execute(`INSERT INTO tbl_cooperation(user_id, proj_code)
+        VALUES('${req.user.USER_ID}', '${getThisPjCode}')`);
         if(result == "err") {
             console.log("DB쿼리 실패");
             res.send("err");
@@ -71,8 +45,16 @@ router.get('/getList', async (req, res)=>{
     } else {
         var pjList = [];
         for(var i=0; i<pjCode.length; i++) {
-            var findPj = await db.execute(`SELECT * FROM tbl_project WHERE proj_code = ${pjCode[i].PROJ_CODE}`);
-            pjList.push(findPj.rows[0]);
+            var findPj = await db.execute(`SELECT proj_code, proj_retouchdate, proj_title, proj_status, 0 as proj_cooperation FROM tbl_project WHERE proj_code = ${pjCode[i].PROJ_CODE}`);
+            findPj = findPj.rows;
+            console.log(findPj)
+            if(findPj[0]!=undefined){
+                let findCoop = await db.execute(`select count(proj_code) as member from tbl_cooperation group by proj_code having proj_code = ${findPj[0].PROJ_CODE}`)
+                findCoop = findCoop.rows
+                console.log(findCoop)
+                findPj[0].PROJ_COOPERATION = (findCoop[0].MEMBER>=2?'Y':'N')
+                pjList.push(findPj[0]);
+            }
         }
 
         pjList.sort(function(a,b) { // 마지막 수정날짜 순으로 정렬
@@ -133,23 +115,28 @@ router.post('/deletePj', async (req,res)=>{
     console.log("다음 프로젝트를 삭제함 : " + req.body.pjCode);
     var result = await db.execute(`DELETE tbl_project WHERE proj_code = ${req.body.pjCode}`);
 
-    var dropChangeSeq = await db.execute(`DROP SEQUENCE tbl_change_${req.body.pjCode}_seq`);
-    if(dropChangeSeq == "err") {
-        console.log("해당 프로젝트에 대한 변경점 시퀀스 삭제 실패");
-    }
-    var dropScheSeq = await db.execute(`DROP SEQUENCE tbl_schedule_${req.body.pjCode}_seq`);
-    if(dropScheSeq == "err") {
-        console.log("해당 프로젝트에 대한 스케쥴 시퀀스 삭제 실패");
-    }
+    // var dropChangeSeq = await db.execute(`DROP SEQUENCE tbl_change_${req.body.pjCode}_seq`);
+    // if(dropChangeSeq == "err") {
+    //     console.log("해당 프로젝트에 대한 변경점 시퀀스 삭제 실패");
+    // }
+    // var dropScheSeq = await db.execute(`DROP SEQUENCE tbl_schedule_${req.body.pjCode}_seq`);
+    // if(dropScheSeq == "err") {
+    //     console.log("해당 프로젝트에 대한 스케쥴 시퀀스 삭제 실패");
+    // }
 
     if(result == "err") {
         console.log("DB쿼리 실패");
         res.send("err");
     } else {
-        await storage.deleteProjectDir(req.body.pjCode); // 서버스토리지에서 해당 프로젝트 리소스폴더 삭제
+        await storage.deleteProjectDir(req.body.pjCode); // 서버스토리지에서 해당 프로젝트 폴더 삭제
         res.send("ok");
     }
 })
-
+router.post('/epUp', async (req, res)=>{
+    var returnEp = await db.execute(`SELECT proj_nextep FROM tbl_project WHERE proj_code = ${req.body.pjCode}`)
+    var epValue = await db.execute(`UPDATE tbl_project SET proj_nextep = proj_nextep+1 WHERE proj_code = ${req.body.pjCode}`)
+    console.log(epValue)
+    res.send(returnEp)
+})
 
 module.exports = router;

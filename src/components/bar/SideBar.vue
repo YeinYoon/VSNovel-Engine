@@ -7,7 +7,7 @@
   </div>
 
   <div v-else-if="this.$store.state.sideMenuState == 'E'">
-    <VsideEpisode :pjCode="pjCode"></VsideEpisode>
+    <VsideEpisode :pjCode="pjCode" :epNum="epNum" @sendEp="sendEp"></VsideEpisode>
   </div>
 
   <div v-else-if="this.$store.state.sideMenuState == 'C'">
@@ -52,6 +52,7 @@ export default {
     main: Boolean,
     side: Boolean,
     sideBarStatus : String,
+    epNum : Number
   },
   methods : {
     sideBarClick() {
@@ -85,6 +86,9 @@ export default {
     send(data){
       console.log(data)
       this.$emit('send',data)
+    },
+    sendEp(ep){
+      this.$emit("sendEp",ep)
     }
   },
   watch:{

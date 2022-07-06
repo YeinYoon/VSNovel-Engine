@@ -6,11 +6,13 @@
   v-bind:class="{'SideBar':true}"
   :sideBarStatus="sideBarStatus"
   @send="send"
+  @sendEp="sendEp"
+  :epNum="epNum"
   >
   </SideBar>
   
   <MainBar v-bind:class="{'MainBar':true}" v-if="mainBar == true"></MainBar>
-  <router-view :resource="resource"></router-view>
+  <router-view :resource="resource" :ep="ep"></router-view>
 </template>
 
 <script>
@@ -35,7 +37,9 @@ export default {
     return{
       sideBarStatus:'Main',
       mainBar : false,
-      resource: undefined
+      resource: undefined,
+      ep: null,
+      epNum : null
     }
   },
   methods : {
@@ -56,6 +60,10 @@ export default {
     send(resource){
       this.resource=resource
       console.log(resource)
+    },
+    sendEp(ep){
+      this.ep=ep.ep
+      this.epNum=ep.ep
     }
   },
   watch:{

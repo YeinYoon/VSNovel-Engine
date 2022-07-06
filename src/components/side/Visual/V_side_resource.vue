@@ -324,7 +324,7 @@ export default {
     send(data){
       if(data.ex=='mp3' || data.ex=='MP3'){
         this.$refs.typeModal.show({
-          msg : "선택한 리소스를 어떤걸로 쓸건데?",
+          msg : "선택한 음성파일을 어떤 역할로 사용하시겠습니까?",
           size : "normal",
           data : data,
           option : {"효과음":'effect',
@@ -333,7 +333,7 @@ export default {
       }
       else{
         this.$refs.typeModal.show({
-          msg : "선택한 리소스를 어떤걸로 쓸건데?",
+          msg : "선택한 사진을 어떤 역할로 사용하시겠습니까?",
           size : "normal",
           data : data,
           option : {"배경":'bg',

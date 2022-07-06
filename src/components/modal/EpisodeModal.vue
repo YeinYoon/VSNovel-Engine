@@ -43,8 +43,6 @@ export default {
       // 모달 데이터
       EPModalState : false,
       modalSize : "",
-
-
     }
   },
   methods : {

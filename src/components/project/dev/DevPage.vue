@@ -1,27 +1,20 @@
 <template>
 <div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
     <div class="DevPageTemp">
-        <!-- <div>
-            Project [ {{title}} ]
-            마지막 저장 : {{retouchDate}}
-            상태 : {{status}}
-
-            <button @click="goToEditPjInfo(pjCode)">프로젝트 정보수정</button>
-            <button @click="goToInvitePj(pjCode)">유저 초대</button>
-            <button @click="save()">저장</button>
-        </div> -->
-        <div>
-            <VEngineInner
+        <div v-if="ep!=null">
+            <EngineInner
             :resource="resource"
-            ></VEngineInner>
+            :ep="ep"
+            ></EngineInner>
         </div>
+        <div v-else> ep를 설정해주세요</div>
     </div>
 </div>
 </template>
 
 <script>
 import axios from '../../../axios';
-import VEngineInner from './V_EngineInner.vue';
+import EngineInner from './EngineInner.vue';
 export default {
     name : "devPage",
     created() {
@@ -32,7 +25,8 @@ export default {
     props:{
         side:Boolean,
         main:Boolean,
-        resource:Object
+        resource:Object,
+        ep:Number
     },
     watch : {
         $route() {
@@ -86,7 +80,7 @@ export default {
         },
     },
     components : {
-        VEngineInner,
+        EngineInner,
     }
 }
 </script>
