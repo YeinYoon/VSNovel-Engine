@@ -62,8 +62,14 @@ export default {
       console.log(resource)
     },
     sendEp(ep){
-      this.ep=ep.ep
-      this.epNum=ep.ep
+      if(ep!=null){
+        this.ep=ep.ep
+        this.epNum=ep.ep
+      }
+      else{
+        this.ep=null
+        this.epNum=null
+      }
     }
   },
   watch:{
