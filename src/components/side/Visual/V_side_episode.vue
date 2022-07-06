@@ -144,7 +144,9 @@ export default {
         if(resultF == true) {
           var resF = await storage.deleteFile(`Project/PJ${this.pjCode}/dev/ep${ep.ep}.json`);
           if(resF == "ok") {
-            await this.getEpList() 
+            await this.getEpList()
+            if(ep.ep==this.epNum) 
+              this.$emit('sendEp',null)
           } else {
             console.error("파일 삭제 실패");
           }

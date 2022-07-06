@@ -4,7 +4,7 @@
     <div class="VSCoopTool">
       <div class="VSCoopTitle"><span>협업 관리</span></div>
       <div class="VSCoopButtons">
-        <button>기능1</button>
+        <button @click="()=>{console.log(memberList)}">기능1</button>
         <button>기능2</button>
         <button>기능3</button>
       </div>
@@ -53,10 +53,10 @@
         <div class="VSCoopMenuTitle" @click="menuClick(1)">
           <p>멤버 관리</p>
         </div>
-
+        {{memberList}}
         <div class="VSCoopMenuInner" v-if="menu1 == true">
           <div v-for="(m, i) in memberList" :key="i">
-            {{m.USER_ID}}
+            {{m.USER_NICKNAME}}
           </div>
         </div>
 
@@ -68,7 +68,11 @@
         </div>
 
         <div class="VSCoopMenuInner" v-if="menu2 == true">
-          내용
+          생성
+          <select>
+            <option v-for="(m, i) in memberList" :key="i" :value="m">{{m.USER_NICKNAME}}</option>
+          </select>
+          삭제
         </div>
 
       </div> <!-- 2 -->
@@ -159,6 +163,7 @@ export default {
     coopList() {
       axios.post('/engine/team/memberList', {pjCode : this.pjCode})
       .then((result)=>{
+        console.log(result)
         if(result.data == "err") {
           this.memberList = "멤버없음";
         } else {
