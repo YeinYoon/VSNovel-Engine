@@ -56,7 +56,7 @@
 
         <div class="VSCoopMenuInner" v-if="menu1 == true">
           <div v-for="(m, i) in memberList" :key="i">
-            {{m.USER_ID}}
+            {{m.USER_NICKNAME}}
           </div>
         </div>
 
