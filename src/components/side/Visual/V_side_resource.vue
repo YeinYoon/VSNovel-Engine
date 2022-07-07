@@ -31,14 +31,6 @@
             <img src="@/assets/icons/white/folder.png">
           </div>
 
-          <!-- <div class="VSFolderMoveButton" @click="deleteFile(f.name, f.key)">
-            <img src="@/assets/icons/white/redo.png">
-          </div> -->
-
-          <!-- <div class="VSFolderDetailButton" @click="editName(f.name, f.key)">
-            <img src="@/assets/icons/white/editing.png">
-          </div> -->
-
           <div class="VSFolderDelButton" @click="deleteFile(f.name, f.key)">
             <img src="@/assets/icons/white/trash_white.png">
           </div>

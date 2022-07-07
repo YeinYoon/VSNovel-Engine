@@ -54,6 +54,21 @@
           <p>멤버 관리</p>
         </div>    
         <div class="VSCoopMenuInner" v-if="menu1 == true">
+          <div class="StakeFrame">
+            <div class="StakeSaveTotalBtn" @click="uploadStake(memberList)"><p>변경값 저장</p></div>
+            <span>멤버 목록</span>
+            <div class="StakeList" v-for="(m, i) in memberList" :key="i">
+              <div class="StakeMemberId"><span>아이디</span> {{m.USER_ID}}</div>
+              <div class="StakeMemberNick"><span>닉네임</span> {{m.USER_NICKNAME}}</div>
+              <div class="StakeMemberStake">
+                <div class="StakeMemberStake_Num"><span v-if="!m.edit">{{m.COOP_STAKE}}</span> <input v-else type="number" v-model="m.COOP_STAKE"></div>
+                
+                <span class="StakeMemberStake_Per">({{Math.floor(m.COOP_STAKE/memberList.reduce((sum, crr)=>{return sum+crr.COOP_STAKE}, 0)*10000)/100}}%)</span>
+                <button class="StakeMemberSave" @click="m.edit=!m.edit">변경</button>
+              </div>
+            </div>
+          </div>
+<!-- 
           <button @click="uploadStake(memberList)">변경값 저장</button>
           <table>
             <thead>
@@ -70,7 +85,7 @@
                 <td><span v-if="m.edit">{{m.COOP_STAKE}}</span><input v-else type="number" v-model="m.COOP_STAKE"><span>({{m.COOP_STAKE/memberList.reduce((sum, crr)=>{return sum+crr.COOP_STAKE}, 0)*100}}%)</span><button @click="m.edit=!m.edit">변경</button></td>
               </tr>
             </tbody>
-          </table>
+          </table> -->
         </div>
 
       </div> <!-- 1 -->
@@ -82,30 +97,39 @@
 
         <div class="VSCoopMenuInner" v-if="menu2 == true">
           <div class="ScheduleFrame">
+
+            <span>일정 내용</span>
             <div class="ScheduleContent">
               <input type="text">
             </div>
 
-            <div class="ScheduleDate">
-              <div class="ScheduleDate_Before">
-                <input type="date" v-model="scheduleSt">
-                {{scheduleSt}}
+            <div class="ScheduleInfo">
+              
+              <span>기간 선택</span>
+              <div class="ScheduleDate">
+                <div class="ScheduleDate_title">시작일</div>
+                <div class="ScheduleDate_Before">
+                  <input type="date" v-model="scheduleSt">
+                </div>
+                <div class="ScheduleDate_title">종료일</div>
+                <div class="ScheduleDate_After">
+                  <input type="date" v-model="scheduleEd">
+                </div>
               </div>
-              <div class="ScheduleDate_After">
-                <input type="date" v-model="scheduleEd">
-                {{scheduleEd}}
+
+              <span>수신자 선택</span>
+              <div class="ScheduleSelecter">
+                <select v-model="scheduleList" multiple>
+                  <option v-for="(m, i) in memberList" :key="i" :value="m">{{m.USER_NICKNAME}}</option>
+                </select>          
               </div>
+
             </div>
-            {{scheduleList}}<br>
-            {{memberList}}
-            <div class="ScheduleSelecter">
-              <select v-model="scheduleList" multiple>
-                <option v-for="(m, i) in memberList" :key="i" :value="m">{{m.USER_NICKNAME}}</option>
-              </select>              
-            </div>
+
 
             <div class="ScheduleButton">
               <button>저장</button>
+              <!-- <button>저장</button> -->
             </div>
 
           </div>
@@ -297,7 +321,7 @@ export default {
 
 .VSCoopMenu {
   position: relative;
-  display: table;
+  /* display: table; */
   width: 100%;
   margin-bottom: 15px;
   background: #585858;
@@ -333,6 +357,7 @@ export default {
   margin-top: 15px;
   margin-bottom: 15px;
   padding: 10px;
+  overflow: hidden;
 }
 
 .VSCoopSearchId {
@@ -341,6 +366,7 @@ export default {
   left: 50%;
   transform: translate(-50%);
 }
+
 .VSCoopSelectSearchType {
   width: 70px;
   height: 30px;
@@ -348,6 +374,7 @@ export default {
   border: none;
   background: white;
 }
+
 .VSCoopInsertID {
   width: 150px;
   height: 30px;
@@ -382,13 +409,133 @@ export default {
 .VSCoopSearchResult {
   width: 100%;
   background: #474747;
+  border-radius: 10px;  
+}
+
+/* 멤버(지분) 관리 */
+.StakeFrame {
+  position: relative;
+  width: 100%;
+  /* background: white; */
+}
+
+.StakeSaveTotalBtn {
+  position: relative;
+  background: #2872f9;
+  width: 100%;
+  height: 30px;
   border-radius: 10px;
+  cursor: pointer;
+}
+
+.StakeList{
+  position: relative;
+  width: 100%;
+  height: 112px;
+  background: #474747;
+  margin-bottom: 5px;
+  border-radius: 15px;
+}
+
+.StakeMemberId {
+  position: relative;
+  left: 10px;
+  top: 10px;
+  width: 140px;
+  height: 30px;
+  border-radius: 10px;
+  background: #585858;
+  color: white;
+  text-align: left;
+  padding-top: 2px;
+  padding-left: 5px;
+  overflow: hidden;
+}
+
+.StakeMemberId span {
+  background: #383838;
+  position: relative;
+  left: -6px;
+  top: 1px;
+  padding: 6px 6px 8px 6px;
+}
+
+.StakeMemberNick {
+  position: relative;
+  width: 140px;
+  top: 15px;
+  left: 10px;
+  height: 30px;
+  border-radius: 10px;
+  background: #585858;
+  color: white;
+  text-align: left;
+  padding-top: 2px;
+  padding-left: 5px;
+  overflow: hidden;
+}
+
+.StakeMemberNick span {
+  background: #383838;
+  position: relative;
+  left: -6px;
+  top: 1px;
+  padding: 6px 6px 8px 6px;
+}
+
+.StakeMemberStake {
+  position: absolute;
+  background: #2872f9;
+  width: 70px;
+  height: 65px;
+  left: calc(100% - 80px);
+  top: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.StakeMemberStake_Num {
+  position: relative;
+  width: 70px;
+  height: 30px;
+  border-radius: 10px;
+  /* background: #7c7c7c; */
+  margin-top: 8px;
+  text-align: center;
+  color: white;
+}
+
+.StakeMemberStake_Num input {
+  width: 60%;
+  border: none;
+  border-radius: 5px;
+}
+
+.StakeMemberStake_Per {
+  position: relative;
+  font-size: 0.9em;
+  
+}
+
+.StakeMemberSave {
+  position: absolute;
+  left: 30px;
+  top: 70px;
+  width: 40px;
+  border: none;
+  background: #2872f9;
+  font-size: 0.9em;
+  color: white;
+  border-radius: 5px;
 }
 
 
+/* 스케쥴 */
 .ScheduleFrame {
   width: 100%;
-  height: 150px;
+  height: 220px;
+  position: relative;
+  top: -15px;
 }
 
 .ScheduleContent {
@@ -397,41 +544,100 @@ export default {
   height: 50px;
   background: white;
   border-radius: 15px;
+  overflow: hidden;
+}
+
+.ScheduleContent input {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.ScheduleInfo {
+  width: 100%;
+  position: relative;
+  height: 156px;
+  margin-top: 8px;
+  /* text-align: center; */
 }
 
 .ScheduleDate {
   position: relative;
   width: 100%;
   height: 50px;
-  background: aquamarine;
+  border-radius: 10px;
+  overflow: hidden;
+  display: inline-block;
+  margin: 0;
+  border: none;
+}
+
+.ScheduleDate_title {
+  width: 25%;
+  height: 25px;
+  float: left;
+  background: #2872f9;
+  color: white;
+  text-align: center;
+  font-size: 0.9em;
+  padding-top: 2px;
 }
 
 .ScheduleDate_Before {
-  width: 100%;
+  width: 75%;
   height: 25px;
+  float: right;
+}
+
+.ScheduleDate_Before input {
+  width: 100%;
+  border: none;
+  padding-left: 5px;
 }
 
 .ScheduleDate_After {
-  width: 100%;
+  width: 75%;
   height: 25px;
+  float: right;
+}
+
+.ScheduleDate_After input {
+  width: 100%;
+  border: none;
+  padding-left: 5px;
 }
 
 .ScheduleSelecter {
   position: relative;
   width: 100%;
-  height: 40px;
-  background: #484848;
+  height: 50px;
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .ScheduleSelecter select{
   width: 100%;
-  background: none;
+  height: 100%;
   border: none;
 }
 
-
 .ScheduleSelecter select option{
   width: 100%;
-  color: black;
+  /* color: white; */
+}
+
+.ScheduleButton {
+  position: relative;
+  margin-top: 5px;
+  float: right;
+}
+
+.ScheduleButton button {
+  border: none;
+  background: #2872f9;
+  border-radius: 10px;
+  color: white;
+  padding: 2px 8px 2px 8px;
 }
 </style>
