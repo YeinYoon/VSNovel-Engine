@@ -8,7 +8,7 @@
             ></EngineInner>
         </div>
         <div v-else class="NotFoundEP"><span>에피소드를 선택하세요</span></div>
-        <div v-if="this.$store.state.sideBar != true" class="NotFoundEPArrow"> <span>❮</span> </div>
+        <div v-if="ep==null && (this.$store.state.sideMenuState != 'E' || !this.$store.state.sideBar)" class="NotFoundEPArrow"> <span>❮</span> </div>
     </div>
 </div>
 </template>
@@ -123,16 +123,17 @@ export default {
     font-size: 2em;
     font-weight: 900;
     color: white;
-    position: absolute;
-    top: 50%;
+    position: fixed;
+    top: calc(50% - 175px);
     transform: translate(-50%, -50%);
-    left: 25px;
+    left: 125px;
     animation-name: NotFoundEPArrowMove;
     animation-iteration-count: infinite;
     animation-direction: alternate;
-    animation-duration: 0.8s;
+    animation-duration: 0.5s;
     transition: 0.2s all ease;
     text-shadow: 0px 0px 6px #ffffff;
+    z-index: 99;
 }
 
 @keyframes NotFoundEPArrowMove {
@@ -140,7 +141,7 @@ export default {
   }
 
   100% {
-    left: 35px;
+    left: 115px;
     text-shadow: 0px 0px 15px #ffffff;
   }
 }

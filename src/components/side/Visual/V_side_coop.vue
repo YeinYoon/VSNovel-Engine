@@ -81,16 +81,34 @@
         </div>
 
         <div class="VSCoopMenuInner" v-if="menu2 == true">
-          <p>값 : {{scheduleList}}</p>
-          생성<br>
-          <input type="date" v-model="scheduleSt">
-          {{scheduleSt}}
-          <input type="date" v-model="scheduleEd">
-          {{scheduleEd}}
-          <select v-model="scheduleList" multiple>
-            <option v-for="(m, i) in memberList" :key="i" :value="m">{{m.USER_NICKNAME}}</option>
-          </select>
-          삭제<br>
+          <div class="ScheduleFrame">
+            <div class="ScheduleContent">
+              <input type="text">
+            </div>
+
+            <div class="ScheduleDate">
+              <div class="ScheduleDate_Before">
+                <input type="date" v-model="scheduleSt">
+                {{scheduleSt}}
+              </div>
+              <div class="ScheduleDate_After">
+                <input type="date" v-model="scheduleEd">
+                {{scheduleEd}}
+              </div>
+            </div>
+            {{scheduleList}}<br>
+            {{memberList}}
+            <div class="ScheduleSelecter">
+              <select v-model="scheduleList" multiple>
+                <option v-for="(m, i) in memberList" :key="i" :value="m">{{m.USER_NICKNAME}}</option>
+              </select>              
+            </div>
+
+            <div class="ScheduleButton">
+              <button>저장</button>
+            </div>
+
+          </div>
         </div>
       </div> <!-- 2 -->
 
@@ -365,5 +383,55 @@ export default {
   width: 100%;
   background: #474747;
   border-radius: 10px;
+}
+
+
+.ScheduleFrame {
+  width: 100%;
+  height: 150px;
+}
+
+.ScheduleContent {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  background: white;
+  border-radius: 15px;
+}
+
+.ScheduleDate {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  background: aquamarine;
+}
+
+.ScheduleDate_Before {
+  width: 100%;
+  height: 25px;
+}
+
+.ScheduleDate_After {
+  width: 100%;
+  height: 25px;
+}
+
+.ScheduleSelecter {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background: #484848;
+}
+
+.ScheduleSelecter select{
+  width: 100%;
+  background: none;
+  border: none;
+}
+
+
+.ScheduleSelecter select option{
+  width: 100%;
+  color: black;
 }
 </style>
