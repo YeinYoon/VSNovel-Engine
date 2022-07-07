@@ -36,12 +36,14 @@
 
                     <div v-if="noticeList.length > 0">
                         <div v-for="n in noticeList" :key="n.SCHE_CODE">
-                        <div class="invite_message">
+                            
+                        <div class="invite_message" v-if="n.SCHE_TYPE == 'I' && n.SNOT_ISREAD == 0">
                             {{n.SCHE_STDATE}}
                             <div>{{n.SCHE_CONTENT}}</div>
-                            <button class="invite_button" @click="PjAccept(n.PROJ_CODE)">승인</button>
-                            <button class="invite_button" @click="PjRefuse(n.PROJ_CODE)">거절</button>
+                            <button class="invite_button" @click="PjAccept(n.PROJ_CODE, n.SCHE_CODE)">승인</button>
+                            <button class="invite_button" @click="PjRefuse(n.PROJ_CODE, n.SCHE_CODE)">거절</button>
                         </div>
+
                         <hr>
                         </div>
                     </div>
@@ -97,11 +99,11 @@ export default {
             axios.get('/engine/auth/logout')
             .then((result)=>{
                 if(result.data=='ok') {
-                this.$store.commit('userLogin', {userId : null, nickName : null});
-                this.$router.push('/signin');
+                    this.$store.commit('userLogin', {userId : null, nickName : null});
+                    this.$router.push('/signin');
                 } else {
-                console.log(result);
-                alert(result.data);
+                    console.log(result);
+                    alert(result.data);
                 }
             })
             .catch((err)=>{
@@ -131,7 +133,7 @@ export default {
         },
 
         // 프로젝트 초대 수락
-        async PjAccept(pjCode) {
+        async PjAccept(pjCode, scheCode) {
             var accept = await this.$refs.confirmModal.show({
                 msg : "초대를 수락하시겠습니까?",
                 size : "normal",
@@ -139,7 +141,7 @@ export default {
                 btn2 : "취소"
             });
             if(accept) { 
-                axios.post('/engine/team/PjAccept', {pjCode : pjCode})
+                axios.post('/engine/team/PjAccept', {pjCode : pjCode, scheCode : scheCode})
                 .then((result)=>{
                 if(result.data == "ok") {
                     this.$router.go();
@@ -153,7 +155,7 @@ export default {
             }
         },
         // 프로젝트 초대 거절
-        async PjRefuse(pjCode) {
+        async PjRefuse(pjCode, scheCode) {
             var refuse = await this.$refs.confirmModal.show({
                 msg : "초대를 거절하시겠습니까?",
                 size : "normal",
@@ -161,7 +163,7 @@ export default {
                 btn2 : "취소"
             });
             if(refuse) { 
-                axios.post('/engine/team/PjRefuse', {pjCode : pjCode})
+                axios.post('/engine/team/PjRefuse', {pjCode : pjCode, scheCode : scheCode})
                 .then((result)=>{
                 if(result.data == "err") {
                     this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});

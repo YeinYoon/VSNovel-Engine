@@ -4,7 +4,7 @@
     <div class="VSCoopTool">
       <div class="VSCoopTitle"><span>협업 관리</span></div>
       <div class="VSCoopButtons">
-        <button @click="()=>{console.log(memberList)}">기능1</button>
+        <button>기능1</button>
         <button>기능2</button>
         <button>기능3</button>
       </div>
@@ -13,7 +13,7 @@
     <div class="VSCoopMemberList">
 
       <div class="VSCoopMenu"> <!-- 0 -->
-        <div class="VSCoopMenuTitle" @click="menuClick(0)">
+        <div class="VSCoopMenuTitle" @click="menu0=!menu0">
           <p>유저 초대</p>
         </div>
 
@@ -50,33 +50,59 @@
       </div> <!-- 0 -->
 
       <div class="VSCoopMenu"> <!-- 1 -->
-        <div class="VSCoopMenuTitle" @click="menuClick(1)">
+        <div class="VSCoopMenuTitle" @click="menu1=!menu1">
           <p>멤버 관리</p>
-        </div>
-        {{memberList}}
+        </div>    
         <div class="VSCoopMenuInner" v-if="menu1 == true">
-          <div v-for="(m, i) in memberList" :key="i">
-            {{m.USER_NICKNAME}}
-          </div>
+          <button @click="uploadStake(memberList)">변경값 저장</button>
+          <table>
+            <thead>
+              <tr>
+                <th>아이디</th>
+                <th>닉네임</th>
+                <th>지분(%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(m, i) in memberList" :key="i">
+                <td>{{m.USER_ID}}</td>
+                <td>{{m.USER_NICKNAME}}</td>
+                <td><span v-if="m.edit">{{m.COOP_STAKE}}</span><input v-else type="number" v-model="m.COOP_STAKE"><span>({{m.COOP_STAKE/memberList.reduce((sum, crr)=>{return sum+crr.COOP_STAKE}, 0)*100}}%)</span><button @click="m.edit=!m.edit">변경</button></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
       </div> <!-- 1 -->
 
       <div class="VSCoopMenu"> <!-- 2 -->
-        <div class="VSCoopMenuTitle" @click="menuClick(2)">
+        <div class="VSCoopMenuTitle" @click="menu2=!menu2">
           <p>일정 관리</p>
         </div>
 
         <div class="VSCoopMenuInner" v-if="menu2 == true">
-          생성
-          <select>
+          <p>값 : {{scheduleList}}</p>
+          생성<br>
+          <input type="date" v-model="scheduleSt">
+          {{scheduleSt}}
+          <input type="date" v-model="scheduleEd">
+          {{scheduleEd}}
+          <select v-model="scheduleList" multiple>
             <option v-for="(m, i) in memberList" :key="i" :value="m">{{m.USER_NICKNAME}}</option>
           </select>
-          삭제
+          삭제<br>
         </div>
-
       </div> <!-- 2 -->
 
+      <div class="VSCoopMenu"> <!-- 2 -->
+        <div class="VSCoopMenuTitle" @click="menu3=!menu3">
+          <p>일정</p>
+        </div>
+
+        <div class="VSCoopMenuInner" v-if="menu3 == true">
+          
+        </div>
+      </div> <!-- 2 -->
     </div>
 
   </div>
@@ -96,6 +122,7 @@ export default {
       menu0 : false,
       menu1 : false,
       menu2 : false,
+      menu3 : false,
 
       pjCode : "",
 
@@ -104,23 +131,26 @@ export default {
       searchType : "I",
       userList : [],
       isInvite : "",
-
-      memberList : []
+      memberList : [],
+      scheduleList : [],
+      scheduleSt : null,
+      scheduleEd : null
     }
   },
   methods: {
-    menuClick(menu) {
-      switch(menu) {
-        case 0 :
-          this.menu0 = !this.menu0;
-          break;
-        case 1 :
-          this.menu1 = !this.menu1;
-          break;
-        case 2 :
-          this.menu2 = !this.menu2;
-          break;
-      }
+    uploadStake(data){
+      console.log(data)
+      axios.post('/engine/team/uploadMemberList',{list: data})
+      .then((result)=>{
+        if(result=="err"){
+          console.log(result)
+        }
+        else{
+          this.$store.commit('gModalOn', {msg: "멤버 관리를 서버에 저장했습니다.", size : "normal"})
+        }
+      }).finally(async ()=>{
+        await this.coopList()
+      })
     },
 
     // 유저 초대 관련
@@ -168,6 +198,9 @@ export default {
           this.memberList = "멤버없음";
         } else {
           this.memberList = result.data;
+          for(let i=0;i<this.memberList.length;i++){
+            this.memberList[i].edit=false
+          }
         }
       })
       .catch((err)=>{
