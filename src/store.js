@@ -23,7 +23,9 @@ const store = createStore({
             sideBarMove : "RouterMoveLeft",// move 애니메이션 Class,
             sideAnimationState : false,
 
-            sideMenuState : "N" // N : 선택하지 않음, R : 리소스, C : 협업, S : 설정, E : 회차관리, M : 메인화면(인덱스)
+            sideMenuState : "N", // N : 선택하지 않음, R : 리소스, C : 협업, S : 설정, E : 회차관리, M : 메인화면(인덱스)
+            tutorialState : false, // 튜토리얼 가이드 상태값
+            tutorialType : null
         }
     },
     mutations : {
@@ -93,6 +95,14 @@ const store = createStore({
             setTimeout(function() {
                 state.sideAnimationState = !state.sideAnimationState;
             }, 600);
+        },
+
+        tutorialOn(state, val) {
+            state.tutorialState = true;
+            state.tutorialType = val;
+        },
+        tutorialOff(state) {
+            state.tutorialState = false;
         },
     },
 })

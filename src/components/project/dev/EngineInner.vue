@@ -121,6 +121,7 @@ import { VueDraggableNext } from 'vue-draggable-next'
 import EngineCanvas from "./EngineCanvas.vue"
 import storage from "../../../aws";
 import axios from "../../../axios";
+import ThemeModal from '../../modal/ThemeModal.vue'
 export default defineComponent({
   name: "V_EngineInner",
   props:{
@@ -129,7 +130,8 @@ export default defineComponent({
   },
   components: {
     EngineCanvas,
-    Draggable : VueDraggableNext
+    Draggable : VueDraggableNext,
+    ThemeModal
   },
   async created() {
     this.pjCode = this.$route.params.pjCode;

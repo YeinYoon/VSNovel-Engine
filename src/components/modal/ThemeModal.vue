@@ -34,6 +34,7 @@ export default {
       this.TMModalState = false;
     },
     show() {
+      console.log("호출함");
       this.TMModalState = true;
     },
 
