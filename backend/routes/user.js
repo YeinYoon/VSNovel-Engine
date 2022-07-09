@@ -14,6 +14,15 @@ router.get('/tutorialCheck', async (req, res)=>{
     }
 })
 
+router.get('/tutorialDisable', async (req, res)=>{
+    var data = await db.execute(`UPDATE tbl_user SET user_ehelp = 'Y' WHERE user_id = '${req.user.USER_ID}'`);
+    if(data == "err") {
+        res.send("err");
+    } else {
+        res.send("ok");
+    }
+})
+
 
 //유저 검색
 router.post('/search', async (req, res)=>{

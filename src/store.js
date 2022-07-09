@@ -21,7 +21,8 @@ const store = createStore({
             sideBarButtonState : "sideBarButtonOff", // On, Off Class
             sideBarFixed : "RouterViewLeft", // 사이드바 고정 Class
             sideBarMove : "RouterMoveLeft",// move 애니메이션 Class,
-            sideAnimationState : false,
+            sideAnimationState : true,
+            sideButtonVisible : false,
 
             sideMenuState : "N", // N : 선택하지 않음, R : 리소스, C : 협업, S : 설정, E : 회차관리, M : 메인화면(인덱스)
             tutorialState : false, // 튜토리얼 가이드 상태값
@@ -95,6 +96,10 @@ const store = createStore({
             setTimeout(function() {
                 state.sideAnimationState = !state.sideAnimationState;
             }, 600);
+        },
+
+        sideButtonVisible(state) {
+            state.sideButtonVisible = !state.sideButtonVisible;
         },
 
         tutorialOn(state, val) {

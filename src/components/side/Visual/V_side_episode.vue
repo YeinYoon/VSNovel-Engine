@@ -162,6 +162,9 @@ export default {
 .VSBackgroundEpic {
   width: 100%;
   height: 100%;
+  animation-name: contentOn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
 }
 .VSEpicTool {
   width: 100%;

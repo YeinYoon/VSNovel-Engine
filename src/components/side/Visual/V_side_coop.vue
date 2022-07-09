@@ -257,6 +257,9 @@ export default {
 .VSBackgroundCoop {
   width: 100%;
   height: 100%;
+  animation-name: contentOn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
 }
 
 .VSCoopTool {
@@ -639,5 +642,15 @@ export default {
   border-radius: 10px;
   color: white;
   padding: 2px 8px 2px 8px;
+}
+
+@keyframes contentOn {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+  
 }
 </style>

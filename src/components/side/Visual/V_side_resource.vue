@@ -349,6 +349,9 @@ export default {
   height: 100vh;
   color: white;
   position: relative;
+  animation-name: contentOn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
 }
 
 .VSResList {
@@ -357,6 +360,9 @@ export default {
   height: calc(100% - 80px);
   top: 80px;
   overflow: auto;
+  animation-name: contentOn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
 }
 
 .VSResListOnPlayer {

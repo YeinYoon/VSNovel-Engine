@@ -172,15 +172,15 @@ body{
 
 .RouterViewLeft {
   position: fixed;
-  left: 130px;
-  width: calc(100vw - 130px);
+  left: 140px;
+  width: calc(100vw - 140px);
   height: 100vh;
 }
 
 .RouterViewRight {
   position: fixed;
-  left: 415px;
-  width: calc(100vw - 415px);
+  left: 425px;
+  width: calc(100vw - 425px);
   height: 100vh;
 }
 
@@ -213,6 +213,7 @@ body{
 
 .SideBar {
   position: absolute;
+  /* z-index: 1; */
 }
 
 .SideBarMain {
@@ -223,25 +224,25 @@ body{
 
 @keyframes routerRight {
   from {
-    left: 130px;
-    width: calc(100vw - 130px);
+    left: 140px;
+    width: calc(100vw - 140px);
   }
 
   to {
-    left: 415px;
-    width: calc(100vw - 415px);
+    left: 425px;
+    width: calc(100vw - 425px);
   }
 }
 
 @keyframes routerLeft {
   from {
-    left: 415px;
-    width: calc(100vw - 415px);
+    left: 425px;
+    width: calc(100vw - 425px);
   }
 
   to {
-    left: 130px;
-    width: calc(100vw - 130px);
+    left: 140px;
+    width: calc(100vw - 140px);
   }
 }
 @keyframes routerRightMain {

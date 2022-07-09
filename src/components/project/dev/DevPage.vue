@@ -113,9 +113,13 @@ export default {
     z-index: 1;
 } */
 .DevPageTemp {
-    background: #5e5e5e;
+    background: #353535;
     width: 100%;
     height: 100%;
+    animation-name: StudioOn;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
 }
 
 .NotFoundEP {
@@ -125,7 +129,7 @@ export default {
     transform: translate(-50%, -50%);
     width: 300px;
     height: 130px;
-    background: #353535;
+    background: #3d3d3d;
     color: white;
     border-radius: 25px;
     font-size: 1em;
@@ -163,5 +167,15 @@ export default {
     left: 115px;
     text-shadow: 0px 0px 15px #ffffff;
   }
+}
+
+@keyframes StudioOn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+  
 }
 </style>
