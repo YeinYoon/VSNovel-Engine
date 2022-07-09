@@ -1,6 +1,7 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
+<TutorialGuide :sideMenuState="$store.state.sideMenuState" :tutorialState="$store.state.tutorialState" :tutorialType="$store.state.tutorialType"></TutorialGuide>
   <!-- <Opacity></Opacity> -->
   <SideBar 
   v-bind:class="{'SideBar':true}"
@@ -21,7 +22,7 @@ import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
 import MainBar from './components/bar/MainBar.vue'
 import SideBar from './components/bar/SideBar.vue'
-
+import TutorialGuide from './components/modal/E_TutorialGuide.vue'
 export default {
   name: 'App',
   created() {
@@ -32,6 +33,7 @@ export default {
     GlobalModal,
     MainBar,
     SideBar,
+    TutorialGuide
   },
   data(){
     return{

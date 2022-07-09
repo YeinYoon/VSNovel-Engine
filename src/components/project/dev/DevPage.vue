@@ -1,5 +1,5 @@
 <template>
-<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
+<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
     <div class="DevPageTemp">
         <div v-if="ep!=null">
             <EngineInner
@@ -22,6 +22,8 @@ export default {
         this.$store.commit('cngSideMenu', 'N');
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
+
+        
     },
     props:{
         side:Boolean,
@@ -51,6 +53,23 @@ export default {
         }
     },
     methods : {
+        userTutorialCheck() {
+            axios.get('/engine/user/tutorialCheck')
+            .then((result)=>{
+                if(result.data == "err") {
+                    console.log("유저 튜토리얼 확인 유무 불러오기 실페");
+                } else {
+
+                    if(result.data.USER_EHELP == 'N') {
+                        // this.$store.commit('tutorialOn', 'dev');
+                    } else {
+                        // this.$store.commit('tutorialOff');
+                    }
+
+                }
+            })
+        },
+
         getPjInfo() {
             axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
             .then((result)=>{
