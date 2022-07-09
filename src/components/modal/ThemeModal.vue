@@ -6,7 +6,13 @@
 
   <div class="TMmodal_frame">
     <div class="TMmodal_inner">
-      <p class="TMmodal_title">에피소드 정보 관리</p>
+      <p class="TMmodal_title">테마설정</p>
+
+
+    <div class="TMmodal_FontStyle_Section"></div>
+    <div class="TMmodal_TextBox_Section"></div>
+    <div class="TMmodal_Speecher_Section"></div>
+    <div class="TMmodal_ETC_Section"></div>
 
       <div class="TMmodal_functions">
         <button class="TMmodal_saveInfo">저장</button>
