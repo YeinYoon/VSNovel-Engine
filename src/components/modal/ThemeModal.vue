@@ -14,37 +14,28 @@
 
     <!-- 폰트스타일 설정 섹션 -->
     <div class="TMmodal_FontStyle_Section">
-      <div class="Section_title">스타일</div>
+      <div class="Section_title">폰트 설정</div>
       <div class="Section_itemList">
         <div class="Section_item Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/youtube.png"><p>1</p></div>
+        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>궁서</p></div>
       </div>
     </div>
 
     <!-- 텍스트박스 설정 섹션 -->
     <div class="TMmodal_TextBox_Section">
-      <div class="Section_title">대사창</div>
+      <div class="Section_title">대사창 모양</div>
       <div class="Section_itemList">
         <div class="Section_item Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
+        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
       </div>
     </div>
 
     <!-- 캐릭터명 설정 섹션 -->
     <div class="TMmodal_Speecher_Section">
-      <div class="Section_title">캐릭터명</div>
+      <div class="Section_title">캐릭터명 모양</div>
       <div class="Section_itemList">
         <div class="Section_item  Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
+        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
       </div>
     </div>
 
@@ -53,9 +44,8 @@
       <div class="Section_title">기타</div>
         <div class="Section_ColorSet">컬러셋 
           <select>
-            <option>블루</option>
+            <option>기본</option>
             <option>레드</option>
-            <option>그린</option>
           </select>
         </div>
     </div>
@@ -137,7 +127,7 @@ export default {
   top: 0px;
   padding-top: 2px;
   background: #2872f9;
-  width: 75px;
+  width: 120px;
   text-align: center;
   border-radius: 0 0 10px;
 }
