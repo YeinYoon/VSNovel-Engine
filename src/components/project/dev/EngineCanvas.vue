@@ -11,6 +11,7 @@
     <!-- 선택지 --> 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
+
         <label for="s1">
         <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s1" ref="cngs1">
           {{s1.text}}
@@ -19,8 +20,10 @@
           {{s1.text}}
         </div>
         </label>
+
         <div class="SelectVisibleButton" v-if="s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/checked.png"></div>
         <div class="SelectVisibleButtonDisable" v-if="!s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/close.png"></div>
+
         <label for="s2">
         <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s2" ref="cngs2">
           {{s2.text}}
@@ -29,8 +32,10 @@
           {{s2.text}}
         </div>
         </label>
+
         <div class="SelectVisibleButton" v-if="s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/checked.png"></div>
         <div class="SelectVisibleButtonDisable" v-if="!s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/close.png"></div>
+
         <label for="s3">
         <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s3" ref="cngs3">
           {{s3.text}}
@@ -39,6 +44,7 @@
           {{s3.text}}
         </div>
         </label>
+
         <div class="SelectVisibleButton" v-if="s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/checked.png"></div>
         <div class="SelectVisibleButtonDisable" v-if="!s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/close.png"></div>
 
@@ -261,6 +267,11 @@ export default {
 
       bgmController : null,
       effectController : null,
+
+      fontSettings : "",
+      textBoxSettings : "",
+      speecherBoxSettings : "",
+      ColorSettings : "",
 
       isUpload : false,
       isDownload : false,
@@ -1033,14 +1044,33 @@ label {
   left: 0px;
   width: 100%;
   height: 100%;
+
+  opacity: 0.9;
+  box-shadow: 0px 0px 10px #252525;
+}
+
+.ScriptBackground_round {
+  border-radius: 20px;
+}
+
+.ScriptBackground_linear {
+  border-radius: 0px;
+}
+
+.ScriptBackground_black {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 1) 40%,
     rgba(0, 0, 0, 0) 100%
   );
-  border-radius: 20px;
-  opacity: 0.9;
-  box-shadow: 0px 0px 10px #252525;
+}
+
+.ScriptBackground_red {
+  background: linear-gradient(
+    to bottom,
+    rgb(239, 154, 154) 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .SceneSpeakerName {

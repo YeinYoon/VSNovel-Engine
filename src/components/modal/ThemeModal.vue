@@ -14,9 +14,9 @@
 
     <!-- 폰트스타일 설정 섹션 -->
     <div class="TMmodal_FontStyle_Section">
-      <div class="Section_title">폰트</div>
+      <div class="Section_title">스타일</div>
       <div class="Section_itemList">
-        <div class="Section_item Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>Pretendard</p></div>
+        <div class="Section_item Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
         <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
         <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
         <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
@@ -26,7 +26,7 @@
 
     <!-- 텍스트박스 설정 섹션 -->
     <div class="TMmodal_TextBox_Section">
-      <div class="Section_title">말풍선</div>
+      <div class="Section_title">대사창</div>
       <div class="Section_itemList">
         <div class="Section_item Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
         <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>1</p></div>
@@ -51,6 +51,13 @@
     <!-- 기타 설정 섹션 -->
     <div class="TMmodal_ETC_Section">
       <div class="Section_title">기타</div>
+        <div class="Section_ColorSet">컬러셋 
+          <select>
+            <option>블루</option>
+            <option>레드</option>
+            <option>그린</option>
+          </select>
+        </div>
     </div>
 
     <!-- 테마 저장 및 취소 -->
@@ -133,6 +140,22 @@ export default {
   width: 75px;
   text-align: center;
   border-radius: 0 0 10px;
+}
+
+.Section_ColorSet {
+  position: absolute;
+  top: 40px;
+  left: 10px;
+}
+
+.Section_ColorSet select {
+  border: none;
+  color: white;
+  background: #656565;
+  width: 80px;
+  padding: 3px 6px 3px 3px;
+  margin-left: 5px;
+  border-radius: 10px;
 }
 
 .Section_itemList {

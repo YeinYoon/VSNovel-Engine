@@ -213,6 +213,10 @@ export default {
   overflow: hidden;
   color: white;
   padding: 60px;
+    /* animation-name: StudioOn;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out; */
 }
 .UserHeader {
   position: relative;

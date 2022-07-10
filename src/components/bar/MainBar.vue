@@ -4,36 +4,26 @@
     <div v-bind:class="{'menus':true}">
 
 
-      <div v-bind:class="{'menubox':true}" @click="openMenu('E')">
+      <div :class="[Menu1]" @click="openMenu('E')">
         <img class="menubox_icon_episode" src="../../assets/icons/white/book.png">
       </div>
 
-      <div v-bind:class="{'menubox':true}" @click="openMenu('R')">
+      <div :class="[Menu2]" @click="openMenu('R')">
         <img class="menubox_icon_resource" src="../../assets/icons/white/folder.png">
       </div>
-      <br>
 
-      <!-- <br>
-      <div v-bind:class="{'menubox':true}">
-        <img class="menubox_icon_event" src="../../assets/icons/white/clapperboard.png">
-      </div>
-      <br>
-      <div v-bind:class="{'menubox':true }">
-        <img class="menubox_icon_scene" src="../../assets/icons/white/background_two.png">
-      </div>
-      <br> -->
-
-      <div v-bind:class="{'menubox':true}" @click="openMenu('C')">
+      <div :class="[Menu3]" @click="openMenu('C')">
         <img class="menubox_icon_cooperation" src="../../assets/icons/white/handshake.png">
       </div>
-      <br>
-      <div v-bind:class="{'menubox':true}" @click="openMenu('S')">
+
+      <div :class="[Menu4]" @click="openMenu('S')">
         <img class="menubox_icon_setting" src="../../assets/icons/white/gear.png">
       </div>
-      <br>
-      <div v-bind:class="{'menubox_active':true}" @click="this.$router.push('/')">
+
+      <div :class="[Menu5]" @click="this.$router.push('/')">
         <img class="menubox_icon_mainscreen" src="../../assets/icons/white/home.png">
       </div>
+
     </div>
   </div>
 </div>
@@ -45,21 +35,46 @@
     props:{
       main:Boolean
     },
+    data() {
+      return {
+        Menu1 : 'menubox',
+        Menu2 : 'menubox',
+        Menu3 : 'menubox',
+        Menu4 : 'menubox',
+        Menu5 : 'menubox',
+      }
+    },
     methods : {
       openMenu(val) {
         this.$store.commit('sideMenuOn');
         switch(val) {
           case 'R' :
             this.$store.commit('cngSideMenu', 'R');
+            this.Menu2 = 'menubox_active';
+            this.Menu1 = 'menubox';
+            this.Menu3 = 'menubox';
+            this.Menu4 = 'menubox';
             break;
           case 'C' :
             this.$store.commit('cngSideMenu', 'C');
+            this.Menu3 = 'menubox_active';
+            this.Menu1 = 'menubox';
+            this.Menu2 = 'menubox';
+            this.Menu4 = 'menubox';
             break;
           case 'S' :
             this.$store.commit('cngSideMenu', 'S');
+            this.Menu4 = 'menubox_active';
+            this.Menu1 = 'menubox';
+            this.Menu3 = 'menubox';
+            this.Menu2 = 'menubox';
             break;
           case 'E' :
             this.$store.commit('cngSideMenu', 'E');
+            this.Menu1 = 'menubox_active';
+            this.Menu2 = 'menubox';
+            this.Menu3 = 'menubox';
+            this.Menu4 = 'menubox';
             break;
         }
       }
@@ -94,17 +109,19 @@
   height: 75px;
   border-radius: 20px;
   cursor: pointer;
+  transition: 0.2s all ease;
 }
 .menubox:hover{
   background: #5a5a5a;
 }
 .menubox_active{
   display:inline-table;
-  margin-top: 10px;
+  margin: 5% 0;
   width: 75px;
   height: 75px;
   border-radius: 20px;
   background: #2872f9;
+  transition: 0.2s all ease;
 }
 
 .menubox_icon_resource {

@@ -116,10 +116,10 @@ export default {
     background: #353535;
     width: 100%;
     height: 100%;
-    animation-name: StudioOn;
-    animation-duration: 0.8s;
+    /* animation-name: StudioOn;
+    animation-duration: 0.5s;
     animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out; */
 }
 
 .NotFoundEP {
