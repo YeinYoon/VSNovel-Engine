@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import axios from '../../axios'
 export default {
   name : "E_TutorialGuide",
   props : {
@@ -67,9 +68,9 @@ export default {
         axios.get('/engine/user/tutorialDisable')
         .then((result)=>{
             if(result.data == "err") {
-                console.log("유저 튜토리얼 체크 여부 변경 실패");
+              console.log("유저 튜토리얼 체크 여부 변경 실패");
             } else {
-                this.$store.commit('tutorialOff');
+              this.$store.commit('tutorialOff');
             }
         })
     },
