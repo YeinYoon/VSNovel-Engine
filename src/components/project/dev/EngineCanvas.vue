@@ -13,10 +13,10 @@
       <div class="SceneSelectFrame">
 
         <label for="s1">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s1" ref="cngs1">
+        <div v-if="selectEdit" class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]" contenteditable="true" id="s1" ref="cngs1">
           {{s1.text}}
         </div>
-        <div v-else class="SelectButton" @click="select(s1.plot, s1.index)" id="s1">
+        <div v-else class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]"  @click="select(s1.plot, s1.index)" id="s1">
           {{s1.text}}
         </div>
         </label>
@@ -25,10 +25,10 @@
         <div class="SelectVisibleButtonDisable" v-if="!s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/close.png"></div>
 
         <label for="s2">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s2" ref="cngs2">
+        <div v-if="selectEdit" class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]" contenteditable="true" id="s2" ref="cngs2">
           {{s2.text}}
         </div>
-        <div v-else class="SelectButton" @click="select(s2.plot, s2.index)" id="s2">
+        <div v-else class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]" @click="select(s2.plot, s2.index)" id="s2">
           {{s2.text}}
         </div>
         </label>
@@ -37,10 +37,10 @@
         <div class="SelectVisibleButtonDisable" v-if="!s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/close.png"></div>
 
         <label for="s3">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s3" ref="cngs3">
+        <div v-if="selectEdit" class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]"  contenteditable="true" id="s3" ref="cngs3">
           {{s3.text}}
         </div>
-        <div v-else class="SelectButton" @click="select(s3.plot, s3.index)" id="s3">
+        <div v-else class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]" @click="select(s3.plot, s3.index)" id="s3">
           {{s3.text}}
         </div>
         </label>
@@ -176,7 +176,7 @@
     <div class="SceneScriptFrame">
       
       <!-- 대사창 배경-->
-      <div class="ScriptBackground "></div>
+      <div class="ScriptBackground" :class="[{BShape_default: VN.shape=='default'},{BShape_linear: VN.shape=='linear'},{BColor_default: VN.color=='default'},{BColor_red: VN.color=='red'}]" ></div>
 
       <!-- 화자 -->
       <div class="ScriptEditingButton">
@@ -186,10 +186,10 @@
 
       <label for="name">
         
-        <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true">
-          <span id="name" ref="cngName">{{ Now.name }}</span>
+        <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true" >
+          <span id="name" ref="cngName" :class="[{NShape_default: VN.nameShape=='default'},{NShape_linear: VN.nameShape=='linear'},{NColor_default: VN.color=='default'},{NColor_red: VN.color=='red'}]"  >{{ Now.name }}</span>
         </div>
-        <div v-else class="SceneSpeakerName">
+        <div v-else class="SceneSpeakerName" :class="[{NShape_default: VN.nameShape=='default'},{NShape_linear: VN.nameShape=='linear'},{NColor_default: VN.color=='default'},{NColor_red: VN.color=='red'}]"  >
           <span id="name">{{Now.name}}</span>
         </div>
           
@@ -537,7 +537,12 @@ label {
   height: 100%;
   overflow: hidden;
 }
+.font_default {
 
+}
+.font_cursive {
+  
+}
 .SceneBackground {
   position: absolute;
   left: 0px;
@@ -700,23 +705,21 @@ label {
   cursor: pointer;
   overflow: hidden;
 }
-
-.Sel_Btn_Shape_default {
+.SShape_default {
   border-radius: 50px;
 }
 
-.Sel_Btn_Shape_linear {
+.SShape_linear {
   border-radius: 0px;
 }
 
-.Sel_Btn_Color_default {
+.SColor_default {
   background: #2872f9;
 }
 
-.Sel_Btn_Color_red {
+.SColor_red {
   background: rgb(239, 154, 154);
 }
-
 .SelectButton span {
   position: absolute;
   top: 50%;
@@ -1062,28 +1065,28 @@ label {
   opacity: 0.9;
   box-shadow: 0px 0px 10px #252525;
 }
-
-.SB_Shape_default {
+/* SHAPE */
+.BShape_default {
   border-radius: 20px;
 }
-.SB_Shape_linear {
+.BShape_linear {
   border-radius: 0px;
 }
-.SB_Color_default {
+.BColor_default {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 1) 40%,
     rgba(0, 0, 0, 0) 100%
   );
 }
-.SB_Color_red {
+.BColor_red {
   background: linear-gradient(
     to bottom,
     rgb(239, 154, 154) 40%,
     rgba(0, 0, 0, 0) 100%
   );
 }
-
+/* SHAPE */
 .SceneSpeakerName {
   position: absolute;
   left: -10px;
@@ -1093,23 +1096,23 @@ label {
   display: table;
   box-shadow: 0px 0px 10px #252525;
 }
-
-.SN_Shape_default {
+/* NAME */
+.NShape_default {
   border-radius: 25px;
 }
 
-.SN_Shape_linear {
+.NShape_linear {
   border-radius: 0px;
 }
 
-.SN_Color_default {
+.NColor_default {
   background: rgb(75, 147, 255);
 }
 
-.SN_Color_red {
+.NColor_red {
   background: rgb(239, 154, 154);
 }
-
+/* NAME */
 .SceneSpeakerName span {
   display: table-cell;
   vertical-align: middle;

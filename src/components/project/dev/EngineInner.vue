@@ -1,5 +1,6 @@
 <template v-if="!!data">
-<ThemeModal ref="themeModal"></ThemeModal>
+<ThemeModal ref="themeModal" :VN="VN" @changeVN="changeVN"></ThemeModal>
+<InputModal ref="inputModal" :VN="VN" @changeVN="changeVN"></InputModal>
   <div class="Venginebackground">
 
     <div class="VEngineCanvas">
@@ -122,6 +123,7 @@ import EngineCanvas from "./EngineCanvas.vue"
 import storage from "../../../aws";
 import axios from "../../../axios";
 import ThemeModal from '../../modal/ThemeModal.vue'
+import InputModal from '../../modal/InputModal.vue'
 export default defineComponent({
   name: "V_EngineInner",
   props:{
@@ -131,7 +133,8 @@ export default defineComponent({
   components: {
     EngineCanvas,
     Draggable : VueDraggableNext,
-    ThemeModal
+    ThemeModal,
+    InputModal
   },
   async created() {
     this.pjCode = this.$route.params.pjCode;
@@ -214,12 +217,24 @@ export default defineComponent({
       this.VN.plotList[plot].pages.push({"pageName":name[type],"type": type,"bg": "","bgm": "", "effect" : "","name": "이름","text": "대화 내용","img": "","select":[{"use":true,"text":"","plot":0,"index":0},{"use":true,"text":"","plot":0,"index":0},{"use":true,"text":"","plot":0,"index":0}],})
     },
     changePlotName(plot, plotName){
-      const input = prompt(`${plotName}을 변경할 텍스트 :`,'플롯 이름')
-      this.VN.plotList[plot].plotName = input;
+      this.$refs.inputModal.show({
+        msg : `${plotName}을 변경할 텍스트를 입력해주세요.`,
+        size : "normal",
+        type : "change",
+        status : "plot",
+        plot : plot,
+        index : null
+      })
     },
     changePageName(plot, index){
-      const input = prompt("페이지 제목 변경","페이지 제목")
-      this.VN.plotList[plot].pages[index].pageName = input
+      this.$refs.inputModal.show({
+        msg : "페이지 제목 변경",
+        size : "normal",
+        type : "change",
+        status : "page",
+        plot : plot,
+        index : index
+      })
     },
     selectOptionPlot(event,plot,index,number){
       console.log(event.target.value)
@@ -254,14 +269,14 @@ export default defineComponent({
     },
 
     addPlotModal(){
-      let input = prompt('플롯 이름 : ','Input Plot Name')
-      for(let i=0; i<this.VN.plotList.length; i++){
-        if(input==this.VN.plotList[i].plotName){
-          this.addPlotModal()
-        }
-      }
-      this.VN.plotList.push({plotName:input,nextPlot:0,pages:[]})
-      console.log(this.VN.plotList)
+      this.$refs.inputModal.show({
+        msg : "새로 생성할 플롯이름을 입력해주세요.",
+        size : "normal",
+        type : "change",
+        status : "add",
+        plot : null,
+        index : null
+      })
     },
     deletePlot(plot){
       console.log(this.VN.plotList)

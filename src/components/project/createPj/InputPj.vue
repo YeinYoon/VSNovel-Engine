@@ -43,10 +43,8 @@ export default {
       .then(async (result)=>{
         if(result.data!="err") {
           var data = JSON.stringify({ // 프로젝트 기본 구조
-            "id":`${result.data.pjCode}`,"title":"1화","ep":1,
-            "plotList":[{"plotName":"시작 플롯","nextPlot":0,"pages":[{"pageName":"일반 페이지","type":"n","bg":"","bgm":"","effect":"","name":"이름","text":"대화 및 내용","img":"","select":[{"use":true,"text":"1번 선택지","plot":0,"index":0},{"use":true,"text":"2번 선택지","plot":0,"index":0},{"use":true,"text":"3번 선택지","plot":0,"index":0}]}]},],
-            "color" : null,
-            "shape" : null
+            "id":result.data.pjCode,"title":"1화","ep":1, "color":"default", "nameShape":"default", "shape" : "default", "font" : "default",
+            "plotList":[{"plotName":"시작 플롯","nextPlot":0,"pages":[{"pageName":"일반 페이지","type":"n","bg":"","bgm":"","effect":"","name":"이름","text":"대화 및 내용","img":"","select":[{"use":true,"text":"1번 선택지","plot":0,"index":0},{"use":true,"text":"2번 선택지","plot":0,"index":0},{"use":true,"text":"3번 선택지","plot":0,"index":0}]}]}]
           });
           var fileName = "ep1.json"
           var properties = {type:'text/plain'};

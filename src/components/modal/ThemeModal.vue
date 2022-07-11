@@ -16,8 +16,8 @@
     <div class="TMmodal_FontStyle_Section">
       <div class="Section_title">폰트 설정</div>
       <div class="Section_itemList">
-        <div class="Section_item Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>궁서</p></div>
+        <div class="Section_item" :class="{Section_item_active:VN.font=='default'}" @click="changeVN('font','default')"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
+        <div class="Section_item" :class="{Section_item_active:VN.font=='cursive'}" @click="changeVN('font','cursive')"><img src="@/assets/icons/white/comment_two.png"><p>궁서</p></div>
       </div>
     </div>
 
@@ -25,8 +25,8 @@
     <div class="TMmodal_TextBox_Section">
       <div class="Section_title">대사창 모양</div>
       <div class="Section_itemList">
-        <div class="Section_item Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
+        <div class="Section_item" :class="{Section_item_active:VN.shape=='default'}" @click="changeVN('shape','default')"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
+        <div class="Section_item" :class="{Section_item_active:VN.shape=='linear'}" @click="changeVN('shape','linear')"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
       </div>
     </div>
 
@@ -34,8 +34,8 @@
     <div class="TMmodal_Speecher_Section">
       <div class="Section_title">캐릭터명 모양</div>
       <div class="Section_itemList">
-        <div class="Section_item  Section_item_active"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
-        <div class="Section_item"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
+        <div class="Section_item" :class="{Section_item_active:VN.nameShape=='default'}" @click="changeVN('nameShape','default')"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
+        <div class="Section_item" :class="{Section_item_active:VN.nameShape=='linear'}" @click="changeVN('nameShape','linear')"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
       </div>
     </div>
 
@@ -43,9 +43,9 @@
     <div class="TMmodal_ETC_Section">
       <div class="Section_title">기타</div>
         <div class="Section_ColorSet">컬러셋 
-          <select>
-            <option>기본</option>
-            <option>레드</option>
+          <select v-model="bColor" @change="changeVN('color',bColor)">
+            <option value="default">기본</option>
+            <option value="red">레드</option>
           </select>
         </div>
     </div>
@@ -54,8 +54,7 @@
     <!-- 취소 누를시, 저장된 변수를 초기화할것. -->
     <!-- 저장 누를시 해당 VN의 테마를 json내에 저장합니다. -->
     <div class="TMmodal_functions">
-      <button class="TMmodal_saveInfo">저장</button>
-      <button class="TMmodal_cancelInfo" @click="modalClose()">취소</button>
+      <button class="TMmodal_cancelInfo" @click="modalClose()">확인</button>
     </div>
 
     </div>
@@ -71,10 +70,12 @@ export default {
     return {
       // 모달 데이터
       TMModalState : false,
-
+      bColor:this.VN.color
     }
   },
-  
+  props:{
+    VN:Object
+  },
   methods : {
     modalClose() {
       this.TMModalState = false;
@@ -85,7 +86,11 @@ export default {
       this.$store.commit('sideButtonVisible');
       this.TMModalState = true;
     },
-
+    changeVN(location, value){
+      let VN = this.VN
+      VN[location]=value
+      this.$emit('changeVn',VN)
+    }
   },
 }
 </script>
