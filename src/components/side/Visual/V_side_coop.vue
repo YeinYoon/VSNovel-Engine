@@ -100,7 +100,7 @@
 
             <span>일정 내용</span>
             <div class="ScheduleContent">
-              <input type="text">
+              <input type="text" v-model="scheduleContent">
             </div>
 
             <div class="ScheduleInfo">
@@ -120,7 +120,7 @@
               <span>수신자 선택</span>
               <div class="ScheduleSelecter">
                 <select v-model="scheduleList" multiple>
-                  <option v-for="(m, i) in memberList" :key="i" :value="m">{{m.USER_NICKNAME}}</option>
+                  <option v-for="(m, i) in memberList" :key="i" :value="m.USER_ID">{{m.USER_NICKNAME}}</option>
                 </select>          
               </div>
 
@@ -128,8 +128,7 @@
 
 
             <div class="ScheduleButton">
-              <button>저장</button>
-              <!-- <button>저장</button> -->
+              <button @click="makeSchedule(scheduleList, scheduleSt, scheduleEd, scheduleContent)">저장</button>
             </div>
 
           </div>
@@ -140,9 +139,17 @@
         <div class="VSCoopMenuTitle" @click="menu3=!menu3">
           <p>일정</p>
         </div>
-
         <div class="VSCoopMenuInner" v-if="menu3 == true">
-          
+        {{schedule}}
+          <div v-for="(s, i) in schedule" :key="i">
+            <div v-if="s.SCHE_TYPE == 'S'">
+              <div>{{s.SCHE_STDATE}}~{{s.SCHE_EDDATE}}</div>
+              <div>작성자 : {{s.USER_ID}}</div>
+              <div>내용 : {{s.SCHE_CONTENT}}</div>
+              <input type="checkbox" v-model="s.select">
+            </div>
+          </div>
+          <button @click="deleteSchedule"></button>
         </div>
       </div> <!-- 2 -->
     </div>
@@ -155,9 +162,9 @@ import axios from '../../../axios'
 export default {
   name: 'V_side_coop',
   created() {
-    this.pjCode = this.$route.params.pjCode;
-    console.log(this.pjCode);
-    this.coopList();
+    this.pjCode = this.$route.params.pjCode
+    this.coopList()
+    this.scheList()
   },
   data() {
     return {
@@ -174,9 +181,11 @@ export default {
       userList : [],
       isInvite : "",
       memberList : [],
+      pjSchedule : [],
       scheduleList : [],
       scheduleSt : null,
-      scheduleEd : null
+      scheduleEd : null,
+      scheduleContent : ""
     }
   },
   methods: {
@@ -237,7 +246,8 @@ export default {
       .then((result)=>{
         console.log(result)
         if(result.data == "err") {
-          this.memberList = "멤버없음";
+          this.$store.commit('gModalOn', {msg : "ERR : 작업자 없음", size:"small"})
+          this.memberList = null
         } else {
           this.memberList = result.data;
           for(let i=0;i<this.memberList.length;i++){
@@ -248,6 +258,72 @@ export default {
       .catch((err)=>{
         console.error(err);
       })
+    },
+    scheList(){
+      axios.post('/engine/team/scheduleList', {pjCode: this.pjCode})
+      .then((result)=>{
+        console.log("SCHE THEN")
+        if(result.data == "err"){
+          this.schedule =null
+        }else{
+          this.schedule = result.data;
+        }
+      }).finally(()=>{
+        console.log("SCHE FIN")
+        for(let i=0;i<this.schedule.length;i++){
+          this.schedule[i].select=false
+        }
+      })
+    },
+    makeSchedule(list, st, ed, content){
+      if(st==null || ed==null || content=="" || list == null){
+        this.$store.commit('gModalOn', {msg : "내용을 채워 저장해주세요.", size : "normal"});
+      }
+      else if(st>ed){
+        this.$store.commit('gModalOn', {msg : "시작일을 종료일보다 작거나 같게 입력해주세요.", size:"normal"})
+        this.scheduleSt = null
+        this.scheduleEd = null
+      }
+      else{
+        axios.post('/engine/team/addSchedule', {pjCode: this.pjCode, list: list, st: st, ed: ed, content: content}).then((result)=>{
+          if(result=="err"){
+            this.$store.commit('gModalOn', {msg : "ERR : 생성 실패", size:"small"})
+          }
+          else {
+            this.scheduleList=null
+            this.scheduleSt=null
+            this.scheduleEd=null
+            this.scheduleContent=""
+            this.$store.commit('gModalOn', {msg : "일정을 생성했습니다.", size:"small"})
+          }
+        }).finally(()=>{
+          this.scheList
+        })
+      }
+    },
+    deleteSchedule(){
+      let list = []
+      for(let i=0;i<this.schedule.length;i++){
+        if(this.schedule[i].select){
+          list.push(this.schedule[i].SCHE_CODE)
+        }
+      }
+      if(list.length==0){
+        this.$store.commit('gModalOn', {msg : "선택한 일정이 없습니다.", size:"small"})
+      }
+      else{
+        axios.post('/engine/team/deleteSchedule',{list:list}).then((result)=>{
+          console.log("DELETE THEN")
+          if(result=="err"){
+            this.$store.commit('gModalOn', {msg : "ERR : 삭제 실패", size:"small"})
+          }
+          else{
+            this.$store.commit('gModalOn', {msg : "성공적으로 삭제했습니다.", size:"small"})
+          }
+        }).finally(()=>{
+          this.scheList
+        })
+      }
     }
   }
 }

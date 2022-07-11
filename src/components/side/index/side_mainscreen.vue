@@ -43,7 +43,12 @@
                             <button class="invite_button" @click="PjAccept(n.PROJ_CODE, n.SCHE_CODE)">승인</button>
                             <button class="invite_button" @click="PjRefuse(n.PROJ_CODE, n.SCHE_CODE)">거절</button>
                         </div>
-
+                        <div class="invite_message" v-if="n.SCHE_TYPE == 'S' && n.SNOT_ISREAD == 0">
+                            {{n.SCHE_STDATE}}
+                            <div>{{n.SCHE_CONTENT}}</div>
+                            <button class="invite_button" @click="PjAccept(n.PROJ_CODE, n.SCHE_CODE)">승인</button>
+                            <button class="invite_button" @click="PjRefuse(n.PROJ_CODE, n.SCHE_CODE)">거절</button>
+                        </div>
                         <hr>
                         </div>
                     </div>

@@ -97,6 +97,7 @@ router.post('/PjRefuse', async (req,res)=>{
 router.post('/memberList', async (req, res)=>{
     var memberList = await db.execute(`SELECT user_id, (SELECT user_nickname FROM tbl_user WHERE tbl_user.user_id = tbl_cooperation.user_id) as user_nickname, proj_code, coop_stake FROM tbl_cooperation
     WHERE proj_code=${req.body.pjCode}`);
+    console.log(memberList)
     if(memberList == "err") {
         res.send("err");
     } else {
@@ -112,6 +113,16 @@ router.post('/memberList', async (req, res)=>{
     }
 })
 
+router.post('/scheduleList', async (req, res)=>{
+    var scheduleList = await db.execute(`SELECT * FROM tbl_schedule WHERE proj_code = ${req.body.pjCode} AND sche_type = 'S' ORDER BY sche_stdate`)
+    if(scheduleList == "err"){
+        res.send("err")
+    }
+    else{
+        res.send(scheduleList.rows)
+    }
+})
+
 router.post('/uploadMemberList', async (req, res)=>{
     for(let i=0;i<req.body.list.length;i++){
         var update = await db.execute(`UPDATE tbl_cooperation SET coop_stake = ${req.body.list[i].COOP_STAKE} WHERE user_id = '${req.body.list[i].USER_ID}' AND proj_code = '${req.body.list[i].PROJ_CODE}'`)
@@ -120,5 +131,42 @@ router.post('/uploadMemberList', async (req, res)=>{
         }
     }
     res.send("ok")
+})
+
+router.post('/addSchedule', async (req, res)=>{
+    var sche_code = await db.execute(`select tbl_schedule_seq.nextval from dual`)
+    if(sche_code!="err"){
+        console.log(`INSERT INTO tbl_schedule(sche_code, proj_code, user_id, sche_type, sche_stdate, sche_eddate, sche_content) VALUES(${sche_code.rows[0].NEXTVAL}, ${req.body.pjCode},'${req.user.USER_ID}','S','${req.body.st}','${req.body.ed}','${req.body.content}')`)
+        var addSchedule = await db.execute(`INSERT INTO tbl_schedule(sche_code, proj_code, user_id, sche_type, sche_stdate, sche_eddate, sche_content) VALUES(${sche_code.rows[0].NEXTVAL}, ${req.body.pjCode},'${req.user.USER_ID}','S','${req.body.st}','${req.body.ed}','${req.body.content}')`)
+        if(addSchedule == "err"){
+            res.send("err")
+        }
+        else{
+            var query = "INSERT ALL "
+            for(let i=0;i<req.body.list.length;i++){
+                query+=`INTO tbl_schedule_notice(user_id, sche_code) VALUES ('${req.body.list[i]}', ${sche_code.rows[0].NEXTVAL}) `
+            }
+            query+=" SELECT * FROM dual"
+            var result = await db.execute(query)
+            if(result == "err"){
+                res.send("err")
+            }
+            else res.send("ok")
+        }
+    }
+})
+router.post('/deleteSchedule', async (req, res)=>{
+    let query = "DELETE FROM tbl_schedule WHERE sche_code in ("+req.body.list[0]
+    for(let i=1; i<req.body.list.length;i++){
+        query+=`, ${req.body.list[i]}`
+    }
+    query+=")"
+    let deleteSchedule = await db.execute(query)
+    if(deleteSchedule == "err"){
+        res.send("err")
+    }
+    else{
+        res.send("ok")
+    }
 })
 module.exports = router;
