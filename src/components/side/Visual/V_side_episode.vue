@@ -88,7 +88,6 @@ export default {
       this.epList = null
       this.epList = []
       let epExport = await storage.getEpList(`Project/PJ${this.pjCode}/dev/`)
-      console.log(epExport)
       for(let i=0; i<epExport.length; i++){
         if(epExport[i].ex=="json"){
           var result = await storage.getVN(epExport[i].key)
@@ -104,10 +103,8 @@ export default {
       nextEp = nextEp.data.rows[0].PROJ_NEXTEP
       let title = prompt("새로운 EP의 이름을 설정해주세요");
       var data = JSON.stringify({ // 프로젝트 기본 구조
-            "id":this.pjCode,"title":title,"ep":nextEp,
-            "plotList":[{"plotName":"시작 플롯","nextPlot":0,"pages":[{"pageName":"일반 페이지","type":"n","bg":"","bgm":"","effect":"","name":"이름","text":"대화 및 내용","img":"","select":[{"use":true,"text":"1번 선택지","plot":0,"index":0},{"use":true,"text":"2번 선택지","plot":0,"index":0},{"use":true,"text":"3번 선택지","plot":0,"index":0}]}]},],
-            "color" : null,
-            "shape" : null
+            "id":this.pjCode,"title":title,"ep":nextEp, "img":"", "color":"default", "shape" : "default",
+            "plotList":[{"plotName":"시작 플롯","nextPlot":0,"pages":[{"pageName":"일반 페이지","type":"n","bg":"","bgm":"","effect":"","name":"이름","text":"대화 및 내용","img":"","select":[{"use":true,"text":"1번 선택지","plot":0,"index":0},{"use":true,"text":"2번 선택지","plot":0,"index":0},{"use":true,"text":"3번 선택지","plot":0,"index":0}]}]}]
           });
       var fileName = `ep${nextEp}.json`
       var properties = {type:'text/plain'};

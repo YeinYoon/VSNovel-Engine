@@ -537,7 +537,12 @@ label {
   height: 100%;
   overflow: hidden;
 }
+.font_default {
 
+}
+.font_cursive {
+  
+}
 .SceneBackground {
   position: absolute;
   left: 0px;
@@ -700,7 +705,7 @@ label {
   cursor: pointer;
   overflow: hidden;
 }
-
+/* SELECT */
 .Sel_Btn_Shape_default {
   border-radius: 50px;
 }
@@ -716,7 +721,7 @@ label {
 .Sel_Btn_Color_red {
   background: rgb(239, 154, 154);
 }
-
+/* SELECT END */
 .SelectButton span {
   position: absolute;
   top: 50%;
@@ -1062,7 +1067,7 @@ label {
   opacity: 0.9;
   box-shadow: 0px 0px 10px #252525;
 }
-
+/* SHAPE */
 .SB_Shape_default {
   border-radius: 20px;
 }
@@ -1083,7 +1088,7 @@ label {
     rgba(0, 0, 0, 0) 100%
   );
 }
-
+/* SHAPE */
 .SceneSpeakerName {
   position: absolute;
   left: -10px;
@@ -1093,7 +1098,7 @@ label {
   display: table;
   box-shadow: 0px 0px 10px #252525;
 }
-
+/* NAME */
 .SN_Shape_default {
   border-radius: 25px;
 }
@@ -1109,7 +1114,7 @@ label {
 .SN_Color_red {
   background: rgb(239, 154, 154);
 }
-
+/* NAME */
 .SceneSpeakerName span {
   display: table-cell;
   vertical-align: middle;

@@ -1,5 +1,5 @@
 <template v-if="!!data">
-<ThemeModal ref="themeModal"></ThemeModal>
+<ThemeModal ref="themeModal" :VN="VN" @changeVN="changeVN"></ThemeModal>
   <div class="Venginebackground">
 
     <div class="VEngineCanvas">
