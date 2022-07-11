@@ -8,7 +8,7 @@
       <div class="VSCoopButtons">
         <button @click="addEp()">추가</button>
         <button @click="this.delMode = !this.delMode"><span v-if="delMode">취소</span><span v-else>삭제</span></button>
-        <button @click="addEp()">나가기</button>
+        <button>나가기</button>
       </div>
     </div>
 
@@ -36,7 +36,7 @@
           <p>삭제</p>
         </div>
 
-        <div class="VSEpic_Status" v-if="delMode == false" @click="epModalOn(ep.ep)">
+        <div class="VSEpic_Status" v-if="delMode == false" @click="epModalOn(ep)">
           <p>설정</p>
         </div>
       </div>
@@ -81,8 +81,8 @@ export default {
     }
   },
   methods: {
-    epModalOn() {
-      this.$refs.episodeModal.show();
+    epModalOn(ep) {
+      this.$refs.episodeModal.show(ep);
     },
     async getEpList(){
       this.epList = null
@@ -104,7 +104,7 @@ export default {
       nextEp = nextEp.data.rows[0].PROJ_NEXTEP
       let title = prompt("새로운 EP의 이름을 설정해주세요");
       var data = JSON.stringify({ // 프로젝트 기본 구조
-            "id":this.pjCode,"title":"1화","ep":1,
+            "id":this.pjCode,"title":title,"ep":nextEp,
             "plotList":[{"plotName":"시작 플롯","nextPlot":0,"pages":[{"pageName":"일반 페이지","type":"n","bg":"","bgm":"","effect":"","name":"이름","text":"대화 및 내용","img":"","select":[{"use":true,"text":"1번 선택지","plot":0,"index":0},{"use":true,"text":"2번 선택지","plot":0,"index":0},{"use":true,"text":"3번 선택지","plot":0,"index":0}]}]},],
             "color" : null,
             "shape" : null

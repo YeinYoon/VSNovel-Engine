@@ -10,21 +10,27 @@
 
       <div class="EPmodal_EpsiodeName_frame">
         <p class="EPmodal_EPtitle">제목</p>
-        <input type="text">
+        <input type="text" v-model="title">
       </div>
 
-      <div class="EPmodal_Img_frame">
+      <!-- <div class="EPmodal_Img_frame">
         <p class="EPmodal_EPimg">표지</p>
         <button class="EPmodal_EPimg_btn">업로드</button>
-      </div>
+      </div> -->
 
       <div class="EPmodal_exportSetting">
         <p class="EPmodal_ex_title">스토어 출품 설정</p>
-        <button class="EPmodal_epicExport">이 에피소드 발행</button>
+        <button class="EPmodal_epicExport" @click="this.releaseState = true">이 에피소드 발행</button>
+      </div>
+
+      <div v-if="releaseState">
+        <p class="EPmodal_ex_title">새로운 회차 [ {{this.title}} ]을(를) 스토어에 발행하시겠습니까?</p>
+        <button @click="releaseEP()">발행하기</button>
+        <button @click="this.releaseState = false">취소</button>
       </div>
 
       <div class="EPmodal_functions">
-        <button class="EPmodal_saveInfo">저장</button>
+        <button class="EPmodal_saveInfo" @click="epTitleSave()">저장</button>
         <button class="EPmodal_cancelInfo" @click="modalClose()">취소</button>
       </div>
 
@@ -36,6 +42,15 @@
 </template>
 
 <script>
+import axios from '../../axios'
+// import storage from '../../aws'
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3({
+  region : "ap-northeast-2",
+  //추후 .env로 보안관리 할것
+  accessKeyId: 'AKIARKU2Y4IXVCR266PO', // 사용자의 AccessKey
+  secretAccessKey: 'YJDi8K4VSP5bPhdNcC6hB/xreuKH2885200KS+LB' // 사용자의 secretAccessKey
+});
 export default {
   name : "FileMoveModal",
   data() {
@@ -43,18 +58,131 @@ export default {
       // 모달 데이터
       EPModalState : false,
       modalSize : "",
+      pjCode : "",
+      ep : null,
+
+      releaseState : false,
+      title : null,
+
     }
   },
   methods : {
     modalClose() {
       this.EPModalState = false;
     },
-    show(option = {}) {
+    show(ep) {
       this.EPModalState = true;
-      this.modalSize = option.size;
+      this.ep = ep;
+      this.pjCode = ep.id;
+      this.title = ep.title;
+      console.log(this.ep);
     },
 
+    async epTitleSave() {
+      this.ep.title = this.title;
+      var data = JSON.stringify(this.ep);
+      var fileName = `ep${this.ep.ep}.json`
+      var properties = {type:'text/plain'};
+      var file = new File([data], fileName, properties); //새로운 파일 객체 생성
+
+      const params = {
+        Bucket: "vsnovel",
+        Key : `Project/PJ${this.pjCode}/dev/` + file.name, // 저장되는 파일의 경로 및 이름
+        Body : file // 파일
+      }
+      await s3.upload(params)
+      .on("httpUploadProgress", evt => {
+        return parseInt((evt.loaded * 100) / evt.total) + "%";
+      })
+      .send((err, data)=>{
+        if(err) {
+          console.log("파일 업로드 실패");
+          console.error(err);
+          return "err"
+        } else {
+          console.log("파일 업로드 성공", data);
+          this.releaseState = false;
+          this.modalClose();
+          return "ok"
+        }
+      })
+    },
+
+    async releaseEP() {
+      
+      // tbl_novel에 등록되지 않은 프로젝트일 경우 최초 등록 진행
+      axios.post('/engine/pj/findPjStore', {pjCode : this.pjCode})
+      .then((result)=>{
+        if(result.data.msg == "notExist") {
+          var data = {
+            pjCode : this.pjCode,
+            novelTitle : result.data.novelTitle,
+            novelSynopsis : result.data.novelSynopsis
+          }
+          axios.post('/engine/pj/addNewNovel', data)
+          .then((result)=>{
+            if(result.data == "err") {
+              console.log("스토어 최초 노벨 등록 실패");
+            } else {
+              console.log(`프로젝트 코드 : ${this.pjCode} 스토어 등록 완료`);
+            }
+          })
+        } else { // 이미 등록되어있는 프로젝트일 경우 최신 회차 갱신일 업데이트
+          axios.post('/engine/pj/releaseDateUp', {pjCode : this.pjCode})
+          .then((result)=>{
+            if(result.data == "err") {
+              console.log("소설 회차 갱신일 업데이트 실패");
+            } else {
+              console.log("소설 회차 갱신일 업데이트 완료");
+            }
+          })
+        }
+      });
+
+      this.ep.title = this.title;
+      var data = JSON.stringify(this.ep);
+      var fileName = `ep${this.ep.ep}.json`
+      var properties = {type:'text/plain'};
+      var file = new File([data], fileName, properties); //새로운 파일 객체 생성
+
+      const params = [
+        {
+          Bucket: "vsnovel",
+          Key : `Project/PJ${this.pjCode}/episode/` + file.name,
+          Body : file // 파일
+        },
+        {
+          Bucket: "vsnovel",
+          Key : `Project/PJ${this.pjCode}/dev/` + file.name, 
+          Body : file // 파일
+        },
+      ]
+
+      for(var i=0; i<params.length; i++) {
+
+        await s3.upload(params[i])
+        .on("httpUploadProgress", evt => {
+          return parseInt((evt.loaded * 100) / evt.total) + "%";
+        })
+        .send((err, data)=>{
+          if(err) {
+            console.log("파일 업로드 실패");
+            console.error(err);
+            return "err"
+          } else {
+            console.log("파일 업로드 성공", data);
+            return "ok"
+          }
+        })
+
+      }
+
+      this.releaseState = false;
+      this.modalClose();
+      this.$store.commit("gModalOn", {size : "normal", msg : "새로운 회차가 스토어에 발행되었습니다."});
+    }
   },
+
 }
 </script>
 

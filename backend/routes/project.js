@@ -6,6 +6,46 @@ var timestamp = require('../database/timestamp');
 
 var storage = require('../aws/aws'); //서버 스토리지
 
+
+
+//tbl_novel 검사
+router.post('/findPjStore', async (req, res)=>{
+    var result = await db.execute(`SELECT * FROM tbl_novel WHERE proj_code = ${req.body.pjCode}`);
+    if(result.rows.length == 0) {
+        var title = await db.execute(`SELECT proj_title, proj_synopsis FROM tbl_project WHERE proj_code = ${req.body.pjCode}`);
+        res.send({msg : "notExist", novelTitle : title.rows[0].PROJ_TITLE, novelSynopsis : title.rows[0].PROJ_SYNOPSIS});
+    } else {
+        res.send({msg : "exist"});
+    }
+})
+
+// 새로운 novel 등록
+router.post('/addNewNovel', async (req, res)=>{
+    var newTime = timestamp.getTimestamp();
+    var result = await db.execute(`INSERT INTO tbl_novel VALUES(
+        tbl_novel_seq.NEXTVAL, ${req.body.pjCode}, null, '${req.body.novelTitle}', '${req.body.novelSynopsis}',
+        200, null, null, 'testTEAM', null, 'D', null, 0, 0, null, '${newTime}'
+    )`);
+    
+    if(result == "err") {
+        res.send("err");
+    } else {
+        res.send("ok");
+    }
+})
+
+// 최종 갱신일 업데이트
+router.post('/releaseDateUp', async (req, res)=>{
+    var newTime = timestamp.getTimestamp();
+    var result = await db.execute(`UPDATE tbl_novel SET nove_update = '${newTime}' WHERE proj_code = ${req.body.pjCode}`);
+    if(result == "err") {
+        res.send("err");
+    } else {
+        res.send("ok");
+    }
+})
+
+
 // 새로운 프로젝트 생성
 router.post('/createNewPj', async (req, res)=>{
     var newDate = await timestamp.getTimestamp();
@@ -110,6 +150,7 @@ router.patch('/editPjInfo', async (req,res)=>{
     }
 })
 
+
 //프로젝트 삭제
 router.post('/deletePj', async (req,res)=>{
     console.log("다음 프로젝트를 삭제함 : " + req.body.pjCode);
@@ -138,5 +179,7 @@ router.post('/epUp', async (req, res)=>{
     console.log(epValue)
     res.send(returnEp)
 })
+
+
 
 module.exports = router;
