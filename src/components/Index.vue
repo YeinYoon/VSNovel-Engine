@@ -80,7 +80,8 @@ export default {
   created() {
     this.$store.commit('cngSideMenu', 'M');
 
-    this.test(); // 타이핑 테스트
+    // 타이핑 테스트
+    // this.test();
 
     axios.get('/engine/auth/loginCheck')
     .then(async (result)=>{
@@ -88,6 +89,7 @@ export default {
         this.$store.commit('userLogin', {userId : result.data.USER_ID, nickName : result.data.USER_NICKNAME});
         console.log(`currentUser : ${this.$store.state.userNickname}`);
         await this.getPjList();
+        this.userTutorialCheck();
       } else {
         this.$router.push('/signin');
       }
@@ -126,23 +128,40 @@ export default {
   },
   methods : {
     // 타이핑 테스트
-    typing() {
-      var char = 0;
-      if(this.count < this.content.length) {
-        char = this.content.charAt(this.count);
-        this.txt += char;
-        this.count++;
-      } else {
-        clearInterval(this.typing);
-      }
-    },
-    test() {
-      setInterval(this.typing, 100);
-    },
-    next() {
-      this.count = 0;
-      this.txt = "";
-      this.content = "is next Text!";
+    // typing() {
+    //   var char = 0;
+    //   if(this.count < this.content.length) {
+    //     char = this.content.charAt(this.count);
+    //     this.txt += char;
+    //     this.count++;
+    //   } else {
+    //     clearInterval(this.typing);
+    //   }
+    // },
+    // test() {
+    //   setInterval(this.typing, 100);
+    // },
+    // next() {
+    //   this.count = 0;
+    //   this.txt = "";
+    //   this.content = "is next Text!";
+    // },
+
+    userTutorialCheck() {
+      axios.get('/engine/user/tutorialCheck')
+      .then((result)=>{
+        if(result.data == "err") {
+          console.log("유저 튜토리얼 확인 유무 불러오기 실페");
+        } else {
+          console.log(result.data);
+          if(result.data.USER_EHELP == 'N') {
+            this.$store.commit('tutorialOn', 'index');
+          } else {
+            this.$store.commit('tutorialOff');
+          }
+
+        }
+      })
     },
 
     //로그아웃
@@ -194,6 +213,10 @@ export default {
   overflow: hidden;
   color: white;
   padding: 60px;
+    /* animation-name: StudioOn;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out; */
 }
 .UserHeader {
   position: relative;

@@ -7,51 +7,28 @@
     </div>
     <!-- 백그라운드 끝. -->
 
-
     <!-- 선택지 --> 
     <div class="SceneSelectBackground" v-if="status == 'select'">
       <div class="SceneSelectFrame">
 
         <label for="s1">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s1" ref="cngs1">
-          {{s1.text}}
-        </div>
-        <div v-else class="SelectButton" @click="select(s1.plot, s1.index)" id="s1">
+        <div class="SelectButton" @click="select(s1.plot, s1.index)" id="s1">
           {{s1.text}}
         </div>
         </label>
-
-        <div class="SelectVisibleButton" v-if="s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/checked.png"></div>
-        <div class="SelectVisibleButtonDisable" v-if="!s1.use" @click="s1.use=!(s1.use)"><img src="@/assets/icons/white/close.png"></div>
 
         <label for="s2">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s2" ref="cngs2">
-          {{s2.text}}
-        </div>
-        <div v-else class="SelectButton" @click="select(s2.plot, s2.index)" id="s2">
+        <div class="SelectButton" @click="select(s2.plot, s2.index)" id="s2">
           {{s2.text}}
         </div>
         </label>
-
-        <div class="SelectVisibleButton" v-if="s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/checked.png"></div>
-        <div class="SelectVisibleButtonDisable" v-if="!s2.use" @click="s2.use=!(s2.use)"><img src="@/assets/icons/white/close.png"></div>
 
         <label for="s3">
-        <div v-if="selectEdit" class="SelectButton" contenteditable="true" id="s3" ref="cngs3">
-          {{s3.text}}
-        </div>
-        <div v-else class="SelectButton" @click="select(s3.plot, s3.index)" id="s3">
+        <div class="SelectButton" @click="select(s3.plot, s3.index)" id="s3">
           {{s3.text}}
         </div>
         </label>
 
-        <div class="SelectVisibleButton" v-if="s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/checked.png"></div>
-        <div class="SelectVisibleButtonDisable" v-if="!s3.use" @click="s3.use=!(s3.use)"><img src="@/assets/icons/white/close.png"></div>
-
-        <div class="SelectEditingButton">
-          <img src="@/assets/icons/white/editing.png" v-if="selectEdit == false" @click="this.selectEdit = true;">
-          <img src="@/assets/icons/white/checked.png" v-else @click="saveSelect()">
-        </div>
       </div>
     </div>
     <!-- 선택지 끝. -->
@@ -93,28 +70,6 @@
     </div>
     <!-- 저장 슬롯 메뉴 끝. -->
 
-
-    <!-- 좌측 상단 햄버거메뉴 -->
-    <div class="ViewerNav">
-      <div class="NavItems" title="서버 비주얼 노벨 다운로드" v-if="isDownload == false">
-        <img src="@/assets/icons/white/downcloud.png" @click="getVN()">
-      </div>
-      <div class="NavItems" v-else-if="isDownload == true">
-        <img src="@/assets/icons/file_ok.png">
-      </div>
-
-      <div class="NavItems" title="저장" v-if="isUpload == false">
-        <img src="@/assets/icons/white/upcloud.png" @click="uploadVN()">
-      </div>
-      <div class="NavItems" v-else-if="isUpload == true && percent == '100%'">
-        <img src="@/assets/icons/file_ok.png">
-      </div>
-      <div v-else>
-        {{percent}}%
-      </div>
-    </div>
-    <!-- 좌측 상단 햄버거메뉴 -->
-
     <!-- 우측 상단 햄버거메뉴 -->
     <div class="ViewerNavRight">
       <div class="NavItems" v-if="bgmState == false" @click="bgmOn(),effectOn()">
@@ -123,48 +78,8 @@
       <div class="NavItems" v-else-if="bgmState == true" @click="bgmOff(),effectOff()">
         <img src="@/assets/icons/white/speaker_white.png">
       </div>
-      <div class="NavItems" @click="resCtrl = !resCtrl">
-        <img src="@/assets/icons/white/trash_white.png">
-      </div>
     </div>
     <!-- 우측 상단 햄버거메뉴 --> 
-
-
-    <!-- 리소스 관리 메뉴 -->
-    <div class="ResControl" v-if="resCtrl">
-      <div class="ResControl_img">
-        <div class="ResControl_img_thum"><img v-if="currentBg" :src="currentBg"><img v-else src="@/assets/imgs/e_no_image.png"></div>
-        <div class="ResControl_img_title">배경화면</div>
-        <div class="ResControl_btn">
-          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
-        </div>
-      </div>
-      <div class="ResControl_img">
-        <div class="ResControl_img_thum"><img v-if="currentImage" :src="currentImg"><img v-else src="@/assets/imgs/e_no_image.png"></div>
-        <div class="ResControl_img_title">이미지</div>
-        <div class="ResControl_btn">
-          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
-        </div>
-      </div>
-      <div class="ResControl_mu">
-        <div class="ResControl_mu_thum"><img src="@/assets/icons/music.png"></div>
-        <div class="ResControl_mu_title">배경음악</div>
-        <div class="ResControl_btn_mu">
-          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
-          <button @click="setResource('none','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
-        </div>
-      </div>
-      <div class="ResControl_mu">
-        <div class="ResControl_mu_thum"><img src="@/assets/icons/music.png"></div>
-        <div class="ResControl_mu_title">효과음</div>
-        <div class="ResControl_btn_mu">
-          <button @click="setResource('','bg')"><img src="@/assets/icons/white/trash_white.png"></button>
-        </div>
-      </div>
-    </div>
-    <!-- 리소스 관리 메뉴 -->
-
-
 
     <!-- 이미지 -->
     <div class="SceneImg">
@@ -179,17 +94,9 @@
       <div class="ScriptBackground "></div>
 
       <!-- 화자 -->
-      <div class="ScriptEditingButton">
-        <img src="@/assets/icons/white/editing.png" v-if="textEdit == false" @click="textEdit = true;">
-        <img src="@/assets/icons/white/checked.png" v-else @click="saveText()">
-      </div>
-
       <label for="name">
         
-        <div v-if="textEdit" class="SceneSpeakerName" contenteditable="true">
-          <span id="name" ref="cngName">{{ Now.name }}</span>
-        </div>
-        <div v-else class="SceneSpeakerName">
+        <div class="SceneSpeakerName">
           <span id="name">{{Now.name}}</span>
         </div>
           
@@ -197,10 +104,7 @@
 
       <!-- 대사 -->  
       <label for="text">
-        <div v-if="textEdit" class="SceneScript" contenteditable="true">
-          <span id="text" ref="cngText">{{ Now.text }}</span>
-        </div>
-        <div v-else class="SceneScript">
+        <div class="SceneScript">
           <span id="text">{{ Now.text }}</span>
         </div>
       </label>

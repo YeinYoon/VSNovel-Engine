@@ -22,10 +22,11 @@
     <VsideSetting :pjCode="pjCode"></VsideSetting>
   </div>
 
-  <div class="sideBarButton" @click="sideBarClick()">
+  <div class="sideBarButton" v-if="!this.$store.state.sideButtonVisible" @click="sideBarClick()">
     <div class="sideBarBar"></div>
   </div>
 </div>
+
 </template>
 
 <script>
@@ -127,9 +128,8 @@ export default {
 .sideBarOn {
   display:table;
   background:#2c2c2c;
-  width: 295px;
+  width: 305px;
   height: 100vh;
-  /* overflow: auto; */
   animation-name: sideBarOn;
   animation-duration: 0.6s;
   animation-fill-mode: forwards;
@@ -138,7 +138,7 @@ export default {
 .sideBarOff {
   display:table;
   background:#2c2c2c;
-  width: 295px;
+  width: 305px;
   height: 100vh;
   animation-name: sideBarOff;
   animation-duration: 0.6s;
@@ -148,15 +148,15 @@ export default {
 .sideBarButton {
   position: absolute;
   top: 50%;
-  left: 100%;
+  left: calc(100% - 0px);
   transform: translate(-50%, -50%);
-  width: 25px;
-  height: 100px;
+  width: 20px;
+  height: 200px;
   color: white;
   background: #353535;
   border-radius: 10px;
   cursor: pointer;
-  z-index: 99;
+  z-index: 3;
 }
 
 .sideBarButton span{
@@ -171,7 +171,7 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 6px;
+  width: 5px;
   height: 50%;
   background: rgb(166, 166, 166);
   border-radius: 5px;

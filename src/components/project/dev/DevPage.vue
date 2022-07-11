@@ -1,5 +1,5 @@
 <template>
-<div  :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
+<div :class="{ [`${this.$store.state.sideBarFixed}`]:true, [`${this.$store.state.sideBarMove}`]:this.$store.state.sideAnimationState }">
     <div class="DevPageTemp">
         <div v-if="ep!=null">
             <EngineInner
@@ -7,7 +7,8 @@
             :ep="ep"
             ></EngineInner>
         </div>
-        <div v-else> ep를 설정해주세요</div>
+        <div v-else class="NotFoundEP"><span>에피소드를 선택하세요</span></div>
+        <div v-if="ep==null && (this.$store.state.sideMenuState != 'E' || !this.$store.state.sideBar)" class="NotFoundEPArrow"> <span>❮</span> </div>
     </div>
 </div>
 </template>
@@ -21,6 +22,8 @@ export default {
         this.$store.commit('cngSideMenu', 'N');
         this.pjCode = this.$route.params.pjCode;
         this.getPjInfo(this.pjCode);
+
+        
     },
     props:{
         side:Boolean,
@@ -50,6 +53,23 @@ export default {
         }
     },
     methods : {
+        userTutorialCheck() {
+            axios.get('/engine/user/tutorialCheck')
+            .then((result)=>{
+                if(result.data == "err") {
+                    console.log("유저 튜토리얼 확인 유무 불러오기 실페");
+                } else {
+
+                    if(result.data.USER_EHELP == 'N') {
+                        // this.$store.commit('tutorialOn', 'dev');
+                    } else {
+                        // this.$store.commit('tutorialOff');
+                    }
+
+                }
+            })
+        },
+
         getPjInfo() {
             axios.post('/engine/pj/getPjInfo', {pjCode : this.pjCode})
             .then((result)=>{
@@ -93,8 +113,69 @@ export default {
     z-index: 1;
 } */
 .DevPageTemp {
-    background: #5e5e5e;
+    background: #353535;
     width: 100%;
     height: 100%;
+    /* animation-name: StudioOn;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out; */
+}
+
+.NotFoundEP {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 130px;
+    background: #3d3d3d;
+    color: white;
+    border-radius: 25px;
+    font-size: 1em;
+}
+
+.NotFoundEP span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);   
+}
+
+.NotFoundEPArrow {
+    font-size: 2em;
+    font-weight: 900;
+    color: white;
+    position: fixed;
+    top: calc(50% - 175px);
+    transform: translate(-50%, -50%);
+    left: 125px;
+    animation-name: NotFoundEPArrowMove;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-duration: 0.5s;
+    transition: 0.2s all ease;
+    text-shadow: 0px 0px 6px #ffffff;
+    z-index: 99;
+}
+
+@keyframes NotFoundEPArrowMove {
+  0% {
+  }
+
+  100% {
+    left: 115px;
+    text-shadow: 0px 0px 15px #ffffff;
+  }
+}
+
+@keyframes StudioOn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+  
 }
 </style>

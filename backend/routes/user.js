@@ -3,6 +3,27 @@ var router = express.Router();
 
 var db = require('../database/db');
 
+
+//유저의 튜토리얼 확인 유무 체크
+router.get('/tutorialCheck', async (req, res)=>{
+    var data = await db.execute(`SELECT user_ehelp FROM tbl_user WHERE user_id = '${req.user.USER_ID}'`);
+    if(data == "err") {
+        res.send("err");
+    } else {
+        res.send(data.rows[0]);
+    }
+})
+
+router.get('/tutorialDisable', async (req, res)=>{
+    var data = await db.execute(`UPDATE tbl_user SET user_ehelp = 'Y' WHERE user_id = '${req.user.USER_ID}'`);
+    if(data == "err") {
+        res.send("err");
+    } else {
+        res.send("ok");
+    }
+})
+
+
 //유저 검색
 router.post('/search', async (req, res)=>{
     var type;

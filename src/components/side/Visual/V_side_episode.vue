@@ -8,14 +8,16 @@
       <div class="VSCoopButtons">
         <button @click="addEp()">추가</button>
         <button @click="this.delMode = !this.delMode"><span v-if="delMode">취소</span><span v-else>삭제</span></button>
+        <button @click="addEp()">나가기</button>
       </div>
     </div>
 
     <div class="VSEpicList">
       <!-- 반복, 에피소드 하나 -->
-      <div class="VSEpic_el" v-for="(ep, i) in epList" :key="i"> 
+      <div v-for="(ep, i) in epList" :key="i">
+      <div :class="[{VSEpic_el:(epNum!=ep.ep)}, {VSEpic_el_select:(epNum==ep.ep)}]"> 
         <!-- 에피소드 회차 -->
-        <div class="VSEpic_Index" @click="this.$emit('sendEp', ep)" v-if="epNum!=ep.ep">
+        <div class="VSEpic_Index" @click="this.$emit('sendEp', ep)">
           <p>{{i+1}}</p>
         </div>
 
@@ -39,7 +41,7 @@
         </div>
       </div>
       <!-- 여기까지 반복 -->
-
+      </div>
     </div>
     
 
@@ -159,6 +161,9 @@ export default {
 .VSBackgroundEpic {
   width: 100%;
   height: 100%;
+  animation-name: contentOn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
 }
 .VSEpicTool {
   width: 100%;
@@ -174,6 +179,7 @@ export default {
   padding: 20px;
 }
 
+
 .VSEpic_el {
   position: relative;
   width: 100%;
@@ -183,7 +189,22 @@ export default {
   margin-bottom: 15px;
   padding: 10px;
   color: white;
+  cursor: pointer;
+  transition: 0.2s all ease;
 }
+
+.VSEpic_el_select {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  border-radius: 20px;
+  background: #6b6b6b;
+  margin-bottom: 15px;
+  padding: 10px;
+  color: white;
+  /* cursor: pointer; */
+}
+
 
 .VSEpic_Index {
   position: absolute;

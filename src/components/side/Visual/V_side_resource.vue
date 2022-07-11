@@ -31,14 +31,6 @@
             <img src="@/assets/icons/white/folder.png">
           </div>
 
-          <!-- <div class="VSFolderMoveButton" @click="deleteFile(f.name, f.key)">
-            <img src="@/assets/icons/white/redo.png">
-          </div> -->
-
-          <!-- <div class="VSFolderDetailButton" @click="editName(f.name, f.key)">
-            <img src="@/assets/icons/white/editing.png">
-          </div> -->
-
           <div class="VSFolderDelButton" @click="deleteFile(f.name, f.key)">
             <img src="@/assets/icons/white/trash_white.png">
           </div>
@@ -357,6 +349,9 @@ export default {
   height: 100vh;
   color: white;
   position: relative;
+  animation-name: contentOn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
 }
 
 .VSResList {
@@ -365,6 +360,9 @@ export default {
   height: calc(100% - 80px);
   top: 80px;
   overflow: auto;
+  animation-name: contentOn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
 }
 
 .VSResListOnPlayer {

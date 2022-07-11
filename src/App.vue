@@ -1,6 +1,7 @@
 <template>
 <Spinner :loading="$store.state.LoadingStatus"></Spinner>
 <GlobalModal :gModalState="$store.state.gModalState"></GlobalModal>
+<TutorialGuide :sideMenuState="$store.state.sideMenuState" :tutorialState="$store.state.tutorialState" :tutorialType="$store.state.tutorialType"></TutorialGuide>
   <!-- <Opacity></Opacity> -->
   <SideBar 
   v-bind:class="{'SideBar':true}"
@@ -21,7 +22,7 @@ import Spinner from './components/Spinner.vue'
 import GlobalModal from './components/modal/GlobalModal.vue'
 import MainBar from './components/bar/MainBar.vue'
 import SideBar from './components/bar/SideBar.vue'
-
+import TutorialGuide from './components/modal/E_TutorialGuide.vue'
 export default {
   name: 'App',
   created() {
@@ -32,6 +33,7 @@ export default {
     GlobalModal,
     MainBar,
     SideBar,
+    TutorialGuide
   },
   data(){
     return{
@@ -146,6 +148,13 @@ body{
   z-index: 99;
 }
 
+.Tutorial_View {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 200;
+}
+
 .RouterModalView {
   position: fixed;
   top: 50%;
@@ -170,15 +179,15 @@ body{
 
 .RouterViewLeft {
   position: fixed;
-  left: 130px;
-  width: calc(100vw - 130px);
+  left: 140px;
+  width: calc(100vw - 140px);
   height: 100vh;
 }
 
 .RouterViewRight {
   position: fixed;
-  left: 415px;
-  width: calc(100vw - 415px);
+  left: 425px;
+  width: calc(100vw - 425px);
   height: 100vh;
 }
 
@@ -211,6 +220,7 @@ body{
 
 .SideBar {
   position: absolute;
+  /* z-index: 1; */
 }
 
 .SideBarMain {
@@ -221,25 +231,25 @@ body{
 
 @keyframes routerRight {
   from {
-    left: 130px;
-    width: calc(100vw - 130px);
+    left: 140px;
+    width: calc(100vw - 140px);
   }
 
   to {
-    left: 415px;
-    width: calc(100vw - 415px);
+    left: 425px;
+    width: calc(100vw - 425px);
   }
 }
 
 @keyframes routerLeft {
   from {
-    left: 415px;
-    width: calc(100vw - 415px);
+    left: 425px;
+    width: calc(100vw - 425px);
   }
 
   to {
-    left: 130px;
-    width: calc(100vw - 130px);
+    left: 140px;
+    width: calc(100vw - 140px);
   }
 }
 @keyframes routerRightMain {
