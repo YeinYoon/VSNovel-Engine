@@ -260,6 +260,7 @@ export default {
       })
     },
     scheList(){
+      this.schedult = null
       axios.post('/engine/team/scheduleList', {pjCode: this.pjCode})
       .then((result)=>{
         console.log("SCHE THEN")
@@ -285,7 +286,7 @@ export default {
         this.scheduleEd = null
       }
       else{
-        axios.post('/engine/team/addSchedule', {pjCode: this.pjCode, list: list, st: st, ed: ed, content: content}).then((result)=>{
+        axios.post('/engine/team/addSchedule', {pjCode: this.pjCode, list: list, st: st, ed: ed, content: content}).then(async(result)=>{
           if(result=="err"){
             this.$store.commit('gModalOn', {msg : "ERR : 생성 실패", size:"small"})
           }
@@ -294,10 +295,9 @@ export default {
             this.scheduleSt=null
             this.scheduleEd=null
             this.scheduleContent=""
+            await this.scheList
             this.$store.commit('gModalOn', {msg : "일정을 생성했습니다.", size:"small"})
           }
-        }).finally(()=>{
-          this.scheList
         })
       }
     },

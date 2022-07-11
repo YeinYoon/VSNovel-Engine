@@ -26,7 +26,7 @@
       <div class="Section_title">대사창 모양</div>
       <div class="Section_itemList">
         <div class="Section_item" :class="{Section_item_active:VN.shape=='default'}" @click="changeVN('shape','default')"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
-        <div class="Section_item" :class="{Section_item_active:VN.shape=='round'}" @click="changeVN('shape','round')"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
+        <div class="Section_item" :class="{Section_item_active:VN.shape=='linear'}" @click="changeVN('shape','linear')"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
       </div>
     </div>
 
@@ -35,7 +35,7 @@
       <div class="Section_title">캐릭터명 모양</div>
       <div class="Section_itemList">
         <div class="Section_item" :class="{Section_item_active:VN.nameShape=='default'}" @click="changeVN('nameShape','default')"><img src="@/assets/icons/white/comment_two.png"><p>기본값</p></div>
-        <div class="Section_item" :class="{Section_item_active:VN.nameShape=='round'}" @click="changeVN('nameShape','default')"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
+        <div class="Section_item" :class="{Section_item_active:VN.nameShape=='linear'}" @click="changeVN('nameShape','linear')"><img src="@/assets/icons/white/comment_two.png"><p>선형</p></div>
       </div>
     </div>
 
@@ -54,8 +54,7 @@
     <!-- 취소 누를시, 저장된 변수를 초기화할것. -->
     <!-- 저장 누를시 해당 VN의 테마를 json내에 저장합니다. -->
     <div class="TMmodal_functions">
-      <button class="TMmodal_saveInfo">저장</button>
-      <button class="TMmodal_cancelInfo" @click="modalClose()">취소</button>
+      <button class="TMmodal_cancelInfo" @click="modalClose()">확인</button>
     </div>
 
     </div>
