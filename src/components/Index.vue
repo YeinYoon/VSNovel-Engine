@@ -155,9 +155,9 @@ export default {
         } else {
           console.log(result.data);
           if(result.data.USER_EHELP == 'N') {
-            // this.$store.commit('tutorialOn', 'index');
+            this.$store.commit('tutorialOn', 'index');
           } else {
-            // this.$store.commit('tutorialOff');
+            this.$store.commit('tutorialOff');
           }
 
         }

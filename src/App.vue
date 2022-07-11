@@ -148,6 +148,13 @@ body{
   z-index: 99;
 }
 
+.Tutorial_View {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 200;
+}
+
 .RouterModalView {
   position: fixed;
   top: 50%;
