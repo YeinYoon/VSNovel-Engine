@@ -86,7 +86,6 @@ export default {
       this.epList = null
       this.epList = []
       let epExport = await storage.getEpList(`Project/PJ${this.pjCode}/dev/`)
-      console.log(epExport)
       for(let i=0; i<epExport.length; i++){
         if(epExport[i].ex=="json"){
           var result = await storage.getVN(epExport[i].key)
