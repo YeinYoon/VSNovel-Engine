@@ -140,16 +140,20 @@
           <p>일정</p>
         </div>
         <div class="VSCoopMenuInner" v-if="menu3 == true">
-        {{schedule}}
-          <div v-for="(s, i) in schedule" :key="i">
+        <!-- {{schedule}} -->
+          <div class="Schedule_List_item" v-for="(s, i) in schedule" :key="i">
             <div v-if="s.SCHE_TYPE == 'S'">
-              <div>{{s.SCHE_STDATE}}~{{s.SCHE_EDDATE}}</div>
-              <div>작성자 : {{s.USER_ID}}</div>
-              <div>내용 : {{s.SCHE_CONTENT}}</div>
-              <input type="checkbox" v-model="s.select">
+              <div class="Schedule_List_item_date">
+                <div class="Schedule_List_item_date_box">{{s.SCHE_STDATE}}</div>
+                ~
+                <div class="Schedule_List_item_date_box">{{s.SCHE_EDDATE}}</div>
+              </div>
+              <div class="Schedule_List_item_writer">작성자 : {{s.USER_ID}}</div>
+              <div class="Schedule_List_item_content">내용 : {{s.SCHE_CONTENT}}</div>
+              <input class="Schedule_List_item_check" type="checkbox" v-model="s.select">
             </div>
           </div>
-          <button @click="deleteSchedule"></button>
+          <button class="Schedule_List_DelBtn" @click="deleteSchedule">삭제</button>
         </div>
       </div> <!-- 2 -->
     </div>
@@ -718,6 +722,85 @@ export default {
   border-radius: 10px;
   color: white;
   padding: 2px 8px 2px 8px;
+}
+
+.Schedule_List_item {
+  width: 100%;
+  height: 98px;
+  margin-bottom: 10px;
+  position: relative;
+  background: #474747;
+  padding: 5px;
+  /* text-align: center; */
+  border-radius: 10px;
+}
+
+.Schedule_List_item_date {
+  position: absolute;
+  left: 12px;
+  top: 38px;
+}
+
+.Schedule_List_item_date_box {
+  display: inline-block;
+  width: 100px;
+  height: 22px;
+  background: #2872f9;
+  position: relative;
+  border-radius: 7px;
+  padding-top: 0px;
+  padding-left: 5px;
+}
+
+.Schedule_List_item_writer {
+  position: absolute;
+  top: 65px;
+  left: 10px;
+  width: 130px;
+  background: #383838;
+  border-radius: 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.Schedule_List_item_content {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+  height: 23px;
+  background: #383838;
+  border-radius: 7px;
+  text-align: left;
+  padding-left: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Schedule_List_item_check {
+  position: absolute;
+  top: 12px;
+  left: calc(100% - 30px);
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  border: none;
+}
+
+.Schedule_List_DelBtn {
+  position: relative;
+  left: 0px;
+  top: -5px;
+  width: 50px;
+  height: 25px;
+  background: #2872f9;
+  color: white;
+  border-radius: 8px;
+  border: none;
 }
 
 @keyframes contentOn {
