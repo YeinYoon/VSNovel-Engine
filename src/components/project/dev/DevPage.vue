@@ -61,9 +61,9 @@ export default {
                 } else {
 
                     if(result.data.USER_EHELP == 'N') {
-                        // this.$store.commit('tutorialOn', 'dev');
+                        this.$store.commit('tutorialOn', 'dev');
                     } else {
-                        // this.$store.commit('tutorialOff');
+                        this.$store.commit('tutorialOff');
                     }
 
                 }

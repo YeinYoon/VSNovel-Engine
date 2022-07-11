@@ -31,15 +31,6 @@ export default {
     return {
       // 모달 데이터
       iModalState : false,
-      iModalSize : "",
-      msg : "",
-      input : "",
-      type : "",
-
-      //이름 변경 관련
-      key : "",
-      preName : "",
-      ex : "",
     }
   },
   methods : {
