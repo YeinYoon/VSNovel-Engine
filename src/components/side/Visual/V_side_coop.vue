@@ -486,6 +486,7 @@ export default {
   transform: translate(-50%);
   top: 15px;
   width: 100%;
+  margin-bottom: 20px;
   /* background: white; */
 }
 
