@@ -23,7 +23,7 @@
         <button class="EPmodal_epicExport" @click="this.releaseState = true">이 에피소드 발행</button>
       </div>
 
-      <div v-if="releaseState">
+      <div class="EPmodal_momodal" v-if="releaseState">
         <p class="EPmodal_ex_title">새로운 회차 [ {{this.title}} ]을(를) 스토어에 발행하시겠습니까?</p>
         <button @click="releaseEP()">발행하기</button>
         <button @click="this.releaseState = false">취소</button>
@@ -233,6 +233,32 @@ export default {
 .EPmodal_EPtitle {
   position: relative;
   display: inline-block;
+}
+
+.EPmodal_momodal {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  height: 120px;
+  z-index: 100;
+  background: #535353;
+  border-radius: 15px;
+  padding-top: 40px;
+  animation-duration: 0.7s;
+  animation-name: EPopening;
+}
+
+.EPmodal_momodal button {
+  border: none;
+  border-radius: 15px;
+  width: 100px;
+  height: 30px;
+  background: #2872f9;
+  color: white;
+  margin: 10px;
 }
 
 .EPmodal_EpsiodeName_frame input {

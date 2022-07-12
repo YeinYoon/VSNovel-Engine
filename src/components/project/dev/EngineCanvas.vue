@@ -343,6 +343,7 @@ export default {
       let temp = this.VN
       temp.plotList[this.plot].pages[this.index].name=this.$refs.cngName.innerHTML
       temp.plotList[this.plot].pages[this.index].text=this.$refs.cngText.innerHTML
+      console.log(temp.plotList[this.plot].pages[this.index].text)
       this.$emit('changeVN',temp)
       this.textEdit = false;          
       this.loadData()
