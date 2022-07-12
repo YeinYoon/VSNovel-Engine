@@ -56,8 +56,8 @@
                     <div class="VpcPageSelectIndex" v-else><span>{{j+1}}</span></div>
                     <div class="VpcPageSelectTitle"><span>{{page.pageName}}</span></div>
                     <div v-if="i==this.plot && j==this.index">
-                      <button class="VpcPage_Opener"><img src="@/assets/icons/white/editing.png"></button>
-                      <button class="VpcPage_DeletePage"><img src="@/assets/icons/white/trash_white.png"></button>
+                      <button class="VpcPage_Opener" @click="changePageName(i,j)"><img src="@/assets/icons/white/editing.png"></button>
+                      <button class="VpcPage_DeletePage" @click="deletePage(i,j)"><img src="@/assets/icons/white/trash_white.png"></button>
                     </div>
 
                     <!-- 선택지들 -->
@@ -284,7 +284,9 @@ export default defineComponent({
       console.log(this.VN.plotList)
     },
     deletePage(plot, index){
+      console.log(this.VN.plotList[plot].pages)
       this.VN.plotList[plot].pages.splice(index, 1)
+      console.log(this.VN.plotList[plot].pages)
     },
     tmModalOn() {
       this.$refs.themeModal.show();

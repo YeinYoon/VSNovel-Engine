@@ -123,9 +123,9 @@
       <div class="NavItems" v-else-if="bgmState == true" @click="bgmOff(),effectOff()">
         <img src="@/assets/icons/white/speaker_white.png">
       </div>
-      <div class="NavItems" @click="resCtrl = !resCtrl">
+      <!-- <div class="NavItems" @click="resCtrl = !resCtrl">
         <img src="@/assets/icons/white/trash_white.png">
-      </div>
+      </div> -->
     </div>
     <!-- 우측 상단 햄버거메뉴 --> 
 
