@@ -40,7 +40,15 @@ export default {
       key : "",
       preName : "",
       ex : "",
+
+      //새로 생성
+      index:null,
+      plot:null,
+      status:null,
     }
+  },
+  props:{
+    VN:Object
   },
   methods : {
     modalClose() {
@@ -52,7 +60,6 @@ export default {
       this.iModalSize = option.size;
       this.msg = option.msg;
       this.type = option.type; // 어떤 것에 대한 입력 처리인가?
-
       switch(this.type) { // 타입에 따른 행동 코드
 
         case "rename" :
@@ -61,7 +68,11 @@ export default {
           this.input = this.preName[0];
           this.key = option.key;
           break
-
+        case "change" :
+          this.index = option.index;
+          this.plot = option.plot;
+          this.status = option.status;
+          break
       }
 
     },
@@ -70,7 +81,8 @@ export default {
       if(this.input == "") {
         console.log("InputVal : Null");
       } else {
-
+        let VN
+        if(this.type =="change") VN=this.VN;
         switch(this.type) {
 
           case "newFolder" :
@@ -83,6 +95,22 @@ export default {
             this.modalClose();
             break;
 
+          case "change" :
+            if(this.status=="plot"){
+              VN.plotList[this.plot].plotName = this.input;
+            }
+            else if(this.status=="page"){
+              VN.plotList[this.plot].pages[this.index].pageName = this.input;
+            }
+            else if(this.status=="add"){
+              VN.plotList.push({plotName:this.input,nextPlot:0,pages:[]})
+            }
+            this.$emit('changeVN', VN)
+            this.modalClose();
+            break
+          case "ep" :
+            this.$emit('addEp', this.input)
+            this.modalClose();
         }
 
       }

@@ -1,14 +1,14 @@
 <template>
 <ConfirmModal ref="confirmModal"></ConfirmModal>
 <EpisodeModal ref="episodeModal"></EpisodeModal>
+<InputModal ref="inputModal" @addEp="addEp"></InputModal>
   <div class="VSBackgroundEpic">
 
     <div class="VSCoopTool">
       <div class="VSCoopTitle"><span>에피소드 목록</span></div>
       <div class="VSCoopButtons">
-        <button @click="addEp()">추가</button>
+        <button @click="addEpisode()">추가</button>
         <button @click="this.delMode = !this.delMode"><span v-if="delMode">취소</span><span v-else>삭제</span></button>
-        <button>나가기</button>
       </div>
     </div>
 
@@ -53,6 +53,7 @@ import EpisodeModal from '../../modal/EpisodeModal.vue'
 import ConfirmModal from '../../modal/ConfirmModal.vue'
 import axios from '../../../axios'
 import storage from '../../../aws'
+import InputModal from '../../modal/InputModal.vue'
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3({
   region : "ap-northeast-2",
@@ -68,7 +69,8 @@ export default {
   },
   components : {
     ConfirmModal,
-    EpisodeModal
+    EpisodeModal,
+    InputModal
   },
   created() {
     this.delMode = false;
@@ -98,10 +100,18 @@ export default {
         }
       }
     },
-    async addEp(){
+    addEpisode(){
+      this.$refs.inputModal.show({
+        msg : "새로운 EP의 이름을 설정해주세요",
+        size : "normal",
+        type : "ep"
+      })
+    },
+    async addEp(title){
+      console.log(title)
+      console.log("Work")
       let nextEp = await axios.post('/engine/pj/epUp',{pjCode:this.pjCode})
       nextEp = nextEp.data.rows[0].PROJ_NEXTEP
-      let title = prompt("새로운 EP의 이름을 설정해주세요");
       var data = JSON.stringify({ // 프로젝트 기본 구조
             "id":this.pjCode,"title":title,"ep":nextEp, "img":"", "color":"default", "nameShape":"default", "shape" : "default", "font" : "default",
             "plotList":[{"plotName":"시작 플롯","nextPlot":0,"pages":[{"pageName":"일반 페이지","type":"n","bg":"","bgm":"","effect":"","name":"이름","text":"대화 및 내용","img":"","select":[{"use":true,"text":"1번 선택지","plot":0,"index":0},{"use":true,"text":"2번 선택지","plot":0,"index":0},{"use":true,"text":"3번 선택지","plot":0,"index":0}]}]}]
