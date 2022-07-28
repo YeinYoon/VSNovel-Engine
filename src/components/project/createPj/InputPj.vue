@@ -167,6 +167,7 @@ export default {
   text-align: center;
   display: table;
   cursor: pointer;
+  margin-right: 10px
 }
 .cancel_button {
   width: 200px;

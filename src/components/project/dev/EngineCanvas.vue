@@ -17,7 +17,7 @@
           {{s1.text}}
         </div>
         <div v-else class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]"  @click="select(s1.plot, s1.index)" id="s1">
-          {{s1.text}}
+          <p>{{s1.text}}</p>
         </div>
         </label>
 
@@ -29,7 +29,7 @@
           {{s2.text}}
         </div>
         <div v-else class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]" @click="select(s2.plot, s2.index)" id="s2">
-          {{s2.text}}
+          <p>{{s2.text}}</p>
         </div>
         </label>
 
@@ -41,7 +41,7 @@
           {{s3.text}}
         </div>
         <div v-else class="SelectButton" :class="[{SShape_default: VN.shape=='default'},{SShape_linear: VN.shape=='linear'},{SColor_default: VN.color=='default'},{SColor_red: VN.color=='red'}]" @click="select(s3.plot, s3.index)" id="s3">
-          {{s3.text}}
+          <p>{{s3.text}}</p>
         </div>
         </label>
 
@@ -729,6 +729,13 @@ label {
   color: white;
   white-space: normal;
   word-break: keep-all;
+}
+.SelectButton p {
+  position: relative;
+  font-size: 1.2em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .ViewerNav {
