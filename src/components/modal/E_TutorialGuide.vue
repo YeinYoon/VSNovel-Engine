@@ -42,7 +42,7 @@
             </div>
           </div>
 
-          <div class="WelcomeMessage" v-if="introStep == 1">
+          <div class="WelcomeMessage" v-if="introStep == 2">
             <span class="VSNE_second_MSG_title">Let's Try!</span>
             <span class="VSNE_second_MSG">직접 프로젝트를 만들고 제작해봅시다!</span>
           </div>
@@ -133,14 +133,23 @@ export default {
   },
   methods : {
     btn_event(){
-      if(this.introStep >= 1) {
-        this.$store.commit('tutorialOff');
-        this.introStep = 0;
-        this.isIntro = '1';
+      console.log(this.introStep)
+      switch(this.introStep){
+        case 0 :
+          this.introStep++;
+          // this.opacity_power = true;
+          this.$store.commit('sideMenuOnMain');
+          break;
+        case 1 :  
+          this.introStep++;
+          this.opacity_power = true;
+          break;
+        default : 
+          this.$store.commit('tutorialOff');
+          this.$store.commit('sideMenuOffMain');
+          this.introStep = 0;
+          this.isIntro = '1';
       }
-      else 
-      this.introStep++;
-      this.opacity_power = true;
     },
     tutorialClose() {
         axios.get('/engine/user/tutorialDisable')
