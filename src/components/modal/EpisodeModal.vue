@@ -15,19 +15,20 @@
 
       <div class="EPmodal_Epsiodegenre_frame">
         <p class="EPmodal_EPgenre">장르</p>
-        <select class="EPmodal_EPgenre_select"> 
-          <option>스릴러</option>
-          <option>로맨스</option>
-          <option>공포</option>
-          <option>추리</option>
-          <option>판타지</option>
-          <option>과학</option>
-          <option>무협</option>
-          <option>게임</option>
-          <option>서브컬쳐</option>
-          <option>동화</option>
-          <option>드라마</option>
-          <option>기타</option>
+        <select class="EPmodal_EPgenre_select" v-model="genre">
+          <option value="12" selected>장르선택</option>
+          <option value="1">스릴러</option>
+          <option value="2">로맨스</option>
+          <option value="3">공포</option>
+          <option value="4">추리</option>
+          <option value="5">판타지</option>
+          <option value="6">과학</option>
+          <option value="7">무협</option>
+          <option value="8">게임</option>
+          <option value="9">서브컬쳐</option>
+          <option value="10">동화</option>
+          <option value="11">드라마</option>
+          <option value="12">기타</option>
         </select>
       </div>
 
@@ -81,7 +82,7 @@ export default {
 
       releaseState : false,
       title : null,
-
+      genre : 12,
     }
   },
   methods : {
@@ -135,7 +136,8 @@ export default {
           var data = {
             pjCode : this.pjCode,
             novelTitle : result.data.novelTitle,
-            novelSynopsis : result.data.novelSynopsis
+            novelSynopsis : result.data.novelSynopsis,
+            genre : this.genre
           }
           axios.post('/engine/pj/addNewNovel', data)
           .then((result)=>{

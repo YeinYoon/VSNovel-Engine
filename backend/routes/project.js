@@ -23,7 +23,7 @@ router.post('/findPjStore', async (req, res)=>{
 router.post('/addNewNovel', async (req, res)=>{
     var newTime = timestamp.getTimestamp();
     var result = await db.execute(`INSERT INTO tbl_novel VALUES(
-        tbl_novel_seq.NEXTVAL, ${req.body.pjCode}, null, '${req.body.novelTitle}', '${req.body.novelSynopsis}',
+        tbl_novel_seq.NEXTVAL, ${req.body.pjCode}, ${req.body.genre}, '${req.body.novelTitle}', '${req.body.novelSynopsis}',
         200, null, null, 'testTEAM', null, 'D', null, 0, 0, null, '${newTime}'
     )`);
     
