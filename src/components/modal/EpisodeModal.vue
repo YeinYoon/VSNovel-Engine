@@ -13,6 +13,24 @@
         <input type="text" v-model="title">
       </div>
 
+      <div class="EPmodal_Epsiodegenre_frame">
+        <p class="EPmodal_EPgenre">장르</p>
+        <select class="EPmodal_EPgenre_select"> 
+          <option>스릴러</option>
+          <option>로맨스</option>
+          <option>공포</option>
+          <option>추리</option>
+          <option>판타지</option>
+          <option>과학</option>
+          <option>무협</option>
+          <option>게임</option>
+          <option>서브컬쳐</option>
+          <option>동화</option>
+          <option>드라마</option>
+          <option>기타</option>
+        </select>
+      </div>
+
       <!-- <div class="EPmodal_Img_frame">
         <p class="EPmodal_EPimg">표지</p>
         <button class="EPmodal_EPimg_btn">업로드</button>
@@ -235,6 +253,28 @@ export default {
   display: inline-block;
 }
 
+.EPmodal_Epsiodegenre_frame{
+  position: absolute;
+  top: 55px;
+  width: 100%;
+  /* background: white; */
+  height: 40px;
+  text-align: center;
+}
+
+.EPmodal_EPgenre {
+  position: relative;
+  display: inline-block;
+}
+
+.EPmodal_EPgenre_select {
+  position: relative;
+  width: 100px;
+  height: 40px;
+  border-radius: 15px;
+  margin-left: 10px;
+}
+
 .EPmodal_momodal {
   position: absolute;
   text-align: center;
@@ -303,7 +343,7 @@ export default {
 
 .EPmodal_exportSetting {
   position: absolute;
-  top: 120px;
+  top: 130px;
   width: 100%;
   /* background: white; */
   height: 40px;

@@ -27,8 +27,8 @@
           </div>
         </div> <!--소셜로그인 버튼들 끝-->
         <div class="logins_deco"> <!--로그인 버튼 아래에 꾸며주는 블럭 -->
-          <div class="logins_deco_social"><span class="social_label">social</span></div>
-          <div class="logins_deco_platform"><span class="platform_label">platform</span></div>
+          <div class="logins_deco_social"><span class="social_label">platform</span></div>
+          <div class="logins_deco_platform"><span class="platform_label">social</span></div>
         </div> <!--로그인 버튼 아래에 꾸며주는 블럭 끝 -->
         <div class="signupNpasswd"> <!-- 최하단 회원가입 및 패스워드 찾기 -->
           <!-- <span class="signup_button">회원가입</span> -->
@@ -37,8 +37,8 @@
         <div class="partion_block"> <!-- 로그인 및 광고영역간 공간분리 -->
         </div>
         <div class="adver_section"> <!--광고영역-->
-            <img class="adver_img" src="../../assets/imgs/adver.jpg" alt=""> <!--광고영역의 이미지-->
-            <div class="adver_info"><span>123</span></div> <!--광고대상의 정보박스-->
+            <img class="adver_img" src="../../assets/imgs/background.png" alt=""> <!--광고영역의 이미지-->
+            <div class="adver_info"><span>VSN 출시!</span></div> <!--광고대상의 정보박스-->
         </div> 
       </div>
     </div>
@@ -270,9 +270,11 @@
   position: absolute;
   top: 230px;
   width: 100%;
-  height: 140px;
+  height: 120px;
   background: black;
+  color: white;
   opacity: 0.8;
+  padding: 5px;
 }
 .adver_img{
   position: absolute;
