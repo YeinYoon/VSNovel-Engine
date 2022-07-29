@@ -6,7 +6,7 @@
       <div class="VSSetTitle"><span>설정</span></div>
       <div class="VSSetButtons">
         <button @click="saveEdit()">저장</button>
-        <button>되돌리기</button>
+        <!-- <button>되돌리기</button> -->
         <!-- <button>기능3</button> -->
       </div>
     </div>

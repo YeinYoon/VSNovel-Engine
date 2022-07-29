@@ -4,9 +4,9 @@
 <InputModal ref="inputModal" @addEp="addEp"></InputModal>
   <div class="VSBackgroundEpic">
 
-    <div class="VSCoopTool">
-      <div class="VSCoopTitle"><span>에피소드 목록</span></div>
-      <div class="VSCoopButtons">
+    <div class="VSEpicTool">
+      <div class="VSEpicTitle"><span>에피소드 목록</span></div>
+      <div class="VSEpicButtons">
         <button @click="addEpisode()">추가</button>
         <button @click="this.delMode = !this.delMode"><span v-if="delMode">취소</span><span v-else>삭제</span></button>
       </div>
@@ -182,6 +182,7 @@ export default {
   background: #474747;
   border-radius: 0px 0px 10px 10px;
   overflow: hidden;
+  color: white;
 }
 
 .VSEpicList {
@@ -189,6 +190,45 @@ export default {
   padding: 20px;
 }
 
+.VSEpicTitle {
+  position: relative;
+  width: 100%;
+  left: 0px;
+  font-size: 1em;
+}
+
+.VSEpicTitle span{
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 1em;
+}
+
+.VSEpicButtons {
+  position: relative;
+  width: 100%;
+  top: 32px;
+  height: 40px;
+  padding: 7px;
+  text-align: center;
+}
+
+.VSEpicButtons button {
+  display: inline;
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 2px;
+  color: white;
+  border: none;
+  background: #2872f9;
+  transition: all ease 0.2s;
+}
+
+.VSResourceButtons button:hover {
+  background: #0084ff;
+}
 
 .VSEpic_el {
   position: relative;

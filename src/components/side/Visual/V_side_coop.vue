@@ -3,11 +3,11 @@
 
     <div class="VSCoopTool">
       <div class="VSCoopTitle"><span>협업 관리</span></div>
-      <div class="VSCoopButtons">
+      <!-- <div class="VSCoopButtons">
         <button>기능1</button>
         <button>기능2</button>
         <button>기능3</button>
-      </div>
+      </div> -->
     </div>
 
     <div class="VSCoopMemberList">
@@ -344,7 +344,7 @@ export default {
 
 .VSCoopTool {
   width: 100%;
-  height: 80px;
+  height: 45px;
   position: relative;
   background: #474747;
   border-radius: 0px 0px 10px 10px;
@@ -394,7 +394,7 @@ export default {
 
 .VSCoopMemberList {
   position: absolute;
-  top: 80px;
+  top: 50px;
   width: 100%;
   height: calc(100vh - 80px);
   padding: 20px;
@@ -507,9 +507,12 @@ export default {
   position: relative;
   background: #2872f9;
   width: 100%;
-  height: 30px;
+  height: 35px;
   border-radius: 10px;
+  text-align: center;
+  padding-top: 6px;
   cursor: pointer;
+  margin-bottom: 12px;
 }
 
 .StakeList{
