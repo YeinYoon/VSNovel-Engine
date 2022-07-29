@@ -25,7 +25,7 @@
             <img :src="f.url" @click="send(f.key)">
           </div>
           <div class="VSFileThumnail" v-else-if="f.ex == 'mp3' || f.ex == 'MP3'" @dblclick="send(f)" @click="playerOn(f)">
-            <img src="@/assets/sample.png">
+            <img src="@/assets/icons/white/music.png">
           </div>
           <div class="VSFolderThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
             <img src="@/assets/icons/white/folder.png">
@@ -55,7 +55,7 @@
             <img :src="f.url">
           </div> 
           <div class="VSFileThumnail" v-else-if="f.ex == 'mp3' || f.ex == 'MP3'" @dblclick="send(f)" @click="playerOn(f)">
-            <img src="@/assets/sample.png">
+            <img src="@/assets/icons/white/music.png">
           </div>
           <div class="VSFolderThumnail" v-else-if="f.ex == 'dir'" @click="goToFolder(f.key)">
             <img src="@/assets/icons/white/folder.png">
@@ -699,6 +699,7 @@ export default {
   height: 80px;
   border: 3px rgb(59, 59, 59) solid;
   border-radius: 10px;
+  padding: 3px;
   cursor: pointer;
 }
 
@@ -710,7 +711,7 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 
