@@ -43,20 +43,32 @@
                             <button class="invite_button" @click="PjAccept(n.PROJ_CODE, n.SCHE_CODE)">승인</button>
                             <button class="invite_button" @click="PjRefuse(n.PROJ_CODE, n.SCHE_CODE)">거절</button>
                         </div>
-                        <div class="invite_message" v-if="n.SCHE_TYPE == 'S' && n.SNOT_ISREAD == 0">
-                            {{n.SCHE_STDATE}}
-                            <div>{{n.SCHE_CONTENT}}</div>
-                            <button class="invite_button" @click="PjAccept(n.PROJ_CODE, n.SCHE_CODE)">승인</button>
-                            <button class="invite_button" @click="PjRefuse(n.PROJ_CODE, n.SCHE_CODE)">거절</button>
-                        </div>
                         <hr>
+
                         </div>
                     </div>
-
                     <div v-else>새로운 알림이 없습니다.</div>
 
-                    <!-- <div class="" @click="AlarmHistory()" v-if="AlarmTap == true">지난 알림 보기</div>
-                    <div class="" @click="AlarmHistory()" v-if="AlarmTap == false">돌아가기</div> -->
+                    <hr>
+
+                    <button v-if="this.noticeTap == false" class="Schedule_List_History_btn" @click="showNoticeHistory()">지난 알림</button>
+                    <button v-else class="Schedule_List_History_btn" @click="showNoticeHistory()">닫기</button>
+
+                    <div v-if="noticeTap == true && noticeHistoryList.length > 0">
+                        <div v-for="n in noticeHistoryList" :key="n.SCHE_CODE">
+            
+                            <div class="invite_message" v-if="n.SCHE_TYPE == 'I'">
+                                {{n.SCHE_STDATE}}
+                                <div>{{n.SCHE_CONTENT}}</div>
+                            </div>
+                            <hr>
+
+                        </div>
+                    </div>
+                    <div v-else-if="noticeTap == true && noticeHistoryList.length == 0">
+                        지난 알림기록이 없습니다.
+                    </div>
+
                 </div>
 
             </div>
@@ -69,18 +81,15 @@
 
                 <div @click="TaskCenterToggle()" class="invite_box">
                     <img class="invite_icon" src="@/assets/icons/white/calendar_white.png">
-                    <div v-bind:class="{[`invite_counter_${existNotice}`]:true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
-                        <span>{{noticeList.length}}</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
+                    <div v-bind:class="{[`invite_counter_${existSchedule}`]:true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
+                        <span>{{scheduleList.length}}</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
                     </div>
                 </div>
 
                 <div v-if="taskStatus" v-bind:class="{'invite_modal_on':true}">
-                    
                     <!-- 회원에게 스케쥴 있으면 보이는곳 -->
-                    <div> <!-- 여기에 if문 -->
-                        <!-- 스케쥴 내용, {{ 내용 }} 변경필요 및 for문 수정필요 -->
-                        <div class="Schedule_List_item" v-for="(s, i) in schedule" :key="i">
-                            <div v-if="s.SCHE_TYPE == 'S'">
+                    <div v-if="this.scheduleList.length != 0">
+                        <div class="Schedule_List_item" v-for="(s, i) in scheduleList" :key="i">
                             <div class="Schedule_List_item_date">
                                 <div class="Schedule_List_item_date_box">{{s.SCHE_STDATE}}</div>
                                 ~
@@ -88,14 +97,33 @@
                             </div>
                             <div class="Schedule_List_item_writer">작성자 : {{s.USER_ID}}</div>
                             <div class="Schedule_List_item_content">내용 : {{s.SCHE_CONTENT}}</div>
-                            <input class="Schedule_List_item_check" type="checkbox" v-model="s.select">
-                            </div>
+                            <button class="Schedule_List_DelBtn_read" @click="readSchedule(s.SCHE_CODE)">읽음</button>
                         </div>
-                        <button class="Schedule_List_DelBtn" @click="deleteSchedule">삭제</button>
                     </div>
 
                     <!-- 회원에게 스케쥴 없으면 보이는곳 if문처리 -->
-                    <div>새로운 일정이 없습니다.</div>
+                    <div v-else>새로운 일정이 없습니다.</div>
+
+                    <hr>
+                    <!-- 히스토리 리스트 -->
+                    <button v-if="this.scheduleTap == false" class="Schedule_List_History_btn" @click="showScheduleHistory()">지난 일정</button>
+                    <button v-else class="Schedule_List_History_btn" @click="showScheduleHistory()">닫기</button>
+
+                    <div v-if="this.scheduleTap == true && this.scheduleHistoryList.length != 0">
+                        <div class="Schedule_List_item" v-for="(s, i) in scheduleHistoryList" :key="i">
+                            <div class="Schedule_List_item_date">
+                                <div class="Schedule_List_item_date_box">{{s.SCHE_STDATE}}</div>
+                                ~
+                                <div class="Schedule_List_item_date_box">{{s.SCHE_EDDATE}}</div>
+                            </div>
+                            <div class="Schedule_List_item_writer">작성자 : {{s.USER_ID}}</div>
+                            <div class="Schedule_List_item_content">내용 : {{s.SCHE_CONTENT}}</div>
+                        </div>
+                    </div>
+                    <div v-else-if="scheduleTap == true && scheduleHistoryList.length == 0">
+                        지난 일정기록이 없습니다.
+                    </div>
+
                 </div>
 
             </div>
@@ -123,6 +151,7 @@ export default {
         userId() {
             if(this.userId != null) {
                 this.getNoticeList();
+                this.getScheduleList();
             }
         }
     },
@@ -132,15 +161,25 @@ export default {
     data() {
         return{
             noticeList : [],
+            noticeHistoryList : [],
+            noticeTap : false,
+            scheduleList : [],
+            scheduleHistoryList : [],
+            scheduleTap : false,
+
             alramStatus : false,
             existNotice : "off",
+            existSchedule : "off",
             CalendarStatus : false,
-            AlarmTap : true,
             taskStatus : false,
         }
     },
     methods: {
         logout(){
+            this.noticeList = [];
+            this.noticeHistoryList = [];
+            this.scheduleList = [];
+            this.scheduleHistoryList = [];
             axios.get('/engine/auth/logout')
             .then((result)=>{
                 if(result.data=='ok') {
@@ -163,19 +202,68 @@ export default {
                 if(result.data == "err") {
                 console.log("ERR : 알림 불러오기 실패")
                 } else {
-                    this.noticeList = result.data;
-                    if(result.data.length > 0) {
+                    for(var i=0; i<result.data.length; i++) {
+                        console.log(result.data[i]);
+                        if(result.data[i].SCHE_TYPE != 'S' && result.data[i].SNOT_ISREAD == 0) {
+                            this.noticeList.push(result.data[i]);
+                        } else if(result.data[i].SCHE_TYPE != 'S' && result.data[i].SNOT_ISREAD == 1) {
+                            this.noticeHistoryList.push(result.data[i]);
+                        }
+                    }
+                    if(this.noticeList.length > 0) {
                         this.existNotice = "on";
                     } else {
                         this.existNotice = "off";
                     }
-                    console.log(this.noticeList);
+                    console.log("새로운 알림 : ", this.noticeList);
+                    console.log("지난 알림 : ", this.noticeHistoryList);
                 }
             })
             .catch((err)=>{
                 console.error(err);
             });
         },
+
+        getScheduleList() {
+            axios.get('/engine/team/getNoticeList')
+            .then((result)=>{
+                if(result.data == "err") {
+                    console.log("ERR : 알림 불러오기 실패")
+                } else {
+                    for(var i=0; i<result.data.length; i++) {
+                        if(result.data[i].SCHE_TYPE == 'S' && result.data[i].SNOT_ISREAD == 0) {
+                            this.scheduleList.push(result.data[i]);
+                        } else if(result.data[i].SCHE_TYPE == 'S' && result.data[i].SNOT_ISREAD == 1) {
+                            this.scheduleHistoryList.push(result.data[i]);
+                        }
+                    }
+                    if(this.scheduleList.length > 0) {
+                        this.existSchedule = "on";
+                    } else {
+                        this.existSchedule = "off";
+                    }
+                    console.log("새로운 일정 : ", this.scheduleList);
+                    console.log("지난 일정 : ", this.scheduleHistoryList);
+                }
+            })
+            .catch((err)=>{
+                console.error(err);
+            });
+        },
+        readSchedule(scheCode) {
+            axios.post('/engine/team/readSchedule', {scheCode : scheCode})
+            .then((result)=>{
+                if(result.data == "ok") {
+                    this.scheduleList = [];
+                    this.scheduleHistoryList = [];
+                    this.getScheduleList();
+                } else {
+                    this.$store.commit('gModalOn', {msg : "ERR:일정 읽음처리 실패", size : "normal"});
+                }
+            })
+        },
+
+
 
         // 프로젝트 초대 수락
         async PjAccept(pjCode, scheCode) {
@@ -188,11 +276,13 @@ export default {
             if(accept) { 
                 axios.post('/engine/team/PjAccept', {pjCode : pjCode, scheCode : scheCode})
                 .then((result)=>{
-                if(result.data == "ok") {
-                    this.$router.go();
-                } else {
-                    this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
-                }
+                    if(result.data == "ok") {
+                        this.noticeList = [];
+                        this.noticeHistoryList = [];
+                        this.getNoticeList();
+                    } else {
+                        this.$store.commit('gModalOn', {msg : "ERR:프로젝트 초대 수락 실패", size : "normal"});
+                    }
                 })
                 console.log("초대 수락");
             } else {
@@ -210,11 +300,13 @@ export default {
             if(refuse) { 
                 axios.post('/engine/team/PjRefuse', {pjCode : pjCode, scheCode : scheCode})
                 .then((result)=>{
-                if(result.data == "err") {
-                    this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});
-                } else {
-                    this.getNoticeList();
-                }
+                    if(result.data == "err") {
+                        this.$store.commit('gModalOn', {msg : "ERR: 서버 처리 에러발생", size : "normal"});
+                    } else {
+                        this.noticeList = [];
+                        this.noticeHistoryList = [];
+                        this.getNoticeList();
+                    }
                 })
             } else {
                 console.log("거절 보류");
@@ -229,12 +321,24 @@ export default {
             this.CalendarStatus = !this.CalendarStatus;
         },
 
-        AlarmHistory() {
-            this.AlarmTap = !this.AlarmTap;
-        },
-
         TaskCenterToggle() {
             this.taskStatus = !this.taskStatus;
+        },
+
+        showNoticeHistory() {
+            if(this.noticeTap) {
+                this.noticeTap = false;
+            } else {
+                this.noticeTap = true;
+            }
+        },
+
+        showScheduleHistory() {
+            if(this.scheduleTap) {
+                this.scheduleTap = false;
+            } else {
+                this.scheduleTap = true;
+            }
         }
     },
 
@@ -437,5 +541,30 @@ export default {
   color: white;
   z-index: 5;
   height: 100%;
+}
+
+.Schedule_List_DelBtn_read {
+  position: relative;
+  left: calc(100% - 50px);
+  top: calc(100% - 26px);
+  width: 50px;
+  height: 25px;
+  background: #2872f9;
+  color: white;
+  border-radius: 8px;
+  border: none;
+}
+
+.Schedule_List_History_btn {
+  position: relative;
+  left: 0px;
+  top: -5px;
+  width: 90px;
+  height: 25px;
+  background: #2872f9;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 5px;
 }
 </style>

@@ -54,13 +54,25 @@ router.post('/inviteUser', async (req, res)=>{
 
 // 알림 리스트
 router.get('/getNoticeList', async (req, res)=>{
-    var getList = await db.execute(`SELECT * FROM tbl_schedule s, tbl_schedule_notice n WHERE s.sche_code = n.sche_code
-    AND NOT n.snot_isread = 1`);
+    var getList = await db.execute(`SELECT * FROM tbl_schedule s, tbl_schedule_notice n WHERE s.sche_code = n.sche_code`);
     if(getList == "err") {
         res.send('err');
     } else {
         res.send(getList.rows);
     }
+})
+
+router.post('/readSchedule', async (req, res)=>{
+    var readSchedule = await db.execute(`UPDATE tbl_schedule_notice SET snot_isread = 1
+        WHERE user_id = '${req.user.USER_ID}'
+        AND sche_code = ${req.body.scheCode}`);
+
+    if(readSchedule == "err") {
+        res.send("err")
+    } else {
+        res.send("ok");
+    }
+    
 })
 
 //프로젝트 초대 수락
@@ -83,10 +95,9 @@ router.post('/PjAccept', async (req,res)=>{
 
 // 프로젝트 초대 거절
 router.post('/PjRefuse', async (req,res)=>{
-    var readNotice = await db.execute(`UPDATE tbl_schedule_notice SET snot_isread = 1
-    WHERE user_id = '${req.user.USER_ID}'
-    AND sche_code = ${req.body.scheCode}`);
-    if(readNotice == "err") {
+    var refuseInvite = await db.execute(`DELETE FROM tbl_schedule
+    WHERE user_id = '${req.user.USER_ID}' AND proj_code = ${req.body.pjCode} AND sche_type = 'I' AND sche_code = ${req.body.scheCode}`);
+    if(refuseInvite == "err") {
         res.send("err");
     } else {
         res.send("ok");
