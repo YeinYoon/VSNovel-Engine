@@ -61,6 +61,45 @@
 
             </div>
         </div>
+
+
+
+        <div class="TaskCenter"> 
+            <div class="invite_center">
+
+                <div @click="TaskCenterToggle()" class="invite_box">
+                    <img class="invite_icon" src="@/assets/icons/white/calendar_white.png">
+                    <div v-bind:class="{[`invite_counter_${existNotice}`]:true}"><!-- 초대가 0개 이하면 counter_off로 변경-->
+                        <span>{{noticeList.length}}</span><!-- 이 유저에게 온 초대가 몇장인지 데이터 삽입-->
+                    </div>
+                </div>
+
+                <div v-if="taskStatus" v-bind:class="{'invite_modal_on':true}">
+                    
+                    <!-- 회원에게 스케쥴 있으면 보이는곳 -->
+                    <div> <!-- 여기에 if문 -->
+                        <!-- 스케쥴 내용, {{ 내용 }} 변경필요 및 for문 수정필요 -->
+                        <div class="Schedule_List_item" v-for="(s, i) in schedule" :key="i">
+                            <div v-if="s.SCHE_TYPE == 'S'">
+                            <div class="Schedule_List_item_date">
+                                <div class="Schedule_List_item_date_box">{{s.SCHE_STDATE}}</div>
+                                ~
+                                <div class="Schedule_List_item_date_box">{{s.SCHE_EDDATE}}</div>
+                            </div>
+                            <div class="Schedule_List_item_writer">작성자 : {{s.USER_ID}}</div>
+                            <div class="Schedule_List_item_content">내용 : {{s.SCHE_CONTENT}}</div>
+                            <input class="Schedule_List_item_check" type="checkbox" v-model="s.select">
+                            </div>
+                        </div>
+                        <button class="Schedule_List_DelBtn" @click="deleteSchedule">삭제</button>
+                    </div>
+
+                    <!-- 회원에게 스케쥴 없으면 보이는곳 if문처리 -->
+                    <div>새로운 일정이 없습니다.</div>
+                </div>
+
+            </div>
+        </div>
         <!-- 알림센터 끝 -->
 
         <!-- <div class="CalendarCenter">
@@ -97,6 +136,7 @@ export default {
             existNotice : "off",
             CalendarStatus : false,
             AlarmTap : true,
+            taskStatus : false,
         }
     },
     methods: {
@@ -191,6 +231,10 @@ export default {
 
         AlarmHistory() {
             this.AlarmTap = !this.AlarmTap;
+        },
+
+        TaskCenterToggle() {
+            this.taskStatus = !this.taskStatus;
         }
     },
 
@@ -279,7 +323,7 @@ export default {
 .invite_center{
   background: #797979;
   border-radius: 20px;
-  
+  margin-bottom: 15px;
 }
 
 .invite_box{
