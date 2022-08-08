@@ -4,7 +4,7 @@
     </div>
   <div v-bind:class="{[`Gmodal_frame_${this.$store.state.gModalSize}`]:true}">
     <div class="Gmodal_inner">
-      <span>{{this.$store.state.gModalMsg}}</span>
+      <span class="Gmodal_msg">{{this.$store.state.gModalMsg}}</span>
     </div>
     <div class="Gmodal_close_button">
       <span class="Gmodal_close_ok" @click="modalClose()">확인</span>
@@ -95,6 +95,13 @@
   color: white;
   cursor: pointer;
 }
+
+.Gmodal_msg {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
 /* 애니메이션들,*/
   /*열리는 애니메이션 opening*/
 @keyframes Gopening {
