@@ -111,12 +111,11 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
                 if(filePath[filePath.length-1] == "") {
                     filePath.splice(-1,1);
                 }
+       
+                var temp = filePath[filePath.length-1]; // 파일 이름 추출
+                var extension = temp.split('.'); // 확장자 추출
 
-                var temp = filePath[filePath.length-1]; // 확장자
-                var extension = temp.split('.'); // 확장자
-                
-
-                if(reqPath.length+1 == filePath.length) {
+                if(reqPath.length+1 == filePath.length) { // 폴더 구분 짓고 그 폴더 내부의 파일들 삽입
 
                     if(extension.length == 1) { //확장자가 없다면 폴더
                         urlList.push({
@@ -137,10 +136,11 @@ exports.getUrlList = async(filePath) => { // 특정 경로의 파일 URL 리스�
                 }
                 
             });
-
+        
             if(keyList[0] == filePath) {
                 keyList.splice(0,1);
             }
+
             for(var i=0; i<urlList.length; i++) {
                 const params = {
                     Bucket: "vsnovel",
@@ -237,7 +237,6 @@ exports.deleteFolder = async(filePath)=> {
         listedObjects.Contents.forEach(({ Key }) => {
             deleteParams.Delete.Objects.push({ Key });
         });
-
         s3.deleteObjects(deleteParams, async (err)=>{
             if(err){
                 reject(err)

@@ -2211,10 +2211,10 @@
   "resolved" "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz"
   "version" "1.0.5"
 
-"aws-sdk@^2.1189.0":
-  "integrity" "sha512-EqluXSo8XAR086nF9UAtPYwUm82ZIRqg8OmHBRQyftcrD1Z0pqMmiuvacXoEAJ/4UU8KKafbpYarxx8rH/pZjQ=="
-  "resolved" "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1189.0.tgz"
-  "version" "2.1189.0"
+"aws-sdk@^2.1196.0":
+  "integrity" "sha512-iOGhCY5IqGfHCJ70p0H/uxkXDh/96KanAMfhnGGbIKbpVliuEV7SYxTfsWORaaUHey+N8FE6OMKfzo7F4X+wQg=="
+  "resolved" "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1196.0.tgz"
+  "version" "2.1196.0"
   dependencies:
     "buffer" "4.9.2"
     "events" "1.1.1"

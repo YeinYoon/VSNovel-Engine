@@ -6,7 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "aws-sdk": "^2.1189.0",
+    "aws-sdk": "^2.1196.0",
     "bcrypt": "^5.0.1",
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "~1.4.4",

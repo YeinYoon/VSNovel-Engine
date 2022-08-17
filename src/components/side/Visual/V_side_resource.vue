@@ -21,7 +21,7 @@
 
         <div class="VSFolder" v-for="(f, i) in rootList" :key="i">
 
-          <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg' || f.ex == 'PNG' || f.ex == 'JPG' || f.ex == 'GIF' || f.ex == 'FPEG'">
+          <div class="VSFileThumnail" v-if="f.ex == 'png' || f.ex == 'jpg' || f.ex == 'gif' || f.ex == 'jpeg' || f.ex == 'PNG' || f.ex == 'JPG' || f.ex == 'GIF' || f.ex == 'JPEG'">
             <img :src="f.url" @click="send(f.key)">
           </div>
           <div class="VSFileThumnail" v-else-if="f.ex == 'mp3' || f.ex == 'MP3'" @dblclick="send(f)" @click="playerOn(f)">
@@ -191,17 +191,25 @@ export default {
 
     // 파일 업로드 관련
     fileManagerOpen(folderPath) {
-      this.$refs.fileUploadModal.show({
-        size : "big",
-        path : folderPath,
-        pjCode : this.pjCode
-      });
+      if(this.clickFolder == false) {
+        this.$store.commit('gModalOn', {msg : "최상단 경로에는 폴더만 생성할 수 있습니다.", size : "normal"});
+      } else {
+        this.$refs.fileUploadModal.show({
+          size : "big",
+          path : folderPath,
+          pjCode : this.pjCode
+        });
+      }
+
     },
     async uploadOk() {
+      this.rootList = [];
       if(this.folderPath == "/") {
         this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
+        console.log(this.rootList);
       } else {
         this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
+        console.log(this.fileList);
       }
     },
 
@@ -294,7 +302,7 @@ export default {
       if(this.preFolderPath.length == 1) { //루트에 도착했을 경우
         this.folderPath = this.preFolderPath[0];
         this.clickFolder = false;
-        this.folderList = await storage.getDirList(`Project/PJ${this.pjCode}/resource/`);
+        this.rootList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/`);
       } else {
         this.folderPath = this.preFolderPath[this.preFolderPath.length-1];
         this.fileList = await storage.getUrlList(`Project/PJ${this.pjCode}/resource/${this.folderPath}`);
