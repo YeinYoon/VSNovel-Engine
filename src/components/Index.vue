@@ -80,9 +80,6 @@ export default {
   created() {
     this.$store.commit('cngSideMenu', 'M');
 
-    // 타이핑 테스트
-    // this.test();
-
     axios.get('/engine/auth/loginCheck')
     .then(async (result)=>{
       if(result.data!="") {
@@ -109,11 +106,6 @@ export default {
       alramStatus : false,
       existNotice : "off",
       condition : "mainRouterViewLeft",
-
-      //타이핑 애니메이션 테스트용
-      content : "Hello, I'm Sample Text",
-      txt : "",
-      count : 0
     }
   },
   watch:{
@@ -127,26 +119,6 @@ export default {
     }
   },
   methods : {
-    // 타이핑 테스트
-    // typing() {
-    //   var char = 0;
-    //   if(this.count < this.content.length) {
-    //     char = this.content.charAt(this.count);
-    //     this.txt += char;
-    //     this.count++;
-    //   } else {
-    //     clearInterval(this.typing);
-    //   }
-    // },
-    // test() {
-    //   setInterval(this.typing, 100);
-    // },
-    // next() {
-    //   this.count = 0;
-    //   this.txt = "";
-    //   this.content = "is next Text!";
-    // },
-
     userTutorialCheck() {
       axios.get('/engine/user/tutorialCheck')
       .then((result)=>{
